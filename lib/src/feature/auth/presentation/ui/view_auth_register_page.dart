@@ -38,24 +38,22 @@ class _ViewAuthRegisterPageState extends State<ViewAuthRegisterPage> {
               ? InkWell(
                   highlightColor: Colors.white,
                   onTap: () {
-                    final router =
-                        AutoRouter.of(context).root; // гарантированно корень
+                    final router = AutoRouter.of(context).root; // гарантированно корень
                     // if (router.canPop()) {
                     //   router.pop();
                     // } else {
                     // на крайний случай — вернуться в лаунчер
                     context.read<AppBloc>().add(
-                          const AppEvent.chageState(
-                              // или changeTab(index: 4)
-                              state: AppState.inAppUserState(index: 4)),
-                        );
+                      const AppEvent.chageState(
+                        // или changeTab(index: 4)
+                        state: AppState.inAppUserState(index: 4),
+                      ),
+                    );
                     router.replaceAll([const LauncherRoute()]);
                     // }
                   },
-                  child: Image.asset(
-                    Assets.icons.defaultBackIcon.path,
-                    scale: 1.9,
-                  ))
+                  child: Image.asset(Assets.icons.defaultBackIcon.path, scale: 1.9),
+                )
               : SizedBox.shrink(),
         ),
         body: AuthPage(),

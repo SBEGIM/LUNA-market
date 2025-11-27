@@ -10,10 +10,8 @@ import '../../../app/widgets/custom_back_button.dart';
 import '../../../home/bloc/cats_cubit.dart';
 import '../../../home/bloc/cats_state.dart';
 import '../../../home/data/model/cat_model.dart';
-import 'package:haji_market/src/feature/drawer/bloc/sub_cats_cubit.dart'
-    as subCatCubit;
-import 'package:haji_market/src/feature/drawer/bloc/sub_cats_state.dart'
-    as subCatState;
+import 'package:haji_market/src/feature/drawer/bloc/sub_cats_cubit.dart' as subCatCubit;
+import 'package:haji_market/src/feature/drawer/bloc/sub_cats_state.dart' as subCatState;
 
 class CategoriesPage extends StatefulWidget {
   const CategoriesPage({Key? key}) : super(key: key);
@@ -57,15 +55,14 @@ class _CategoriesPageState extends State<CategoriesPage> {
         backgroundColor: Colors.white,
         elevation: 0,
         centerTitle: true,
-        title: const Text(
-          'Категории',
-          style: AppTextStyles.appBarTextStyle,
-        ),
+        title: const Text('Категории', style: AppTextStyles.appBarTextStyle),
         leading: Padding(
           padding: const EdgeInsets.only(left: 22.0),
-          child: CustomBackButton(onTap: () {
-            Navigator.pop(context);
-          }),
+          child: CustomBackButton(
+            onTap: () {
+              Navigator.pop(context);
+            },
+          ),
         ),
       ),
       body: ListView(
@@ -74,32 +71,26 @@ class _CategoriesPageState extends State<CategoriesPage> {
           Container(
             color: Colors.white,
             child: BlocConsumer<CatsCubit, CatsState>(
-                listener: (context, state) {},
-                builder: (context, state) {
-                  if (state is ErrorState) {
-                    return Center(
-                      child: Text(
-                        state.message,
-                        style:
-                            const TextStyle(fontSize: 20.0, color: Colors.grey),
-                      ),
-                    );
-                  }
-                  if (state is LoadingState) {
-                    return const Center(
-                        child: CircularProgressIndicator(
-                            color: Colors.indigoAccent));
-                  }
-                  if (state is LoadedState) {
-                    return Column(children: [
-                      Divider(
-                        color: Colors.grey.shade400,
-                      ),
+              listener: (context, state) {},
+              builder: (context, state) {
+                if (state is ErrorState) {
+                  return Center(
+                    child: Text(
+                      state.message,
+                      style: const TextStyle(fontSize: 20.0, color: Colors.grey),
+                    ),
+                  );
+                }
+                if (state is LoadingState) {
+                  return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
+                }
+                if (state is LoadedState) {
+                  return Column(
+                    children: [
+                      Divider(color: Colors.grey.shade400),
                       ListView.separated(
                         separatorBuilder: (BuildContext context, int index) =>
-                            Divider(
-                          color: Colors.grey.shade400,
-                        ),
+                            Divider(color: Colors.grey.shade400),
                         physics: const NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
                         itemCount: state.cats.length,
@@ -107,56 +98,50 @@ class _CategoriesPageState extends State<CategoriesPage> {
                           return Column(
                             children: [
                               InkWell(
-                                  onTap: () async {
-                                    if (_selectedIndex ==
-                                        state.cats[index].id) {
-                                      setState(() {
-                                        _selectedIndex = -1;
-                                      });
-                                    } else {
-                                      await BlocProvider.of<
-                                              subCatCubit.SubCatsCubit>(context)
-                                          .subCats(state.cats[index].id);
+                                onTap: () async {
+                                  if (_selectedIndex == state.cats[index].id) {
+                                    setState(() {
+                                      _selectedIndex = -1;
+                                    });
+                                  } else {
+                                    await BlocProvider.of<subCatCubit.SubCatsCubit>(
+                                      context,
+                                    ).subCats(state.cats[index].id);
 
-                                      GetStorage()
-                                          .write('CatId', state.cats[index].id);
+                                    GetStorage().write('CatId', state.cats[index].id);
 
-                                      setState(() {
-                                        // устанавливаем индекс выделенного элемента
-                                        _selectedIndex = state.cats[index].id!;
+                                    setState(() {
+                                      // устанавливаем индекс выделенного элемента
+                                      _selectedIndex = state.cats[index].id!;
 
-                                        _cat = state.cats[index];
-                                      });
-                                    }
-                                  },
-                                  child: ListTile(
-                                    selected:
-                                        state.cats[index].id == _selectedIndex,
-                                    // leading: SvgPicture.asset('assets/temp/kaz.svg'),
-                                    title: Text(
-                                      state.cats[index].name.toString(),
-                                      style: const TextStyle(
-                                          color: AppColors.kGray900,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w400),
+                                      _cat = state.cats[index];
+                                    });
+                                  }
+                                },
+                                child: ListTile(
+                                  selected: state.cats[index].id == _selectedIndex,
+                                  // leading: SvgPicture.asset('assets/temp/kaz.svg'),
+                                  title: Text(
+                                    state.cats[index].name.toString(),
+                                    style: const TextStyle(
+                                      color: AppColors.kGray900,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w400,
                                     ),
-                                    trailing:
-                                        _selectedIndex == state.cats[index].id
-                                            ? SvgPicture.asset(
-                                                'assets/icons/check_circle.svg',
-                                              )
-                                            : SvgPicture.asset(
-                                                'assets/icons/circle.svg',
-                                              ),
-                                  )),
+                                  ),
+                                  trailing: _selectedIndex == state.cats[index].id
+                                      ? SvgPicture.asset('assets/icons/check_circle.svg')
+                                      : SvgPicture.asset('assets/icons/circle.svg'),
+                                ),
+                              ),
                               state.cats[index].id == _selectedIndex
-                                  ? Divider(
-                                      color: Colors.grey.shade400,
-                                    )
+                                  ? Divider(color: Colors.grey.shade400)
                                   : Container(),
                               state.cats[index].id == _selectedIndex
-                                  ? BlocConsumer<subCatCubit.SubCatsCubit,
-                                          subCatState.SubCatsState>(
+                                  ? BlocConsumer<
+                                      subCatCubit.SubCatsCubit,
+                                      subCatState.SubCatsState
+                                    >(
                                       listener: (context, state) {},
                                       builder: (context, state) {
                                         if (state is subCatState.ErrorState) {
@@ -164,149 +149,135 @@ class _CategoriesPageState extends State<CategoriesPage> {
                                             child: Text(
                                               state.message,
                                               style: const TextStyle(
-                                                  fontSize: 20.0,
-                                                  color: Colors.grey),
+                                                fontSize: 20.0,
+                                                color: Colors.grey,
+                                              ),
                                             ),
                                           );
                                         }
                                         if (state is subCatState.LoadingState) {
                                           return const Center(
-                                              child: CircularProgressIndicator(
-                                                  color: Colors.indigoAccent));
+                                            child: CircularProgressIndicator(
+                                              color: Colors.indigoAccent,
+                                            ),
+                                          );
                                         }
 
                                         if (state is subCatState.LoadedState) {
                                           return ListView.separated(
-                                            separatorBuilder:
-                                                (BuildContext context,
-                                                        int index) =>
-                                                    Divider(
-                                              color: Colors.grey.shade400,
-                                            ),
-                                            physics:
-                                                const NeverScrollableScrollPhysics(),
+                                            separatorBuilder: (BuildContext context, int index) =>
+                                                Divider(color: Colors.grey.shade400),
+                                            physics: const NeverScrollableScrollPhysics(),
                                             shrinkWrap: true,
                                             // padding: EdgeInsets.all(16),
                                             itemCount: state.cats.length,
-                                            itemBuilder: (BuildContext context,
-                                                int index) {
+                                            itemBuilder: (BuildContext context, int index) {
                                               return InkWell(
-                                                  onTap: () {
-                                                    setState(() {
-                                                      // устанавливаем индекс выделенного элемента
-                                                      // _selectedIndex2 = index;
-                                                      //_selectedListIndex2
-                                                      if (_selectedListIndex2
-                                                          .contains(state
-                                                              .cats[index]
-                                                              .id)) {
-                                                        _selectedListIndex2
-                                                            .remove(state
-                                                                .cats[index]
-                                                                .id);
-                                                      } else {
-                                                        _selectedListIndex2.add(
-                                                            state.cats[index]
-                                                                    .id ??
-                                                                0);
-                                                      }
+                                                onTap: () {
+                                                  setState(() {
+                                                    // устанавливаем индекс выделенного элемента
+                                                    // _selectedIndex2 = index;
+                                                    //_selectedListIndex2
+                                                    if (_selectedListIndex2.contains(
+                                                      state.cats[index].id,
+                                                    )) {
+                                                      _selectedListIndex2.remove(
+                                                        state.cats[index].id,
+                                                      );
+                                                    } else {
+                                                      _selectedListIndex2.add(
+                                                        state.cats[index].id ?? 0,
+                                                      );
+                                                    }
 
-                                                      GetStorage().write(
-                                                          'subCatFilterId', [
-                                                        state.cats[index].id
-                                                      ]);
+                                                    GetStorage().write('subCatFilterId', [
+                                                      state.cats[index].id,
+                                                    ]);
 
-                                                      _subCat =
-                                                          state.cats[index];
-                                                    });
-                                                  },
-                                                  child: Padding(
-                                                      padding:
-                                                          const EdgeInsets.only(
-                                                              left: 50.0,
-                                                              top: 0,
-                                                              bottom: 0,
-                                                              right: 17.5),
-                                                      child: ListTile(
-                                                        contentPadding:
-                                                            const EdgeInsets
-                                                                .only(
-                                                          top: 0,
-                                                        ),
-                                                        selected:
-                                                            _selectedListIndex2
-                                                                .contains(state
-                                                                    .cats[index]
-                                                                    .id),
+                                                    _subCat = state.cats[index];
+                                                  });
+                                                },
+                                                child: Padding(
+                                                  padding: const EdgeInsets.only(
+                                                    left: 50.0,
+                                                    top: 0,
+                                                    bottom: 0,
+                                                    right: 17.5,
+                                                  ),
+                                                  child: ListTile(
+                                                    contentPadding: const EdgeInsets.only(top: 0),
+                                                    selected: _selectedListIndex2.contains(
+                                                      state.cats[index].id,
+                                                    ),
 
-                                                        // leading: SvgPicture.asset('assets/temp/kaz.svg'),
-                                                        title: Text(
-                                                          state.cats[index].name
-                                                              .toString(),
-                                                          style: const TextStyle(
-                                                              color: AppColors
-                                                                  .kGray900,
-                                                              fontSize: 16,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w400),
-                                                        ),
-                                                        trailing: _selectedListIndex2
-                                                                .contains(state
-                                                                    .cats[index]
-                                                                    .id)
-                                                            ? SvgPicture.asset(
-                                                                'assets/icons/check_circle.svg',
-                                                              )
-                                                            : SvgPicture.asset(
-                                                                'assets/icons/circle.svg',
-                                                              ),
-                                                      )));
+                                                    // leading: SvgPicture.asset('assets/temp/kaz.svg'),
+                                                    title: Text(
+                                                      state.cats[index].name.toString(),
+                                                      style: const TextStyle(
+                                                        color: AppColors.kGray900,
+                                                        fontSize: 16,
+                                                        fontWeight: FontWeight.w400,
+                                                      ),
+                                                    ),
+                                                    trailing:
+                                                        _selectedListIndex2.contains(
+                                                          state.cats[index].id,
+                                                        )
+                                                        ? SvgPicture.asset(
+                                                            'assets/icons/check_circle.svg',
+                                                          )
+                                                        : SvgPicture.asset(
+                                                            'assets/icons/circle.svg',
+                                                          ),
+                                                  ),
+                                                ),
+                                              );
                                             },
                                           );
                                         } else {
                                           return const Center(
-                                              child: CircularProgressIndicator(
-                                                  color: Colors.indigoAccent));
+                                            child: CircularProgressIndicator(
+                                              color: Colors.indigoAccent,
+                                            ),
+                                          );
                                         }
-                                      })
-                                  : Container()
+                                      },
+                                    )
+                                  : Container(),
                             ],
                           );
                         },
                       ),
-                    ]);
-                  } else {
-                    return const Center(
-                        child: CircularProgressIndicator(
-                            color: Colors.indigoAccent));
-                  }
-                }),
+                    ],
+                  );
+                } else {
+                  return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
+                }
+              },
+            ),
           ),
         ],
       ),
       bottomSheet: Container(
         color: Colors.white,
-        padding:
-            const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 26),
+        padding: const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 26),
         child: InkWell(
           onTap: () {
             Get.back(result: _subCat?.name ?? 'Не выбрано');
           },
           child: Container(
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  color: AppColors.kPrimaryColor),
-              width: MediaQuery.of(context).size.width,
-              padding: const EdgeInsets.all(16),
-              child: const Text(
-                'Готово',
-                style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w400,
-                    fontSize: 16),
-                textAlign: TextAlign.center,
-              )),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              color: AppColors.kPrimaryColor,
+            ),
+            width: MediaQuery.of(context).size.width,
+            padding: const EdgeInsets.all(16),
+            child: const Text(
+              'Готово',
+              style: TextStyle(color: Colors.white, fontWeight: FontWeight.w400, fontSize: 16),
+              textAlign: TextAlign.center,
+            ),
+          ),
         ),
       ),
     );

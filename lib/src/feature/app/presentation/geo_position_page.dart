@@ -15,8 +15,7 @@ class GeoPositionPage extends StatefulWidget {
   int contryId;
   String countryCode;
 
-  GeoPositionPage(
-      {required this.contryId, required this.countryCode, super.key});
+  GeoPositionPage({required this.contryId, required this.countryCode, super.key});
 
   @override
   State<GeoPositionPage> createState() => _GeoPositionPageState();
@@ -52,13 +51,8 @@ class _GeoPositionPageState extends State<GeoPositionPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(height: 149),
-            Image.asset(
-              Assets.images.geoPosition.path,
-              height: 346,
-            ),
-            SizedBox(
-              height: 71,
-            ),
+            Image.asset(Assets.images.geoPosition.path, height: 346),
+            SizedBox(height: 71),
             Text(
               'Разрешите доступ \nк геопозиции',
               style: AppTextStyles.defButtonTextStyle.copyWith(
@@ -73,41 +67,42 @@ class _GeoPositionPageState extends State<GeoPositionPage> {
             Text(
               'Покажем, какие есть способы доставки',
               style: AppTextStyles.catalogTextStyle.copyWith(
-                  color: AppColors.kNeutralBlackColor,
-                  fontWeight: FontWeight.w400,
-                  letterSpacing: 0,
-                  height: 24 / 18,
-                  fontSize: 18),
+                color: AppColors.kNeutralBlackColor,
+                fontWeight: FontWeight.w400,
+                letterSpacing: 0,
+                height: 24 / 18,
+                fontSize: 18,
+              ),
             ),
             const SizedBox(height: 46),
             DefaultButton(
-                text: 'Продолжить',
-                press: () {
-                  Get.off(GuestUserPage());
-                  // BlocProvider.of<AppBloc>(context)
-                  //     .add(const AppEvent.checkAuth());
-                },
+              text: 'Продолжить',
+              press: () {
+                Get.off(GuestUserPage());
+                // BlocProvider.of<AppBloc>(context)
+                //     .add(const AppEvent.checkAuth());
+              },
+              color: AppColors.kWhite,
+              backgroundColor: AppColors.mainPurpleColor,
+              textStyle: AppTextStyles.aboutTextStyle.copyWith(
                 color: AppColors.kWhite,
-                backgroundColor: AppColors.mainPurpleColor,
-                textStyle: AppTextStyles.aboutTextStyle.copyWith(
-                    color: AppColors.kWhite,
-                    fontSize: 18,
-                    height: 24 / 18,
-                    fontWeight: FontWeight.w600),
-                width: double.infinity),
+                fontSize: 18,
+                height: 24 / 18,
+                fontWeight: FontWeight.w600,
+              ),
+              width: double.infinity,
+            ),
             const SizedBox(height: 16),
             InkWell(
               onTap: () async {
                 GetStorage().write('country', 'Казахстан');
-                GetStorage()
-                    .write('user_country_id', widget.contryId.toString());
+                GetStorage().write('user_country_id', widget.contryId.toString());
 
-                List<CityModel> _cities =
-                    await BlocProvider.of<CityCubit>(context)
-                        .citiesList(widget.countryCode);
+                List<CityModel> _cities = await BlocProvider.of<CityCubit>(
+                  context,
+                ).citiesList(widget.countryCode);
 
-                showCitiesOptions(context, 'Выберите город', _cities,
-                    (CityModel value) {
+                showCitiesOptions(context, 'Выберите город', _cities, (CityModel value) {
                   GetStorage().write('city_shop', value.city);
                 });
               },
@@ -115,9 +110,10 @@ class _GeoPositionPageState extends State<GeoPositionPage> {
                 child: Text(
                   'Указать город вручную',
                   style: AppTextStyles.aboutTextStyle.copyWith(
-                      color: AppColors.mainPurpleColor,
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600),
+                    color: AppColors.mainPurpleColor,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
               ),
             ),

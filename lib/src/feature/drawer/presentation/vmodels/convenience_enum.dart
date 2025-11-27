@@ -1,10 +1,4 @@
-
-enum Conveniences {
-  gadjets,
-  aksesuars,
-  smartphones,
-  radio,
-}
+enum Conveniences { gadjets, aksesuars, smartphones, radio }
 
 extension ConvenienceExtension on Conveniences? {
   static List<Conveniences> get conveniences {

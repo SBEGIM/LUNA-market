@@ -12,8 +12,7 @@ class NavigationCubit extends Cubit<NavigationState> {
 
     state.when(
       tape: () => emit(const TapeState()),
-      detailBloggerTape: (int j, String k, String i) =>
-          emit(DetailBloggerTapeState(j, k, i)),
+      detailBloggerTape: (int j, String k, String i) => emit(DetailBloggerTapeState(j, k, i)),
       home: () => emit(const HomeState()),
       detailTape: (int j, String k) => emit(DetailTapeState(j, k)),
       favorite: () => emit(const FavoriteState()),

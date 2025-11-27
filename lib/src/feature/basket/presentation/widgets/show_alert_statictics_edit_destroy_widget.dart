@@ -6,8 +6,17 @@ import 'package:haji_market/src/feature/basket/presentation/widgets/show_alert_e
 
 import '../../../drawer/bloc/address_cubit.dart';
 
-Future<dynamic> showAlertEditDestroyWidget(BuildContext context, int id,
-    country, city, street, home, floor, porch, room) async {
+Future<dynamic> showAlertEditDestroyWidget(
+  BuildContext context,
+  int id,
+  country,
+  city,
+  street,
+  home,
+  floor,
+  porch,
+  room,
+) async {
   return showCupertinoModalPopup(
     context: context,
     builder: (BuildContext context) => CustomCupertinoActionSheet(
@@ -15,20 +24,13 @@ Future<dynamic> showAlertEditDestroyWidget(BuildContext context, int id,
         CustomCupertinoActionSheetAction(
           child: const Row(
             children: [
-              Icon(
-                Icons.create,
-                color: Colors.red,
-                size: 24.0,
-              ),
+              Icon(Icons.create, color: Colors.red, size: 24.0),
               SizedBox(width: 16),
               SizedBox(
                 width: 270,
                 child: Text(
                   'Редактировать',
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.w500,
-                      fontSize: 16),
+                  style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500, fontSize: 16),
                   maxLines: 1,
                 ),
               ),
@@ -37,27 +39,19 @@ Future<dynamic> showAlertEditDestroyWidget(BuildContext context, int id,
           onPressed: () {
             // GetStorage().write('basket_address_box', 1);
             // Navigator.pop(context);
-            showAlertEditWidget(
-                context, id, country, city, street, home, floor, porch, room);
+            showAlertEditWidget(context, id, country, city, street, home, floor, porch, room);
           },
         ),
         CustomCupertinoActionSheetAction(
           child: const Row(
             children: [
-              Icon(
-                Icons.delete,
-                color: Colors.red,
-                size: 24.0,
-              ),
+              Icon(Icons.delete, color: Colors.red, size: 24.0),
               SizedBox(width: 16),
               SizedBox(
                 width: 270,
                 child: Text(
                   'Удалить',
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.w500,
-                      fontSize: 16),
+                  style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500, fontSize: 16),
                   maxLines: 1,
                 ),
               ),

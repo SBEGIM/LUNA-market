@@ -3,18 +3,18 @@ import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
-void showBloggerLegalStatusType(BuildContext context, bool? prevGender,
-    {required Function typeCall}) {
+void showBloggerLegalStatusType(
+  BuildContext context,
+  bool? prevGender, {
+  required Function typeCall,
+}) {
   bool gender = prevGender ?? false;
 
   showMaterialModalBottomSheet(
     backgroundColor: AppColors.kWhite,
     context: context,
     shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.only(
-        topLeft: Radius.circular(20),
-        topRight: Radius.circular(20),
-      ),
+      borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)),
     ),
     builder: (context) {
       return StatefulBuilder(
@@ -29,19 +29,17 @@ void showBloggerLegalStatusType(BuildContext context, bool? prevGender,
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        'Ваш юридический статус',
-                        style: AppTextStyles.size16Weight600,
-                      ),
+                      Text('Ваш юридический статус', style: AppTextStyles.size16Weight600),
                       InkWell(
-                          onTap: () {
-                            Navigator.of(context).pop();
-                          },
-                          child: Image.asset(
-                            Assets.icons.defaultCloseIcon.path,
-                            height: 24,
-                            width: 24,
-                          ))
+                        onTap: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: Image.asset(
+                          Assets.icons.defaultCloseIcon.path,
+                          height: 24,
+                          width: 24,
+                        ),
+                      ),
                     ],
                   ),
                   SizedBox(height: 16),
@@ -64,54 +62,54 @@ void showBloggerLegalStatusType(BuildContext context, bool? prevGender,
                           ),
                           height: 47,
                           child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  'ИП',
-                                  textAlign: TextAlign.center,
-                                  style: AppTextStyles.size16Weight600
-                                      .copyWith(color: Color(0xFF3A3A3C)),
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'ИП',
+                                textAlign: TextAlign.center,
+                                style: AppTextStyles.size16Weight600.copyWith(
+                                  color: Color(0xFF3A3A3C),
                                 ),
-                                Image.asset(
-                                  gender == false
-                                      ? Assets.icons.defaultCheckIcon.path
-                                      : Assets.icons.defaultUncheckIcon.path,
-                                  color: gender == false
-                                      ? AppColors.kLightBlackColor
-                                      : AppColors.kGray300,
-                                  height: 20,
-                                  width: 20,
-                                ),
-                                // Theme(
-                                //   data: Theme.of(context).copyWith(
-                                //     checkboxTheme: CheckboxThemeData(
-                                //       shape: CircleBorder(),
-                                //       side: BorderSide(
-                                //         color: AppColors.kGray300,
-                                //         width: 1, // Толщина обводки чекбокса
-                                //       ),
-                                //       fillColor: WidgetStateProperty.all(
-                                //           type == 1
-                                //               ? AppColors.kLightBlackColor
-                                //               : AppColors.kWhite),
-                                //       checkColor: WidgetStateProperty.all(
-                                //           AppColors.kWhite), // Цвет галочки
-                                //     ),
-                                //   ),
-                                //   child: Checkbox(
-                                //     value: type == 1,
-                                //     onChanged: ((value) {
-                                //       type = 1;
-                                //       setState(() {});
-                                //     }),
-                                //   ),
-                                // )
-                              ]),
+                              ),
+                              Image.asset(
+                                gender == false
+                                    ? Assets.icons.defaultCheckIcon.path
+                                    : Assets.icons.defaultUncheckIcon.path,
+                                color: gender == false
+                                    ? AppColors.kLightBlackColor
+                                    : AppColors.kGray300,
+                                height: 20,
+                                width: 20,
+                              ),
+                              // Theme(
+                              //   data: Theme.of(context).copyWith(
+                              //     checkboxTheme: CheckboxThemeData(
+                              //       shape: CircleBorder(),
+                              //       side: BorderSide(
+                              //         color: AppColors.kGray300,
+                              //         width: 1, // Толщина обводки чекбокса
+                              //       ),
+                              //       fillColor: WidgetStateProperty.all(
+                              //           type == 1
+                              //               ? AppColors.kLightBlackColor
+                              //               : AppColors.kWhite),
+                              //       checkColor: WidgetStateProperty.all(
+                              //           AppColors.kWhite), // Цвет галочки
+                              //     ),
+                              //   ),
+                              //   child: Checkbox(
+                              //     value: type == 1,
+                              //     onChanged: ((value) {
+                              //       type = 1;
+                              //       setState(() {});
+                              //     }),
+                              //   ),
+                              // )
+                            ],
+                          ),
                         ),
                       ),
-                      const SizedBox(
-                        height: 12,
-                      ),
+                      const SizedBox(height: 12),
                       InkWell(
                         splashColor: Colors.transparent,
                         hoverColor: Colors.transparent,
@@ -128,25 +126,27 @@ void showBloggerLegalStatusType(BuildContext context, bool? prevGender,
                           ),
                           height: 47,
                           child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  'Самозанятый',
-                                  textAlign: TextAlign.center,
-                                  style: AppTextStyles.size16Weight600
-                                      .copyWith(color: Color(0xFF3A3A3C)),
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'Самозанятый',
+                                textAlign: TextAlign.center,
+                                style: AppTextStyles.size16Weight600.copyWith(
+                                  color: Color(0xFF3A3A3C),
                                 ),
-                                Image.asset(
-                                  gender == true
-                                      ? Assets.icons.defaultCheckIcon.path
-                                      : Assets.icons.defaultUncheckIcon.path,
-                                  color: gender == true
-                                      ? AppColors.kLightBlackColor
-                                      : AppColors.kGray300,
-                                  height: 20,
-                                  width: 20,
-                                ),
-                              ]),
+                              ),
+                              Image.asset(
+                                gender == true
+                                    ? Assets.icons.defaultCheckIcon.path
+                                    : Assets.icons.defaultUncheckIcon.path,
+                                color: gender == true
+                                    ? AppColors.kLightBlackColor
+                                    : AppColors.kGray300,
+                                height: 20,
+                                width: 20,
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                       // const SizedBox(
@@ -191,13 +191,13 @@ void showBloggerLegalStatusType(BuildContext context, bool? prevGender,
                       height: 52,
                       width: 358,
                       decoration: BoxDecoration(
-                          color: AppColors.mainPurpleColor,
-                          borderRadius: BorderRadius.circular(12)),
+                        color: AppColors.mainPurpleColor,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
                       alignment: Alignment.center,
                       child: Text(
                         'Выбрать',
-                        style: AppTextStyles.size18Weight600
-                            .copyWith(color: AppColors.kWhite),
+                        style: AppTextStyles.size18Weight600.copyWith(color: AppColors.kWhite),
                       ),
                     ),
                   ),

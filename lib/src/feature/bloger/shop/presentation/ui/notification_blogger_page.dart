@@ -9,8 +9,7 @@ class NotificationBloggerPage extends StatefulWidget {
   const NotificationBloggerPage({super.key});
 
   @override
-  State<NotificationBloggerPage> createState() =>
-      _NotificationBloggerPageState();
+  State<NotificationBloggerPage> createState() => _NotificationBloggerPageState();
 }
 
 class _NotificationBloggerPageState extends State<NotificationBloggerPage> {
@@ -45,8 +44,9 @@ class _NotificationBloggerPageState extends State<NotificationBloggerPage> {
       appBar: AppBar(
         title: Text('Уведомления', style: AppTextStyles.appBarTextStyle),
         leading: InkWell(
-            onTap: () => Navigator.of(context).pop(),
-            child: const Icon(Icons.arrow_back)),
+          onTap: () => Navigator.of(context).pop(),
+          child: const Icon(Icons.arrow_back),
+        ),
       ),
       body: BlocConsumer<BloggerNotificationCubit, BloggerNotificationState>(
         builder: (context, state) {
@@ -59,84 +59,91 @@ class _NotificationBloggerPageState extends State<NotificationBloggerPage> {
             for (final n in state.notifications) {
               final date = DateTime.parse(n.created_at!);
 
-              final isToday = date.year == now.year &&
-                  date.month == now.month &&
-                  date.day == now.day;
+              final isToday =
+                  date.year == now.year && date.month == now.month && date.day == now.day;
 
-              final isYesterday = date.year == now.year &&
-                  date.month == now.month &&
-                  date.day == now.day - 1;
+              final isYesterday =
+                  date.year == now.year && date.month == now.month && date.day == now.day - 1;
 
               if (isToday) {
-                today.add(_NotificationItem(
-                  icon: getIconByType(n.type!),
-                  title: n.title!,
-                  message: n.description!,
-                  isRead: false,
-                ));
+                today.add(
+                  _NotificationItem(
+                    icon: getIconByType(n.type!),
+                    title: n.title!,
+                    message: n.description!,
+                    isRead: false,
+                  ),
+                );
               } else if (isYesterday) {
-                yesterday.add(_NotificationItem(
-                  icon: getIconByType(n.type!),
-                  title: n.title!,
-                  message: n.description!,
-                  isRead: false,
-                ));
+                yesterday.add(
+                  _NotificationItem(
+                    icon: getIconByType(n.type!),
+                    title: n.title!,
+                    message: n.description!,
+                    isRead: false,
+                  ),
+                );
               } else {
-                other.add(_NotificationItem(
-                  icon: getIconByType(n.type!),
-                  title: n.title!,
-                  message: n.description!,
-                  isRead: false,
-                ));
+                other.add(
+                  _NotificationItem(
+                    icon: getIconByType(n.type!),
+                    title: n.title!,
+                    message: n.description!,
+                    isRead: false,
+                  ),
+                );
               }
             }
             return ListView(
               padding: const EdgeInsets.all(16),
               children: [
                 if (today.isNotEmpty) ...[
-                  const Text('Сегодня',
-                      style: TextStyle(fontWeight: FontWeight.bold)),
+                  const Text('Сегодня', style: TextStyle(fontWeight: FontWeight.bold)),
                   const SizedBox(height: 8),
                   NotificationGroup(
                     notifications: today
-                        .map((n) => _NotificationItem(
-                              icon: n.icon,
-                              title: n.title,
-                              message: n.message,
-                              isRead: false,
-                            ))
+                        .map(
+                          (n) => _NotificationItem(
+                            icon: n.icon,
+                            title: n.title,
+                            message: n.message,
+                            isRead: false,
+                          ),
+                        )
                         .toList(),
                   ),
                   const SizedBox(height: 24),
                 ],
                 if (yesterday.isNotEmpty) ...[
-                  const Text('Вчера',
-                      style: TextStyle(fontWeight: FontWeight.bold)),
+                  const Text('Вчера', style: TextStyle(fontWeight: FontWeight.bold)),
                   const SizedBox(height: 8),
                   NotificationGroup(
                     notifications: yesterday
-                        .map((n) => _NotificationItem(
-                              icon: n.icon,
-                              title: n.title,
-                              message: n.message,
-                              isRead: false,
-                            ))
+                        .map(
+                          (n) => _NotificationItem(
+                            icon: n.icon,
+                            title: n.title,
+                            message: n.message,
+                            isRead: false,
+                          ),
+                        )
                         .toList(),
                   ),
                   const SizedBox(height: 24),
                 ],
                 if (other.isNotEmpty) ...[
-                  const Text('Ранее',
-                      style: TextStyle(fontWeight: FontWeight.bold)),
+                  const Text('Ранее', style: TextStyle(fontWeight: FontWeight.bold)),
                   const SizedBox(height: 8),
                   NotificationGroup(
                     notifications: other
-                        .map((n) => _NotificationItem(
-                              icon: n.icon,
-                              title: n.title,
-                              message: n.message,
-                              isRead: false,
-                            ))
+                        .map(
+                          (n) => _NotificationItem(
+                            icon: n.icon,
+                            title: n.title,
+                            message: n.message,
+                            isRead: false,
+                          ),
+                        )
                         .toList(),
                   ),
                 ],

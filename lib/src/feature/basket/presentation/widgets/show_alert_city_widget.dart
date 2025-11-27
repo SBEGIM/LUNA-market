@@ -36,9 +36,7 @@ Future<dynamic> showAlertCityWidget(BuildContext context, bool shop) async {
                     height: size.height * 0.9,
                     decoration: const BoxDecoration(
                       color: Color(0xFFF5F5F5),
-                      borderRadius: BorderRadius.vertical(
-                        top: Radius.circular(24),
-                      ),
+                      borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
                     ),
                     child: Column(
                       children: [
@@ -51,10 +49,7 @@ Future<dynamic> showAlertCityWidget(BuildContext context, bool shop) async {
                               const Expanded(
                                 child: Text(
                                   'Область/Район ОГД',
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w600,
-                                  ),
+                                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
                                 ),
                               ),
                               CupertinoButton(
@@ -77,8 +72,7 @@ Future<dynamic> showAlertCityWidget(BuildContext context, bool shop) async {
                             controller: controller,
                             placeholder: 'Поиск',
                             onChanged: (value) {
-                              BlocProvider.of<CityCubit>(context)
-                                  .searchCdekCity(value);
+                              BlocProvider.of<CityCubit>(context).searchCdekCity(value);
                             },
                           ),
                         ),
@@ -86,8 +80,7 @@ Future<dynamic> showAlertCityWidget(BuildContext context, bool shop) async {
                         // Карточка со списком
                         Expanded(
                           child: Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 16.0),
+                            padding: const EdgeInsets.symmetric(horizontal: 16.0),
                             child: Container(
                               decoration: BoxDecoration(
                                 color: Colors.white,
@@ -98,19 +91,13 @@ Future<dynamic> showAlertCityWidget(BuildContext context, bool shop) async {
                                 builder: (context, state) {
                                   if (state is LoadedState) {
                                     return ListView.separated(
-                                      padding: const EdgeInsets.symmetric(
-                                        vertical: 8,
-                                      ),
+                                      padding: const EdgeInsets.symmetric(vertical: 8),
                                       itemCount: state.city.length,
                                       separatorBuilder: (_, __) =>
-                                          const Divider(
-                                        height: 1,
-                                        color: AppColors.kGray2,
-                                      ),
+                                          const Divider(height: 1, color: AppColors.kGray2),
                                       itemBuilder: (context, index) {
                                         final item = state.city[index];
-                                        final bool isSelected =
-                                            selectedIndex == index;
+                                        final bool isSelected = selectedIndex == index;
 
                                         return GestureDetector(
                                           behavior: HitTestBehavior.opaque,
@@ -135,9 +122,7 @@ Future<dynamic> showAlertCityWidget(BuildContext context, bool shop) async {
                                                   : null,
                                             ),
                                             child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
+                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                               children: [
                                                 Text(
                                                   '${item.city}',
@@ -147,8 +132,7 @@ Future<dynamic> showAlertCityWidget(BuildContext context, bool shop) async {
                                                         ? FontWeight.w600
                                                         : FontWeight.w400,
                                                     color: isSelected
-                                                        ? AppColors
-                                                            .mainPurpleColor
+                                                        ? AppColors.mainPurpleColor
                                                         : Colors.black,
                                                   ),
                                                 ),
@@ -156,8 +140,7 @@ Future<dynamic> showAlertCityWidget(BuildContext context, bool shop) async {
                                                   const Icon(
                                                     Icons.check,
                                                     size: 18,
-                                                    color: AppColors
-                                                        .mainPurpleColor,
+                                                    color: AppColors.mainPurpleColor,
                                                   ),
                                               ],
                                             ),
@@ -170,11 +153,9 @@ Future<dynamic> showAlertCityWidget(BuildContext context, bool shop) async {
                                       child: SingleChildScrollView(
                                         padding: const EdgeInsets.all(24),
                                         child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
+                                          mainAxisAlignment: MainAxisAlignment.center,
                                           children: [
-                                            Image.asset(
-                                                'assets/icons/no_data.png'),
+                                            Image.asset('assets/icons/no_data.png'),
                                             const SizedBox(height: 16),
                                             const Text(
                                               'Нет данных',
@@ -200,8 +181,7 @@ Future<dynamic> showAlertCityWidget(BuildContext context, bool shop) async {
                                     );
                                   } else {
                                     return const Center(
-                                      child:
-                                          CircularProgressIndicator.adaptive(),
+                                      child: CircularProgressIndicator.adaptive(),
                                     );
                                   }
                                 },
@@ -215,8 +195,7 @@ Future<dynamic> showAlertCityWidget(BuildContext context, bool shop) async {
                           padding: EdgeInsets.only(
                             left: 16,
                             right: 16,
-                            bottom:
-                                16 + MediaQuery.of(context).viewPadding.bottom,
+                            bottom: 16 + MediaQuery.of(context).viewPadding.bottom,
                           ),
                           child: CupertinoButton.filled(
                             borderRadius: BorderRadius.circular(16),
@@ -227,13 +206,12 @@ Future<dynamic> showAlertCityWidget(BuildContext context, bool shop) async {
                               }
 
                               if (!shop) {
-                                final edit =
-                                    BlocProvider.of<LoginCubit>(context);
+                                final edit = BlocProvider.of<LoginCubit>(context);
                                 await edit.cityCode(cityCode);
                               } else {
                                 await BlocProvider.of<ProfileEditAdminCubit>(
-                                        context)
-                                    .cityCode(cityCode);
+                                  context,
+                                ).cityCode(cityCode);
                               }
 
                               if (cityName != null) {
@@ -244,9 +222,7 @@ Future<dynamic> showAlertCityWidget(BuildContext context, bool shop) async {
                             },
                             child: const Text(
                               'Выбрать',
-                              style: TextStyle(
-                                fontWeight: FontWeight.w600,
-                              ),
+                              style: TextStyle(fontWeight: FontWeight.w600),
                             ),
                           ),
                         ),

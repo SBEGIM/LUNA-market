@@ -6,10 +6,7 @@ import 'package:haji_market/src/core/rest_client/src/dio_rest_client/src/dio_cli
 
 /// Rest client that uses `Dio` as HTTP library.
 final class RestClientDio extends RestClientBase {
-  RestClientDio({
-    required this.baseUrl,
-    required this.dioClient,
-  }) : super(baseUrl: baseUrl);
+  RestClientDio({required this.baseUrl, required this.dioClient}) : super(baseUrl: baseUrl);
   final DioClient dioClient;
   final String baseUrl;
 
@@ -80,8 +77,7 @@ final class RestClientDio extends RestClientBase {
           returnFullData: returnFullData,
         );
 
-        if ((e.response?.data.toString().contains('<!DOCTYPE html>') ??
-                false) ||
+        if ((e.response?.data.toString().contains('<!DOCTYPE html>') ?? false) ||
             (e.response?.data.toString().contains('html>') ?? false)) {
           throw CustomBackendException(
             message: 'Backend returned HTML page. Error: ${e.message}',
@@ -100,8 +96,8 @@ final class RestClientDio extends RestClientBase {
       }
       Error.throwWithStackTrace(
         ClientException(
-          message: (e.response?.data as Map<String, dynamic>?)?['message']
-                  as String? ??
+          message:
+              (e.response?.data as Map<String, dynamic>?)?['message'] as String? ??
               e.message ??
               'Client exception',
           statusCode: e.response?.statusCode,
@@ -111,10 +107,7 @@ final class RestClientDio extends RestClientBase {
         e.stackTrace,
       );
     } on Object catch (e, stack) {
-      Error.throwWithStackTrace(
-        ClientException(message: e.toString(), cause: e),
-        stack,
-      );
+      Error.throwWithStackTrace(ClientException(message: e.toString(), cause: e), stack);
     }
   }
 
@@ -125,15 +118,14 @@ final class RestClientDio extends RestClientBase {
     Map<String, Object?>? headers,
     Map<String, Object?>? queryParams,
     bool returnFullData = false,
-  }) =>
-      send(
-        path: path,
-        body: body,
-        method: 'DELETE',
-        headers: headers,
-        queryParams: queryParams,
-        returnFullData: returnFullData,
-      );
+  }) => send(
+    path: path,
+    body: body,
+    method: 'DELETE',
+    headers: headers,
+    queryParams: queryParams,
+    returnFullData: returnFullData,
+  );
 
   @override
   Future<Map<String, Object?>> get(
@@ -141,14 +133,13 @@ final class RestClientDio extends RestClientBase {
     Map<String, Object?>? headers,
     Map<String, Object?>? queryParams,
     bool returnFullData = false,
-  }) =>
-      send(
-        path: path,
-        method: 'GET',
-        headers: headers,
-        queryParams: queryParams,
-        returnFullData: returnFullData,
-      );
+  }) => send(
+    path: path,
+    method: 'GET',
+    headers: headers,
+    queryParams: queryParams,
+    returnFullData: returnFullData,
+  );
 
   @override
   Future<Map<String, Object?>> patch(
@@ -157,15 +148,14 @@ final class RestClientDio extends RestClientBase {
     Map<String, Object?>? headers,
     Map<String, Object?>? queryParams,
     bool returnFullData = false,
-  }) =>
-      send(
-        path: path,
-        method: 'PATCH',
-        body: body,
-        headers: headers,
-        queryParams: queryParams,
-        returnFullData: returnFullData,
-      );
+  }) => send(
+    path: path,
+    method: 'PATCH',
+    body: body,
+    headers: headers,
+    queryParams: queryParams,
+    returnFullData: returnFullData,
+  );
 
   @override
   Future<Map<String, Object?>> post(
@@ -174,15 +164,14 @@ final class RestClientDio extends RestClientBase {
     Map<String, Object?>? headers,
     Map<String, Object?>? queryParams,
     bool returnFullData = false,
-  }) =>
-      send(
-        path: path,
-        method: 'POST',
-        body: body,
-        headers: headers,
-        queryParams: queryParams,
-        returnFullData: returnFullData,
-      );
+  }) => send(
+    path: path,
+    method: 'POST',
+    body: body,
+    headers: headers,
+    queryParams: queryParams,
+    returnFullData: returnFullData,
+  );
 
   @override
   Future<Map<String, Object?>> put(
@@ -191,15 +180,14 @@ final class RestClientDio extends RestClientBase {
     Map<String, Object?>? headers,
     Map<String, Object?>? queryParams,
     bool returnFullData = false,
-  }) =>
-      send(
-        path: path,
-        method: 'PUT',
-        body: body,
-        headers: headers,
-        queryParams: queryParams,
-        returnFullData: returnFullData,
-      );
+  }) => send(
+    path: path,
+    method: 'PUT',
+    body: body,
+    headers: headers,
+    queryParams: queryParams,
+    returnFullData: returnFullData,
+  );
 
   // <-- Additional methods -->
 
@@ -210,9 +198,7 @@ final class RestClientDio extends RestClientBase {
           error.response!.data is Map<String, dynamic>) {
         final responseDataMap = error.response!.data as Map<String, dynamic>;
 
-        return (((responseDataMap['data'] as Map<String, dynamic>?)?['reset']
-                    as List?) ??
-                [])
+        return (((responseDataMap['data'] as Map<String, dynamic>?)?['reset'] as List?) ?? [])
             .isNotEmpty;
       }
 

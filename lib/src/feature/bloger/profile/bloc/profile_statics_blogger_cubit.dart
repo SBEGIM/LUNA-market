@@ -8,14 +8,14 @@ import '../data/repository/profile_statics_blogger_repo.dart';
 class ProfileStaticsBloggerCubit extends Cubit<ProfileStaticsBloggerState> {
   final ProfileStaticsBloggerRepository profileStaticsBloggerRepository;
 
-  ProfileStaticsBloggerCubit({required this.profileStaticsBloggerRepository})
-      : super(InitState());
+  ProfileStaticsBloggerCubit({required this.profileStaticsBloggerRepository}) : super(InitState());
 
   Future<void> statics(int? bloggerId) async {
     try {
       emit(LoadingState());
-      final ProfileStaticsBloggerModel data =
-          await profileStaticsBloggerRepository.statics(bloggerId);
+      final ProfileStaticsBloggerModel data = await profileStaticsBloggerRepository.statics(
+        bloggerId,
+      );
 
       // if (data != null) {
       emit(LoadedState(loadedProfile: data));

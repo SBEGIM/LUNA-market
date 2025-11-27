@@ -13,55 +13,56 @@ class ProductSellerRepository {
   final ProductToApi _productToApi = ProductToApi();
 
   Future<dynamic> store(
-          String price,
-          String count,
-          String compound,
-          String catId,
-          String? subCatId,
-          String? brandId,
-          String colorId,
-          String description,
-          String name,
-          String height,
-          String width,
-          String massa,
-          String point,
-          String pointBlogger,
-          String articul,
-          String currency,
-          bool isSwitchedBs,
-          String deep,
-          List<dynamic>? image,
-          List<OptomPriceSellerDto> optom,
-          List<SizeCountSellerDto> size,
-          fulfillment,
-          List<int>? subIds,
-          String? video) =>
-      _productToApi.store(
-          price,
-          count,
-          compound,
-          catId,
-          subCatId,
-          brandId,
-          colorId,
-          description,
-          name,
-          height,
-          width,
-          massa,
-          point,
-          pointBlogger,
-          articul,
-          currency,
-          isSwitchedBs,
-          deep,
-          image,
-          optom,
-          size,
-          fulfillment,
-          subIds,
-          video);
+    String price,
+    String count,
+    String compound,
+    String catId,
+    String? subCatId,
+    String? brandId,
+    String colorId,
+    String description,
+    String name,
+    String height,
+    String width,
+    String massa,
+    String point,
+    String pointBlogger,
+    String articul,
+    String currency,
+    bool isSwitchedBs,
+    String deep,
+    List<dynamic>? image,
+    List<OptomPriceSellerDto> optom,
+    List<SizeCountSellerDto> size,
+    fulfillment,
+    List<int>? subIds,
+    String? video,
+  ) => _productToApi.store(
+    price,
+    count,
+    compound,
+    catId,
+    subCatId,
+    brandId,
+    colorId,
+    description,
+    name,
+    height,
+    width,
+    massa,
+    point,
+    pointBlogger,
+    articul,
+    currency,
+    isSwitchedBs,
+    deep,
+    image,
+    optom,
+    size,
+    fulfillment,
+    subIds,
+    video,
+  );
 
   Future<dynamic> update(
     String price,
@@ -89,46 +90,42 @@ class ProductSellerRepository {
     String point,
     String pointBlogger,
     List<int>? subIds,
-  ) =>
-      _productToApi.update(
-          price,
-          count,
-          compound,
-          catId,
-          subCatId,
-          brandId,
-          colorId,
-          description,
-          name,
-          height,
-          width,
-          massa,
-          productId,
-          articul,
-          currency,
-          isSwitchedBs,
-          deep,
-          image,
-          optom,
-          size,
-          fulfillment,
-          video,
-          point,
-          pointBlogger,
-          subIds);
+  ) => _productToApi.update(
+    price,
+    count,
+    compound,
+    catId,
+    subCatId,
+    brandId,
+    colorId,
+    description,
+    name,
+    height,
+    width,
+    massa,
+    productId,
+    articul,
+    currency,
+    isSwitchedBs,
+    deep,
+    image,
+    optom,
+    size,
+    fulfillment,
+    video,
+    point,
+    pointBlogger,
+    subIds,
+  );
 
   Future<dynamic> delete(String productId) => _productToApi.delete(productId);
 
-  Future<String?> ad(int productId, int price) =>
-      _productToApi.ad(productId, price);
+  Future<String?> ad(int productId, int price) => _productToApi.ad(productId, price);
 
   Future<List<ProductSellerModel>> products(String? name, int page) =>
       _productToApi.products(name, page);
 
-  Future<dynamic> deleteImage({
-    required int productId,
-    required String imagePath,
-  }) =>
+  Future<dynamic> deleteImage({required int productId, required String imagePath}) =>
       _productToApi.deleteImage(productId: productId, imagePath: imagePath);
 
   Future<int> getLastArticul() => _productToApi.getLastArticul();
@@ -140,30 +137,31 @@ class ProductToApi {
   final _box = GetStorage();
 
   Future<dynamic> store(
-      String price,
-      String count,
-      String compound,
-      String catId,
-      String? subCatId,
-      String? brandId,
-      String colorId,
-      String description,
-      String name,
-      String height,
-      String width,
-      String massa,
-      String point,
-      String pointBlogger,
-      String articul,
-      String currency,
-      bool isSwitchedBs,
-      String deep,
-      List<dynamic>? image,
-      List<OptomPriceSellerDto> optom,
-      List<SizeCountSellerDto> size,
-      String fulfillment,
-      List<int>? subIds,
-      String? video) async {
+    String price,
+    String count,
+    String compound,
+    String catId,
+    String? subCatId,
+    String? brandId,
+    String colorId,
+    String description,
+    String name,
+    String height,
+    String width,
+    String massa,
+    String point,
+    String pointBlogger,
+    String articul,
+    String currency,
+    bool isSwitchedBs,
+    String deep,
+    List<dynamic>? image,
+    List<OptomPriceSellerDto> optom,
+    List<SizeCountSellerDto> size,
+    String fulfillment,
+    List<int>? subIds,
+    String? video,
+  ) async {
     try {
       final sellerId = _box.read('seller_id');
       final token = _box.read('seller_token');
@@ -191,7 +189,7 @@ class ProductToApi {
         'articul': articul,
         'deep': deep,
         'currency': currency,
-        'fulfillment': fulfillment
+        'fulfillment': fulfillment,
       };
 
       Map<String, dynamic> queryParams = {};
@@ -211,8 +209,7 @@ class ProductToApi {
       }
       if (subIds?.isNotEmpty ?? false) {
         for (var i = 0; i < subIds!.length; i++) {
-          subCharacteristicIds['sub_characteristic_ids[]'] =
-              subIds[i].toString();
+          subCharacteristicIds['sub_characteristic_ids[]'] = subIds[i].toString();
         }
       }
 
@@ -221,28 +218,21 @@ class ProductToApi {
       queryParams.addAll(subCharacteristicIds);
 
       final request = http.MultipartRequest(
-          'POST',
-          Uri.parse(
-            '$baseUrl/seller/product/store',
-          ).replace(queryParameters: queryParams));
+        'POST',
+        Uri.parse('$baseUrl/seller/product/store').replace(queryParameters: queryParams),
+      );
 
-      final headers = {
-        'Authorization': 'Bearer $token',
-      };
+      final headers = {'Authorization': 'Bearer $token'};
 
       request.headers.addAll(headers);
       request.fields.addAll(bodys);
 
       if (video != null) {
-        request.files.add(
-          await http.MultipartFile.fromPath('video', video),
-        );
+        request.files.add(await http.MultipartFile.fromPath('video', video));
       }
 
       image!.forEach((element) async {
-        request.files.add(
-          await http.MultipartFile.fromPath('images[]', element!.path),
-        );
+        request.files.add(await http.MultipartFile.fromPath('images[]', element!.path));
       });
 
       final http.StreamedResponse response = await request.send();
@@ -255,31 +245,32 @@ class ProductToApi {
   }
 
   Future<dynamic> update(
-      String price,
-      String count,
-      String compound,
-      String catId,
-      String subCatId,
-      String brandId,
-      String colorId,
-      String description,
-      String name,
-      String height,
-      String width,
-      String massa,
-      String productId,
-      String articul,
-      String currency,
-      bool isSwitchedBs,
-      String deep,
-      List<dynamic>? image,
-      List<OptomPriceSellerDto> optom,
-      List<SizeCountSellerDto> size,
-      String fulfillment,
-      String? video,
-      String point,
-      String pointBlogger,
-      List<int>? subIds) async {
+    String price,
+    String count,
+    String compound,
+    String catId,
+    String subCatId,
+    String brandId,
+    String colorId,
+    String description,
+    String name,
+    String height,
+    String width,
+    String massa,
+    String productId,
+    String articul,
+    String currency,
+    bool isSwitchedBs,
+    String deep,
+    List<dynamic>? image,
+    List<OptomPriceSellerDto> optom,
+    List<SizeCountSellerDto> size,
+    String fulfillment,
+    String? video,
+    String point,
+    String pointBlogger,
+    List<int>? subIds,
+  ) async {
     final sellerId = _box.read('seller_id');
     final token = _box.read('seller_token');
     String? preOrder;
@@ -311,26 +302,19 @@ class ProductToApi {
       'point_blogger': pointBlogger,
     };
 
-    final request = http.MultipartRequest(
-      'POST',
-      Uri.parse('$baseUrl/seller/product/update'),
-    );
+    final request = http.MultipartRequest('POST', Uri.parse('$baseUrl/seller/product/update'));
     Map<String, String> tokenSeller = {"Authorization": "Bearer $token"};
 
     request.headers.addAll(tokenSeller);
 
     if (image != null) {
       image.forEach((element) async {
-        request.files.add(
-          await http.MultipartFile.fromPath('images[]', element!.path),
-        );
+        request.files.add(await http.MultipartFile.fromPath('images[]', element!.path));
       });
     }
 
     if (video != null) {
-      request.files.add(
-        await http.MultipartFile.fromPath('video', video),
-      );
+      request.files.add(await http.MultipartFile.fromPath('video', video));
     }
     request.fields.addAll(body);
     Map<String, String> blocc = {};
@@ -365,17 +349,16 @@ class ProductToApi {
 
   Future<dynamic> delete(String productId) async {
     final token = _box.read('seller_token');
-    final headers = {
-      'Authorization': 'Bearer $token',
-    };
+    final headers = {'Authorization': 'Bearer $token'};
     final response = await http.post(
-        Uri.parse('$baseUrl/seller/product/delete'),
-        headers: headers,
-        body: {
-          'shop_id': _box.read('seller_id'),
-          'token': _box.read('seller_token'),
-          'product_id': productId,
-        });
+      Uri.parse('$baseUrl/seller/product/delete'),
+      headers: headers,
+      body: {
+        'shop_id': _box.read('seller_id'),
+        'token': _box.read('seller_token'),
+        'product_id': productId,
+      },
+    );
 
     return response.statusCode;
   }
@@ -386,9 +369,9 @@ class ProductToApi {
       final String? token = _box.read('token');
 
       final response = await http.get(
-          Uri.parse(
-              '$baseUrl/seller/products?shop_id=$sellerId&name=$name&page=$page'),
-          headers: {"Authorization": "Bearer $token"});
+        Uri.parse('$baseUrl/seller/products?shop_id=$sellerId&name=$name&page=$page'),
+        headers: {"Authorization": "Bearer $token"},
+      );
 
       final data = jsonDecode(response.body);
 
@@ -408,9 +391,9 @@ class ProductToApi {
       int view = 300;
 
       final response = await http.get(
-          Uri.parse(
-              '$baseUrl/seller/ad/payment/?product_id=$productId&price=$price&view=$view'),
-          headers: {"Authorization": "Bearer $token"});
+        Uri.parse('$baseUrl/seller/ad/payment/?product_id=$productId&price=$price&view=$view'),
+        headers: {"Authorization": "Bearer $token"},
+      );
 
       final data = jsonDecode(response.body);
 
@@ -421,16 +404,12 @@ class ProductToApi {
     }
   }
 
-  Future<dynamic> deleteImage({
-    required int productId,
-    required String imagePath,
-  }) async {
+  Future<dynamic> deleteImage({required int productId, required String imagePath}) async {
     try {
-      final response = await http
-          .post(Uri.parse('$baseUrl/seller/product/delete/image'), body: {
-        'product_id': productId.toString(),
-        'path': imagePath,
-      });
+      final response = await http.post(
+        Uri.parse('$baseUrl/seller/product/delete/image'),
+        body: {'product_id': productId.toString(), 'path': imagePath},
+      );
 
       return response.statusCode;
     } catch (e) {
@@ -445,8 +424,10 @@ class ProductToApi {
       final String? token = _box.read('token');
       // int view = 300;
 
-      final response = await http.get(Uri.parse('$baseUrl/seller/last/articul'),
-          headers: {"Authorization": "Bearer $token"});
+      final response = await http.get(
+        Uri.parse('$baseUrl/seller/last/articul'),
+        headers: {"Authorization": "Bearer $token"},
+      );
 
       final data = jsonDecode(response.body);
 
@@ -463,8 +444,10 @@ class ProductToApi {
       final String? token = _box.read('token');
       // int view = 300;
 
-      final response = await http.get(Uri.parse('$baseUrl/list/ads'),
-          headers: {"Authorization": "Bearer $token"});
+      final response = await http.get(
+        Uri.parse('$baseUrl/list/ads'),
+        headers: {"Authorization": "Bearer $token"},
+      );
 
       final data = jsonDecode(response.body);
 

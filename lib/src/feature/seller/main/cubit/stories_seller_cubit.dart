@@ -7,8 +7,7 @@ import 'package:haji_market/src/feature/seller/main/data/repository/stories_repo
 class StoriesSellerCubit extends Cubit<StoriesSellerState> {
   final StoriesSellerRepository storesSellerRepository;
 
-  StoriesSellerCubit({required this.storesSellerRepository})
-      : super(InitState());
+  StoriesSellerCubit({required this.storesSellerRepository}) : super(InitState());
 
   Future<void> news() async {
     try {

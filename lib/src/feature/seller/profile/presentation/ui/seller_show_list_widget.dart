@@ -9,8 +9,7 @@ import 'package:haji_market/src/feature/drawer/presentation/widgets/show_alert_a
 import 'package:haji_market/src/feature/tape/presentation/widgets/show_alert_report_widget.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
-void showSellerSettingOptions(
-    BuildContext context, String title, Function callback) {
+void showSellerSettingOptions(BuildContext context, String title, Function callback) {
   bool? switchValue;
   String lang = GetStorage().read('language') ?? 'Русскийй';
 
@@ -36,15 +35,11 @@ void showSellerSettingOptions(
               children: [
                 // Заголовок и крестик
                 Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        title,
-                        style: AppTextStyles.size18Weight600,
-                      ),
+                      Text(title, style: AppTextStyles.size18Weight600),
                       InkWell(
                         onTap: () => Navigator.of(context).pop(),
                         child: Image.asset(
@@ -58,105 +53,104 @@ void showSellerSettingOptions(
                 ),
 
                 Container(
-                    margin: EdgeInsets.symmetric(horizontal: 16),
-                    decoration: BoxDecoration(
-                        color: AppColors.kWhite,
-                        borderRadius: BorderRadius.circular(16)),
-                    child: Column(
-                      children: [
-                        buildSettingItem(
-                          onTap: () {},
-                          switchWidget: true,
-                          switchValue: switchValue,
-                          onSwitchChanged: (value) {
-                            switchValue = value;
+                  margin: EdgeInsets.symmetric(horizontal: 16),
+                  decoration: BoxDecoration(
+                    color: AppColors.kWhite,
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: Column(
+                    children: [
+                      buildSettingItem(
+                        onTap: () {},
+                        switchWidget: true,
+                        switchValue: switchValue,
+                        onSwitchChanged: (value) {
+                          switchValue = value;
+                          setState(() {});
+                        },
+                        title: 'Уведомления',
+                      ),
+                      buildSettingItem(
+                        onTap: () {
+                          final List<String> options = ['Русский', 'Казахский', 'Английский'];
+                          showModuleProfile(context, 'Язык', options, (value) {
+                            GetStorage().write('language', value);
+
+                            lang = value;
+
                             setState(() {});
-                          },
-                          title: 'Уведомления',
-                        ),
-                        buildSettingItem(
-                          onTap: () {
-                            final List<String> options = [
-                              'Русский',
-                              'Казахский',
-                              'Английский',
-                            ];
-                            showModuleProfile(context, 'Язык', options,
-                                (value) {
-                              GetStorage().write('language', value);
-
-                              lang = value;
-
-                              setState(() {});
-                            });
-                          },
-                          title: 'Язык',
-                          text: lang,
-                        ),
-                      ],
-                    )),
+                          });
+                        },
+                        title: 'Язык',
+                        text: lang,
+                      ),
+                    ],
+                  ),
+                ),
                 Container(
-                    margin: EdgeInsets.only(top: 12, left: 16, right: 16),
-                    decoration: BoxDecoration(
-                        color: AppColors.kWhite,
-                        borderRadius: BorderRadius.circular(16)),
-                    child: Column(
-                      children: [
-                        buildSettingItem(
-                          onTap: () async {
-                            final ok = await showAccountAlert(context,
-                                title: 'Выход из аккаунта',
-                                message:
-                                    'Вы уверены, что хотите выйти из аккаунта?',
-                                mode: AccountAlertMode.confirm,
-                                cancelText: 'Отмена',
-                                primaryText: 'Да',
-                                primaryColor: Colors.red);
+                  margin: EdgeInsets.only(top: 12, left: 16, right: 16),
+                  decoration: BoxDecoration(
+                    color: AppColors.kWhite,
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: Column(
+                    children: [
+                      buildSettingItem(
+                        onTap: () async {
+                          final ok = await showAccountAlert(
+                            context,
+                            title: 'Выход из аккаунта',
+                            message: 'Вы уверены, что хотите выйти из аккаунта?',
+                            mode: AccountAlertMode.confirm,
+                            cancelText: 'Отмена',
+                            primaryText: 'Да',
+                            primaryColor: Colors.red,
+                          );
 
-                            if (ok == true) {
-                              Navigator.of(context).pop();
-                              GetStorage().remove('seller_token');
-                              GetStorage().remove('seller_id');
-                              GetStorage().remove('seller_name');
-                              GetStorage().remove('seller_image');
+                          if (ok == true) {
+                            Navigator.of(context).pop();
+                            GetStorage().remove('seller_token');
+                            GetStorage().remove('seller_id');
+                            GetStorage().remove('seller_name');
+                            GetStorage().remove('seller_image');
 
-                              BlocProvider.of<AppBloc>(context).add(
-                                  const AppEvent.chageState(
-                                      state:
-                                          AppState.inAppUserState(index: 1)));
-                            }
-                          },
-                          title: 'Выйти из аккаунта',
-                          iconPath: Assets.icons.exitIcon.path,
-                        ),
-                        buildSettingItem(
-                          onTap: () async {
-                            final ok = await showAccountAlert(context,
-                                title: 'Удаление аккаунта',
-                                message:
-                                    'Вы уверены, что хотите удалить аккаунт?',
-                                mode: AccountAlertMode.confirm,
-                                cancelText: 'Отмена',
-                                primaryText: 'Да',
-                                primaryColor: Colors.red);
-                            if (ok == true) {
-                              Navigator.of(context).pop();
-                              GetStorage().remove('seller_token');
-                              GetStorage().remove('seller_id');
-                              GetStorage().remove('seller_name');
-                              GetStorage().remove('seller_image');
+                            BlocProvider.of<AppBloc>(context).add(
+                              const AppEvent.chageState(state: AppState.inAppUserState(index: 1)),
+                            );
+                          }
+                        },
+                        title: 'Выйти из аккаунта',
+                        iconPath: Assets.icons.exitIcon.path,
+                      ),
+                      buildSettingItem(
+                        onTap: () async {
+                          final ok = await showAccountAlert(
+                            context,
+                            title: 'Удаление аккаунта',
+                            message: 'Вы уверены, что хотите удалить аккаунт?',
+                            mode: AccountAlertMode.confirm,
+                            cancelText: 'Отмена',
+                            primaryText: 'Да',
+                            primaryColor: Colors.red,
+                          );
+                          if (ok == true) {
+                            Navigator.of(context).pop();
+                            GetStorage().remove('seller_token');
+                            GetStorage().remove('seller_id');
+                            GetStorage().remove('seller_name');
+                            GetStorage().remove('seller_image');
 
-                              BlocProvider.of<AppBloc>(context).add(
-                                  const AppEvent.chageState(
-                                      state:
-                                          AppState.inAppUserState(index: 1)));
-                            }
-                          },
-                          widgetColor: Colors.red,
-                          title: 'Удалить аккаунт',
-                        ),
-                      ],
-                    )),
+                            BlocProvider.of<AppBloc>(context).add(
+                              const AppEvent.chageState(state: AppState.inAppUserState(index: 1)),
+                            );
+                          }
+                        },
+                        widgetColor: Colors.red,
+                        title: 'Удалить аккаунт',
+                      ),
+                    ],
+                  ),
+                ),
               ],
             ),
           );
@@ -204,38 +198,31 @@ Widget buildSettingItem({
                     ),
                   )
                 : (text == null
-                    ? (iconPath != null
-                        ? Image.asset(
-                            iconPath,
-                            height: 19,
-                            width: 19,
-                          )
-                        : Icon(
-                            Icons.arrow_forward_ios,
-                            size: 14,
-                            color: widgetColor ?? AppColors.kGray300,
-                          ))
-                    : Row(
-                        children: [
-                          Text(
-                            '$text',
-                            style: AppTextStyles.size16Weight400.copyWith(
-                                color: widgetColor ?? AppColors.kGray300),
-                          ),
-                          SizedBox(width: 6),
-                          (iconPath != null
-                              ? Image.asset(
-                                  iconPath,
-                                  height: 19,
-                                  width: 19,
-                                )
-                              : Icon(
-                                  Icons.arrow_forward_ios,
-                                  size: 14,
-                                  color: widgetColor ?? AppColors.kGray300,
-                                ))
-                        ],
-                      ))
+                      ? (iconPath != null
+                            ? Image.asset(iconPath, height: 19, width: 19)
+                            : Icon(
+                                Icons.arrow_forward_ios,
+                                size: 14,
+                                color: widgetColor ?? AppColors.kGray300,
+                              ))
+                      : Row(
+                          children: [
+                            Text(
+                              '$text',
+                              style: AppTextStyles.size16Weight400.copyWith(
+                                color: widgetColor ?? AppColors.kGray300,
+                              ),
+                            ),
+                            SizedBox(width: 6),
+                            (iconPath != null
+                                ? Image.asset(iconPath, height: 19, width: 19)
+                                : Icon(
+                                    Icons.arrow_forward_ios,
+                                    size: 14,
+                                    color: widgetColor ?? AppColors.kGray300,
+                                  )),
+                          ],
+                        )),
           ],
         ),
       ),

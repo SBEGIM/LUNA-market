@@ -24,19 +24,34 @@ class AddressCubit extends Cubit<AddressState> {
     }
   }
 
-  Future<int> store(BuildContext context, country, city, street, entrance,
-      floor, apartament, intercom, comment, phone) async {
+  Future<int> store(
+    BuildContext context,
+    country,
+    city,
+    street,
+    entrance,
+    floor,
+    apartament,
+    intercom,
+    comment,
+    phone,
+  ) async {
     try {
-      final data = await addressRepository.store(country, city, street,
-          entrance, floor, apartament, intercom, comment, phone);
+      final data = await addressRepository.store(
+        country,
+        city,
+        street,
+        entrance,
+        floor,
+        apartament,
+        intercom,
+        comment,
+        phone,
+      );
 
       print(data);
       if (data == 200) {
-        AppSnackBar.show(
-          context,
-          'Адрес успешно добавлен',
-          type: AppSnackType.success,
-        );
+        AppSnackBar.show(context, 'Адрес успешно добавлен', type: AppSnackType.success);
       } else {}
 
       return data;
@@ -46,11 +61,31 @@ class AddressCubit extends Cubit<AddressState> {
     }
   }
 
-  Future<void> update(id, country, city, street, entrance, floor, apartament,
-      intercom, comment, phone) async {
+  Future<void> update(
+    id,
+    country,
+    city,
+    street,
+    entrance,
+    floor,
+    apartament,
+    intercom,
+    comment,
+    phone,
+  ) async {
     try {
-      await addressRepository.update(id, country, city, street, entrance, floor,
-          apartament, intercom, comment, phone);
+      await addressRepository.update(
+        id,
+        country,
+        city,
+        street,
+        entrance,
+        floor,
+        apartament,
+        intercom,
+        comment,
+        phone,
+      );
     } catch (e) {
       emit(ErrorState(message: 'Ошибка сервера'));
     }
@@ -62,11 +97,7 @@ class AddressCubit extends Cubit<AddressState> {
 
       if (data == 200) {
         address();
-        AppSnackBar.show(
-          context,
-          'Адрес удален',
-          type: AppSnackType.success,
-        );
+        AppSnackBar.show(context, 'Адрес удален', type: AppSnackType.success);
       } else {}
     } catch (e) {
       emit(ErrorState(message: 'Ошибка сервера'));

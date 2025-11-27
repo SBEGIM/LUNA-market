@@ -5,8 +5,14 @@ import 'package:haji_market/src/feature/home/data/model/cat_model.dart';
 import 'package:haji_market/src/feature/home/data/model/characteristic_model.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
-void showListBrandsOptions(BuildContext context, String title, String type,
-    List<CatsModel> categories, int selectedIndex, Function callback) {
+void showListBrandsOptions(
+  BuildContext context,
+  String title,
+  String type,
+  List<CatsModel> categories,
+  int selectedIndex,
+  Function callback,
+) {
   List<CatsModel> _filteredCategories = [...categories];
 
   int selectedCategory = selectedIndex;
@@ -28,9 +34,7 @@ void showListBrandsOptions(BuildContext context, String title, String type,
           return ConstrainedBox(
             constraints: BoxConstraints(
               minHeight: 200,
-              maxHeight: (_filteredCategories.length * 75 + 90)
-                  .toDouble()
-                  .clamp(250, 600),
+              maxHeight: (_filteredCategories.length * 75 + 90).toDouble().clamp(250, 600),
             ),
             child: Column(
               mainAxisSize: MainAxisSize.max,
@@ -39,8 +43,7 @@ void showListBrandsOptions(BuildContext context, String title, String type,
               children: [
                 // Заголовок и крестик
                 Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -100,25 +103,22 @@ void showListBrandsOptions(BuildContext context, String title, String type,
                   child: Container(
                     margin: EdgeInsets.only(left: 16, right: 16),
                     decoration: BoxDecoration(
-                        color: AppColors.kWhite,
-                        borderRadius: BorderRadius.circular(12)),
+                      color: AppColors.kWhite,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
                     child: ListView.separated(
                       shrinkWrap: true,
                       padding: const EdgeInsets.symmetric(horizontal: 16),
                       itemCount: categories.length,
                       separatorBuilder: (context, index) {
-                        return Divider(
-                          height: 1,
-                          thickness: 1,
-                          color: Color(0xffEAECED),
-                        );
+                        return Divider(height: 1, thickness: 1, color: Color(0xffEAECED));
                       },
                       itemBuilder: (context, index) {
                         final category = categories[index];
                         final isSelected = category.id == selectedCategory;
-                        final isMatch = category.name!
-                            .toLowerCase()
-                            .contains(searchController.text.toLowerCase());
+                        final isMatch = category.name!.toLowerCase().contains(
+                          searchController.text.toLowerCase(),
+                        );
 
                         if (!isMatch) return const SizedBox.shrink();
 
@@ -141,12 +141,8 @@ void showListBrandsOptions(BuildContext context, String title, String type,
                                 Text(
                                   category.name!,
                                   style: AppTextStyles.size16Weight500.copyWith(
-                                    color: isSelected
-                                        ? AppColors.mainPurpleColor
-                                        : Colors.black,
-                                    fontWeight: isSelected
-                                        ? FontWeight.w600
-                                        : FontWeight.w500,
+                                    color: isSelected ? AppColors.mainPurpleColor : Colors.black,
+                                    fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
                                   ),
                                 ),
                                 if (isSelected)
@@ -156,7 +152,7 @@ void showListBrandsOptions(BuildContext context, String title, String type,
                                     height: 24,
                                     width: 24,
                                     scale: 2.1,
-                                  )
+                                  ),
                               ],
                             ),
                           ),
@@ -188,14 +184,11 @@ void showListBrandsOptions(BuildContext context, String title, String type,
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppColors.mainPurpleColor,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16),
-                          ),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                         ),
                         child: Text(
                           "Выбрать",
-                          style: AppTextStyles.size18Weight600
-                              .copyWith(color: AppColors.kWhite),
+                          style: AppTextStyles.size18Weight600.copyWith(color: AppColors.kWhite),
                         ),
                       ),
                     ),

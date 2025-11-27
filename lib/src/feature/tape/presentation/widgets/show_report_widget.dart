@@ -28,30 +28,28 @@ void showReportOptions(
           return ConstrainedBox(
             constraints: BoxConstraints(
               minHeight: 454.0,
-              maxHeight: (_filteredCategories.length * 95)
-                  .clamp(350.0, 500.0)
-                  .toDouble(),
+              maxHeight: (_filteredCategories.length * 95).clamp(350.0, 500.0).toDouble(),
             ),
             child: Column(
               mainAxisSize: MainAxisSize.max,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 17),
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 17),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(title,
-                          style: const TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 16,
-                            height: 1.1,
-                          )),
+                      Text(
+                        title,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 16,
+                          height: 1.1,
+                        ),
+                      ),
                       InkWell(
                         onTap: () => Navigator.of(ctx).pop(),
-                        child: Image.asset(Assets.icons.defaultCloseIcon.path,
-                            scale: 1.9),
+                        child: Image.asset(Assets.icons.defaultCloseIcon.path, scale: 1.9),
                       ),
                     ],
                   ),
@@ -69,11 +67,7 @@ void showReportOptions(
                       padding: const EdgeInsets.symmetric(horizontal: 16),
                       itemCount: _filteredCategories.length,
                       separatorBuilder: (_, __) {
-                        return Divider(
-                          height: 1,
-                          thickness: 1,
-                          color: Color(0xffEAECED),
-                        );
+                        return Divider(height: 1, thickness: 1, color: Color(0xffEAECED));
                       },
                       itemBuilder: (context, index) {
                         final category = _filteredCategories[index];
@@ -103,12 +97,8 @@ void showReportOptions(
                                     style: TextStyle(
                                       fontSize: 15,
                                       height: 1.2,
-                                      color: isSelected
-                                          ? AppColors.mainPurpleColor
-                                          : Colors.black,
-                                      fontWeight: isSelected
-                                          ? FontWeight.w600
-                                          : FontWeight.w400,
+                                      color: isSelected ? AppColors.mainPurpleColor : Colors.black,
+                                      fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
                                     ),
                                   ),
                                 ),
@@ -131,17 +121,15 @@ void showReportOptions(
                   top: false,
                   bottom: true,
                   child: Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
                     child: SizedBox(
                       width: double.infinity,
                       height: 52,
                       child: ElevatedButton(
-                        onPressed: (selectedIndex >= 0 &&
-                                selectedIndex < _filteredCategories.length)
+                        onPressed:
+                            (selectedIndex >= 0 && selectedIndex < _filteredCategories.length)
                             ? () async {
-                                callback
-                                    .call(_filteredCategories[selectedIndex]);
+                                callback.call(_filteredCategories[selectedIndex]);
                                 Navigator.pop(ctx);
                                 final ok = await showBrandedAlert(
                                   context,
@@ -169,9 +157,7 @@ void showReportOptions(
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppColors.mainPurpleColor,
                           disabledBackgroundColor: AppColors.mainPurpleColor,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16),
-                          ),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                           padding: EdgeInsets.zero,
                           tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                         ),

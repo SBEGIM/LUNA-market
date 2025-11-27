@@ -34,86 +34,88 @@ class _BloggerVisitCardPageState extends State<SellerVisitCardPage> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Align(
-                alignment: Alignment.topLeft,
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 16.0, bottom: 20),
-                  child: InkWell(
-                      onTap: () {
-                        Navigator.of(context).pop();
-                      },
-                      child: Icon(
-                        Icons.arrow_back,
-                        color: AppColors.kWhite,
-                      )),
-                )),
-            Stack(alignment: Alignment.center, children: [
-              Container(
-                alignment: Alignment.center,
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                margin: EdgeInsets.only(top: 30),
-                child: Container(
-                  height: 465,
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    color: Colors.black.withOpacity(0.25),
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SizedBox(height: 50),
-                      Text(
-                        '@${GetStorage().read('seller_name')}',
-                        style: AppTextStyles.size18Weight700
-                            .copyWith(color: AppColors.kWhite),
-                      ),
-                      QrImageView(
-                        data: '${GetStorage().read('seller_id')}',
-                        version: QrVersions.min,
-                        size: 242,
-                        backgroundColor: Colors.transparent,
-                        foregroundColor: Colors.white,
-                        errorStateBuilder: (cxt, err) {
-                          return Center(
-                            child: Text(
-                              'Uh oh! Something went wrong...',
-                              textAlign: TextAlign.center,
-                            ),
-                          );
-                        },
-                      ),
-                      Text(
-                        'СКАНИРУЙТЕ QR-КОД',
-                        style: AppTextStyles.defButtonTextStyle.copyWith(
+              alignment: Alignment.topLeft,
+              child: Padding(
+                padding: const EdgeInsets.only(left: 16.0, bottom: 20),
+                child: InkWell(
+                  onTap: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Icon(Icons.arrow_back, color: AppColors.kWhite),
+                ),
+              ),
+            ),
+            Stack(
+              alignment: Alignment.center,
+              children: [
+                Container(
+                  alignment: Alignment.center,
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  margin: EdgeInsets.only(top: 30),
+                  child: Container(
+                    height: 465,
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: Colors.black.withOpacity(0.25),
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SizedBox(height: 50),
+                        Text(
+                          '@${GetStorage().read('seller_name')}',
+                          style: AppTextStyles.size18Weight700.copyWith(color: AppColors.kWhite),
+                        ),
+                        QrImageView(
+                          data: '${GetStorage().read('seller_id')}',
+                          version: QrVersions.min,
+                          size: 242,
+                          backgroundColor: Colors.transparent,
+                          foregroundColor: Colors.white,
+                          errorStateBuilder: (cxt, err) {
+                            return Center(
+                              child: Text(
+                                'Uh oh! Something went wrong...',
+                                textAlign: TextAlign.center,
+                              ),
+                            );
+                          },
+                        ),
+                        Text(
+                          'СКАНИРУЙТЕ QR-КОД',
+                          style: AppTextStyles.defButtonTextStyle.copyWith(
                             color: AppColors.kWhite,
                             fontWeight: FontWeight.w600,
-                            fontSize: 22),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        'чтобы подписаться и следить за новыми обзорами товаров',
-                        style: AppTextStyles.catalogTextStyle.copyWith(
+                            fontSize: 22,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          'чтобы подписаться и следить за новыми обзорами товаров',
+                          style: AppTextStyles.catalogTextStyle.copyWith(
                             color: AppColors.kGray1.withOpacity(0.4),
                             fontSize: 16,
-                            fontWeight: FontWeight.w400),
-                        textAlign: TextAlign.center,
-                      ),
-                    ],
+                            fontWeight: FontWeight.w400,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              Positioned(
-                top: 0,
-                child: CircleAvatar(
-                  radius: 50,
-                  backgroundImage: NetworkImage(
-                    'https://lunamarket.ru/storage/${GetStorage().read('seller_image')}',
+                Positioned(
+                  top: 0,
+                  child: CircleAvatar(
+                    radius: 50,
+                    backgroundImage: NetworkImage(
+                      'https://lunamarket.ru/storage/${GetStorage().read('seller_image')}',
+                    ),
                   ),
                 ),
-              ),
-            ]),
+              ],
+            ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: Row(
@@ -121,12 +123,15 @@ class _BloggerVisitCardPageState extends State<SellerVisitCardPage> {
                 children: [
                   InkWell(
                     onTap: () {
-                      Clipboard.setData(ClipboardData(
+                      Clipboard.setData(
+                        ClipboardData(
                           text:
-                              'https://lunamarket.ru?blogger_id=${GetStorage().read('seller_id')}'));
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Текст скопирован')),
+                              'https://lunamarket.ru?blogger_id=${GetStorage().read('seller_id')}',
+                        ),
                       );
+                      ScaffoldMessenger.of(
+                        context,
+                      ).showSnackBar(SnackBar(content: Text('Текст скопирован')));
                     },
                     child: Container(
                       height: 68,
@@ -145,9 +150,8 @@ class _BloggerVisitCardPageState extends State<SellerVisitCardPage> {
                           ),
                           Text(
                             'Скопировать',
-                            style: AppTextStyles.size18Weight400
-                                .copyWith(color: AppColors.kWhite),
-                          )
+                            style: AppTextStyles.size18Weight400.copyWith(color: AppColors.kWhite),
+                          ),
                         ],
                       ),
                     ),
@@ -155,7 +159,8 @@ class _BloggerVisitCardPageState extends State<SellerVisitCardPage> {
                   InkWell(
                     onTap: () async {
                       await Share.share(
-                          'https://lunamarket.ru?blogger_id=${GetStorage().read('seller_id')}');
+                        'https://lunamarket.ru?blogger_id=${GetStorage().read('seller_id')}',
+                      );
                     },
                     child: Container(
                       height: 68,
@@ -174,21 +179,17 @@ class _BloggerVisitCardPageState extends State<SellerVisitCardPage> {
                           ),
                           Text(
                             'Поделиться',
-                            style: AppTextStyles.size18Weight400
-                                .copyWith(color: AppColors.kWhite),
-                          )
+                            style: AppTextStyles.size18Weight400.copyWith(color: AppColors.kWhite),
+                          ),
                         ],
                       ),
                     ),
-                  )
+                  ),
                 ],
               ),
             ),
             SizedBox(height: 32),
-            Image.asset(
-              Assets.images.lunaMarketBottomImage.path,
-              height: 50,
-            )
+            Image.asset(Assets.images.lunaMarketBottomImage.path, height: 50),
           ],
         ),
       ),

@@ -10,25 +10,18 @@ import 'package:haji_market/src/core/utils/extensions/context_extension.dart';
 // ignore: prefer-overriding-parent-equality
 sealed class WindowSize extends Size {
   /// {@macro window_size}
-  WindowSize({
-    required this.minWidth,
-    required this.maxWidth,
-    required Size size,
-  }) : super.copy(size);
+  WindowSize({required this.minWidth, required this.maxWidth, required Size size})
+    : super.copy(size);
 
   /// Creates a [WindowSize] from the given [Size].
   factory WindowSize.fromSize(Size size) {
     assert(size.width >= 0, 'Width must be greater than or equal to 0');
 
     return switch (size.width) {
-      >= WindowSizeCompact._minWidth && < WindowSizeMedium._minWidth =>
-        WindowSizeCompact(size),
-      >= WindowSizeMedium._minWidth && < WindowSizeExpanded._minWidth =>
-        WindowSizeMedium(size),
-      >= WindowSizeExpanded._minWidth && < WindowSizeLarge._minWidth =>
-        WindowSizeExpanded(size),
-      >= WindowSizeLarge._minWidth && < WindowSizeExtraLarge._minWidth =>
-        WindowSizeLarge(size),
+      >= WindowSizeCompact._minWidth && < WindowSizeMedium._minWidth => WindowSizeCompact(size),
+      >= WindowSizeMedium._minWidth && < WindowSizeExpanded._minWidth => WindowSizeMedium(size),
+      >= WindowSizeExpanded._minWidth && < WindowSizeLarge._minWidth => WindowSizeExpanded(size),
+      >= WindowSizeLarge._minWidth && < WindowSizeExtraLarge._minWidth => WindowSizeLarge(size),
       >= WindowSizeExtraLarge._minWidth => WindowSizeExtraLarge(size),
       _ => throw AssertionError('Invalid window size: $size'),
     };
@@ -45,47 +38,46 @@ sealed class WindowSize extends Size {
 
   /// Returns true if the window size is compact or larger.
   bool get isCompactOrLarger => maybeMap(
-        orElse: () => false,
-        compact: (_) => true,
-        medium: (_) => true,
-        expanded: (_) => true,
-        large: (_) => true,
-        extraLarge: (_) => true,
-      );
+    orElse: () => false,
+    compact: (_) => true,
+    medium: (_) => true,
+    expanded: (_) => true,
+    large: (_) => true,
+    extraLarge: (_) => true,
+  );
 
   /// Returns true if the window size is medium.
   bool get isMedium => maybeMap(orElse: () => false, medium: (_) => true);
 
   /// Returns true if the window size is medium or larger.
   bool get isMediumOrLarger => maybeMap(
-        orElse: () => false,
-        medium: (_) => true,
-        expanded: (_) => true,
-        large: (_) => true,
-        extraLarge: (_) => true,
-      );
+    orElse: () => false,
+    medium: (_) => true,
+    expanded: (_) => true,
+    large: (_) => true,
+    extraLarge: (_) => true,
+  );
 
   /// Returns true if the window size is expanded.
   bool get isExpanded => maybeMap(orElse: () => false, expanded: (_) => true);
 
   /// Returns true if the window size is expanded or larger.
   bool get isExpandedOrLarger => maybeMap(
-        orElse: () => false,
-        expanded: (_) => true,
-        large: (_) => true,
-        extraLarge: (_) => true,
-      );
+    orElse: () => false,
+    expanded: (_) => true,
+    large: (_) => true,
+    extraLarge: (_) => true,
+  );
 
   /// Returns true if the window size is large.
   bool get isLarge => maybeMap(orElse: () => false, large: (_) => true);
 
   /// Returns true if the window size is large or larger.
-  bool get isLargeOrLarger => maybeMap(
-      orElse: () => false, large: (_) => true, extraLarge: (_) => true);
+  bool get isLargeOrLarger =>
+      maybeMap(orElse: () => false, large: (_) => true, extraLarge: (_) => true);
 
   /// Returns true if the window size is extra large.
-  bool get isExtraLarge =>
-      maybeMap(orElse: () => false, extraLarge: (_) => true);
+  bool get isExtraLarge => maybeMap(orElse: () => false, extraLarge: (_) => true);
 
   /// Maps the [WindowSize] to a value of type [T].
   T map<T>({
@@ -94,14 +86,13 @@ sealed class WindowSize extends Size {
     required T Function(WindowSizeExpanded) expanded,
     required T Function(WindowSizeLarge) large,
     required T Function(WindowSizeExtraLarge) extraLarge,
-  }) =>
-      switch (this) {
-        final WindowSizeCompact size => compact(size),
-        final WindowSizeMedium size => medium(size),
-        final WindowSizeExpanded size => expanded(size),
-        final WindowSizeLarge size => large(size),
-        final WindowSizeExtraLarge size => extraLarge(size),
-      };
+  }) => switch (this) {
+    final WindowSizeCompact size => compact(size),
+    final WindowSizeMedium size => medium(size),
+    final WindowSizeExpanded size => expanded(size),
+    final WindowSizeLarge size => large(size),
+    final WindowSizeExtraLarge size => extraLarge(size),
+  };
 
   /// Maps the [WindowSize] to a value of type [T] or returns [orElse] if the [WindowSize] is not matched.
   T maybeMap<T>({
@@ -111,21 +102,19 @@ sealed class WindowSize extends Size {
     T Function(WindowSizeExpanded)? expanded,
     T Function(WindowSizeLarge)? large,
     T Function(WindowSizeExtraLarge)? extraLarge,
-  }) =>
-      switch (this) {
-        final WindowSizeCompact size => compact?.call(size) ?? orElse(),
-        final WindowSizeMedium size => medium?.call(size) ?? orElse(),
-        final WindowSizeExpanded size => expanded?.call(size) ?? orElse(),
-        final WindowSizeLarge size => large?.call(size) ?? orElse(),
-        final WindowSizeExtraLarge size => extraLarge?.call(size) ?? orElse(),
-      };
+  }) => switch (this) {
+    final WindowSizeCompact size => compact?.call(size) ?? orElse(),
+    final WindowSizeMedium size => medium?.call(size) ?? orElse(),
+    final WindowSizeExpanded size => expanded?.call(size) ?? orElse(),
+    final WindowSizeLarge size => large?.call(size) ?? orElse(),
+    final WindowSizeExtraLarge size => extraLarge?.call(size) ?? orElse(),
+  };
 }
 
 /// Compact breakpoint for responsive design.
 final class WindowSizeCompact extends WindowSize {
   /// Creates a [WindowSizeCompact] breakpoint.
-  WindowSizeCompact(Size size)
-      : super(minWidth: _minWidth, maxWidth: _maxWidth, size: size);
+  WindowSizeCompact(Size size) : super(minWidth: _minWidth, maxWidth: _maxWidth, size: size);
 
   /// The minimum width of the window for the compact breakpoint.
   static const _minWidth = 0.0;
@@ -151,8 +140,7 @@ final class WindowSizeCompact extends WindowSize {
 /// Medium breakpoint for responsive design.
 final class WindowSizeMedium extends WindowSize {
   /// Creates a [WindowSizeMedium] breakpoint.
-  WindowSizeMedium(Size size)
-      : super(minWidth: _minWidth, maxWidth: _maxWidth, size: size);
+  WindowSizeMedium(Size size) : super(minWidth: _minWidth, maxWidth: _maxWidth, size: size);
 
   /// The minimum width of the window for the medium breakpoint.
   static const _minWidth = 600.0;
@@ -178,8 +166,7 @@ final class WindowSizeMedium extends WindowSize {
 /// Expanded breakpoint for responsive design.
 final class WindowSizeExpanded extends WindowSize {
   /// Creates a [WindowSizeExpanded] breakpoint.
-  WindowSizeExpanded(Size size)
-      : super(minWidth: _minWidth, maxWidth: _maxWidth, size: size);
+  WindowSizeExpanded(Size size) : super(minWidth: _minWidth, maxWidth: _maxWidth, size: size);
 
   /// The minimum width of the window for the expanded breakpoint.
   static const _minWidth = 840.0;
@@ -205,8 +192,7 @@ final class WindowSizeExpanded extends WindowSize {
 /// Large breakpoint for responsive design.
 final class WindowSizeLarge extends WindowSize {
   /// Creates a [WindowSizeLarge] breakpoint.
-  WindowSizeLarge(Size size)
-      : super(minWidth: _minWidth, maxWidth: _maxWidth, size: size);
+  WindowSizeLarge(Size size) : super(minWidth: _minWidth, maxWidth: _maxWidth, size: size);
 
   /// The minimum width of the window for the large breakpoint.
   static const _minWidth = 1200.0;
@@ -232,8 +218,7 @@ final class WindowSizeLarge extends WindowSize {
 /// Extra large breakpoint for responsive design.
 final class WindowSizeExtraLarge extends WindowSize {
   /// Creates a [WindowSizeExtraLarge] breakpoint.
-  WindowSizeExtraLarge(Size size)
-      : super(minWidth: _minWidth, maxWidth: _maxWidth, size: size);
+  WindowSizeExtraLarge(Size size) : super(minWidth: _minWidth, maxWidth: _maxWidth, size: size);
 
   /// The minimum width of the window for the extra large breakpoint.
   static const _minWidth = 1600.0;
@@ -272,8 +257,7 @@ class WindowSizeScope extends StatefulWidget {
   State<WindowSizeScope> createState() => _WindowSizeScopeState();
 }
 
-class _WindowSizeScopeState extends State<WindowSizeScope>
-    with WidgetsBindingObserver {
+class _WindowSizeScopeState extends State<WindowSizeScope> with WidgetsBindingObserver {
   late WindowSize _windowSize;
 
   WindowSize _getWindowSize() {
@@ -306,22 +290,16 @@ class _WindowSizeScopeState extends State<WindowSizeScope>
   }
 
   @override
-  Widget build(BuildContext context) => _InheritedWindowSize(
-        windowSize: _windowSize,
-        child: widget.child,
-      );
+  Widget build(BuildContext context) =>
+      _InheritedWindowSize(windowSize: _windowSize, child: widget.child);
 }
 
 class _InheritedWindowSize extends InheritedWidget {
-  const _InheritedWindowSize({
-    required this.windowSize,
-    required super.child,
-  });
+  const _InheritedWindowSize({required this.windowSize, required super.child});
 
   /// The [WindowSize] provided by this scope.
   final WindowSize windowSize;
 
   @override
-  bool updateShouldNotify(_InheritedWindowSize oldWidget) =>
-      windowSize != oldWidget.windowSize;
+  bool updateShouldNotify(_InheritedWindowSize oldWidget) => windowSize != oldWidget.windowSize;
 }

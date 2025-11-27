@@ -3,15 +3,11 @@ import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/feature/seller/main/data/model/notification_seller_dto.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
-void showNotificationSellerOptions(
-    BuildContext context, NotificationUiModel notification) {
+void showNotificationSellerOptions(BuildContext context, NotificationUiModel notification) {
   showMaterialModalBottomSheet(
     context: context,
     shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.only(
-        topLeft: Radius.circular(20),
-        topRight: Radius.circular(20),
-      ),
+      borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)),
     ),
     builder: (context) => NotificationShowModal(notification: notification),
   );
@@ -46,16 +42,13 @@ class _NotificationShowModalState extends State<NotificationShowModal> {
                     ' ${widget.notification.title}',
                     style: AppTextStyles.defaultButtonTextStyle,
                   ),
-                  InkWell(
-                      onTap: () => Navigator.pop(context),
-                      child: Icon(Icons.close))
+                  InkWell(onTap: () => Navigator.pop(context), child: Icon(Icons.close)),
                 ],
               ),
             ),
             Padding(
               padding: const EdgeInsets.all(12.0),
-              child: Text('${widget.notification.message}',
-                  style: AppTextStyles.catalogTextStyle),
+              child: Text('${widget.notification.message}', style: AppTextStyles.catalogTextStyle),
             ),
             SizedBox(height: 32),
           ],

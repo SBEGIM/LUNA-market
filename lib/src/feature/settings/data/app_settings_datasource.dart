@@ -32,15 +32,13 @@ final class AppSettingsDatasourceImpl implements AppSettingsDatasource {
   Future<AppSettings> getAppSettings() => _appSettings.read();
 
   @override
-  Future<void> setAppSettings(AppSettings appSettings) =>
-      _appSettings.set(appSettings);
+  Future<void> setAppSettings(AppSettings appSettings) => _appSettings.set(appSettings);
 }
 
 /// Persisted entry for [AppSettings]
 class AppSettingsPersistedEntry extends SharedPreferencesEntry<AppSettings> {
   /// Create [AppSettingsPersistedEntry]
-  AppSettingsPersistedEntry(
-      {required super.sharedPreferences, required super.key});
+  AppSettingsPersistedEntry({required super.sharedPreferences, required super.key});
 
   late final _themeMode = StringPreferencesEntry(
     sharedPreferences: sharedPreferences,
@@ -87,10 +85,7 @@ class AppSettingsPersistedEntry extends SharedPreferencesEntry<AppSettings> {
     Locale? appLocale;
 
     if (languageCode != null) {
-      appLocale = Locale(
-        languageCode,
-        countryCode,
-      );
+      appLocale = Locale(languageCode, countryCode);
     }
 
     if (appLocale == null) {
@@ -99,11 +94,7 @@ class AppSettingsPersistedEntry extends SharedPreferencesEntry<AppSettings> {
       appLocale = const Locale('kk');
     }
 
-    return AppSettings(
-      appTheme: appTheme,
-      locale: appLocale,
-      textScale: textScale,
-    );
+    return AppSettings(appTheme: appTheme, locale: appLocale, textScale: textScale);
   }
 
   @override
@@ -113,7 +104,7 @@ class AppSettingsPersistedEntry extends SharedPreferencesEntry<AppSettings> {
       _themeSeedColor.remove(),
       _localeLanguageCode.remove(),
       _localeCountryCode.remove(),
-      _textScale.remove()
+      _textScale.remove(),
     ).wait;
   }
 

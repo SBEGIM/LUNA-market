@@ -10,8 +10,7 @@ import '../data/DTO/register_seller_dto.dart';
 class RegisterSellerCubit extends Cubit<RegisterSellerState> {
   final RegisterSellerRepository registerAdminRepository;
 
-  RegisterSellerCubit({required this.registerAdminRepository})
-      : super(InitState());
+  RegisterSellerCubit({required this.registerAdminRepository}) : super(InitState());
 
   Future<void> register(RegisterSellerDTO register) async {
     try {
@@ -24,13 +23,11 @@ class RegisterSellerCubit extends Cubit<RegisterSellerState> {
       }
       if (data == 400) {
         emit(InitState());
-        Get.snackbar('Ошибка запроса!', 'Телефон или ИИН занят',
-            backgroundColor: Colors.redAccent);
+        Get.snackbar('Ошибка запроса!', 'Телефон или ИИН занят', backgroundColor: Colors.redAccent);
       }
       if (data == 500) {
         emit(InitState());
-        Get.snackbar('500', 'Ошибка сервера',
-            backgroundColor: Colors.redAccent);
+        Get.snackbar('500', 'Ошибка сервера', backgroundColor: Colors.redAccent);
       }
     } catch (e) {
       log(e.toString());

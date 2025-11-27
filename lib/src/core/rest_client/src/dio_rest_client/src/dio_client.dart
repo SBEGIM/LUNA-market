@@ -19,17 +19,16 @@ class DioClient {
     required AppSettingsDatasource appSettingsDS,
     Dio? initialDio,
     bool useInterceptorWrapper = true,
-  }) =>
-      DioClient._internal(
-        baseUrl: baseUrl,
-        initialDio: initialDio,
-        interceptor: interceptor,
-        authDao: authDao,
-        packageInfo: packageInfo,
-        // settings: settings,
-        appSettingsDS: appSettingsDS,
-        useInterceptorWrapper: useInterceptorWrapper,
-      );
+  }) => DioClient._internal(
+    baseUrl: baseUrl,
+    initialDio: initialDio,
+    interceptor: interceptor,
+    authDao: authDao,
+    packageInfo: packageInfo,
+    // settings: settings,
+    appSettingsDS: appSettingsDS,
+    useInterceptorWrapper: useInterceptorWrapper,
+  );
 
   DioClient._internal({
     required String baseUrl,
@@ -71,14 +70,12 @@ class DioClient {
 
             options.headers['Accept'] = 'application/json';
             options.headers['version'] = packageInfo.version;
-            options.headers['Accept-Language'] =
-                appSettings.locale.languageCode;
+            options.headers['Accept-Language'] = appSettings.locale.languageCode;
             options.headers['X-Request-Id'] = uuid.v1();
 
             final userStr = authDao.user.value;
             if (userStr != null) {
-              final user =
-                  UserDTO.fromJson(jsonDecode(userStr) as Map<String, dynamic>);
+              final user = UserDTO.fromJson(jsonDecode(userStr) as Map<String, dynamic>);
               if (user.accessToken != null) {
                 options.headers['Authorization'] = 'Bearer ${user.accessToken}';
               }

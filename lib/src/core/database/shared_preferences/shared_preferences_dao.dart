@@ -11,16 +11,13 @@ abstract class BaseSharedPreferencesDao implements ISharedPreferencesDao {
   final SharedPreferencesWithCache _sharedPreferences;
   final String _name;
 
-  BaseSharedPreferencesDao(
-    SharedPreferencesWithCache sharedPreferences, {
-    required String name,
-  })  : _sharedPreferences = sharedPreferences,
-        _name = name;
+  BaseSharedPreferencesDao(SharedPreferencesWithCache sharedPreferences, {required String name})
+    : _sharedPreferences = sharedPreferences,
+      _name = name;
 }
 
 mixin _LoggerMixin on BaseSharedPreferencesDao {
-  late final String _logOrigin =
-      kDebugMode ? '($_name)' : 'SharedPreferencesDao($_name)';
+  late final String _logOrigin = kDebugMode ? '($_name)' : 'SharedPreferencesDao($_name)';
   // kDebugMode ? '$runtimeType($_name)' : 'SharedPreferencesDao($_name)';
 
   void _log(void Function(StringBuffer b) buildLog) {
@@ -31,10 +28,7 @@ mixin _LoggerMixin on BaseSharedPreferencesDao {
     TalkerLoggerUtil.talker.info(buffer.toString());
   }
 
-  Future<T> _performAsyncLogging<T>(
-    String description,
-    Future<T> Function() action,
-  ) async {
+  Future<T> _performAsyncLogging<T>(String description, Future<T> Function() action) async {
     _log(
       (b) => b
         ..write('Performing')
@@ -125,12 +119,10 @@ mixin _KeyImplementationMixin on BaseSharedPreferencesDao {
 
 mixin _ActionsImplementationMixin on _LoggerMixin {
   @override
-  Future<void> clear() =>
-      _performAsyncLogging('clear', _sharedPreferences.clear);
+  Future<void> clear() => _performAsyncLogging('clear', _sharedPreferences.clear);
 
   @override
-  Future<void> reloadCache() =>
-      _performAsyncLogging('reload', _sharedPreferences.reloadCache);
+  Future<void> reloadCache() => _performAsyncLogging('reload', _sharedPreferences.reloadCache);
 
   @override
   bool containsKey(String key) {
@@ -165,27 +157,22 @@ mixin _GettersImplementationMixin on _LoggerMixin {
   bool? getBool(String key) => _getLogging(key, _sharedPreferences.getBool);
 
   @override
-  double? getDouble(String key) =>
-      _getLogging(key, _sharedPreferences.getDouble);
+  double? getDouble(String key) => _getLogging(key, _sharedPreferences.getDouble);
 
   @override
   int? getInt(String key) => _getLogging(key, _sharedPreferences.getInt);
 
   @override
-  String? getString(String key) =>
-      _getLogging(key, _sharedPreferences.getString);
+  String? getString(String key) => _getLogging(key, _sharedPreferences.getString);
 
   @override
-  List<String>? getStringList(String key) =>
-      _getLogging(key, _sharedPreferences.getStringList);
+  List<String>? getStringList(String key) => _getLogging(key, _sharedPreferences.getStringList);
 
   @override
   Set<String> get keys => _getKeys();
 
   Set<String> _getKeys() {
-    _log(
-      (b) => b.write('Getting all keys.'),
-    );
+    _log((b) => b.write('Getting all keys.'));
 
     final keys = _sharedPreferences.keys;
 
@@ -211,8 +198,7 @@ mixin _MutationsImplementationMixin on _LoggerMixin {
       _setLogging(key, value, _sharedPreferences.setDouble);
 
   @override
-  Future<void> setInt(String key, int value) =>
-      _setLogging(key, value, _sharedPreferences.setInt);
+  Future<void> setInt(String key, int value) => _setLogging(key, value, _sharedPreferences.setInt);
 
   @override
   Future<void> setString(String key, String value) =>

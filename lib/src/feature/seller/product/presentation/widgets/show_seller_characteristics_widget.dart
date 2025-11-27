@@ -25,25 +25,19 @@ void showSellerCharacteristicsOptions(
           return ConstrainedBox(
             constraints: BoxConstraints(
               minHeight: 200,
-              maxHeight: (_filteredCategories.length * 85 + 100)
-                  .toDouble()
-                  .clamp(250, 500),
+              maxHeight: (_filteredCategories.length * 85 + 100).toDouble().clamp(250, 500),
             ),
             child: Column(
               children: [
                 // Заголовок
                 Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
                         title,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 16,
-                        ),
+                        style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
                       ),
                       InkWell(
                         onTap: () => Navigator.of(context).pop(),
@@ -70,27 +64,23 @@ void showSellerCharacteristicsOptions(
                       itemBuilder: (context, index) {
                         final category = _filteredCategories[index];
                         final isSelected =
-                            selectedCategoryIds.contains(category.id) ||
-                                category.isSelect;
+                            selectedCategoryIds.contains(category.id) || category.isSelect;
 
                         return InkWell(
                           onTap: () {
                             setState(() {
                               _filteredCategories[index] = category.copyWith(
-                                  isSelect: !category.isSelect);
+                                isSelect: !category.isSelect,
+                              );
 
-                              if (selectedCategoryIds.contains(
-                                      _filteredCategories[index].id) ||
+                              if (selectedCategoryIds.contains(_filteredCategories[index].id) ||
                                   _filteredCategories[index].isSelect) {
-                                selectedCategoryIds
-                                    .remove(_filteredCategories[index].id);
+                                selectedCategoryIds.remove(_filteredCategories[index].id);
                               } else {
-                                selectedCategoryIds
-                                    .add(_filteredCategories[index].id!);
+                                selectedCategoryIds.add(_filteredCategories[index].id!);
                               }
 
-                              if (isSelected ||
-                                  _filteredCategories[index].isSelect) {
+                              if (isSelected || _filteredCategories[index].isSelect) {
                                 selectedCategoryIds.remove(category.id);
                               } else {
                                 selectedCategoryIds.add(category.id!);
@@ -98,8 +88,7 @@ void showSellerCharacteristicsOptions(
                             });
                           },
                           child: Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 12, vertical: 12),
+                            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -107,18 +96,13 @@ void showSellerCharacteristicsOptions(
                                   child: Text(
                                     category.name!,
                                     style: TextStyle(
-                                      color: isSelected
-                                          ? AppColors.mainPurpleColor
-                                          : Colors.black,
-                                      fontWeight: isSelected
-                                          ? FontWeight.w600
-                                          : FontWeight.w400,
+                                      color: isSelected ? AppColors.mainPurpleColor : Colors.black,
+                                      fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
                                     ),
                                   ),
                                 ),
                                 if (isSelected)
-                                  const Icon(Icons.check,
-                                      color: AppColors.mainPurpleColor),
+                                  const Icon(Icons.check, color: AppColors.mainPurpleColor),
                               ],
                             ),
                           ),
@@ -132,8 +116,7 @@ void showSellerCharacteristicsOptions(
 
                 // Кнопка "Выбрать"
                 Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
                   child: SizedBox(
                     width: double.infinity,
                     height: 48,
@@ -145,8 +128,7 @@ void showSellerCharacteristicsOptions(
 
                         for (var e in _filteredCategories) {
                           if (e.isSelect) {
-                            selectedItems
-                                .add(CatsModel(id: e.id, name: e.name));
+                            selectedItems.add(CatsModel(id: e.id, name: e.name));
                           }
                         }
 
@@ -155,9 +137,7 @@ void showSellerCharacteristicsOptions(
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.mainPurpleColor,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                       ),
                       child: const Text(
                         "Выбрать",
@@ -226,61 +206,60 @@ class _FieldsProductRequestState extends State<FieldsProductRequest> {
               Text(
                 widget.titleText,
                 style: const TextStyle(
-                    fontWeight: FontWeight.w400,
-                    fontSize: 12,
-                    color: AppColors.kGray900),
+                  fontWeight: FontWeight.w400,
+                  fontSize: 12,
+                  color: AppColors.kGray900,
+                ),
               ),
               widget.star == true
                   ? const Text(
                       '*',
                       style: TextStyle(
-                          fontWeight: FontWeight.w400,
-                          fontSize: 12,
-                          color: Colors.red),
+                        fontWeight: FontWeight.w400,
+                        fontSize: 12,
+                        color: Colors.red,
+                      ),
                     )
-                  : Container()
+                  : Container(),
             ],
           ),
           const SizedBox(height: 4),
           Container(
             decoration: BoxDecoration(
-                color: AppColors.kGray2,
-                borderRadius: BorderRadius.circular(10)),
+              color: AppColors.kGray2,
+              borderRadius: BorderRadius.circular(10),
+            ),
             child: Padding(
               padding: const EdgeInsets.only(left: 14.0),
               child: TextField(
                 controller: widget.controller,
-                readOnly:
-                    (widget.hintColor == false || widget.hintColor == null)
-                        ? widget.readOnly
-                        : true,
+                readOnly: (widget.hintColor == false || widget.hintColor == null)
+                    ? widget.readOnly
+                    : true,
                 keyboardType: (widget.maxLines != null && widget.maxLines! > 1)
                     ? TextInputType.multiline
-                    : ((widget.textInputNumber == false ||
-                            widget.textInputNumber == null)
-                        ? TextInputType.text
-                        : const TextInputType.numberWithOptions(
-                            signed: true, decimal: true)),
+                    : ((widget.textInputNumber == false || widget.textInputNumber == null)
+                          ? TextInputType.text
+                          : const TextInputType.numberWithOptions(signed: true, decimal: true)),
                 maxLines: widget.maxLines ?? 1,
                 onChanged: widget.onChanged, // добавили
                 decoration: InputDecoration(
                   border: InputBorder.none,
                   hintText: widget.hintText,
                   hintStyle: TextStyle(
-                      color:
-                          (widget.hintColor == null || widget.hintColor != true)
-                              ? const Color.fromRGBO(194, 197, 200, 1)
-                              : Colors.black,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w400),
+                    color: (widget.hintColor == null || widget.hintColor != true)
+                        ? const Color.fromRGBO(194, 197, 200, 1)
+                        : Colors.black,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w400,
+                  ),
                   enabledBorder: const UnderlineInputBorder(
                     borderSide: BorderSide(color: Colors.white),
                   ),
                   suffixIcon: widget.arrow == true
                       ? IconButton(
                           onPressed: widget.onPressed,
-                          icon: SvgPicture.asset('assets/icons/back_menu.svg',
-                              color: Colors.grey),
+                          icon: SvgPicture.asset('assets/icons/back_menu.svg', color: Colors.grey),
                         )
                       : const SizedBox(),
                 ),

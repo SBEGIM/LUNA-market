@@ -53,8 +53,7 @@ class _BaseState extends State<Base> with TickerProviderStateMixin {
           height: 96,
           decoration: const BoxDecoration(
             border: Border(
-              top: BorderSide(
-                  color: Color(0x100F0F0F), width: 1), // stroke сверху
+              top: BorderSide(color: Color(0x100F0F0F), width: 1), // stroke сверху
             ),
           ),
           child: BottomNavigationBar(

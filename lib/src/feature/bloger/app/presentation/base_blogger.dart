@@ -18,8 +18,7 @@ class BaseBlogger extends StatefulWidget {
   _BaseBloggerState createState() => _BaseBloggerState();
 }
 
-class _BaseBloggerState extends State<BaseBlogger>
-    with TickerProviderStateMixin {
+class _BaseBloggerState extends State<BaseBlogger> with TickerProviderStateMixin {
   TabController? tabController;
   int? previousIndex;
   bool _appliedInitialIndex = false;
@@ -67,8 +66,7 @@ class _BaseBloggerState extends State<BaseBlogger>
           height: 94,
           decoration: const BoxDecoration(
             border: Border(
-              top: BorderSide(
-                  color: Color(0x100F0F0F), width: 1), // stroke сверху
+              top: BorderSide(color: Color(0x100F0F0F), width: 1), // stroke сверху
             ),
           ),
           child: BottomNavigationBar(
@@ -88,8 +86,7 @@ class _BaseBloggerState extends State<BaseBlogger>
             elevation: 4,
             showSelectedLabels: true,
             showUnselectedLabels: true,
-            backgroundColor:
-                tabsRouter.activeIndex == 1 ? Colors.white : Colors.white,
+            backgroundColor: tabsRouter.activeIndex == 1 ? Colors.white : Colors.white,
             type: BottomNavigationBarType.fixed,
             items: [
               BottomNavigationBarItem(
@@ -125,10 +122,7 @@ class _BaseBloggerState extends State<BaseBlogger>
                   color: AppColors.kunSelectColor,
                 ),
                 label: 'Чат',
-                activeIcon: SvgPicture.asset(
-                  'assets/icons/chat_2.svg',
-                  color: Colors.black,
-                ),
+                activeIcon: SvgPicture.asset('assets/icons/chat_2.svg', color: Colors.black),
               ),
               BottomNavigationBarItem(
                 icon: Image.asset(

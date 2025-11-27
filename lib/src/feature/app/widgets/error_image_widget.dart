@@ -10,11 +10,7 @@ const NO_IMAGE_AVAILABLE =
 class ErrorImageWidget extends StatelessWidget {
   final double? height;
   final double? width;
-  const ErrorImageWidget({
-    super.key,
-    this.height,
-    this.width,
-  });
+  const ErrorImageWidget({super.key, this.height, this.width});
 
   @override
   Widget build(BuildContext context) {
@@ -24,11 +20,7 @@ class ErrorImageWidget extends StatelessWidget {
       height: height,
       width: width ?? double.infinity,
       loadingBuilder: ImageUtil.loadingBuilder,
-      errorBuilder: (
-        BuildContext context,
-        Object exception,
-        StackTrace? stackTrace,
-      ) {
+      errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
         return SizedBox(
           height: height,
           width: width ?? double.infinity,

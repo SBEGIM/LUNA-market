@@ -44,24 +44,16 @@ class _CreditWebviewPageState extends State<CreditWebviewPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black,
-        title: Text(
-          widget.title ?? 'Рассрочка',
-          style: const TextStyle(
-            color: Colors.white,
-          ),
-        ),
+        title: Text(widget.title ?? 'Рассрочка', style: const TextStyle(color: Colors.white)),
         centerTitle: true,
-        iconTheme: const IconThemeData(
-          color: Colors.blue,
-        ),
+        iconTheme: const IconThemeData(color: Colors.blue),
         leading: IconButton(
-            color: Colors.white,
-            icon: const Icon(
-              Icons.arrow_back_ios_new,
-            ),
-            onPressed: () {
-              Navigator.pop(context);
-            }),
+          color: Colors.white,
+          icon: const Icon(Icons.arrow_back_ios_new),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
       ),
       body: WebViewWidget(controller: controller),
     );

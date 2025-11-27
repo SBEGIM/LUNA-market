@@ -82,11 +82,13 @@ class _LauncherAppState extends State<LauncherApp> {
     if (shopName.isNotEmpty && shopName != 'null') {
       appBloc.state.maybeWhen(
         inAppUserState: (i) {
-          context.router.push(DetailTapeCardRoute(
-            index: int.parse(index),
-            shopName: shopName,
-            tapeBloc: BlocProvider.of<TapeCubit>(context),
-          ));
+          context.router.push(
+            DetailTapeCardRoute(
+              index: int.parse(index),
+              shopName: shopName,
+              tapeBloc: BlocProvider.of<TapeCubit>(context),
+            ),
+          );
         },
         orElse: () {},
       );
@@ -113,11 +115,11 @@ class _LauncherAppState extends State<LauncherApp> {
       final product = ProductModel.fromJson(data['data']);
 
       BlocProvider.of<AppBloc>(context).state.maybeWhen(
-            inAppUserState: (i) {
-              context.router.push(DetailCardProductRoute(product: product));
-            },
-            orElse: () {},
-          );
+        inAppUserState: (i) {
+          context.router.push(DetailCardProductRoute(product: product));
+        },
+        orElse: () {},
+      );
     }
   }
 
@@ -126,9 +128,7 @@ class _LauncherAppState extends State<LauncherApp> {
     final data = message.data['type'];
 
     if (data == 'shop') {
-      final basket = BasketOrderSellerModel.fromJson(
-        jsonDecode(message.data['basket']),
-      );
+      final basket = BasketOrderSellerModel.fromJson(jsonDecode(message.data['basket']));
       Get.snackbar(
         notification?.title ?? '',
         notification?.body ?? '',
@@ -144,17 +144,17 @@ class _LauncherAppState extends State<LauncherApp> {
         notification?.title ?? '',
         notification?.body ?? '',
         onTap: (_) => appBloc.state.maybeWhen(
-          inAppUserState: (i) => Get.to(MessagePage(
-            userId: chat['user_id'],
-            name: chat['name'],
-            avatar: chat['avatar'],
-            chatId: chat['chat_id'],
-          )),
-          orElse: () => Get.to(MessageSeller(
-            userId: chat['user_id'],
-            userName: chat['name'],
-            chatId: chat['chat_id'],
-          )),
+          inAppUserState: (i) => Get.to(
+            MessagePage(
+              userId: chat['user_id'],
+              name: chat['name'],
+              avatar: chat['avatar'],
+              chatId: chat['chat_id'],
+            ),
+          ),
+          orElse: () => Get.to(
+            MessageSeller(userId: chat['user_id'], userName: chat['name'], chatId: chat['chat_id']),
+          ),
         ),
         backgroundColor: Colors.blueAccent,
         duration: const Duration(seconds: 10),
@@ -172,8 +172,7 @@ class _LauncherAppState extends State<LauncherApp> {
       listener: (context, state) {},
       builder: (context, state) {
         return state.maybeWhen(
-          notAuthorizedState: (button) =>
-              ViewAuthRegisterPage(backButton: button),
+          notAuthorizedState: (button) => ViewAuthRegisterPage(backButton: button),
           loadingState: () => const _Scaffold(child: CustomLoadingWidget()),
           inAppBlogerState: (index) => const BaseBlogger(),
           inAppAdminState: (index) => const BaseShop(),

@@ -44,120 +44,110 @@ class _FavoritePageState extends State<FavoritePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.kWhite,
+      appBar: AppBar(
         backgroundColor: AppColors.kWhite,
-        appBar: AppBar(
-            backgroundColor: AppColors.kWhite,
-            elevation: 0,
-            surfaceTintColor: AppColors.kWhite,
-            // leading: IconButton(
-            //   onPressed: () {
-            //     Navigator.pop(context);
-            //   },
-            //   icon: const Icon(
-            //     Icons.arrow_back_ios,
-            //     color: AppColors.kPrimaryColor,
-            //   ),
-            // ),
-            centerTitle: true,
-            title: const Text(
-              'Избранное',
-              style: AppTextStyles.size22Weight600,
-            )),
-        body: BlocConsumer<FavoriteCubit, FavoriteState>(
-            listener: (context, state) {},
-            builder: (context, state) {
-              if (state is ErrorState) {
-                return Center(
-                  child: Text(
-                    state.message,
-                    style: const TextStyle(fontSize: 20.0, color: Colors.grey),
-                  ),
-                );
-              }
-              if (state is LoadingState) {
-                return const Center(
-                    child:
-                        CircularProgressIndicator(color: Colors.indigoAccent));
-              }
-              if (state is NoDataState) {
-                return Expanded(
-                  child: SmartRefresher(
-                    controller: refreshController,
-                    enablePullDown: true,
-                    enablePullUp:
-                        false, // при пустых данных тянуть вверх обычно не надо
-                    onRefresh: () {
-                      onRefresh();
-                    }, // onLoading можно убрать для пустого состояния
-                    child: CustomScrollView(
-                      physics:
-                          const AlwaysScrollableScrollPhysics(), // тянется даже без контента
-                      slivers: [
-                        SliverFillRemaining(
-                          hasScrollBody:
-                              true, // позволяет занять весь экран и центрировать
-                          child: Center(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Image.asset(
-                                  Assets.icons.defaultNoDataIcon.path,
-                                  height: 72,
-                                  width: 72,
-                                ),
-                                const SizedBox(height: 12),
-                                const Text(
-                                  'Нет товаров',
-                                  style: AppTextStyles.size16Weight500,
-                                  textAlign: TextAlign.center,
-                                ),
-                                const SizedBox(height: 4),
-                                Text(
-                                  'Здесь появятся товары, которые вы добавили \nв избранное',
-                                  style: AppTextStyles.size14Weight400
-                                      .copyWith(color: AppColors.kGray300),
-                                  textAlign: TextAlign.center,
-                                ),
-                              ],
+        elevation: 0,
+        surfaceTintColor: AppColors.kWhite,
+        // leading: IconButton(
+        //   onPressed: () {
+        //     Navigator.pop(context);
+        //   },
+        //   icon: const Icon(
+        //     Icons.arrow_back_ios,
+        //     color: AppColors.kPrimaryColor,
+        //   ),
+        // ),
+        centerTitle: true,
+        title: const Text('Избранное', style: AppTextStyles.size22Weight600),
+      ),
+      body: BlocConsumer<FavoriteCubit, FavoriteState>(
+        listener: (context, state) {},
+        builder: (context, state) {
+          if (state is ErrorState) {
+            return Center(
+              child: Text(
+                state.message,
+                style: const TextStyle(fontSize: 20.0, color: Colors.grey),
+              ),
+            );
+          }
+          if (state is LoadingState) {
+            return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
+          }
+          if (state is NoDataState) {
+            return Expanded(
+              child: SmartRefresher(
+                controller: refreshController,
+                enablePullDown: true,
+                enablePullUp: false, // при пустых данных тянуть вверх обычно не надо
+                onRefresh: () {
+                  onRefresh();
+                }, // onLoading можно убрать для пустого состояния
+                child: CustomScrollView(
+                  physics: const AlwaysScrollableScrollPhysics(), // тянется даже без контента
+                  slivers: [
+                    SliverFillRemaining(
+                      hasScrollBody: true, // позволяет занять весь экран и центрировать
+                      child: Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Image.asset(Assets.icons.defaultNoDataIcon.path, height: 72, width: 72),
+                            const SizedBox(height: 12),
+                            const Text(
+                              'Нет товаров',
+                              style: AppTextStyles.size16Weight500,
+                              textAlign: TextAlign.center,
                             ),
-                          ),
+                            const SizedBox(height: 4),
+                            Text(
+                              'Здесь появятся товары, которые вы добавили \nв избранное',
+                              style: AppTextStyles.size14Weight400.copyWith(
+                                color: AppColors.kGray300,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ],
                         ),
-                      ],
+                      ),
                     ),
-                  ),
-                );
-              }
+                  ],
+                ),
+              ),
+            );
+          }
 
-              if (state is LoadedState) {
-                return SmartRefresher(
-                  controller: refreshController,
-                  enablePullDown: true,
-                  enablePullUp: true,
-                  onLoading: () {
-                    onLoading();
-                  },
-                  onRefresh: () {
-                    onRefresh();
-                  },
-                  child: ListView.builder(
-                      shrinkWrap: false,
-                      padding: EdgeInsets.only(bottom: 100),
-                      itemCount: state.productModel.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return GestureDetector(
-                          onTap: () => context.router.push(
-                              DetailCardProductRoute(
-                                  product: state.productModel[index])),
-                          child: FavoriteProductsCardWidget(
-                              product: state.productModel[index]),
-                        );
-                      }),
-                );
-              } else {
-                return const Center(
-                    child:
-                        CircularProgressIndicator(color: Colors.indigoAccent));
-              }
-            }));
+          if (state is LoadedState) {
+            return SmartRefresher(
+              controller: refreshController,
+              enablePullDown: true,
+              enablePullUp: true,
+              onLoading: () {
+                onLoading();
+              },
+              onRefresh: () {
+                onRefresh();
+              },
+              child: ListView.builder(
+                shrinkWrap: false,
+                padding: EdgeInsets.only(bottom: 100),
+                itemCount: state.productModel.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return GestureDetector(
+                    onTap: () => context.router.push(
+                      DetailCardProductRoute(product: state.productModel[index]),
+                    ),
+                    child: FavoriteProductsCardWidget(product: state.productModel[index]),
+                  );
+                },
+              ),
+            );
+          } else {
+            return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
+          }
+        },
+      ),
+    );
   }
 }

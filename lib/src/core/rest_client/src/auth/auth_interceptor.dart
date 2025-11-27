@@ -44,8 +44,8 @@ class AuthInterceptor extends SequentialHttpInterceptor with RetryRequestMixin {
     required this.authorizationClient,
     Client? retryClient,
     Token? token,
-  })  : retryClient = retryClient ?? Client(),
-        _token = token {
+  }) : retryClient = retryClient ?? Client(),
+       _token = token {
     tokenStorage.getStream().listen((newToken) => _token = newToken);
   }
 
@@ -62,8 +62,8 @@ class AuthInterceptor extends SequentialHttpInterceptor with RetryRequestMixin {
   Future<Token?> _loadToken() async => _token;
 
   Map<String, String> _buildHeaders(Token token) => {
-        'Authorization': 'Bearer ${token.accessToken}',
-      };
+    'Authorization': 'Bearer ${token.accessToken}',
+  };
 
   String? _extractTokenFromHeaders(Map<String, String> headers) {
     final authHeader = headers['Authorization'];
@@ -75,18 +75,13 @@ class AuthInterceptor extends SequentialHttpInterceptor with RetryRequestMixin {
   }
 
   @override
-  Future<void> interceptRequest(
-    BaseRequest request,
-    RequestHandler handler,
-  ) async {
+  Future<void> interceptRequest(BaseRequest request, RequestHandler handler) async {
     var token = await _loadToken();
 
     // If token is null, then the request is rejected
     if (token == null) {
       return handler.rejectRequest(
-        const RevokeTokenException(
-          'Token is not valid and cannot be refreshed',
-        ),
+        const RevokeTokenException('Token is not valid and cannot be refreshed'),
       );
     }
 
@@ -133,10 +128,7 @@ class AuthInterceptor extends SequentialHttpInterceptor with RetryRequestMixin {
   }
 
   @override
-  Future<void> interceptResponse(
-    StreamedResponse response,
-    ResponseHandler handler,
-  ) async {
+  Future<void> interceptResponse(StreamedResponse response, ResponseHandler handler) async {
     // If response is 401 (Unauthorized), then Access token is expired
     // and, if possible, should be refreshed
     if (response.statusCode != 401) {
@@ -148,15 +140,11 @@ class AuthInterceptor extends SequentialHttpInterceptor with RetryRequestMixin {
     // If token is null, then reject the response
     if (token == null) {
       return handler.rejectResponse(
-        const RevokeTokenException(
-          'Token is not valid and cannot be refreshed',
-        ),
+        const RevokeTokenException('Token is not valid and cannot be refreshed'),
       );
     }
 
-    final tokenFromHeaders = _extractTokenFromHeaders(
-      response.request?.headers ?? const {},
-    );
+    final tokenFromHeaders = _extractTokenFromHeaders(response.request?.headers ?? const {});
 
     // If request does not have the token, then return the response
     if (tokenFromHeaders == null) {
@@ -188,9 +176,7 @@ class AuthInterceptor extends SequentialHttpInterceptor with RetryRequestMixin {
         // If token cannot be refreshed, then user should be logged out
         await tokenStorage.clear();
         return handler.rejectResponse(
-          const RevokeTokenException(
-            'Token is not valid and cannot be refreshed',
-          ),
+          const RevokeTokenException('Token is not valid and cannot be refreshed'),
         );
       }
     }

@@ -1,9 +1,6 @@
 import 'package:rxdart/rxdart.dart';
 
-enum NotAuthLogicStatus {
-  reset,
-  unauthorized,
-}
+enum NotAuthLogicStatus { reset, unauthorized }
 
 /// Singleton is a class that manages the state of "unauthorized access"
 class NotAuthLogic {
@@ -16,8 +13,7 @@ class NotAuthLogic {
   ///
   /// - Use in the code `statusSubject.add(...)` to notify the listeners
   /// - Listeners can subscribe to `.listen(...)` and react to changes
-  BehaviorSubject<NotAuthLogicStatus> statusSubject =
-      BehaviorSubject<NotAuthLogicStatus>();
+  BehaviorSubject<NotAuthLogicStatus> statusSubject = BehaviorSubject<NotAuthLogicStatus>();
 
   void dispose() {
     statusSubject.close();

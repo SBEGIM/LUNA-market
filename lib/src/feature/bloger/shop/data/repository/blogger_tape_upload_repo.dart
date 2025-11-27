@@ -20,16 +20,11 @@ class UploadApi {
     final body = {"product_id": product_id, "access_token": token};
     final header = {"Authorization": "Bearer $token"};
 
-    final request = http.MultipartRequest(
-      'POST',
-      Uri.parse('$baseUrl/blogger/upload/video'),
-    );
+    final request = http.MultipartRequest('POST', Uri.parse('$baseUrl/blogger/upload/video'));
 
     request.headers.addAll(header);
 
-    request.files.add(
-      await http.MultipartFile.fromPath('video', video),
-    );
+    request.files.add(await http.MultipartFile.fromPath('video', video));
 
     request.fields.addAll(body);
 

@@ -38,8 +38,7 @@ class CityCubit extends Cubit<CityState> {
   Future<List<CityModel>> citiesCdek(String? countryCode) async {
     try {
       emit(LoadingState());
-      final List<CityModel> data =
-          await cityRepository.cityCdekApi(countryCode);
+      final List<CityModel> data = await cityRepository.cityCdekApi(countryCode);
       _cities = data;
 
       if (_cities.length == 0) {
@@ -60,8 +59,7 @@ class CityCubit extends Cubit<CityState> {
 
     List<CityModel> temp = [];
     for (int i = 0; i < _cities.length; i++) {
-      if (_cities[i].city != null &&
-          _cities[i].city!.toLowerCase().contains(cats.toLowerCase())) {
+      if (_cities[i].city != null && _cities[i].city!.toLowerCase().contains(cats.toLowerCase())) {
         temp.add(_cities[i]);
       }
     }

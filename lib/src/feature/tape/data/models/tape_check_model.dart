@@ -1,6 +1,5 @@
 class TapeCheckModel {
-  TapeCheckModel(
-      {bool? inBasket, bool? inSubs, bool? inFavorite, bool? isLiked}) {
+  TapeCheckModel({bool? inBasket, bool? inSubs, bool? inFavorite, bool? isLiked}) {
     _inBasket = inBasket;
     _inSubs = inSubs;
     _inFavorite = inFavorite;

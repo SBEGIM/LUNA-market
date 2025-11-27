@@ -2,8 +2,7 @@
 // import 'package:cupertino_http/cupertino_http.dart' show CupertinoClient;
 import 'package:cronet_http/cronet_http.dart';
 import 'package:cupertino_http/cupertino_http.dart';
-import 'package:flutter/foundation.dart'
-    show TargetPlatform, defaultTargetPlatform;
+import 'package:flutter/foundation.dart' show TargetPlatform, defaultTargetPlatform;
 import 'package:http/http.dart' as http;
 import 'package:haji_market/src/core/rest_client/rest_client.dart';
 import 'package:haji_market/src/core/rest_client/src/http/check_exception_io.dart'
@@ -57,8 +56,7 @@ final class RestClientHttp extends RestClientBase {
   ///  client: client,
   /// );
   /// ```
-  RestClientHttp({required super.baseUrl, http.Client? client})
-      : _client = client ?? http.Client();
+  RestClientHttp({required super.baseUrl, http.Client? client}) : _client = client ?? http.Client();
 
   final http.Client _client;
 
@@ -81,19 +79,12 @@ final class RestClientHttp extends RestClientBase {
       }
 
       if (headers != null) {
-        request.headers.addAll(
-          headers.map((key, value) => MapEntry(key, value.toString())),
-        );
+        request.headers.addAll(headers.map((key, value) => MapEntry(key, value.toString())));
       }
 
-      final response = await _client.send(request).then(
-            http.Response.fromStream,
-          );
+      final response = await _client.send(request).then(http.Response.fromStream);
 
-      final result = await decodeResponse(
-        response.bodyBytes,
-        statusCode: response.statusCode,
-      );
+      final result = await decodeResponse(response.bodyBytes, statusCode: response.statusCode);
 
       if (result == null) {
         throw WrongResponseTypeException(
@@ -112,10 +103,7 @@ final class RestClientHttp extends RestClientBase {
         Error.throwWithStackTrace(checkedException, stack);
       }
 
-      Error.throwWithStackTrace(
-        ClientException(message: e.message, cause: e),
-        stack,
-      );
+      Error.throwWithStackTrace(ClientException(message: e.message, cause: e), stack);
     }
   }
 }

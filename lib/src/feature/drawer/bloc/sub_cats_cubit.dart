@@ -10,10 +10,7 @@ class SubCatsCubit extends Cubit<SubCatsState> {
   SubCatsCubit({required this.subCatRepository}) : super(InitState());
   List<CatsModel> _subCats = [];
 
-  Future<void> subCats(
-    subCatId, {
-    bool? isAddAllProducts,
-  }) async {
+  Future<void> subCats(subCatId, {bool? isAddAllProducts}) async {
     try {
       emit(LoadingState());
 
@@ -22,8 +19,7 @@ class SubCatsCubit extends Cubit<SubCatsState> {
       _subCats = data;
       if (isAddAllProducts == false) {
       } else {
-        _subCats.insert(
-            0, CatsModel(id: 1, name: "Все товары", icon: 'cats/all_cats.png'));
+        _subCats.insert(0, CatsModel(id: 1, name: "Все товары", icon: 'cats/all_cats.png'));
       }
 
       emit(LoadedState(data));
@@ -42,14 +38,16 @@ class SubCatsCubit extends Cubit<SubCatsState> {
     try {
       emit(LoadingState());
 
-      final List<CatsModel> data =
-          await subCatRepository.subCatBrandApi(subCatId, brandId, optionId);
+      final List<CatsModel> data = await subCatRepository.subCatBrandApi(
+        subCatId,
+        brandId,
+        optionId,
+      );
 
       _subCats = data;
       if (isAddAllProducts == false) {
       } else {
-        _subCats.insert(
-            0, CatsModel(id: 1, name: "Все товары", icon: 'cats/all_cats.png'));
+        _subCats.insert(0, CatsModel(id: 1, name: "Все товары", icon: 'cats/all_cats.png'));
       }
 
       emit(LoadedState(data));

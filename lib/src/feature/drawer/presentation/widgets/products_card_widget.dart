@@ -11,17 +11,14 @@ import 'package:haji_market/src/feature/drawer/presentation/widgets/pre_order_di
 import 'package:haji_market/src/feature/drawer/presentation/widgets/show_basket_bottom_sheet_widget.dart';
 import 'package:haji_market/src/feature/favorite/bloc/favorite_cubit.dart';
 import 'package:haji_market/src/feature/product/data/model/product_model.dart';
-import 'package:haji_market/src/feature/product/cubit/product_cubit.dart'
-    as productCubit;
+import 'package:haji_market/src/feature/product/cubit/product_cubit.dart' as productCubit;
 import 'package:intl/intl.dart';
 
 class ProductCardWidget extends StatefulWidget {
   final int index;
   final ProductModel product;
 
-  const ProductCardWidget(
-      {required this.product, Key? key, required this.index})
-      : super(key: key);
+  const ProductCardWidget({required this.product, Key? key, required this.index}) : super(key: key);
 
   @override
   State<ProductCardWidget> createState() => _ProductCardWidgetState();
@@ -38,13 +35,12 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
   @override
   void initState() {
     basketCount = widget.product.basketCount ?? 0;
-    compoundPrice = (widget.product.price!.toInt() *
-            (((100 - widget.product.compound!.toInt())) / 100))
-        .toInt();
+    compoundPrice =
+        (widget.product.price!.toInt() * (((100 - widget.product.compound!.toInt())) / 100))
+            .toInt();
     count += widget.product.basketCount ?? 0;
     inFavorite = widget.product.inFavorite ?? false;
-    compoundPrice =
-        (widget.product.price! * (100 - (widget.product.compound ?? 0))) ~/ 100;
+    compoundPrice = (widget.product.price! * (100 - (widget.product.compound ?? 0))) ~/ 100;
 
     super.initState();
   }
@@ -85,8 +81,7 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                   borderRadius: BorderRadius.circular(16),
                 ),
                 child: ClipRRect(
-                  borderRadius: BorderRadius.circular(
-                      12), // Slightly smaller than container
+                  borderRadius: BorderRadius.circular(12), // Slightly smaller than container
                   child: Image.network(
                     "https://lunamarket.ru/storage/${widget.product.path!.first}",
                     fit: BoxFit.cover,
@@ -98,7 +93,7 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                           child: CircularProgressIndicator(
                             value: loadingProgress.expectedTotalBytes != null
                                 ? loadingProgress.cumulativeBytesLoaded /
-                                    loadingProgress.expectedTotalBytes!
+                                      loadingProgress.expectedTotalBytes!
                                 : null,
                             strokeWidth: 2,
                           ),
@@ -113,8 +108,7 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                 ),
               ),
               Padding(
-                padding:
-                    const EdgeInsets.only(left: 4, right: 4, bottom: 8, top: 8),
+                padding: const EdgeInsets.only(left: 4, right: 4, bottom: 8, top: 8),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -126,11 +120,11 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                           Container(
                             height: 26,
                             decoration: BoxDecoration(
-                                color: AppColors.kYellowDark,
-                                borderRadius: BorderRadius.circular(10)),
+                              color: AppColors.kYellowDark,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
                             alignment: Alignment.center,
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 8, vertical: 4),
+                            padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                             child: Text(
                               '0·0·12',
                               textAlign: TextAlign.center,
@@ -139,24 +133,23 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                           ),
 
                           GestureDetector(
-                              onTap: () async {
-                                final favorite =
-                                    BlocProvider.of<FavoriteCubit>(context);
-                                await favorite
-                                    .favorite(widget.product.id.toString());
-                                setState(() {
-                                  inFavorite = !inFavorite;
-                                });
-                              },
-                              child: Image.asset(
-                                inFavorite == true
-                                    ? Assets.icons.favoriteBottomFullIcon.path
-                                    : Assets.icons.favoriteBottomFullIcon.path,
-                                scale: 1.9,
-                                color: inFavorite == true
-                                    ? const Color(0xffFF3347)
-                                    : const Color(0xffD1D1D6),
-                              )),
+                            onTap: () async {
+                              final favorite = BlocProvider.of<FavoriteCubit>(context);
+                              await favorite.favorite(widget.product.id.toString());
+                              setState(() {
+                                inFavorite = !inFavorite;
+                              });
+                            },
+                            child: Image.asset(
+                              inFavorite == true
+                                  ? Assets.icons.favoriteBottomFullIcon.path
+                                  : Assets.icons.favoriteBottomFullIcon.path,
+                              scale: 1.9,
+                              color: inFavorite == true
+                                  ? const Color(0xffFF3347)
+                                  : const Color(0xffD1D1D6),
+                            ),
+                          ),
 
                           // IconButton(
                           //     padding: EdgeInsets.zero,
@@ -173,33 +166,27 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                         ],
                       ),
                     ),
-                    const SizedBox(
-                      height: 4,
-                    ),
+                    const SizedBox(height: 4),
                     widget.product.point != 0
                         ? Container(
                             width: 52,
                             height: 26,
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
-                                gradient: LinearGradient(
-                                  begin: Alignment(-0.6, -1),
-                                  end: Alignment(1, 1),
-                                  colors: [
-                                    Color(0xFF7D2DFF),
-                                    Color(0xFF41DDFF),
-                                  ],
-                                  stops: [
-                                    0.2685,
-                                    1.0
-                                  ], // соответствуют 26.85% и 100%
-                                ),
-                                borderRadius: BorderRadius.circular(10)),
+                              gradient: LinearGradient(
+                                begin: Alignment(-0.6, -1),
+                                end: Alignment(1, 1),
+                                colors: [Color(0xFF7D2DFF), Color(0xFF41DDFF)],
+                                stops: [0.2685, 1.0], // соответствуют 26.85% и 100%
+                              ),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
                             child: Text(
                               '${widget.product.point ?? 0}% Б',
                               textAlign: TextAlign.center,
-                              style: AppTextStyles.statisticsTextStyle
-                                  .copyWith(color: AppColors.kWhite),
+                              style: AppTextStyles.statisticsTextStyle.copyWith(
+                                color: AppColors.kWhite,
+                              ),
                             ),
                           )
                         : const SizedBox(),
@@ -208,9 +195,7 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
               ),
             ],
           ),
-          const SizedBox(
-            height: 8,
-          ),
+          const SizedBox(height: 8),
           SizedBox(
             height: 140,
             child: Column(
@@ -226,8 +211,7 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                     widget.product.name.toString(),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
-                    style: AppTextStyles.size14Weight400
-                        .copyWith(color: Color(0xff636366)),
+                    style: AppTextStyles.size14Weight400.copyWith(color: Color(0xff636366)),
                   ),
                 ),
                 SizedBox(height: 4),
@@ -242,12 +226,14 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                               style: AppTextStyles.size16Weight700,
                             ),
                           ),
-                          Text('${formatPrice(widget.product.price!)} ₽ ',
-                              style: AppTextStyles.size14Weight500.copyWith(
-                                decoration: TextDecoration.lineThrough,
-                                color: Color(0xff8E8E93),
-                                decorationColor: Color(0xff8E8E93),
-                              )),
+                          Text(
+                            '${formatPrice(widget.product.price!)} ₽ ',
+                            style: AppTextStyles.size14Weight500.copyWith(
+                              decoration: TextDecoration.lineThrough,
+                              color: Color(0xff8E8E93),
+                              decorationColor: Color(0xff8E8E93),
+                            ),
+                          ),
                         ],
                       )
                     : Text(
@@ -259,9 +245,7 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                           fontSize: 16,
                         ),
                       ),
-                const SizedBox(
-                  height: 4,
-                ),
+                const SizedBox(height: 4),
                 Container(
                   constraints: const BoxConstraints(
                     minWidth: 40, // Ensures minimum width
@@ -305,9 +289,10 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                           'Оптом $basketCount шт',
                           // textAlign: TextAlign.center,
                           style: const TextStyle(
-                              fontSize: 13,
-                              color: Colors.white,
-                              fontWeight: FontWeight.w500),
+                            fontSize: 13,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
                       )
                     : Row(
@@ -430,17 +415,16 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
 
                           //  else
                           // if
-                          (widget.product.pre_order == 1 &&
-                                  widget.product.product_count == 0)
+                          (widget.product.pre_order == 1 && widget.product.product_count == 0)
                               ? GestureDetector(
                                   onTap: () {
                                     /// FIXME
-                                    BlocProvider.of<BasketCubit>(context)
-                                        .basketAdd(widget.product.id.toString(),
-                                            '1', 0, '', '');
+                                    BlocProvider.of<BasketCubit>(
+                                      context,
+                                    ).basketAdd(widget.product.id.toString(), '1', 0, '', '');
                                     BlocProvider.of<productCubit.ProductCubit>(
-                                            context)
-                                        .updateProductByIndex(
+                                      context,
+                                    ).updateProductByIndex(
                                       index: widget.index,
                                       updatedProduct: widget.product.copyWith(
                                         basketCount: basketCount + 1,
@@ -487,160 +471,148 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                                     }
 
                                     showBasketBottomSheetOptions(
-                                        context,
-                                        '${widget.product.shop?.name}',
-                                        0,
-                                        widget.product, (int callBackCount,
-                                            int callBackPrice,
-                                            bool callBackOptom) {
-                                      if (widget.product.product_count == 0 &&
-                                          widget.product.pre_order == 1) {
-                                        if (widget.product.inBasket == false) {
-                                          showCupertinoModalPopup<void>(
-                                            context: context,
-                                            builder: (context) =>
-                                                PreOrderDialog(
-                                              onYesTap: () {
-                                                Navigator.pop(context);
-                                                if (widget.product.inBasket ==
-                                                    false) {
-                                                  BlocProvider.of<BasketCubit>(
-                                                          context)
-                                                      .basketAdd(
-                                                          widget.product.id
-                                                              .toString(),
-                                                          callBackCount,
-                                                          callBackPrice,
-                                                          '',
-                                                          '',
-                                                          isOptom:
-                                                              callBackOptom);
+                                      context,
+                                      '${widget.product.shop?.name}',
+                                      0,
+                                      widget.product,
+                                      (int callBackCount, int callBackPrice, bool callBackOptom) {
+                                        if (widget.product.product_count == 0 &&
+                                            widget.product.pre_order == 1) {
+                                          if (widget.product.inBasket == false) {
+                                            showCupertinoModalPopup<void>(
+                                              context: context,
+                                              builder: (context) => PreOrderDialog(
+                                                onYesTap: () {
+                                                  Navigator.pop(context);
+                                                  if (widget.product.inBasket == false) {
+                                                    BlocProvider.of<BasketCubit>(context).basketAdd(
+                                                      widget.product.id.toString(),
+                                                      callBackCount,
+                                                      callBackPrice,
+                                                      '',
+                                                      '',
+                                                      isOptom: callBackOptom,
+                                                    );
 
-                                                  BlocProvider.of<
-                                                              productCubit
-                                                              .ProductCubit>(
-                                                          context)
-                                                      .updateProductByIndex(
-                                                          index: widget.index,
-                                                          updatedProduct: widget
-                                                              .product
-                                                              .copyWith(
-                                                                  basketCount:
-                                                                      basketCount +
-                                                                          1,
-                                                                  inBasket:
-                                                                      true));
-                                                  setState(() {
-                                                    // isvisible = true;
-                                                  });
+                                                    BlocProvider.of<productCubit.ProductCubit>(
+                                                      context,
+                                                    ).updateProductByIndex(
+                                                      index: widget.index,
+                                                      updatedProduct: widget.product.copyWith(
+                                                        basketCount: basketCount + 1,
+                                                        inBasket: true,
+                                                      ),
+                                                    );
+                                                    setState(() {
+                                                      // isvisible = true;
+                                                    });
 
-                                                  // final filters = context
-                                                  //     .read<FilterProvider>();
+                                                    // final filters = context
+                                                    //     .read<FilterProvider>();
 
-                                                  // BlocProvider.of<
-                                                  //             productCubit
-                                                  //             .ProductCubit>(
-                                                  //         context)
-                                                  //     .products(filters);
-                                                } else {
-                                                  context.router.replaceAll([
-                                                    const LauncherRoute(
-                                                        children: [
-                                                          BasketRoute()
-                                                        ]),
-                                                  ]);
-                                                }
-                                              },
-                                            ),
-                                          );
-                                        } else {
-                                          context.router.pushAndPopUntil(
-                                            const LauncherRoute(
-                                                children: [BasketRoute()]),
-                                            predicate: (route) => false,
-                                          );
+                                                    // BlocProvider.of<
+                                                    //             productCubit
+                                                    //             .ProductCubit>(
+                                                    //         context)
+                                                    //     .products(filters);
+                                                  } else {
+                                                    context.router.replaceAll([
+                                                      const LauncherRoute(
+                                                        children: [BasketRoute()],
+                                                      ),
+                                                    ]);
+                                                  }
+                                                },
+                                              ),
+                                            );
+                                          } else {
+                                            context.router.pushAndPopUntil(
+                                              const LauncherRoute(children: [BasketRoute()]),
+                                              predicate: (route) => false,
+                                            );
+                                          }
+
+                                          return;
                                         }
 
-                                        return;
-                                      }
+                                        // if (widget.product.inBasket == false) {
+                                        BlocProvider.of<BasketCubit>(context).basketAdd(
+                                          widget.product.id.toString(),
+                                          callBackCount,
+                                          callBackPrice,
+                                          '',
+                                          '',
+                                          isOptom: callBackOptom,
+                                        );
 
-                                      // if (widget.product.inBasket == false) {
-                                      BlocProvider.of<BasketCubit>(context)
-                                          .basketAdd(
-                                              widget.product.id.toString(),
-                                              callBackCount,
-                                              callBackPrice,
-                                              '',
-                                              '',
-                                              isOptom: callBackOptom);
-
-                                      BlocProvider.of<
-                                              productCubit
-                                              .ProductCubit>(context)
-                                          .updateProductByIndex(
-                                        index: widget.index,
-                                        updatedProduct: widget.product.copyWith(
+                                        BlocProvider.of<productCubit.ProductCubit>(
+                                          context,
+                                        ).updateProductByIndex(
+                                          index: widget.index,
+                                          updatedProduct: widget.product.copyWith(
                                             basketCount: basketCount + 1,
-                                            inBasket: true),
-                                      );
-                                      setState(() {
-                                        count += 1;
-                                        // if (count == 0) {
-                                        //   isvisible = false;
+                                            inBasket: true,
+                                          ),
+                                        );
+                                        setState(() {
+                                          count += 1;
+                                          // if (count == 0) {
+                                          //   isvisible = false;
+                                          // } else {
+                                          //   isvisible = true;
+                                          // }
+                                        });
+
+                                        // BlocProvider.of<
+                                        //         productCubit
+                                        //         .ProductCubit>(context)
+                                        //     .products();
                                         // } else {
-                                        //   isvisible = true;
+                                        //   log('pushReplaceAll',
+                                        //       name: 'Detail Card Product Page');
+                                        //   context.router.replaceAll([
+                                        //     const LauncherRoute(
+                                        //         children: [BasketRoute()]),
+                                        //   ]);
                                         // }
-                                      });
+                                        // });
 
-                                      // BlocProvider.of<
-                                      //         productCubit
-                                      //         .ProductCubit>(context)
-                                      //     .products();
-                                      // } else {
-                                      //   log('pushReplaceAll',
-                                      //       name: 'Detail Card Product Page');
-                                      //   context.router.replaceAll([
-                                      //     const LauncherRoute(
-                                      //         children: [BasketRoute()]),
-                                      //   ]);
-                                      // }
-                                      // });
+                                        /// FIXME
+                                        // if (widget.product.product_count != 0) {
+                                        //   BlocProvider.of<BasketCubit>(context)
+                                        //       .basketAdd(
+                                        //           widget.product.id.toString(),
+                                        //           '1',
+                                        //           0,
+                                        //           '',
+                                        //           '');
+                                        //   BlocProvider.of<
+                                        //           productCubit
+                                        //           .ProductCubit>(context)
+                                        //       .updateProductByIndex(
+                                        //     index: widget.index,
+                                        //     updatedProduct:
+                                        //         widget.product.copyWith(
+                                        //       basketCount: basketCount + 1,
+                                        //     ),
+                                        //   );
+                                        // } else {
+                                        //   Get.snackbar(
+                                        //       'Ошибка запроса нет предзаказа!',
+                                        //       'количество товара 0 шт',
+                                        //       backgroundColor: Colors.blueAccent);
+                                        // }
 
-                                      /// FIXME
-                                      // if (widget.product.product_count != 0) {
-                                      //   BlocProvider.of<BasketCubit>(context)
-                                      //       .basketAdd(
-                                      //           widget.product.id.toString(),
-                                      //           '1',
-                                      //           0,
-                                      //           '',
-                                      //           '');
-                                      //   BlocProvider.of<
-                                      //           productCubit
-                                      //           .ProductCubit>(context)
-                                      //       .updateProductByIndex(
-                                      //     index: widget.index,
-                                      //     updatedProduct:
-                                      //         widget.product.copyWith(
-                                      //       basketCount: basketCount + 1,
-                                      //     ),
-                                      //   );
-                                      // } else {
-                                      //   Get.snackbar(
-                                      //       'Ошибка запроса нет предзаказа!',
-                                      //       'количество товара 0 шт',
-                                      //       backgroundColor: Colors.blueAccent);
-                                      // }
-
-                                      // setState(() {
-                                      //   count += 1;
-                                      //   if (count == 0) {
-                                      //     isvisible = false;
-                                      //   } else {
-                                      //     isvisible = true;
-                                      //   }
-                                      // });
-                                    });
+                                        // setState(() {
+                                        //   count += 1;
+                                        //   if (count == 0) {
+                                        //     isvisible = false;
+                                        //   } else {
+                                        //     isvisible = true;
+                                        //   }
+                                        // });
+                                      },
+                                    );
                                   },
                                   child: Container(
                                     width: 150,
@@ -652,16 +624,19 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                                       borderRadius: BorderRadius.circular(12),
                                     ),
                                     alignment: Alignment.center,
-                                    child: Text('Купить',
-                                        style: AppTextStyles.size14Weight600
-                                            .copyWith(color: AppColors.kWhite)),
+                                    child: Text(
+                                      'Купить',
+                                      style: AppTextStyles.size14Weight600.copyWith(
+                                        color: AppColors.kWhite,
+                                      ),
+                                    ),
                                   ),
-                                )
+                                ),
                         ],
                       ),
               ],
             ),
-          )
+          ),
         ],
       ),
     );

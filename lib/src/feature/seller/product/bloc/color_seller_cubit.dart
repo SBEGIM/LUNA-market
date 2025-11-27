@@ -34,9 +34,7 @@ class ColorSellerCubit extends Cubit<ColorSellerState> {
     return _colors;
   }
 
-  ColorById(
-    String name,
-  ) async {
+  ColorById(String name) async {
     if (name.isEmpty) return;
     if (_colors.isEmpty) {
       await brands();

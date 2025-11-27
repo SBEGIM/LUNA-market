@@ -30,30 +30,28 @@ void showLanguageOptions(
           return ConstrainedBox(
             constraints: BoxConstraints(
               minHeight: 350.0,
-              maxHeight: (_filteredCategories.length * 90)
-                  .clamp(350.0, 500.0)
-                  .toDouble(),
+              maxHeight: (_filteredCategories.length * 90).clamp(350.0, 500.0).toDouble(),
             ),
             child: Column(
               mainAxisSize: MainAxisSize.max,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 17),
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 17),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(title,
-                          style: const TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 16,
-                            height: 1.1,
-                          )),
+                      Text(
+                        title,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 16,
+                          height: 1.1,
+                        ),
+                      ),
                       InkWell(
                         onTap: () => Navigator.of(ctx).pop(),
-                        child: Image.asset(Assets.icons.defaultCloseIcon.path,
-                            scale: 1.9),
+                        child: Image.asset(Assets.icons.defaultCloseIcon.path, scale: 1.9),
                       ),
                     ],
                   ),
@@ -82,10 +80,7 @@ void showLanguageOptions(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(8),
                             border: isSelected
-                                ? Border.all(
-                                    color: AppColors.mainPurpleColor,
-                                    width: 1.2,
-                                  )
+                                ? Border.all(color: AppColors.mainPurpleColor, width: 1.2)
                                 : null,
                           ),
                           child: Row(
@@ -98,21 +93,13 @@ void showLanguageOptions(
                                   style: TextStyle(
                                     fontSize: 15,
                                     height: 1.2,
-                                    color: isSelected
-                                        ? AppColors.mainPurpleColor
-                                        : Colors.black,
-                                    fontWeight: isSelected
-                                        ? FontWeight.w600
-                                        : FontWeight.w400,
+                                    color: isSelected ? AppColors.mainPurpleColor : Colors.black,
+                                    fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
                                   ),
                                 ),
                               ),
                               if (isSelected)
-                                const Icon(
-                                  Icons.check,
-                                  color: AppColors.mainPurpleColor,
-                                  size: 18,
-                                ),
+                                const Icon(Icons.check, color: AppColors.mainPurpleColor, size: 18),
                             ],
                           ),
                         ),
@@ -121,28 +108,23 @@ void showLanguageOptions(
                   ),
                 ),
                 Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 40),
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 40),
                   child: SizedBox(
                     width: double.infinity,
                     height: 44, // ← было 48
                     child: ElevatedButton(
-                      onPressed: (selectedIndex >= 0 &&
-                              selectedIndex < _filteredCategories.length)
+                      onPressed: (selectedIndex >= 0 && selectedIndex < _filteredCategories.length)
                           ? () async {
                               callback.call(_filteredCategories[selectedIndex]);
                               Navigator.pop(ctx);
 
-                              GetStorage().write('language',
-                                  _filteredCategories[selectedIndex]);
+                              GetStorage().write('language', _filteredCategories[selectedIndex]);
                             }
                           : null,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.mainPurpleColor,
                         disabledBackgroundColor: AppColors.mainPurpleColor,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                         padding: EdgeInsets.zero,
                         tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                       ),

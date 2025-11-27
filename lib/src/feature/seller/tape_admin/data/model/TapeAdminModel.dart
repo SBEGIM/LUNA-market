@@ -1,18 +1,19 @@
 class TapeAdminModel {
-  TapeAdminModel(
-      {int? id,
-      String? name,
-      String? catName,
-      int? price,
-      String? description,
-      int? compound,
-      String? video,
-      String? image,
-      bool? inBasket,
-      bool? inReport,
-      bool? inFavorite,
-      bool? inSubscribe,
-      Shop? shop}) {
+  TapeAdminModel({
+    int? id,
+    String? name,
+    String? catName,
+    int? price,
+    String? description,
+    int? compound,
+    String? video,
+    String? image,
+    bool? inBasket,
+    bool? inReport,
+    bool? inFavorite,
+    bool? inSubscribe,
+    Shop? shop,
+  }) {
     _id = id;
     _name = name;
     _catName = catName;

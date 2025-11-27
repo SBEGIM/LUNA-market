@@ -76,12 +76,8 @@ class _MonthSelectorState extends State<MonthSelector> {
                           hoverColor: Colors.transparent,
                           splashColor: Colors.transparent,
                           borderRadius: BorderRadius.only(
-                            topLeft: i == 0
-                                ? Radius.circular(innerRadius)
-                                : Radius.zero,
-                            bottomLeft: i == 0
-                                ? Radius.circular(innerRadius)
-                                : Radius.zero,
+                            topLeft: i == 0 ? Radius.circular(innerRadius) : Radius.zero,
+                            bottomLeft: i == 0 ? Radius.circular(innerRadius) : Radius.zero,
                             topRight: i == items.length - 1
                                 ? Radius.circular(innerRadius)
                                 : Radius.zero,

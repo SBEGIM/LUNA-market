@@ -19,12 +19,8 @@ class AppSnackBar {
     if (overlay == null) return;
 
     _entry = OverlayEntry(
-      builder: (_) => _SnackHost(
-        message: message,
-        type: type,
-        duration: duration,
-        onDismissed: _removeCurrent,
-      ),
+      builder: (_) =>
+          _SnackHost(message: message, type: type, duration: duration, onDismissed: _removeCurrent),
     );
 
     // лёгкий тактильный отклик
@@ -60,15 +56,16 @@ class _SnackHost extends StatefulWidget {
   State<_SnackHost> createState() => _SnackHostState();
 }
 
-class _SnackHostState extends State<_SnackHost>
-    with SingleTickerProviderStateMixin {
+class _SnackHostState extends State<_SnackHost> with SingleTickerProviderStateMixin {
   late final AnimationController _c = AnimationController(
-      vsync: this, duration: const Duration(milliseconds: 220));
-  late final Animation<Offset> _slide =
-      Tween(begin: const Offset(0, -0.15), end: Offset.zero)
-          .animate(CurvedAnimation(parent: _c, curve: Curves.easeOutCubic));
-  late final Animation<double> _fade =
-      CurvedAnimation(parent: _c, curve: Curves.easeOutCubic);
+    vsync: this,
+    duration: const Duration(milliseconds: 220),
+  );
+  late final Animation<Offset> _slide = Tween(
+    begin: const Offset(0, -0.15),
+    end: Offset.zero,
+  ).animate(CurvedAnimation(parent: _c, curve: Curves.easeOutCubic));
+  late final Animation<double> _fade = CurvedAnimation(parent: _c, curve: Curves.easeOutCubic);
 
   @override
   void initState() {
@@ -126,8 +123,7 @@ class _SnackHostState extends State<_SnackHost>
                   color: Colors.transparent,
                   child: Container(
                     constraints: const BoxConstraints(maxWidth: 560),
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 14, vertical: 12),
+                    padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(16),
@@ -145,10 +141,7 @@ class _SnackHostState extends State<_SnackHost>
                         Container(
                           width: 28,
                           height: 28,
-                          decoration: BoxDecoration(
-                            color: badge,
-                            shape: BoxShape.circle,
-                          ),
+                          decoration: BoxDecoration(color: badge, shape: BoxShape.circle),
                           child: Icon(icon, color: Colors.white, size: 18),
                         ),
                         const SizedBox(width: 12),

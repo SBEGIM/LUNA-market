@@ -11,8 +11,13 @@ import 'package:haji_market/src/feature/seller/product/data/DTO/optom_price_sell
 import 'package:intl/intl.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
-void showBasketBottomSheetOptions(BuildContext context, String title, int optom,
-    ProductModel product, Function callback) {
+void showBasketBottomSheetOptions(
+  BuildContext context,
+  String title,
+  int optom,
+  ProductModel product,
+  Function callback,
+) {
   int selectedCategory = -1;
   int compoundPrice = (product.price!.toInt() - product.compound!.toInt());
 
@@ -65,31 +70,25 @@ void showBasketBottomSheetOptions(BuildContext context, String title, int optom,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 16, vertical: 16),
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          title,
-                          style: AppTextStyles.size16Weight600,
-                        ),
+                        Text(title, style: AppTextStyles.size16Weight600),
                         InkWell(
-                            onTap: () => Navigator.of(context).pop(),
-                            child: Image.asset(
-                              Assets.icons.defaultCloseIcon.path,
-                              height: 24,
-                              width: 24,
-                            )),
+                          onTap: () => Navigator.of(context).pop(),
+                          child: Image.asset(
+                            Assets.icons.defaultCloseIcon.path,
+                            height: 24,
+                            width: 24,
+                          ),
+                        ),
                       ],
                     ),
                   ),
                   product.bloc?.length != 0
                       ? Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 0,
-                          ),
+                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
                           child: CustomSwitchButton<int>(
                             groupValue: segmentValue,
                             backgroundColor: Color(0xffEDEDED),
@@ -99,24 +98,27 @@ void showBasketBottomSheetOptions(BuildContext context, String title, int optom,
                                 alignment: Alignment.center,
                                 height: 32,
                                 width: MediaQuery.of(context).size.width,
-                                child: Text('Штучно',
-                                    style:
-                                        AppTextStyles.size16Weight600.copyWith(
-                                      color: segmentValue == 0
-                                          ? Colors.black
-                                          : const Color(0xff9B9B9B),
-                                    )),
+                                child: Text(
+                                  'Штучно',
+                                  style: AppTextStyles.size16Weight600.copyWith(
+                                    color: segmentValue == 0
+                                        ? Colors.black
+                                        : const Color(0xff9B9B9B),
+                                  ),
+                                ),
                               ),
                               1: Container(
                                 width: MediaQuery.of(context).size.width,
                                 alignment: Alignment.center,
                                 height: 32,
-                                child: Text('Оптом',
-                                    style: AppTextStyles.size16Weight600
-                                        .copyWith(
-                                            color: segmentValue == 1
-                                                ? Colors.black
-                                                : const Color(0xff9B9B9B))),
+                                child: Text(
+                                  'Оптом',
+                                  style: AppTextStyles.size16Weight600.copyWith(
+                                    color: segmentValue == 1
+                                        ? Colors.black
+                                        : const Color(0xff9B9B9B),
+                                  ),
+                                ),
                               ),
                             },
                             onValueChanged: (int? value) {
@@ -134,13 +136,9 @@ void showBasketBottomSheetOptions(BuildContext context, String title, int optom,
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(16),
                           ),
-                          height:
-                              product.bloc?.isEmpty != true && segmentValue == 1
-                                  ? 210
-                                  : 152,
+                          height: product.bloc?.isEmpty != true && segmentValue == 1 ? 210 : 152,
                           margin: EdgeInsets.only(left: 16, right: 16, top: 12),
-                          padding:
-                              EdgeInsets.only(top: 12, right: 12, left: 12),
+                          padding: EdgeInsets.only(top: 12, right: 12, left: 12),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -153,11 +151,9 @@ void showBasketBottomSheetOptions(BuildContext context, String title, int optom,
                                     height: 94,
                                     width: 114,
                                     decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(12),
-                                        border: Border.all(
-                                          width: 1,
-                                          color: Color(0xffEAECED),
-                                        )),
+                                      borderRadius: BorderRadius.circular(12),
+                                      border: Border.all(width: 1, color: Color(0xffEAECED)),
+                                    ),
                                     child: ClipRRect(
                                       borderRadius: BorderRadius.circular(12),
                                       child: Image.network(
@@ -165,175 +161,162 @@ void showBasketBottomSheetOptions(BuildContext context, String title, int optom,
                                         fit: BoxFit.cover,
                                         height: 94,
                                         width: 114,
-                                        errorBuilder:
-                                            (context, error, stackTrace) =>
-                                                const ErrorImageWidget(
-                                          height: 94,
-                                          width: 114,
-                                        ),
+                                        errorBuilder: (context, error, stackTrace) =>
+                                            const ErrorImageWidget(height: 94, width: 114),
                                       ),
                                     ),
                                   ),
                                   SizedBox(width: 8),
                                   Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        compoundPrice != 0
-                                            ? Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.start,
-                                                children: [
-                                                  SizedBox(
-                                                    // width: 75,
-                                                    child: Text(
-                                                      '${formatPrice(compoundPrice)} ₽ ',
-                                                      style: const TextStyle(
-                                                          color: Colors.black,
-                                                          letterSpacing: 0,
-                                                          fontWeight:
-                                                              FontWeight.w700,
-                                                          fontSize: 18),
-                                                    ),
-                                                  ),
-                                                  Text(
-                                                    '${formatPrice(product.price!)} ₽ ',
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      compoundPrice != 0
+                                          ? Row(
+                                              mainAxisAlignment: MainAxisAlignment.start,
+                                              children: [
+                                                SizedBox(
+                                                  // width: 75,
+                                                  child: Text(
+                                                    '${formatPrice(compoundPrice)} ₽ ',
                                                     style: const TextStyle(
-                                                      color: Color(0xff8E8E93),
-                                                      letterSpacing: -1,
-                                                      fontWeight:
-                                                          FontWeight.w400,
-                                                      fontSize: 13,
-                                                      decoration: TextDecoration
-                                                          .lineThrough,
-                                                      decorationColor:
-                                                          Color(0xff8E8E93),
+                                                      color: Colors.black,
+                                                      letterSpacing: 0,
+                                                      fontWeight: FontWeight.w700,
+                                                      fontSize: 18,
                                                     ),
                                                   ),
-                                                ],
-                                              )
-                                            : Text(
-                                                '${formatPrice(product.price!)} ₽ ',
-                                                style: const TextStyle(
-                                                  color: AppColors.kGray900,
-                                                  letterSpacing: 0,
-                                                  fontWeight: FontWeight.w700,
-                                                  fontSize: 18,
                                                 ),
+                                                Text(
+                                                  '${formatPrice(product.price!)} ₽ ',
+                                                  style: const TextStyle(
+                                                    color: Color(0xff8E8E93),
+                                                    letterSpacing: -1,
+                                                    fontWeight: FontWeight.w400,
+                                                    fontSize: 13,
+                                                    decoration: TextDecoration.lineThrough,
+                                                    decorationColor: Color(0xff8E8E93),
+                                                  ),
+                                                ),
+                                              ],
+                                            )
+                                          : Text(
+                                              '${formatPrice(product.price!)} ₽ ',
+                                              style: const TextStyle(
+                                                color: AppColors.kGray900,
+                                                letterSpacing: 0,
+                                                fontWeight: FontWeight.w700,
+                                                fontSize: 18,
                                               ),
-                                        SizedBox(height: 4),
-                                        SizedBox(
-                                          width: 212,
-                                          child: Text(
-                                            '${product.name}',
-                                            maxLines: 2,
-                                            style: AppTextStyles.size13Weight400
-                                                .copyWith(
-                                                    color: Color(0xff636366)),
+                                            ),
+                                      SizedBox(height: 4),
+                                      SizedBox(
+                                        width: 212,
+                                        child: Text(
+                                          '${product.name}',
+                                          maxLines: 2,
+                                          style: AppTextStyles.size13Weight400.copyWith(
+                                            color: Color(0xff636366),
                                           ),
                                         ),
-                                        SizedBox(height: 4),
-                                        Text(
-                                          'В наличии: ${product.product_count}',
-                                          style: AppTextStyles.size13Weight400
-                                              .copyWith(
-                                                  color: Color(0xff636366)),
+                                      ),
+                                      SizedBox(height: 4),
+                                      Text(
+                                        'В наличии: ${product.product_count}',
+                                        style: AppTextStyles.size13Weight400.copyWith(
+                                          color: Color(0xff636366),
                                         ),
-                                        SizedBox(height: 12),
-                                        Container(
-                                          // margin: EdgeInsets.only(left: 154),
-                                          height: 40,
-                                          width: 111,
-                                          decoration: BoxDecoration(
-                                              color: Color(0xffF7F7F7),
-                                              borderRadius:
-                                                  BorderRadius.circular(100)),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              InkWell(
-                                                splashColor: AppColors.kWhite,
-                                                onTap: () {
-                                                  /// FIXME
-                                                  // BlocProvider.of<BasketCubit>(context)
-                                                  //     .basketMinus(
-                                                  //         widget.product.id.toString(),
-                                                  //         '1',
-                                                  //         0,
-                                                  //         'fbs');
+                                      ),
+                                      SizedBox(height: 12),
+                                      Container(
+                                        // margin: EdgeInsets.only(left: 154),
+                                        height: 40,
+                                        width: 111,
+                                        decoration: BoxDecoration(
+                                          color: Color(0xffF7F7F7),
+                                          borderRadius: BorderRadius.circular(100),
+                                        ),
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          children: [
+                                            InkWell(
+                                              splashColor: AppColors.kWhite,
+                                              onTap: () {
+                                                /// FIXME
+                                                // BlocProvider.of<BasketCubit>(context)
+                                                //     .basketMinus(
+                                                //         widget.product.id.toString(),
+                                                //         '1',
+                                                //         0,
+                                                //         'fbs');
 
-                                                  // BlocProvider.of<productCubit.ProductCubit>(
-                                                  //         context)
-                                                  //     .updateProductByIndex(
-                                                  //   index: widget.index,
-                                                  //   updatedProduct: widget.product.copyWith(
-                                                  //     basketCount: basketCount - 1,
-                                                  //   ),
-                                                  //);
-                                                  setState(() {
-                                                    if (basketCount == 0) {
-                                                      return;
-                                                      // isvisible = false;
-                                                    } else {
-                                                      // isvisible = true;
-                                                    }
-                                                    basketCount -= 1;
-                                                  });
-                                                },
-                                                child: const Icon(
-                                                  Icons.remove,
-                                                  color:
-                                                      AppColors.mainPurpleColor,
-                                                ),
+                                                // BlocProvider.of<productCubit.ProductCubit>(
+                                                //         context)
+                                                //     .updateProductByIndex(
+                                                //   index: widget.index,
+                                                //   updatedProduct: widget.product.copyWith(
+                                                //     basketCount: basketCount - 1,
+                                                //   ),
+                                                //);
+                                                setState(() {
+                                                  if (basketCount == 0) {
+                                                    return;
+                                                    // isvisible = false;
+                                                  } else {
+                                                    // isvisible = true;
+                                                  }
+                                                  basketCount -= 1;
+                                                });
+                                              },
+                                              child: const Icon(
+                                                Icons.remove,
+                                                color: AppColors.mainPurpleColor,
                                               ),
-                                              // const SizedBox(
-                                              //   width: 14,
-                                              // ),
-                                              Container(
-                                                width: 28,
-                                                alignment: Alignment.center,
-                                                child: Text(
-                                                  '$basketCount',
-                                                  style: AppTextStyles
-                                                      .size16Weight600,
-                                                ),
+                                            ),
+                                            // const SizedBox(
+                                            //   width: 14,
+                                            // ),
+                                            Container(
+                                              width: 28,
+                                              alignment: Alignment.center,
+                                              child: Text(
+                                                '$basketCount',
+                                                style: AppTextStyles.size16Weight600,
                                               ),
-                                              // const SizedBox(
-                                              //   width: 14,
-                                              // ),
-                                              InkWell(
-                                                splashColor: AppColors.kWhite,
-                                                onTap: () {
-                                                  // BlocProvider.of<BasketCubit>(context)
-                                                  //     .basketAdd(widget.product.id.toString(),
-                                                  //         '1', 0, '', '');
-                                                  // BlocProvider.of<productCubit.ProductCubit>(
-                                                  //         context)
-                                                  //     .updateProductByIndex(
-                                                  //   index: widget.index,
-                                                  //   updatedProduct: widget.product.copyWith(
-                                                  //     basketCount: basketCount + 1,
-                                                  //   ),
-                                                  //  );
+                                            ),
+                                            // const SizedBox(
+                                            //   width: 14,
+                                            // ),
+                                            InkWell(
+                                              splashColor: AppColors.kWhite,
+                                              onTap: () {
+                                                // BlocProvider.of<BasketCubit>(context)
+                                                //     .basketAdd(widget.product.id.toString(),
+                                                //         '1', 0, '', '');
+                                                // BlocProvider.of<productCubit.ProductCubit>(
+                                                //         context)
+                                                //     .updateProductByIndex(
+                                                //   index: widget.index,
+                                                //   updatedProduct: widget.product.copyWith(
+                                                //     basketCount: basketCount + 1,
+                                                //   ),
+                                                //  );
 
-                                                  /// FIXME
-                                                  setState(() {
-                                                    basketCount += 1;
-                                                  });
-                                                },
-                                                child: const Icon(
-                                                  Icons.add,
-                                                  color:
-                                                      AppColors.mainPurpleColor,
-                                                ),
+                                                /// FIXME
+                                                setState(() {
+                                                  basketCount += 1;
+                                                });
+                                              },
+                                              child: const Icon(
+                                                Icons.add,
+                                                color: AppColors.mainPurpleColor,
                                               ),
-                                            ],
-                                          ),
-                                        )
-                                      ])
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ],
                               ),
                             ],
@@ -342,11 +325,11 @@ void showBasketBottomSheetOptions(BuildContext context, String title, int optom,
                       : Container(
                           height: 300,
                           decoration: BoxDecoration(
-                              color: AppColors.kWhite,
-                              borderRadius: BorderRadius.circular(16)),
+                            color: AppColors.kWhite,
+                            borderRadius: BorderRadius.circular(16),
+                          ),
                           margin: EdgeInsets.only(left: 16, right: 16, top: 12),
-                          padding:
-                              EdgeInsets.only(top: 12, right: 12, left: 12),
+                          padding: EdgeInsets.only(top: 12, right: 12, left: 12),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -359,11 +342,9 @@ void showBasketBottomSheetOptions(BuildContext context, String title, int optom,
                                     height: 94,
                                     width: 114,
                                     decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(12),
-                                        border: Border.all(
-                                          width: 1,
-                                          color: Color(0xffEAECED),
-                                        )),
+                                      borderRadius: BorderRadius.circular(12),
+                                      border: Border.all(width: 1, color: Color(0xffEAECED)),
+                                    ),
                                     child: ClipRRect(
                                       borderRadius: BorderRadius.circular(12),
                                       child: Image.network(
@@ -371,99 +352,88 @@ void showBasketBottomSheetOptions(BuildContext context, String title, int optom,
                                         fit: BoxFit.cover,
                                         height: 94,
                                         width: 114,
-                                        errorBuilder:
-                                            (context, error, stackTrace) =>
-                                                const ErrorImageWidget(
-                                          height: 94,
-                                          width: 114,
-                                        ),
+                                        errorBuilder: (context, error, stackTrace) =>
+                                            const ErrorImageWidget(height: 94, width: 114),
                                       ),
                                     ),
                                   ),
                                   SizedBox(width: 8),
                                   Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        compoundPrice != 0
-                                            ? Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    '${formatPrice(compoundPrice)} ₽ ',
-                                                    style: const TextStyle(
-                                                        color: Colors.black,
-                                                        letterSpacing: 0,
-                                                        fontWeight:
-                                                            FontWeight.w700,
-                                                        fontSize: 18),
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      compoundPrice != 0
+                                          ? Row(
+                                              mainAxisAlignment: MainAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  '${formatPrice(compoundPrice)} ₽ ',
+                                                  style: const TextStyle(
+                                                    color: Colors.black,
+                                                    letterSpacing: 0,
+                                                    fontWeight: FontWeight.w700,
+                                                    fontSize: 18,
                                                   ),
-                                                  Text(
-                                                    '${formatPrice(product.price!)} ₽ ',
-                                                    style: AppTextStyles
-                                                        .size14Weight400
-                                                        .copyWith(
-                                                      color: Color(0xff8E8E93),
-                                                      letterSpacing: -1,
-                                                      decoration: TextDecoration
-                                                          .lineThrough,
-                                                      decorationColor:
-                                                          Color(0xff8E8E93),
-                                                    ),
-                                                  ),
-                                                ],
-                                              )
-                                            : Text(
-                                                '${formatPrice(product.price!)} ₽ ',
-                                                style: const TextStyle(
-                                                  color: AppColors.kGray900,
-                                                  letterSpacing: 0,
-                                                  fontWeight: FontWeight.w700,
-                                                  fontSize: 18,
                                                 ),
+                                                Text(
+                                                  '${formatPrice(product.price!)} ₽ ',
+                                                  style: AppTextStyles.size14Weight400.copyWith(
+                                                    color: Color(0xff8E8E93),
+                                                    letterSpacing: -1,
+                                                    decoration: TextDecoration.lineThrough,
+                                                    decorationColor: Color(0xff8E8E93),
+                                                  ),
+                                                ),
+                                              ],
+                                            )
+                                          : Text(
+                                              '${formatPrice(product.price!)} ₽ ',
+                                              style: const TextStyle(
+                                                color: AppColors.kGray900,
+                                                letterSpacing: 0,
+                                                fontWeight: FontWeight.w700,
+                                                fontSize: 18,
                                               ),
-                                        SizedBox(height: 4),
-                                        SizedBox(
-                                          height: 18,
-                                          width: 212,
-                                          child: Text(
-                                            '${product.name}',
-                                            maxLines: 1,
-                                            style: AppTextStyles.size13Weight400
-                                                .copyWith(
-                                                    color: Color(0xff636366)),
+                                            ),
+                                      SizedBox(height: 4),
+                                      SizedBox(
+                                        height: 18,
+                                        width: 212,
+                                        child: Text(
+                                          '${product.name}',
+                                          maxLines: 1,
+                                          style: AppTextStyles.size13Weight400.copyWith(
+                                            color: Color(0xff636366),
                                           ),
                                         ),
-                                        SizedBox(height: 4),
-                                        Text(
-                                          'В наличии: ${product.bloc?.length} шт',
-                                          style: AppTextStyles.size13Weight400
-                                              .copyWith(
-                                                  color: Color(0xff636366)),
+                                      ),
+                                      SizedBox(height: 4),
+                                      Text(
+                                        'В наличии: ${product.bloc?.length} шт',
+                                        style: AppTextStyles.size13Weight400.copyWith(
+                                          color: Color(0xff636366),
                                         ),
-                                        SizedBox(height: 14),
-                                      ])
+                                      ),
+                                      SizedBox(height: 14),
+                                    ],
+                                  ),
                                 ],
                               ),
                               const SizedBox(height: 12),
                               const Divider(
                                 thickness: 0.1, // толщина линии
-                                height:
-                                    1, // общая высота виджета (должна быть ≥ thickness)
+                                height: 1, // общая высота виджета (должна быть ≥ thickness)
                               ),
                               const SizedBox(height: 6),
                               Text(
                                 'Укажите количество  (от ${product.bloc?.first.count ?? 0} шт.)',
-                                style: AppTextStyles.size13Weight400
-                                    .copyWith(color: Color(0xff636366)),
+                                style: AppTextStyles.size13Weight400.copyWith(
+                                  color: Color(0xff636366),
+                                ),
                               ),
                               const SizedBox(height: 8),
                               GestureDetector(
-                                behavior: HitTestBehavior
-                                    .opaque, // ловит тап по всей области
+                                behavior: HitTestBehavior.opaque, // ловит тап по всей области
                                 onTap: () => _showOptomPickerBottomSheet(
                                   context,
                                   selectedIndex3 != -1 ? selectedIndex3 : 0,
@@ -479,12 +449,8 @@ void showBasketBottomSheetOptions(BuildContext context, String title, int optom,
                                     } else {
                                       selectedIndex3 = optomIndex;
                                       setState(() {
-                                        basketOptomCount =
-                                            product.bloc?[optomIndex].count ??
-                                                0;
-                                        basketOptomPrice =
-                                            product.bloc?[optomIndex].price ??
-                                                0;
+                                        basketOptomCount = product.bloc?[optomIndex].count ?? 0;
+                                        basketOptomPrice = product.bloc?[optomIndex].price ?? 0;
                                         isOptom = true;
                                       });
                                     }
@@ -493,8 +459,7 @@ void showBasketBottomSheetOptions(BuildContext context, String title, int optom,
                                 child: Container(
                                   height: 52,
                                   width: double.infinity,
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 16, vertical: 15),
+                                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 15),
                                   decoration: BoxDecoration(
                                     color: AppColors.kGray2,
                                     borderRadius: BorderRadius.circular(16),
@@ -507,15 +472,11 @@ void showBasketBottomSheetOptions(BuildContext context, String title, int optom,
                                       keyboardType: TextInputType.phone,
                                       decoration: InputDecoration(
                                         hintText: '$basketOptomCount шт',
-                                        hintStyle:
-                                            AppTextStyles.size16Weight400,
+                                        hintStyle: AppTextStyles.size16Weight400,
                                         border: InputBorder.none,
                                       ),
-                                      inputFormatters: [
-                                        FilteringTextInputFormatter.digitsOnly
-                                      ],
-                                      onSubmitted: (_) =>
-                                          FocusScope.of(context).unfocus(),
+                                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                                      onSubmitted: (_) => FocusScope.of(context).unfocus(),
                                     ),
                                   ),
                                 ),
@@ -525,82 +486,77 @@ void showBasketBottomSheetOptions(BuildContext context, String title, int optom,
                                 children: [
                                   SizedBox(
                                     height: 30,
-                                    child: Row(children: [
-                                      Container(
-                                        decoration: BoxDecoration(
-                                          gradient: const LinearGradient(
-                                            begin: Alignment(-0.6, -1),
-                                            end: Alignment(1, 1),
-                                            colors: [
-                                              Color(0xFF7D2DFF),
-                                              Color(0xFF41DDFF),
-                                            ],
-                                            stops: [0.2685, 1.0],
-                                          ),
-                                          borderRadius:
-                                              BorderRadius.circular(8),
-                                        ),
-                                        padding: const EdgeInsets.all(
-                                            1), // Толщина границы
-                                        child: Container(
-                                          height: 30,
-                                          alignment: Alignment.center,
+                                    child: Row(
+                                      children: [
+                                        Container(
                                           decoration: BoxDecoration(
-                                            color: Colors
-                                                .white, // Цвет внутреннего фона
-                                            borderRadius: BorderRadius.circular(
-                                                8), // Чуть меньше радиус
+                                            gradient: const LinearGradient(
+                                              begin: Alignment(-0.6, -1),
+                                              end: Alignment(1, 1),
+                                              colors: [Color(0xFF7D2DFF), Color(0xFF41DDFF)],
+                                              stops: [0.2685, 1.0],
+                                            ),
+                                            borderRadius: BorderRadius.circular(8),
                                           ),
-                                          child: ShaderMask(
-                                            shaderCallback: (bounds) =>
-                                                const LinearGradient(
-                                              colors: [
-                                                Color(0xFF7D2DFF),
-                                                Color(0xFF41DDFF)
-                                              ],
-                                            ).createShader(bounds),
-                                            child: Padding(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      horizontal: 10.0),
-                                              child: Text(
-                                                selectedIndex3 != -1
-                                                    ? " ${product.bloc![selectedIndex3].price} ₽"
-                                                    : '0 ₽',
-                                                style: const TextStyle(
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.w400,
-                                                  color: Colors
-                                                      .white, // Неважно — будет заменён градиентом
+                                          padding: const EdgeInsets.all(1), // Толщина границы
+                                          child: Container(
+                                            height: 30,
+                                            alignment: Alignment.center,
+                                            decoration: BoxDecoration(
+                                              color: Colors.white, // Цвет внутреннего фона
+                                              borderRadius: BorderRadius.circular(
+                                                8,
+                                              ), // Чуть меньше радиус
+                                            ),
+                                            child: ShaderMask(
+                                              shaderCallback: (bounds) => const LinearGradient(
+                                                colors: [Color(0xFF7D2DFF), Color(0xFF41DDFF)],
+                                              ).createShader(bounds),
+                                              child: Padding(
+                                                padding: const EdgeInsets.symmetric(
+                                                  horizontal: 10.0,
+                                                ),
+                                                child: Text(
+                                                  selectedIndex3 != -1
+                                                      ? " ${product.bloc![selectedIndex3].price} ₽"
+                                                      : '0 ₽',
+                                                  style: const TextStyle(
+                                                    fontSize: 16,
+                                                    fontWeight: FontWeight.w400,
+                                                    color: Colors
+                                                        .white, // Неважно — будет заменён градиентом
+                                                  ),
                                                 ),
                                               ),
-                                            ),
-                                          ), // Ваш контент
+                                            ), // Ваш контент
+                                          ),
                                         ),
-                                      ),
 
-                                      Text(
-                                        selectedIndex3 != -1
-                                            ? '  x ${product.bloc?[selectedIndex3].count ?? 0} шт'
-                                            : '  x 0 шт',
-                                        style: AppTextStyles.size16Weight400,
-                                      ),
-                                      // Text(
-                                      //   ' x${count != -1 ? count : 0}',
-                                      //   style: const TextStyle(
-                                      //       fontSize: 12,
-                                      //       fontWeight: FontWeight.w400,
-                                      //       color: Colors.grey),
-                                      // ),
-                                      Spacer(),
-                                      Text(
+                                        Text(
+                                          selectedIndex3 != -1
+                                              ? '  x ${product.bloc?[selectedIndex3].count ?? 0} шт'
+                                              : '  x 0 шт',
+                                          style: AppTextStyles.size16Weight400,
+                                        ),
+                                        // Text(
+                                        //   ' x${count != -1 ? count : 0}',
+                                        //   style: const TextStyle(
+                                        //       fontSize: 12,
+                                        //       fontWeight: FontWeight.w400,
+                                        //       color: Colors.grey),
+                                        // ),
+                                        Spacer(),
+                                        Text(
                                           ' = ${(selectedIndex3 != -1 ? (product.bloc![selectedIndex3].price! * product.bloc![selectedIndex3].count!) : 0)}₽',
                                           style: const TextStyle(
-                                              fontSize: 16,
-                                              letterSpacing: 0,
-                                              fontWeight: FontWeight.w500,
-                                              color: Colors.black)),
-                                    ]),
+                                            fontSize: 16,
+                                            letterSpacing: 0,
+                                            fontWeight: FontWeight.w500,
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
 
                                   // Container(
@@ -741,7 +697,6 @@ void showBasketBottomSheetOptions(BuildContext context, String title, int optom,
                                   //   ),
                                   // ),
                                   // const SizedBox(height: 14),
-
                                   SizedBox(height: 12),
                                   Row(
                                     children: [
@@ -752,20 +707,16 @@ void showBasketBottomSheetOptions(BuildContext context, String title, int optom,
                                       ),
                                       SizedBox(width: 6),
                                       ShaderMask(
-                                        shaderCallback: (bounds) =>
-                                            const LinearGradient(
-                                          colors: [
-                                            Color(0xFF7D2DFF),
-                                            Color(0xFF41DDFF)
-                                          ],
+                                        shaderCallback: (bounds) => const LinearGradient(
+                                          colors: [Color(0xFF7D2DFF), Color(0xFF41DDFF)],
                                         ).createShader(bounds),
                                         child: Text(
                                           'Экономия',
                                           style: const TextStyle(
                                             fontSize: 13,
                                             fontWeight: FontWeight.w500,
-                                            color: Colors
-                                                .white, // Неважно — будет заменён градиентом
+                                            color:
+                                                Colors.white, // Неважно — будет заменён градиентом
                                           ),
                                         ),
                                       ),
@@ -777,16 +728,14 @@ void showBasketBottomSheetOptions(BuildContext context, String title, int optom,
                                     ],
                                   ),
                                 ],
-                              )
+                              ),
                               // : SizedBox.shrink(),
-                              ,
                             ],
                           ),
                         ),
                   const SizedBox(height: 12),
                   Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
                     child: SizedBox(
                       width: double.infinity,
                       height: 52,
@@ -802,8 +751,7 @@ void showBasketBottomSheetOptions(BuildContext context, String title, int optom,
                           }
 
                           if (isOptom) {
-                            callback.call(
-                                basketOptomCount, basketOptomPrice, true);
+                            callback.call(basketOptomCount, basketOptomPrice, true);
                           } else {
                             callback.call(basketCount, basketPrice, false);
                           }
@@ -814,20 +762,24 @@ void showBasketBottomSheetOptions(BuildContext context, String title, int optom,
                           backgroundColor: basketCount == 0
                               ? AppColors.kGray200
                               : AppColors.mainPurpleColor,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16),
-                          ),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                         ),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Text("В корзину",
-                                style: AppTextStyles.size16Weight600
-                                    .copyWith(color: AppColors.kWhite)),
-                            Text("Уточните срок и цену доставки у продавца",
-                                style: AppTextStyles.size12Weight400
-                                    .copyWith(color: AppColors.kWhite)),
+                            Text(
+                              "В корзину",
+                              style: AppTextStyles.size16Weight600.copyWith(
+                                color: AppColors.kWhite,
+                              ),
+                            ),
+                            Text(
+                              "Уточните срок и цену доставки у продавца",
+                              style: AppTextStyles.size12Weight400.copyWith(
+                                color: AppColors.kWhite,
+                              ),
+                            ),
                           ],
                         ),
                       ),
@@ -852,10 +804,8 @@ void _showOptomPickerBottomSheet(
   final List<Bloc> optoms = listOptom;
 
   final int initialIndex = optoms.indexOf(listOptom[initialSelected]);
-  final FixedExtentScrollController scrollController =
-      FixedExtentScrollController(
-    initialItem:
-        initialIndex == -1 ? 0 : initialIndex, // фолбэк, если года нет в списке
+  final FixedExtentScrollController scrollController = FixedExtentScrollController(
+    initialItem: initialIndex == -1 ? 0 : initialIndex, // фолбэк, если года нет в списке
   );
 
   showModalBottomSheet(
@@ -865,8 +815,7 @@ void _showOptomPickerBottomSheet(
     ),
     backgroundColor: Color(0xffF7F7F7),
     builder: (context) {
-      int selected =
-          initialSelected; // Локальный selectedYear для обновления в билдере
+      int selected = initialSelected; // Локальный selectedYear для обновления в билдере
 
       return StatefulBuilder(
         builder: (context, setModalState) {
@@ -879,10 +828,7 @@ void _showOptomPickerBottomSheet(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        'Укажите количество',
-                        style: AppTextStyles.size16Weight500,
-                      ),
+                      Text('Укажите количество', style: AppTextStyles.size16Weight500),
                       InkWell(
                         onTap: () {
                           Navigator.of(context).pop();
@@ -893,7 +839,7 @@ void _showOptomPickerBottomSheet(
                           width: 24,
                           height: 24,
                         ),
-                      )
+                      ),
                     ],
                   ),
                 ),
@@ -902,8 +848,9 @@ void _showOptomPickerBottomSheet(
                   height: 212,
                   margin: EdgeInsets.symmetric(horizontal: 16),
                   decoration: BoxDecoration(
-                      color: AppColors.kWhite,
-                      borderRadius: BorderRadius.circular(16)),
+                    color: AppColors.kWhite,
+                    borderRadius: BorderRadius.circular(16),
+                  ),
                   child: ListWheelScrollView.useDelegate(
                     controller: scrollController,
                     itemExtent: 50,
@@ -924,37 +871,34 @@ void _showOptomPickerBottomSheet(
                           width: double.infinity,
                           alignment: Alignment.center,
                           decoration: BoxDecoration(
-                            color: isSelected
-                                ? Color(0xffEAECED)
-                                : Colors.transparent,
+                            color: isSelected ? Color(0xffEAECED) : Colors.transparent,
                             borderRadius: BorderRadius.circular(8),
                           ),
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 8, horizontal: 24),
-                          child: Text('${optoms[index].count} шт',
-                              style: AppTextStyles.size20Weight500.copyWith(
-                                color: isSelected
-                                    ? AppColors.kGray900
-                                    : Color(0xff8E8E93),
-                              )),
+                          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 24),
+                          child: Text(
+                            '${optoms[index].count} шт',
+                            style: AppTextStyles.size20Weight500.copyWith(
+                              color: isSelected ? AppColors.kGray900 : Color(0xff8E8E93),
+                            ),
+                          ),
                         );
                       },
                     ),
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(
-                      left: 16.0, right: 16, top: 16, bottom: 50),
+                  padding: const EdgeInsets.only(left: 16.0, right: 16, top: 16, bottom: 50),
                   child: DefaultButton(
-                      text: 'Выбрать',
-                      press: () {
-                        onOptomSelected(selected);
-                        Navigator.of(context).pop();
-                      },
-                      color: AppColors.kWhite,
-                      backgroundColor: AppColors.mainPurpleColor,
-                      width: double.infinity),
-                )
+                    text: 'Выбрать',
+                    press: () {
+                      onOptomSelected(selected);
+                      Navigator.of(context).pop();
+                    },
+                    color: AppColors.kWhite,
+                    backgroundColor: AppColors.mainPurpleColor,
+                    width: double.infinity,
+                  ),
+                ),
               ],
             ),
           );

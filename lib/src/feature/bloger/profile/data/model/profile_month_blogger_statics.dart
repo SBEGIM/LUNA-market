@@ -1,16 +1,17 @@
 class ProfileMonthStatics {
-  ProfileMonthStatics(
-      {int? id,
-      String? name,
-      String? path,
-      String? shop_name,
-      int? price,
-      int? count,
-      int? bonusPercent,
-      int? bonus,
-      int? total,
-      int? totalYear,
-      String? status}) {
+  ProfileMonthStatics({
+    int? id,
+    String? name,
+    String? path,
+    String? shop_name,
+    int? price,
+    int? count,
+    int? bonusPercent,
+    int? bonus,
+    int? total,
+    int? totalYear,
+    String? status,
+  }) {
     _id = id;
     _name = name;
     _path = path;

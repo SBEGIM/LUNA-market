@@ -2,10 +2,7 @@ class basketOrderDTO {
   final ProductDTO? product;
   final BasketDTO? basket;
 
-  const basketOrderDTO({
-    required this.product,
-    required this.basket,
-  });
+  const basketOrderDTO({required this.product, required this.basket});
 }
 
 class ProductDTO {

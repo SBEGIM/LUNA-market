@@ -25,9 +25,7 @@ class _NewsScreenState extends State<NewsScreen> {
     super.initState();
 
     // локальная копия состояния для UI
-    _news = widget.news.copyWith(
-      views: (widget.news.views ?? 0) + 1,
-    );
+    _news = widget.news.copyWith(views: (widget.news.views ?? 0) + 1);
 
     // отправляем событие на бек
     context.read<NewsSellerCubit>().view(_news.id!);
@@ -37,10 +35,7 @@ class _NewsScreenState extends State<NewsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: AppColors.kWhite,
-        title: null,
-      ),
+      appBar: AppBar(backgroundColor: AppColors.kWhite, title: null),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: ListView(
@@ -48,9 +43,7 @@ class _NewsScreenState extends State<NewsScreen> {
             Container(
               width: 358,
               height: 178,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(16),
-              ),
+              decoration: BoxDecoration(borderRadius: BorderRadius.circular(16)),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(16),
                 child: Image.network(
@@ -60,15 +53,11 @@ class _NewsScreenState extends State<NewsScreen> {
               ),
             ),
             const SizedBox(height: 10),
-            Text(
-              _news.title ?? '',
-              style: AppTextStyles.size22Weight600,
-            ),
+            Text(_news.title ?? '', style: AppTextStyles.size22Weight600),
             const SizedBox(height: 10),
             Text(
               _news.description ?? '',
-              style: AppTextStyles.size16Weight400
-                  .copyWith(color: AppColors.kGray300),
+              style: AppTextStyles.size16Weight400.copyWith(color: AppColors.kGray300),
             ),
           ],
         ),
@@ -119,13 +108,9 @@ class _NewsScreenState extends State<NewsScreen> {
                         Color(0x4DFFFFFF), // ~30%
                       ],
                     ),
-                    border: Border.all(
-                      color: const Color(0x33FFFFFF),
-                      width: 1,
-                    ),
+                    border: Border.all(color: const Color(0x33FFFFFF), width: 1),
                   ),
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
@@ -153,8 +138,7 @@ class _NewsScreenState extends State<NewsScreen> {
                         ),
                       ),
                       const SizedBox(width: 8),
-                      Text('${_news.like ?? 0}',
-                          style: AppTextStyles.size14Weight500),
+                      Text('${_news.like ?? 0}', style: AppTextStyles.size14Weight500),
                       const SizedBox(width: 20),
                       Image.asset(
                         Assets.icons.viewTapeIcon.path,
@@ -162,8 +146,7 @@ class _NewsScreenState extends State<NewsScreen> {
                         scale: 1.5,
                       ),
                       const SizedBox(width: 8),
-                      Text('${_news.views ?? 0}',
-                          style: AppTextStyles.size14Weight500),
+                      Text('${_news.views ?? 0}', style: AppTextStyles.size14Weight500),
                     ],
                   ),
                 ),

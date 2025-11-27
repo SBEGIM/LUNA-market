@@ -9,9 +9,7 @@ class TapeCheckCubit extends Cubit<TapeCheckState> {
 
   TapeCheckCubit({required this.tapeRepository}) : super(InitState());
 
-  Future<void> tapeCheck({
-    required int tapeId,
-  }) async {
+  Future<void> tapeCheck({required int tapeId}) async {
     emit(LoadingState());
     try {
       final data = await tapeRepository.tapeCheck(tapeId: tapeId);

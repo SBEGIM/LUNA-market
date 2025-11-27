@@ -1,4 +1,3 @@
-
 abstract class SubsState {}
 
 class InitState extends SubsState {}

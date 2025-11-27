@@ -8,16 +8,14 @@ import 'package:haji_market/src/feature/home/data/repository/popular_shops_repos
 class PopularShopsCubit extends Cubit<PopularShopsState> {
   final PopularShopsRepository popularShopsRepository;
 
-  PopularShopsCubit({required this.popularShopsRepository})
-      : super(InitState());
+  PopularShopsCubit({required this.popularShopsRepository}) : super(InitState());
 
   List<PopularShops> _shops = [];
 
   Future<void> popShops() async {
     try {
       emit(LoadingState());
-      final List<PopularShops> data =
-          await popularShopsRepository.popularShops();
+      final List<PopularShops> data = await popularShopsRepository.popularShops();
 
       _shops = data;
       emit(LoadedState(data));
@@ -36,8 +34,7 @@ class PopularShopsCubit extends Cubit<PopularShopsState> {
     }
     List<PopularShops> temp = [];
     for (int i = 0; i < _shops.length; i++) {
-      if (_shops[i].name != null &&
-          _shops[i].name!.toLowerCase().contains(name.toLowerCase())) {
+      if (_shops[i].name != null && _shops[i].name!.toLowerCase().contains(name.toLowerCase())) {
         temp.add(_shops[i]);
       }
     }

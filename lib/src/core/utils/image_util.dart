@@ -29,11 +29,7 @@ class ImageUtil {
     );
   }
 
-  static Widget cachedLoadingBuilder(
-    BuildContext context,
-    String url,
-    DownloadProgress? progress,
-  ) {
+  static Widget cachedLoadingBuilder(BuildContext context, String url, DownloadProgress? progress) {
     return Center(
       child: CircularProgressIndicator.adaptive(
         backgroundColor: AppColors.mainColor,
@@ -54,8 +50,8 @@ class ImageUtil {
 
       final PermissionStatus permissionStatus =
           isAndroid && androidInfo != null && androidInfo.version.sdkInt <= 32
-              ? await Permission.storage.request()
-              : await Permission.photos.request();
+          ? await Permission.storage.request()
+          : await Permission.photos.request();
 
       if (permissionStatus.isGranted) {
         return true;

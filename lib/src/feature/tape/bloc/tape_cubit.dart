@@ -14,13 +14,11 @@ class TapeCubit extends Cubit<TapeState> {
 
   TapeCubit({required this.tapeRepository}) : super(InitState());
 
-  Future<void> tapes(
-      bool? inSub, bool? inFav, String? search, int? bloggerId) async {
+  Future<void> tapes(bool? inSub, bool? inFav, String? search, int? bloggerId) async {
     try {
       emit(LoadingState());
       page = 1;
-      final data =
-          await tapeRepository.tapes(inSub, inFav, search, bloggerId, page);
+      final data = await tapeRepository.tapes(inSub, inFav, search, bloggerId, page);
 
       if (data.isEmpty) {
         print('NoDataState');
@@ -42,14 +40,12 @@ class TapeCubit extends Cubit<TapeState> {
     }
   }
 
-  Future<void> tapePagination(
-      bool? inSub, bool? inFav, String? search, int? bloggerId) async {
+  Future<void> tapePagination(bool? inSub, bool? inFav, String? search, int? bloggerId) async {
     if (isLoading) return;
     isLoading = true;
 
     try {
-      final data =
-          await tapeRepository.tapes(inSub, inFav, search, bloggerId, page);
+      final data = await tapeRepository.tapes(inSub, inFav, search, bloggerId, page);
 
       if ((bloggerId ?? 0) == 0) {
         array += data;
@@ -68,20 +64,32 @@ class TapeCubit extends Cubit<TapeState> {
     }
   }
 
-  void update(TapeModel tape, int index, bool? inSub, bool? inBas, bool? inFav,
-      bool? inReport, bool? isLiked, int? like, int? favorite, int? send,
-      {bool isBlogger = false}) {
+  void update(
+    TapeModel tape,
+    int index,
+    bool? inSub,
+    bool? inBas,
+    bool? inFav,
+    bool? inReport,
+    bool? isLiked,
+    int? like,
+    int? favorite,
+    int? send, {
+    bool isBlogger = false,
+  }) {
     try {
       final updatedTape = tape.copyWith(
-          inBasket: inBas ?? tape.inBasket,
-          inReport: inReport ?? tape.inReport,
-          inFavorite: inFav ?? tape.inFavorite,
-          inSubscribe: inSub ?? tape.inSubscribe,
-          isLiked: isLiked ?? tape.isLiked,
-          statistics: Statistics(
-              send: send ?? (tape.statistics?.like ?? 0),
-              like: like ?? (tape.statistics?.like ?? 0),
-              favorite: favorite ?? (tape.statistics?.favorite ?? 0)));
+        inBasket: inBas ?? tape.inBasket,
+        inReport: inReport ?? tape.inReport,
+        inFavorite: inFav ?? tape.inFavorite,
+        inSubscribe: inSub ?? tape.inSubscribe,
+        isLiked: isLiked ?? tape.isLiked,
+        statistics: Statistics(
+          send: send ?? (tape.statistics?.like ?? 0),
+          like: like ?? (tape.statistics?.like ?? 0),
+          favorite: favorite ?? (tape.statistics?.favorite ?? 0),
+        ),
+      );
 
       if (isBlogger) {
         if (index >= 0 && index < arrayForBlogger.length) {
@@ -100,10 +108,11 @@ class TapeCubit extends Cubit<TapeState> {
     }
   }
 
-  void updateTapeByIndex(
-      {required int index,
-      required TapeModel updatedTape,
-      bool isBlogger = false}) {
+  void updateTapeByIndex({
+    required int index,
+    required TapeModel updatedTape,
+    bool isBlogger = false,
+  }) {
     try {
       if (isBlogger) {
         if (index >= 0 && index < arrayForBlogger.length) {

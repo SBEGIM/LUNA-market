@@ -5,8 +5,12 @@ import 'package:haji_market/src/feature/home/bloc/popular_shops_cubit.dart';
 import 'package:haji_market/src/feature/home/data/model/cat_model.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
-void showBlogerCatsOptions(BuildContext context, PopularShopsCubit cubit,
-    List<CatsModel> categories, Function callback) {
+void showBlogerCatsOptions(
+  BuildContext context,
+  PopularShopsCubit cubit,
+  List<CatsModel> categories,
+  Function callback,
+) {
   List<CatsModel> _filteredCategories = [...categories];
 
   int selectedCategory = -1;
@@ -31,15 +35,11 @@ void showBlogerCatsOptions(BuildContext context, PopularShopsCubit cubit,
               children: [
                 // Заголовок и крестик
                 Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text(
-                        'Категория и тип',
-                        style: AppTextStyles.size16Weight500,
-                      ),
+                      const Text('Категория и тип', style: AppTextStyles.size16Weight500),
                       InkWell(
                         onTap: () => Navigator.of(context).pop(),
                         child: Image.asset(
@@ -62,11 +62,7 @@ void showBlogerCatsOptions(BuildContext context, PopularShopsCubit cubit,
                   ),
                   child: Row(
                     children: [
-                      Image.asset(
-                        Assets.icons.defaultSearchIcon.path,
-                        height: 18,
-                        width: 18,
-                      ),
+                      Image.asset(Assets.icons.defaultSearchIcon.path, height: 18, width: 18),
                       const SizedBox(width: 12),
                       Expanded(
                         child: TextField(
@@ -74,16 +70,15 @@ void showBlogerCatsOptions(BuildContext context, PopularShopsCubit cubit,
                           onChanged: (value) {
                             setState(() {
                               _filteredCategories = categories.where((cat) {
-                                return (cat.name ?? '')
-                                    .toLowerCase()
-                                    .contains(value.toLowerCase());
+                                return (cat.name ?? '').toLowerCase().contains(value.toLowerCase());
                               }).toList();
                             });
                           },
                           decoration: InputDecoration(
                             hintText: 'Поиск',
-                            hintStyle: AppTextStyles.size16Weight400
-                                .copyWith(color: AppColors.kGray300),
+                            hintStyle: AppTextStyles.size16Weight400.copyWith(
+                              color: AppColors.kGray300,
+                            ),
                             border: InputBorder.none,
                           ),
                         ),
@@ -95,8 +90,7 @@ void showBlogerCatsOptions(BuildContext context, PopularShopsCubit cubit,
                 // Список категорий
                 Flexible(
                   child: Container(
-                    margin: const EdgeInsets.symmetric(
-                        horizontal: 16, vertical: 16),
+                    margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(8),
@@ -108,9 +102,9 @@ void showBlogerCatsOptions(BuildContext context, PopularShopsCubit cubit,
                       itemBuilder: (context, index) {
                         final category = categories[index];
                         final isSelected = category.id == selectedCategory;
-                        final isMatch = category.name!
-                            .toLowerCase()
-                            .contains(searchController.text.toLowerCase());
+                        final isMatch = category.name!.toLowerCase().contains(
+                          searchController.text.toLowerCase(),
+                        );
 
                         if (!isMatch) return const SizedBox.shrink();
 
@@ -119,19 +113,17 @@ void showBlogerCatsOptions(BuildContext context, PopularShopsCubit cubit,
                             selectedCategory = category.id!;
                           }),
                           child: Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 0, vertical: 17),
+                            padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 17),
                             // margin: const EdgeInsets.only(bottom: 6),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text(category.name!,
-                                    style:
-                                        AppTextStyles.size16Weight500.copyWith(
-                                      color: isSelected
-                                          ? AppColors.mainPurpleColor
-                                          : Colors.black,
-                                    )),
+                                Text(
+                                  category.name!,
+                                  style: AppTextStyles.size16Weight500.copyWith(
+                                    color: isSelected ? AppColors.mainPurpleColor : Colors.black,
+                                  ),
+                                ),
                                 if (isSelected)
                                   SizedBox(
                                     height: 20,
@@ -150,11 +142,7 @@ void showBlogerCatsOptions(BuildContext context, PopularShopsCubit cubit,
                         );
                       },
                       separatorBuilder: (BuildContext context, int index) {
-                        return Divider(
-                          height: 1,
-                          thickness: 0.33,
-                          color: Color(0xffEAECED),
-                        );
+                        return Divider(height: 1, thickness: 0.33, color: Color(0xffEAECED));
                       },
                     ),
                   ),
@@ -164,8 +152,7 @@ void showBlogerCatsOptions(BuildContext context, PopularShopsCubit cubit,
 
                 // Кнопка "Выбрать"
                 Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
                   child: SizedBox(
                     width: double.infinity,
                     height: 48,
@@ -176,16 +163,15 @@ void showBlogerCatsOptions(BuildContext context, PopularShopsCubit cubit,
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.mainPurpleColor,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                       ),
                       child: const Text(
                         "Выбрать",
                         style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 16),
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 16,
+                        ),
                       ),
                     ),
                   ),

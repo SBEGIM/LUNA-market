@@ -60,8 +60,7 @@ class CatsCubit extends Cubit<CatsState> {
     }
     List<CatsModel> temp = [];
     for (int i = 0; i < _cats.length; i++) {
-      if (_cats[i].name != null &&
-          _cats[i].name!.toLowerCase().contains(name.toLowerCase())) {
+      if (_cats[i].name != null && _cats[i].name!.toLowerCase().contains(name.toLowerCase())) {
         temp.add(_cats[i]);
       }
     }

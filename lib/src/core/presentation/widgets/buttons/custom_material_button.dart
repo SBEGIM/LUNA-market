@@ -19,16 +19,13 @@ class CustomMaterialButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Material(
-        color: materialColor,
-        borderRadius: borderRadiusGeometry,
-        child: InkWell(
-          borderRadius: borderRadiusGeometry,
-          onTap: onTap,
-          onLongPress: onLongPress,
-          child: Padding(
-            padding: padding,
-            child: child,
-          ),
-        ),
-      );
+    color: materialColor,
+    borderRadius: borderRadiusGeometry,
+    child: InkWell(
+      borderRadius: borderRadiusGeometry,
+      onTap: onTap,
+      onLongPress: onLongPress,
+      child: Padding(padding: padding, child: child),
+    ),
+  );
 }

@@ -9,30 +9,19 @@ class DeleteVideoDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CupertinoAlertDialog(
-      title: const Padding(
-        padding: EdgeInsets.only(bottom: 8),
-        child: Text(
-          'Внимание',
-        ),
-      ),
-      content: const Text(
-        'Вы действительно хотите удалить данное видео?',
-      ),
+      title: const Padding(padding: EdgeInsets.only(bottom: 8), child: Text('Внимание')),
+      content: const Text('Вы действительно хотите удалить данное видео?'),
       actions: <CupertinoDialogAction>[
         CupertinoDialogAction(
           onPressed: onYesTap,
-          textStyle: AppTextStyles.appBarTextStyle.copyWith(
-            color: Colors.red,
-          ),
+          textStyle: AppTextStyles.appBarTextStyle.copyWith(color: Colors.red),
           child: const Text('Да'),
         ),
         CupertinoDialogAction(
           onPressed: () {
             Navigator.pop(context);
           },
-          textStyle: AppTextStyles.appBarTextStyle.copyWith(
-            color: AppColors.kPrimaryColor,
-          ),
+          textStyle: AppTextStyles.appBarTextStyle.copyWith(color: AppColors.kPrimaryColor),
           child: const Text('Нет'),
         ),
       ],

@@ -172,11 +172,7 @@ class _BloggerAd extends State<BloggerAd> {
         ),
         centerTitle: true,
       ),
-      body: SingleChildScrollView(
-        child: Html(
-          data: htmlData,
-        ),
-      ),
+      body: SingleChildScrollView(child: Html(data: htmlData)),
     );
   }
 }

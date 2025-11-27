@@ -3,17 +3,9 @@ class SizeCountSellerDto {
   final String name;
   final String count;
 
-  const SizeCountSellerDto({
-    required this.id,
-    required this.name,
-    required this.count,
-  });
+  const SizeCountSellerDto({required this.id, required this.name, required this.count});
 
-  SizeCountSellerDto copyWith({
-    String? id,
-    String? name,
-    String? count,
-  }) {
+  SizeCountSellerDto copyWith({String? id, String? name, String? count}) {
     return SizeCountSellerDto(
       id: id ?? this.id,
       name: name ?? this.name,
@@ -22,10 +14,6 @@ class SizeCountSellerDto {
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'name': name,
-      'count': count,
-    };
+    return {'id': id, 'name': name, 'count': count};
   }
 }

@@ -8,12 +8,7 @@ class TopMenu extends StatelessWidget {
   final String text;
   final String icon;
   void Function()? onTap;
-  TopMenu({
-    super.key,
-    required this.text,
-    required this.icon,
-    this.onTap,
-  });
+  TopMenu({super.key, required this.text, required this.icon, this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -32,20 +27,15 @@ class TopMenu extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            SvgPicture.asset(
-              icon,
-              color: Colors.white,
-              height: 30,
-            ),
-            const SizedBox(
-              height: 23,
-            ),
+            SvgPicture.asset(icon, color: Colors.white, height: 30),
+            const SizedBox(height: 23),
             Text(
               text,
               style: const TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.white),
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+                color: Colors.white,
+              ),
             ),
           ],
         ),

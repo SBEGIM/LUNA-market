@@ -66,87 +66,68 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
   }
 
   void _initializeControllers() {
-    if (_box.read('seller_name') != null &&
-        _box.read('seller_name') != 'null') {
+    if (_box.read('seller_name') != null && _box.read('seller_name') != 'null') {
       shopNameController.text = _box.read('seller_name') ?? '';
     }
-    if (_box.read('seller_phone') != null &&
-        _box.read('seller_phone') != 'null') {
-      phoneController.text =
-          maskFormatter.maskText(_box.read('seller_phone') ?? '');
+    if (_box.read('seller_phone') != null && _box.read('seller_phone') != 'null') {
+      phoneController.text = maskFormatter.maskText(_box.read('seller_phone') ?? '');
     }
-    if (_box.read('seller_email') != null &&
-        _box.read('seller_email') != 'null') {
+    if (_box.read('seller_email') != null && _box.read('seller_email') != 'null') {
       emailController.text = _box.read('seller_email') ?? '';
     }
-    if (_box.read('seller_country') != null &&
-        _box.read('seller_country') != 'null') {
+    if (_box.read('seller_country') != null && _box.read('seller_country') != 'null') {
       countryController.text = _box.read('seller_country') ?? '';
     }
-    if (_box.read('seller_city') != null &&
-        _box.read('seller_city') != 'null') {
+    if (_box.read('seller_city') != null && _box.read('seller_city') != 'null') {
       cityController.text = _box.read('seller_city') ?? '';
     }
-    if (_box.read('seller_userName') != null &&
-        _box.read('seller_userName') != 'null') {
+    if (_box.read('seller_userName') != null && _box.read('seller_userName') != 'null') {
       nameController.text = _box.read('seller_userName') ?? '';
     }
-    if (_box.read('seller_home') != null &&
-        _box.read('seller_home') != 'null') {
+    if (_box.read('seller_home') != null && _box.read('seller_home') != 'null') {
       homeController.text = _box.read('seller_home') ?? '';
     }
-    if (_box.read('seller_street') != null &&
-        _box.read('seller_street') != 'null') {
+    if (_box.read('seller_street') != null && _box.read('seller_street') != 'null') {
       streetController.text = _box.read('seller_street') ?? '';
     }
     if (_box.read('seller_iin') != null && _box.read('seller_iin') != 'null') {
       iinController.text = _box.read('seller_iin') ?? '';
     }
-    if (_box.read('seller_check') != null &&
-        _box.read('seller_check') != 'null') {
+    if (_box.read('seller_check') != null && _box.read('seller_check') != 'null') {
       checkController.text = _box.read('seller_check') ?? '';
     }
     if (_box.read('seller_type_organization') != null &&
         _box.read('seller_type_organization') != 'null') {
-      typeOrganization =
-          _box.read('seller_type_organization') == 'ИП' ? false : true;
+      typeOrganization = _box.read('seller_type_organization') == 'ИП' ? false : true;
     }
 
     if (_box.read('seller_kpp') != null && _box.read('seller_kpp') != 'null') {
       kppController.text = _box.read('seller_kpp') ?? '';
     }
 
-    if (_box.read('seller_ogrn') != null &&
-        _box.read('seller_ogrn') != 'null') {
+    if (_box.read('seller_ogrn') != null && _box.read('seller_ogrn') != 'null') {
       ogrnController.text = _box.read('seller_ogrn') ?? '';
     }
-    if (_box.read('seller_okved') != null &&
-        _box.read('seller_okved') != 'null') {
+    if (_box.read('seller_okved') != null && _box.read('seller_okved') != 'null') {
       okved.text = _box.read('seller_okved') ?? '';
     }
-    if (_box.read('seller_tax_authority') != null &&
-        _box.read('seller_tax_authority') != 'null') {
+    if (_box.read('seller_tax_authority') != null && _box.read('seller_tax_authority') != 'null') {
       taxAuthority.text = _box.read('seller_tax_authority') ?? '';
     }
-    if (_box.read('seller_date_register') != null &&
-        _box.read('seller_date_register') != 'null') {
+    if (_box.read('seller_date_register') != null && _box.read('seller_date_register') != 'null') {
       dateRegister.text = _box.read('seller_date_register') ?? '';
     }
-    if (_box.read('seller_legal_address') != null &&
-        _box.read('seller_legal_address') != 'null') {
+    if (_box.read('seller_legal_address') != null && _box.read('seller_legal_address') != 'null') {
       legalAddress.text = _box.read('seller_legal_address') ?? '';
     }
 
-    if (_box.read('seller_founder') != null &&
-        _box.read('seller_founder') != 'null') {
+    if (_box.read('seller_founder') != null && _box.read('seller_founder') != 'null') {
       founderController.text = _box.read('seller_founder') ?? '';
     }
-    if (_box.read('seller_date_of_birth') != null &&
-        _box.read('seller_date_of_birth') != 'null') {
+    if (_box.read('seller_date_of_birth') != null && _box.read('seller_date_of_birth') != 'null') {
       dateBirthday.text = _box.read('seller_date_of_birth') ?? '';
     }
-    if (_box.read('seller_citizenship') != null &&
-        _box.read('seller_citizenship') != 'null') {
+    if (_box.read('seller_citizenship') != null && _box.read('seller_citizenship') != 'null') {
       citizenshipController.text = _box.read('seller_citizenship') ?? '';
     }
     if (_box.read('seller_CEO') != null && _box.read('seller_CEO') != 'null') {
@@ -156,18 +137,15 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
         _box.read('seller_organization_fr') != 'null') {
       frOrganizations.text = _box.read('seller_organization_fr') ?? '';
     }
-    if (_box.read('seller_bank') != null &&
-        _box.read('seller_bank') != 'null') {
+    if (_box.read('seller_bank') != null && _box.read('seller_bank') != 'null') {
       bankController.text = _box.read('seller_bank') ?? '';
     }
 
-    if (_box.read('seller_company_name') != null &&
-        _box.read('seller_company_name') != 'null') {
+    if (_box.read('seller_company_name') != null && _box.read('seller_company_name') != 'null') {
       companyNameController.text = _box.read('seller_company_name') ?? '';
     }
 
-    if (_box.read('seller_legal_address') != null &&
-        _box.read('seller_legal_address') != 'null') {
+    if (_box.read('seller_legal_address') != null && _box.read('seller_legal_address') != 'null') {
       legalAddress.text = _box.read('seller_legal_address') ?? '';
     }
   }
@@ -191,10 +169,7 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
         backgroundColor: AppColors.kWhite,
         elevation: 0,
         centerTitle: true,
-        title: Text(
-          widget.title,
-          style: AppTextStyles.appBarTextStyle,
-        ),
+        title: Text(widget.title, style: AppTextStyles.appBarTextStyle),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -213,14 +188,10 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
                   //     color: AppColors.kGray500,
                   //   ),
                   // ),
-                  if (widget.title == 'Юридические данные')
-                    _buildOrganizationSection(),
-                  if (widget.title == 'Реквизиты банка')
-                    _buildShopInfoSection(),
-                  if (widget.title == 'Контактные данные')
-                    _buildContactInfoSection(),
-                  if (widget.title == 'Контактные данные')
-                    _buildPasswordSection(),
+                  if (widget.title == 'Юридические данные') _buildOrganizationSection(),
+                  if (widget.title == 'Реквизиты банка') _buildShopInfoSection(),
+                  if (widget.title == 'Контактные данные') _buildContactInfoSection(),
+                  if (widget.title == 'Контактные данные') _buildPasswordSection(),
                   const SizedBox(height: 100),
                 ],
               ),
@@ -228,11 +199,7 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
           ],
         ),
       ),
-      bottomSheet: Material(
-        color: Colors.white,
-        elevation: 0,
-        child: _buildSaveButton(context),
-      ),
+      bottomSheet: Material(color: Colors.white, elevation: 0, child: _buildSaveButton(context)),
     );
   }
 
@@ -280,8 +247,7 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
                       shape: BoxShape.circle,
                       border: Border.all(color: Colors.white, width: 2),
                     ),
-                    child: const Icon(Icons.camera_alt,
-                        size: 16, color: Colors.white),
+                    child: const Icon(Icons.camera_alt, size: 16, color: Colors.white),
                   ),
                 ),
               ],
@@ -303,10 +269,7 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
                 const SizedBox(height: 4),
                 Text(
                   '${GetStorage().read('seller_email')}',
-                  style: const TextStyle(
-                    fontSize: 14,
-                    color: AppColors.kGray500,
-                  ),
+                  style: const TextStyle(fontSize: 14, color: AppColors.kGray500),
                 ),
               ],
             ),
@@ -337,74 +300,28 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
         //   ],
         // ),
         const SizedBox(height: 16),
-        _buildFormField(
-          controller: iinController,
-          label: 'ИНН/БИН',
-        ),
+        _buildFormField(controller: iinController, label: 'ИНН/БИН'),
 
+        if (typeOrganization) _buildFormField(controller: kppController, label: 'КПП'),
+        if (typeOrganization) _buildFormField(controller: ogrnController, label: 'ОГРН'),
+        _buildFormField(controller: okved, label: 'ОКВэД'),
+        _buildFormField(controller: taxAuthority, label: 'Налоговый орган'),
+        _buildFormField(controller: dateRegister, label: 'Дата регистрации'),
+        _buildFormField(controller: legalAddress, label: 'Юридический адрес'),
+        if (typeOrganization) _buildFormField(controller: founderController, label: 'Учредитель'),
+        if (typeOrganization) _buildFormField(controller: dateBirthday, label: 'Дата рождения'),
         if (typeOrganization)
-          _buildFormField(
-            controller: kppController,
-            label: 'КПП',
-          ),
-        if (typeOrganization)
-          _buildFormField(
-            controller: ogrnController,
-            label: 'ОГРН',
-          ),
-        _buildFormField(
-          controller: okved,
-          label: 'ОКВэД',
-        ),
-        _buildFormField(
-          controller: taxAuthority,
-          label: 'Налоговый орган',
-        ),
-        _buildFormField(
-          controller: dateRegister,
-          label: 'Дата регистрации',
-        ),
-        _buildFormField(
-          controller: legalAddress,
-          label: 'Юридический адрес',
-        ),
-        if (typeOrganization)
-          _buildFormField(
-            controller: founderController,
-            label: 'Учредитель',
-          ),
-        if (typeOrganization)
-          _buildFormField(
-            controller: dateBirthday,
-            label: 'Дата рождения',
-          ),
-        if (typeOrganization)
-          _buildFormField(
-            controller: citizenshipController,
-            label: 'Гражданство',
-          ),
-        _buildFormField(
-          controller: companyNameController,
-          label: 'Название компании',
-        ),
+          _buildFormField(controller: citizenshipController, label: 'Гражданство'),
+        _buildFormField(controller: companyNameController, label: 'Название компании'),
         // _buildFormField(
         //   icon: Icons.assignment,
         //   controller: addressController,
         //   hintText: 'Адрес',
         // ),
         if (typeOrganization)
-          _buildFormField(
-            controller: generalDirectorController,
-            label: 'Ген.директор',
-          ),
-        _buildFormField(
-          controller: frOrganizations,
-          label: 'Организации ФР',
-        ),
-        _buildFormField(
-          controller: bankController,
-          label: 'Банк',
-        ),
+          _buildFormField(controller: generalDirectorController, label: 'Ген.директор'),
+        _buildFormField(controller: frOrganizations, label: 'Организации ФР'),
+        _buildFormField(controller: bankController, label: 'Банк'),
       ],
     );
   }
@@ -421,19 +338,10 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
       selectedColor: Colors.white,
       fillColor: AppColors.kPrimaryColor,
       color: AppColors.kPrimaryColor,
-      constraints: const BoxConstraints(
-        minHeight: 40,
-        minWidth: 0,
-      ),
+      constraints: const BoxConstraints(minHeight: 40, minWidth: 0),
       children: const [
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16),
-          child: Text('ИП'),
-        ),
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16),
-          child: Text('OOO'),
-        ),
+        Padding(padding: EdgeInsets.symmetric(horizontal: 16), child: Text('ИП')),
+        Padding(padding: EdgeInsets.symmetric(horizontal: 16), child: Text('OOO')),
       ],
     );
   }
@@ -450,14 +358,8 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
         //     color: AppColors.kGray900,
         //   ),
         // ),
-        _buildFormField(
-          controller: shopNameController,
-          label: 'Название Магазина',
-        ),
-        _buildFormField(
-          controller: checkController,
-          label: 'Счёт',
-        ),
+        _buildFormField(controller: shopNameController, label: 'Название Магазина'),
+        _buildFormField(controller: checkController, label: 'Счёт'),
       ],
     );
   }
@@ -475,10 +377,7 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
         //   ),
         // ),
         // const SizedBox(height: 16),
-        _buildFormField(
-          controller: nameController,
-          label: 'Контактное имя',
-        ),
+        _buildFormField(controller: nameController, label: 'Контактное имя'),
         _buildFormField(
           controller: phoneController,
           label: '+7(###)-###-##-##',
@@ -508,18 +407,9 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
             setState(() {});
           },
         ),
-        _buildFormField(
-          controller: streetController,
-          label: 'Улица',
-        ),
-        _buildFormField(
-          controller: homeController,
-          label: 'Дом',
-        ),
-        _buildFormField(
-          controller: addressController,
-          label: 'Адрес',
-        ),
+        _buildFormField(controller: streetController, label: 'Улица'),
+        _buildFormField(controller: homeController, label: 'Дом'),
+        _buildFormField(controller: addressController, label: 'Адрес'),
       ],
     );
   }
@@ -575,13 +465,7 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            label,
-            style: const TextStyle(
-              fontSize: 14,
-              color: Colors.grey,
-            ),
-          ),
+          Text(label, style: const TextStyle(fontSize: 14, color: Colors.grey)),
           const SizedBox(height: 8),
           GestureDetector(
             onTap: readOnly ? onTap : null,
@@ -601,15 +485,12 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
                         keyboardType: keyboardType,
                         inputFormatters: inputFormatters,
                         readOnly: readOnly,
-                        decoration:
-                            const InputDecoration.collapsed(hintText: ''),
+                        decoration: const InputDecoration.collapsed(hintText: ''),
                         style: const TextStyle(fontSize: 16),
                       ),
                     ),
                   ),
-                  if (showArrow)
-                    const Icon(Icons.arrow_forward_ios,
-                        size: 16, color: Colors.grey),
+                  if (showArrow) const Icon(Icons.arrow_forward_ios, size: 16, color: Colors.grey),
                 ],
               ),
             ),
@@ -629,13 +510,7 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            label,
-            style: const TextStyle(
-              fontSize: 14,
-              color: Colors.grey,
-            ),
-          ),
+          Text(label, style: const TextStyle(fontSize: 14, color: Colors.grey)),
           const SizedBox(height: 8),
           InkWell(
             onTap: onTap,
@@ -649,14 +524,8 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
               ),
               child: Row(
                 children: [
-                  Expanded(
-                    child: Text(
-                      controller.text,
-                      style: const TextStyle(fontSize: 16),
-                    ),
-                  ),
-                  const Icon(Icons.arrow_forward_ios_rounded,
-                      size: 16, color: Colors.grey),
+                  Expanded(child: Text(controller.text, style: const TextStyle(fontSize: 16))),
+                  const Icon(Icons.arrow_forward_ios_rounded, size: 16, color: Colors.grey),
                 ],
               ),
             ),
@@ -677,13 +546,7 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            label,
-            style: const TextStyle(
-              fontSize: 14,
-              color: Colors.grey,
-            ),
-          ),
+          Text(label, style: const TextStyle(fontSize: 14, color: Colors.grey)),
           const SizedBox(height: 8),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -697,9 +560,7 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
                   child: TextField(
                     controller: controller,
                     obscureText: obscureText,
-                    decoration: const InputDecoration(
-                      border: InputBorder.none,
-                    ),
+                    decoration: const InputDecoration(border: InputBorder.none),
                     style: const TextStyle(fontSize: 16),
                   ),
                 ),
@@ -738,9 +599,7 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
           backgroundColor: AppColors.mainPurpleColor,
           elevation: 0, // Убирает тень от кнопки
           shadowColor: Colors.white, // Подстраховка
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-          ),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
           padding: const EdgeInsets.symmetric(vertical: 16),
         ),
         onPressed: () async {
@@ -779,11 +638,7 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
         },
         child: const Text(
           'Сохранить',
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
-            color: Colors.white,
-          ),
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: Colors.white),
         ),
       ),
     );

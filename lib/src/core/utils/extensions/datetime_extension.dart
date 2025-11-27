@@ -4,55 +4,43 @@ import 'package:haji_market/src/core/utils/extensions/context_extension.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 extension DateTimeExtension on DateTime? {
-  String hoursAndMinutes(
-    BuildContext context,
-  ) {
+  String hoursAndMinutes(BuildContext context) {
     // Example
     // 09:00
     if (this == null) {
       return '';
     } else {
-      return DateFormat('HH:mm', context.currentLocale.languageCode)
-          .format(this!.toLocal());
+      return DateFormat('HH:mm', context.currentLocale.languageCode).format(this!.toLocal());
     }
   }
 
-  String dayWithMonthAndWeekDay(
-    BuildContext context,
-  ) {
+  String dayWithMonthAndWeekDay(BuildContext context) {
     // Example
     // 17 мая, Cр
     if (this == null) {
       return '';
     } else {
-      return DateFormat('d MMMM, EEE.', context.currentLocale.languageCode)
-          .format(this!);
+      return DateFormat('d MMMM, EEE.', context.currentLocale.languageCode).format(this!);
     }
   }
 
-  String ddMMyyyy(
-    BuildContext context,
-  ) {
+  String ddMMyyyy(BuildContext context) {
     // Example
     // 24.05.2025
     if (this == null) {
       return '';
     } else {
-      return DateFormat('dd.MM.yyyy', context.currentLocale.languageCode)
-          .format(this!);
+      return DateFormat('dd.MM.yyyy', context.currentLocale.languageCode).format(this!);
     }
   }
 
-  String weekNameWithDay(
-    BuildContext context,
-  ) {
+  String weekNameWithDay(BuildContext context) {
     // Example
     // Понедельник, 17 мая
     if (this == null) {
       return '';
     } else {
-      return DateFormat('EEEE, d MMMM', context.currentLocale.languageCode)
-          .format(this!);
+      return DateFormat('EEEE, d MMMM', context.currentLocale.languageCode).format(this!);
     }
   }
 
@@ -61,9 +49,7 @@ extension DateTimeExtension on DateTime? {
       return false;
     }
 
-    return this!.day == other.day &&
-        this!.month == other.month &&
-        this!.year == other.year;
+    return this!.day == other.day && this!.month == other.month && this!.year == other.year;
   }
 
   bool isSameMonth(DateTime other) {
@@ -82,83 +68,63 @@ extension DateTimeExtension on DateTime? {
     return this!.year == other.year;
   }
 
-  String dayMonthName(
-    BuildContext context,
-  ) {
+  String dayMonthName(BuildContext context) {
     // Example
     // 21 August
     if (this == null) {
       return '';
     } else {
-      return DateFormat('d MMMM', context.currentLocale.languageCode)
-          .format(this!);
+      return DateFormat('d MMMM', context.currentLocale.languageCode).format(this!);
     }
   }
 
-  String dayMonthNameWithYear(
-    BuildContext context,
-  ) {
+  String dayMonthNameWithYear(BuildContext context) {
     // Example
     // 21 August 2023
     if (this == null) {
       return '';
     } else {
-      return DateFormat('d MMMM, y', context.currentLocale.languageCode)
-          .format(this!);
+      return DateFormat('d MMMM, y', context.currentLocale.languageCode).format(this!);
     }
   }
 
-  String yearMonthDayWithDash(
-    BuildContext context,
-  ) {
+  String yearMonthDayWithDash(BuildContext context) {
     // Example
     // 2023-06-20
     if (this == null) {
       return '';
     } else {
-      return DateFormat('y-MM-dd', context.currentLocale.languageCode)
-          .format(this!);
+      return DateFormat('y-MM-dd', context.currentLocale.languageCode).format(this!);
     }
   }
 
-  String shortWeekDay(
-    BuildContext context,
-  ) {
+  String shortWeekDay(BuildContext context) {
     // Example
     // Mon
     if (this == null) {
       return '';
     } else {
-      return DateFormat('EEE', context.currentLocale.languageCode)
-          .format(this!);
+      return DateFormat('EEE', context.currentLocale.languageCode).format(this!);
     }
   }
 
-  String monthName(
-    BuildContext context,
-  ) {
+  String monthName(BuildContext context) {
     // Example
     // August
     if (this == null) {
       return '';
     } else {
-      return DateFormat('MMMM', context.currentLocale.languageCode)
-          .format(this!);
+      return DateFormat('MMMM', context.currentLocale.languageCode).format(this!);
     }
   }
 
-  String shortMonthName(
-    BuildContext context,
-  ) {
+  String shortMonthName(BuildContext context) {
     // Example (without dot)
     // AUG
     if (this == null) {
       return '';
     } else {
-      return DateFormat('MMM', context.currentLocale.languageCode)
-          .format(this!)
-          .split('.')
-          .first;
+      return DateFormat('MMM', context.currentLocale.languageCode).format(this!).split('.').first;
     }
   }
 
@@ -171,10 +137,7 @@ extension DateTimeExtension on DateTime? {
       Duration(minutes: DateTime.now().difference(this!).inMinutes),
     );
 
-    return timeago.format(
-      timeDiffAgo,
-      locale: context.currentLocale.languageCode,
-    );
+    return timeago.format(timeDiffAgo, locale: context.currentLocale.languageCode);
   }
 
   String chatItemTime(BuildContext context) {
@@ -185,18 +148,14 @@ extension DateTimeExtension on DateTime? {
     final today = DateTime.now();
     final yesterday = DateTime.now().subtract(const Duration(days: 1));
 
-    if (this!.day == today.day &&
-        this!.month == today.month &&
-        this!.year == today.year) {
-      return DateFormat('HH:mm', context.currentLocale.languageCode)
-          .format(this!);
+    if (this!.day == today.day && this!.month == today.month && this!.year == today.year) {
+      return DateFormat('HH:mm', context.currentLocale.languageCode).format(this!);
     } else if (this!.day == yesterday.day &&
         this!.month == yesterday.month &&
         this!.year == yesterday.year) {
       return context.localized.yesterday.toLowerCase();
     } else {
-      return DateFormat('d MMMM', context.currentLocale.languageCode)
-          .format(this!);
+      return DateFormat('d MMMM', context.currentLocale.languageCode).format(this!);
     }
   }
 
@@ -208,17 +167,14 @@ extension DateTimeExtension on DateTime? {
     final today = DateTime.now();
     final yesterday = DateTime.now().subtract(const Duration(days: 1));
 
-    if (this!.day == today.day &&
-        this!.month == today.month &&
-        this!.year == today.year) {
+    if (this!.day == today.day && this!.month == today.month && this!.year == today.year) {
       return context.localized.today;
     } else if (this!.day == yesterday.day &&
         this!.month == yesterday.month &&
         this!.year == yesterday.year) {
       return context.localized.yesterday;
     } else {
-      return DateFormat('dd.MM.yyyy', context.currentLocale.languageCode)
-          .format(this!);
+      return DateFormat('dd.MM.yyyy', context.currentLocale.languageCode).format(this!);
     }
   }
 
@@ -258,39 +214,39 @@ extension DateTimeExtension on DateTime? {
   //   }
   // }
 
-//   String vacancyCardTime(BuildContext context) {
-//     /*
-//     3 часа назад
+  //   String vacancyCardTime(BuildContext context) {
+  //     /*
+  //     3 часа назад
 
-//     вчера в 18:05
+  //     вчера в 18:05
 
-//     28 ноя в 18:05
-//     */
+  //     28 ноя в 18:05
+  //     */
 
-//     if (this == null) {
-//       return '';
-//     }
+  //     if (this == null) {
+  //       return '';
+  //     }
 
-//     final today = DateTime.now();
-//     final yesterday = DateTime.now().subtract(const Duration(days: 1));
+  //     final today = DateTime.now();
+  //     final yesterday = DateTime.now().subtract(const Duration(days: 1));
 
-//     if (this!.day == today.day && this!.month == today.month && this!.year == today.year) {
-//       return timeAgo(context);
-//     } else if (this!.day == yesterday.day && this!.month == yesterday.month && this!.year == yesterday.year) {
-//       return context.currentLocale.whenByValue(
-//         kk: 'кеше сағат ${hoursAndMinutes(context)}',
-//         ru: 'вчера в ${hoursAndMinutes(context)}',
-//         en: 'yesterday at ${hoursAndMinutes(context)}',
-//       );
-//     } else {
-//       return '''
-// ${this!.year != today.year ? '${this!.year}, ' : ''}${context.currentLocale.whenByValue(
-//         kk: '${DateFormat('d MMMM', context.currentLocale.languageCode).format(this!)} күні ${hoursAndMinutes(context)}',
-//         ru: '${DateFormat('d MMMM', context.currentLocale.languageCode).format(this!)} в ${hoursAndMinutes(context)}',
-//         en: '${DateFormat('d MMMM', context.currentLocale.languageCode).format(this!)} at ${hoursAndMinutes(context)}',
-//       )}''';
-//     }
-//   }
+  //     if (this!.day == today.day && this!.month == today.month && this!.year == today.year) {
+  //       return timeAgo(context);
+  //     } else if (this!.day == yesterday.day && this!.month == yesterday.month && this!.year == yesterday.year) {
+  //       return context.currentLocale.whenByValue(
+  //         kk: 'кеше сағат ${hoursAndMinutes(context)}',
+  //         ru: 'вчера в ${hoursAndMinutes(context)}',
+  //         en: 'yesterday at ${hoursAndMinutes(context)}',
+  //       );
+  //     } else {
+  //       return '''
+  // ${this!.year != today.year ? '${this!.year}, ' : ''}${context.currentLocale.whenByValue(
+  //         kk: '${DateFormat('d MMMM', context.currentLocale.languageCode).format(this!)} күні ${hoursAndMinutes(context)}',
+  //         ru: '${DateFormat('d MMMM', context.currentLocale.languageCode).format(this!)} в ${hoursAndMinutes(context)}',
+  //         en: '${DateFormat('d MMMM', context.currentLocale.languageCode).format(this!)} at ${hoursAndMinutes(context)}',
+  //       )}''';
+  //     }
+  //   }
 
   String range(BuildContext context, {required DateTime? end}) {
     if (end == null) {
@@ -340,11 +296,9 @@ extension DateTimeExtension on DateTime? {
     return DateTime(result.year, result.month, result.day);
   }
 
-  DateTime? firstDayOfMonth() =>
-      this != null ? DateTime(this!.year, this!.month) : null;
+  DateTime? firstDayOfMonth() => this != null ? DateTime(this!.year, this!.month) : null;
 
-  DateTime? lastDayOfMonth() =>
-      this != null ? DateTime(this!.year, this!.month + 1) : null;
+  DateTime? lastDayOfMonth() => this != null ? DateTime(this!.year, this!.month + 1) : null;
 
   DateTime? lastDayOfWeek() {
     if (this == null) {

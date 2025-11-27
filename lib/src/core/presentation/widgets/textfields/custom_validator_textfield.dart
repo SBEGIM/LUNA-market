@@ -64,10 +64,7 @@ class CustomValidatorTextfield extends StatelessWidget {
               inputFormatters: inputFormatters,
               hintText: hintText,
               keyboardType: keyboardType,
-              errorStyle: const TextStyle(
-                height: 0,
-                fontSize: 0,
-              ),
+              errorStyle: const TextStyle(height: 0, fontSize: 0),
               validator: validator,
               suffixIcon: suffixIcon,
               // suffixIcon: obscureText != null
@@ -80,9 +77,7 @@ class CustomValidatorTextfield extends StatelessWidget {
             // const Gap(4),
             Align(
               alignment: Alignment.centerLeft,
-              child: ErrorTextWidget(
-                text: valueListenable.value,
-              ),
+              child: ErrorTextWidget(text: valueListenable.value),
             ),
           ],
         );

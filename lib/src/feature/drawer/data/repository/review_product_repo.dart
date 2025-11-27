@@ -12,10 +12,13 @@ class ReviewProductRepository {
   Future<List<ReviewProductModel>> productReviews(String product_id) =>
       _reviewProductApi.productReviews(product_id);
 
-  Future<int> storeReview(int orderId, String review, String rating,
-          String product_id, List<dynamic> images) =>
-      _reviewProductApi.storeReview(
-          orderId, review, rating, product_id, images);
+  Future<int> storeReview(
+    int orderId,
+    String review,
+    String rating,
+    String product_id,
+    List<dynamic> images,
+  ) => _reviewProductApi.storeReview(orderId, review, rating, product_id, images);
 }
 
 class ReviewProductApi {
@@ -25,14 +28,13 @@ class ReviewProductApi {
     final String? token = _box.read('token');
 
     final response = await http.get(
-        Uri.parse("$baseUrl/shop/review/product?id=$product_id&page=1"),
-        headers: {"Authorization": "Bearer $token"});
+      Uri.parse("$baseUrl/shop/review/product?id=$product_id&page=1"),
+      headers: {"Authorization": "Bearer $token"},
+    );
 
     final data = jsonDecode(response.body);
 
-    return (data['data'] as List)
-        .map((e) => ReviewProductModel.fromJson(e))
-        .toList();
+    return (data['data'] as List).map((e) => ReviewProductModel.fromJson(e)).toList();
   }
 
   Future<int> storeReview(
@@ -63,22 +65,17 @@ class ReviewProductApi {
     Map<String, dynamic> queryParams = {};
 
     final request = http.MultipartRequest(
-        'POST',
-        Uri.parse(
-          '$baseUrl/shop/review/store',
-        ).replace(queryParameters: queryParams));
+      'POST',
+      Uri.parse('$baseUrl/shop/review/store').replace(queryParameters: queryParams),
+    );
 
-    final headers = {
-      'Authorization': 'Bearer $token',
-    };
+    final headers = {'Authorization': 'Bearer $token'};
 
     request.headers.addAll(headers);
     request.fields.addAll(bodys);
 
     image!.forEach((element) async {
-      request.files.add(
-        await http.MultipartFile.fromPath('images[]', element!.path),
-      );
+      request.files.add(await http.MultipartFile.fromPath('images[]', element!.path));
     });
 
     final http.StreamedResponse response = await request.send();

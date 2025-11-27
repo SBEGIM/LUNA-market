@@ -8,8 +8,7 @@ const baseUrl = 'https://lunamarket.ru/api';
 class FavoriteRepository {
   final FavoriteApi _favoriteApi = FavoriteApi();
 
-  Future<List<ProductModel>> favorites(int page) =>
-      _favoriteApi.favorites(page);
+  Future<List<ProductModel>> favorites(int page) => _favoriteApi.favorites(page);
   Future<int> favorite(id) => _favoriteApi.favorite(id);
   Future<int> favoriteTape(id) => _favoriteApi.favoriteTape(id);
 }
@@ -21,8 +20,9 @@ class FavoriteApi {
     final String? token = _box.read('token');
 
     final response = await http.get(
-        Uri.parse('$baseUrl/user/favorites?page=$page'),
-        headers: {"Authorization": "Bearer $token"});
+      Uri.parse('$baseUrl/user/favorites?page=$page'),
+      headers: {"Authorization": "Bearer $token"},
+    );
 
     final data = jsonDecode(response.body);
 
@@ -33,9 +33,10 @@ class FavoriteApi {
     final String? token = _box.read('token');
 
     final response = await http.post(
-        Uri.parse('$baseUrl/shop/favorite/product/store'),
-        headers: {"Authorization": "Bearer $token"},
-        body: {'id': id});
+      Uri.parse('$baseUrl/shop/favorite/product/store'),
+      headers: {"Authorization": "Bearer $token"},
+      body: {'id': id},
+    );
 
     final data = response.statusCode;
 
@@ -45,8 +46,11 @@ class FavoriteApi {
   Future<int> favoriteTape(id) async {
     final String? token = _box.read('token');
 
-    final response = await http.post(Uri.parse('$baseUrl/shop/favorite/store'),
-        headers: {"Authorization": "Bearer $token"}, body: {'id': id});
+    final response = await http.post(
+      Uri.parse('$baseUrl/shop/favorite/store'),
+      headers: {"Authorization": "Bearer $token"},
+      body: {'id': id},
+    );
 
     final data = response.statusCode;
 

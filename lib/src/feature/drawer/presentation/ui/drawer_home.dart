@@ -127,10 +127,12 @@ class _DrawerPageState extends State<DrawerPage> {
               isAuthUser
                   ? Container(
                       decoration: BoxDecoration(
-                          color: AppColors.kWhite,
-                          borderRadius: BorderRadius.only(
-                              bottomLeft: Radius.circular(20),
-                              bottomRight: Radius.circular(20))),
+                        color: AppColors.kWhite,
+                        borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(20),
+                          bottomRight: Radius.circular(20),
+                        ),
+                      ),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -141,17 +143,19 @@ class _DrawerPageState extends State<DrawerPage> {
                             width: 100,
                             child: GestureDetector(
                               onTap: () {
-                                showClientImageOptions(
-                                    context, false, 'Изменить фото профиля',
-                                    (value) async {
+                                showClientImageOptions(context, false, 'Изменить фото профиля', (
+                                  value,
+                                ) async {
                                   if (value == 'image') {
-                                    final ok = await showAccountAlert(context,
-                                        title: 'Изменить фото',
-                                        message: 'Изменить фото',
-                                        mode: AccountAlertMode.confirm,
-                                        cancelText: 'Галерея',
-                                        primaryText: 'Камера',
-                                        primaryColor: Colors.red);
+                                    final ok = await showAccountAlert(
+                                      context,
+                                      title: 'Изменить фото',
+                                      message: 'Изменить фото',
+                                      mode: AccountAlertMode.confirm,
+                                      cancelText: 'Галерея',
+                                      primaryText: 'Камера',
+                                      primaryColor: Colors.red,
+                                    );
 
                                     if (ok == true) {
                                       change = true;
@@ -192,8 +196,9 @@ class _DrawerPageState extends State<DrawerPage> {
                                       backgroundImage: _image != null
                                           ? FileImage(File(_image!.path))
                                           : NetworkImage(
-                                              'https://lunamarket.ru/storage/${GetStorage().read('avatar')}',
-                                            ) as ImageProvider,
+                                                  'https://lunamarket.ru/storage/${GetStorage().read('avatar')}',
+                                                )
+                                                as ImageProvider,
                                     ),
                                   ),
                                   Positioned(
@@ -220,8 +225,9 @@ class _DrawerPageState extends State<DrawerPage> {
                             children: [
                               Text(
                                 city?.city ?? 'Алматы',
-                                style: AppTextStyles.size14Weight500
-                                    .copyWith(color: Color(0xff959595)),
+                                style: AppTextStyles.size14Weight500.copyWith(
+                                  color: Color(0xff959595),
+                                ),
                               ),
                             ],
                           ),
@@ -242,22 +248,17 @@ class _DrawerPageState extends State<DrawerPage> {
                           //         fontWeight: FontWeight.w400),
                           //   ),
                           // ),
-
                           SizedBox(height: 16),
                           InkWell(
                             onTap: () {
-                              showRolePicker(context,
-                                  isAuthUser ? 'change_cabinet' : 'auth_user');
+                              showRolePicker(context, isAuthUser ? 'change_cabinet' : 'auth_user');
                             },
                             child: Container(
                               height: 36,
                               padding: EdgeInsets.symmetric(horizontal: 8),
                               decoration: BoxDecoration(
                                 color: AppColors.kWhite,
-                                border: Border.all(
-                                  color: Color(0xffEDEDED),
-                                  width: 0.5,
-                                ),
+                                border: Border.all(color: Color(0xffEDEDED), width: 0.5),
                                 borderRadius: BorderRadius.circular(8),
                                 boxShadow: [
                                   BoxShadow(
@@ -279,13 +280,12 @@ class _DrawerPageState extends State<DrawerPage> {
                                     width: 18,
                                   ),
                                   SizedBox(width: 5),
-                                  Text('Сменить кабинет',
-                                      style: AppTextStyles.size16Weight500)
+                                  Text('Сменить кабинет', style: AppTextStyles.size16Weight500),
                                 ],
                               ),
                             ),
                           ),
-                          SizedBox(height: 22)
+                          SizedBox(height: 22),
                         ],
                       ),
                     )
@@ -293,19 +293,18 @@ class _DrawerPageState extends State<DrawerPage> {
                       height: 462,
                       padding: const EdgeInsets.only(top: 40),
                       decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            begin: Alignment.bottomRight,
-                            end: Alignment.topRight,
-                            transform: GradientRotation(4.2373),
-                            colors: [
-                              Color(0xFFAD32F8),
-                              Color(0xFF3275F8),
-                            ],
-                          ),
-                          color: AppColors.mainPurpleColor,
-                          borderRadius: BorderRadius.only(
-                              bottomLeft: Radius.circular(24),
-                              bottomRight: Radius.circular(24))),
+                        gradient: LinearGradient(
+                          begin: Alignment.bottomRight,
+                          end: Alignment.topRight,
+                          transform: GradientRotation(4.2373),
+                          colors: [Color(0xFFAD32F8), Color(0xFF3275F8)],
+                        ),
+                        color: AppColors.mainPurpleColor,
+                        borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(24),
+                          bottomRight: Radius.circular(24),
+                        ),
+                      ),
                       child: Column(
                         mainAxisSize: MainAxisSize.max,
                         children: [
@@ -318,16 +317,17 @@ class _DrawerPageState extends State<DrawerPage> {
                                     buildProfileAvatar(_box),
                                     Column(
                                       mainAxisSize: MainAxisSize.min,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
+                                      crossAxisAlignment: CrossAxisAlignment.center,
                                       children: [
                                         SizedBox(height: 20),
-                                        Text('${_box.read('name')}',
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.w700,
-                                                fontSize: 16,
-                                                color: AppColors
-                                                    .kLightBlackColor)),
+                                        Text(
+                                          '${_box.read('name')}',
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.w700,
+                                            fontSize: 16,
+                                            color: AppColors.kLightBlackColor,
+                                          ),
+                                        ),
                                         const SizedBox(height: 4),
                                         Text(
                                           _box.read('city') ?? 'Алматы',
@@ -341,10 +341,9 @@ class _DrawerPageState extends State<DrawerPage> {
                                         InkWell(
                                           onTap: () {
                                             showRolePicker(
-                                                context,
-                                                isAuthUser
-                                                    ? 'change_cabinet'
-                                                    : 'auth_user');
+                                              context,
+                                              isAuthUser ? 'change_cabinet' : 'auth_user',
+                                            );
                                             // Navigator.push(
                                             //   context,
                                             //   MaterialPageRoute(builder: (context) => const Base(index: 1)),
@@ -359,8 +358,7 @@ class _DrawerPageState extends State<DrawerPage> {
                                                 color: AppColors.kGray200,
                                                 width: 0.2,
                                               ),
-                                              borderRadius:
-                                                  BorderRadius.circular(8),
+                                              borderRadius: BorderRadius.circular(8),
                                               boxShadow: [
                                                 BoxShadow(
                                                   color: Color(0x0A000000),
@@ -374,71 +372,66 @@ class _DrawerPageState extends State<DrawerPage> {
                                               children: [
                                                 SizedBox(width: 13),
                                                 Image.asset(
-                                                  Assets.icons.backClientIcon
-                                                      .path,
+                                                  Assets.icons.backClientIcon.path,
                                                   height: 18,
                                                   width: 18,
                                                 ),
                                                 SizedBox(width: 9),
                                                 Text(
                                                   'Сменить кабинет',
-                                                  style: AppTextStyles
-                                                      .size16Weight500,
-                                                )
+                                                  style: AppTextStyles.size16Weight500,
+                                                ),
                                               ],
                                             ),
                                           ),
                                         ),
-                                        SizedBox(height: 24)
+                                        SizedBox(height: 24),
                                       ],
-                                    )
+                                    ),
                                   ],
                                 )
                               : Container(
-                                  margin: EdgeInsets.only(
-                                      left: 16, right: 16, top: 8),
+                                  margin: EdgeInsets.only(left: 16, right: 16, top: 8),
                                   height: 258,
                                   width: double.infinity,
                                   decoration: BoxDecoration(
-                                      color: AppColors.kLightBlackColor
-                                          .withOpacity(0.15),
-                                      borderRadius: BorderRadius.circular(16)),
+                                    color: AppColors.kLightBlackColor.withOpacity(0.15),
+                                    borderRadius: BorderRadius.circular(16),
+                                  ),
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
                                     children: [
                                       buildProfileAvatar(_box),
                                       Column(
                                         mainAxisSize: MainAxisSize.min,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
+                                        crossAxisAlignment: CrossAxisAlignment.center,
                                         children: [
                                           SizedBox(height: 20),
-                                          Text('Добро пожаловать!',
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.w600,
-                                                  fontSize: 22,
-                                                  color: Colors.white)),
+                                          Text(
+                                            'Добро пожаловать!',
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: 22,
+                                              color: Colors.white,
+                                            ),
+                                          ),
                                           const SizedBox(height: 4),
                                           SizedBox(
                                             width: 320,
                                             child: Text(
                                               'Войдите или зарегистрируйтесь, чтобы открыть весь функционал',
                                               textAlign: TextAlign.center,
-                                              style: AppTextStyles
-                                                  .categoryTextStyle
-                                                  .copyWith(
-                                                      fontWeight:
-                                                          FontWeight.w400,
-                                                      fontSize: 16,
-                                                      height: 22 / 16,
-                                                      color:
-                                                          AppColors.kGray200),
+                                              style: AppTextStyles.categoryTextStyle.copyWith(
+                                                fontWeight: FontWeight.w400,
+                                                fontSize: 16,
+                                                height: 22 / 16,
+                                                color: AppColors.kGray200,
+                                              ),
                                             ),
-                                          )
+                                          ),
                                         ],
-                                      )
+                                      ),
                                     ],
                                   ),
                                 ),
@@ -446,27 +439,24 @@ class _DrawerPageState extends State<DrawerPage> {
                           isAuthUser
                               ? SizedBox.shrink()
                               : Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 16.0),
+                                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
                                   child: DefaultButton(
-                                      text: isAuthUser
-                                          ? 'Сменить кабинет'
-                                          : 'Начать',
-                                      press: () {
-                                        showRolePicker(
-                                            context,
-                                            isAuthUser
-                                                ? 'change_cabinet'
-                                                : 'auth_user');
-                                      },
-                                      color: AppColors.kLightBlackColor,
-                                      backgroundColor: AppColors.kWhite,
-                                      textStyle: AppTextStyles.aboutTextStyle
-                                          .copyWith(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.w600),
-                                      width: double.infinity),
-                                )
+                                    text: isAuthUser ? 'Сменить кабинет' : 'Начать',
+                                    press: () {
+                                      showRolePicker(
+                                        context,
+                                        isAuthUser ? 'change_cabinet' : 'auth_user',
+                                      );
+                                    },
+                                    color: AppColors.kLightBlackColor,
+                                    backgroundColor: AppColors.kWhite,
+                                    textStyle: AppTextStyles.aboutTextStyle.copyWith(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                    width: double.infinity,
+                                  ),
+                                ),
                         ],
                       ),
                     ),
@@ -477,8 +467,9 @@ class _DrawerPageState extends State<DrawerPage> {
                       margin: EdgeInsets.symmetric(vertical: 12),
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
-                          color: AppColors.kWhite,
-                          borderRadius: BorderRadius.circular(20)),
+                        color: AppColors.kWhite,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -488,9 +479,7 @@ class _DrawerPageState extends State<DrawerPage> {
                             onTap: () {
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        const BonusUserPage()),
+                                MaterialPageRoute(builder: (context) => const BonusUserPage()),
                               );
                             },
                             child: Image.asset(
@@ -503,8 +492,7 @@ class _DrawerPageState extends State<DrawerPage> {
                             onTap: () {
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(
-                                    builder: (context) => const MyOrderPage()),
+                                MaterialPageRoute(builder: (context) => const MyOrderPage()),
                               );
                             },
                             child: Image.asset(
@@ -517,8 +505,7 @@ class _DrawerPageState extends State<DrawerPage> {
                             onTap: () {
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(
-                                    builder: (context) => const ChatPage()),
+                                MaterialPageRoute(builder: (context) => const ChatPage()),
                               );
                             },
                             child: Image.asset(
@@ -536,10 +523,12 @@ class _DrawerPageState extends State<DrawerPage> {
                 height: MediaQuery.of(context).size.height,
                 margin: EdgeInsets.only(top: isAuthUser ? 0 : 16),
                 decoration: BoxDecoration(
-                    color: AppColors.kWhite,
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(20),
-                        topRight: Radius.circular(20))),
+                  color: AppColors.kWhite,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(20),
+                    topRight: Radius.circular(20),
+                  ),
+                ),
                 child: Column(
                   children: [
                     isAuthUser
@@ -547,18 +536,19 @@ class _DrawerPageState extends State<DrawerPage> {
                             onTap: () async {
                               if (!isAuthUser) {
                                 GetStorage().remove('token');
-                                BlocProvider.of<AppBloc>(context)
-                                    .add(const AppEvent.exiting());
+                                BlocProvider.of<AppBloc>(context).add(const AppEvent.exiting());
                               } else {
-                                final data = await Get.to(EditProfilePage(
-                                  firstName: _box.read('first_name'),
-                                  lastName: _box.read('last_name'),
-                                  surName: _box.read('sur_name'),
-                                  phone: _box.read('phone') ?? '',
-                                  gender: _box.read('gender') ?? '',
-                                  birthday: _box.read('birthday') ?? '',
-                                  email: _box.read('email') ?? '',
-                                ));
+                                final data = await Get.to(
+                                  EditProfilePage(
+                                    firstName: _box.read('first_name'),
+                                    lastName: _box.read('last_name'),
+                                    surName: _box.read('sur_name'),
+                                    phone: _box.read('phone') ?? '',
+                                    gender: _box.read('gender') ?? '',
+                                    birthday: _box.read('birthday') ?? '',
+                                    email: _box.read('email') ?? '',
+                                  ),
+                                );
 
                                 if (data != null) {
                                   setState(() {});
@@ -582,8 +572,7 @@ class _DrawerPageState extends State<DrawerPage> {
                       onTap: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(
-                              builder: (context) => const AboutUsPage()),
+                          MaterialPageRoute(builder: (context) => const AboutUsPage()),
                         );
                       },
                       title: 'LUNA market',
@@ -592,27 +581,19 @@ class _DrawerPageState extends State<DrawerPage> {
 
                     buildProfileItem(
                       onTap: () async {
-                        final List<String> options = [
-                          'Whats App',
-                          'Telegram',
-                          'Email'
-                        ];
-                        showModuleProfile(context, 'Техподдержка', options,
-                            (value) {
+                        final List<String> options = ['Whats App', 'Telegram', 'Email'];
+                        showModuleProfile(context, 'Техподдержка', options, (value) {
                           switch (value) {
                             case 'Whats App':
-                              launch("https://t.me/LUNAmarketAdmin",
-                                  forceSafariVC: false);
+                              launch("https://t.me/LUNAmarketAdmin", forceSafariVC: false);
                               // do something
                               break;
                             case 'Telegram':
-                              launch("https://t.me/LUNAmarketAdmin",
-                                  forceSafariVC: false);
+                              launch("https://t.me/LUNAmarketAdmin", forceSafariVC: false);
                               // do something else
                               break;
                             case 'Email':
-                              launch("https://t.me/LUNAmarketAdmin",
-                                  forceSafariVC: false);
+                              launch("https://t.me/LUNAmarketAdmin", forceSafariVC: false);
                               break;
                           }
                         });
@@ -668,10 +649,9 @@ class _DrawerPageState extends State<DrawerPage> {
                     //     color: AppColors.kGray200,
                     //   ),
                     // ),
-
                     buildProfileItem(
-                      onTap: () => showClientSettingOptions(
-                          context, isAuthUser, 'Настройки', () {}),
+                      onTap: () =>
+                          showClientSettingOptions(context, isAuthUser, 'Настройки', () {}),
                       title: 'Настройки',
                       count: 4,
                       iconPath: Assets.icons.settingIcon.path,
@@ -1133,10 +1113,7 @@ class _DrawerPageState extends State<DrawerPage> {
 
 class DrawerListTile extends StatelessWidget {
   final String text;
-  const DrawerListTile({
-    Key? key,
-    required this.text,
-  }) : super(key: key);
+  const DrawerListTile({Key? key, required this.text}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -1145,11 +1122,8 @@ class DrawerListTile extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            text,
-            style: AppTextStyles.drawer2TextStyle,
-          ),
-          SvgPicture.asset('assets/icons/back_menu.svg')
+          Text(text, style: AppTextStyles.drawer2TextStyle),
+          SvgPicture.asset('assets/icons/back_menu.svg'),
         ],
       ),
     );
@@ -1184,15 +1158,9 @@ Widget buildProfileItem({
         children: [
           Row(
             children: [
-              Image.asset(
-                iconPath,
-                height: 40,
-                width: 40,
-              ),
+              Image.asset(iconPath, height: 40, width: 40),
               const SizedBox(width: 12),
-              Text(title,
-                  style: AppTextStyles.size16Weight600
-                      .copyWith(color: Color(0xFF3A3A3C))),
+              Text(title, style: AppTextStyles.size16Weight600.copyWith(color: Color(0xFF3A3A3C))),
             ],
           ),
           switchWidget == true
@@ -1207,28 +1175,25 @@ Widget buildProfileItem({
                   ),
                 )
               : (count == null
-                  ? SizedBox(
-                      width: 8,
-                      height: 14,
-                      child: Image.asset(
-                          Assets.icons.defaultArrowForwardIcon.path),
-                    )
-                  : Row(
-                      children: [
-                        Text(
-                          '$count',
-                          style: AppTextStyles.size16Weight400
-                              .copyWith(color: Color(0xFF3A3A3C)),
-                        ),
-                        SizedBox(width: 16),
-                        SizedBox(
-                          width: 8,
-                          height: 14,
-                          child: Image.asset(
-                              Assets.icons.defaultArrowForwardIcon.path),
-                        )
-                      ],
-                    ))
+                    ? SizedBox(
+                        width: 8,
+                        height: 14,
+                        child: Image.asset(Assets.icons.defaultArrowForwardIcon.path),
+                      )
+                    : Row(
+                        children: [
+                          Text(
+                            '$count',
+                            style: AppTextStyles.size16Weight400.copyWith(color: Color(0xFF3A3A3C)),
+                          ),
+                          SizedBox(width: 16),
+                          SizedBox(
+                            width: 8,
+                            height: 14,
+                            child: Image.asset(Assets.icons.defaultArrowForwardIcon.path),
+                          ),
+                        ],
+                      )),
         ],
       ),
     ),
@@ -1239,10 +1204,8 @@ Widget buildProfileAvatar(_box) {
   final String? avatar = _box.read('avatar');
   final String? name = _box.read('name');
 
-  final bool isAuthorized = avatar != null &&
-      avatar != 'null' &&
-      name != null &&
-      name != 'Не авторизированный';
+  final bool isAuthorized =
+      avatar != null && avatar != 'null' && name != null && name != 'Не авторизированный';
 
   return isAuthorized
       ? ClipRRect(

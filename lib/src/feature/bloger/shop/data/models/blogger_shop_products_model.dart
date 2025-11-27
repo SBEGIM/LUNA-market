@@ -142,9 +142,7 @@ class BloggerShopProductModel {
 }
 
 class Path {
-  Path({
-    String? path,
-  }) {
+  Path({String? path}) {
     _path = path;
   }
 

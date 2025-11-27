@@ -65,87 +65,68 @@ class _BankPageState extends State<BankPage> {
   }
 
   void _initializeControllers() {
-    if (_box.read('seller_name') != null &&
-        _box.read('seller_name') != 'null') {
+    if (_box.read('seller_name') != null && _box.read('seller_name') != 'null') {
       shopNameController.text = _box.read('seller_name') ?? '';
     }
-    if (_box.read('seller_phone') != null &&
-        _box.read('seller_phone') != 'null') {
-      phoneController.text =
-          maskFormatter.maskText(_box.read('seller_phone') ?? '');
+    if (_box.read('seller_phone') != null && _box.read('seller_phone') != 'null') {
+      phoneController.text = maskFormatter.maskText(_box.read('seller_phone') ?? '');
     }
-    if (_box.read('seller_email') != null &&
-        _box.read('seller_email') != 'null') {
+    if (_box.read('seller_email') != null && _box.read('seller_email') != 'null') {
       emailController.text = _box.read('seller_email') ?? '';
     }
-    if (_box.read('seller_country') != null &&
-        _box.read('seller_country') != 'null') {
+    if (_box.read('seller_country') != null && _box.read('seller_country') != 'null') {
       countryController.text = _box.read('seller_country') ?? '';
     }
-    if (_box.read('seller_city') != null &&
-        _box.read('seller_city') != 'null') {
+    if (_box.read('seller_city') != null && _box.read('seller_city') != 'null') {
       cityController.text = _box.read('seller_city') ?? '';
     }
-    if (_box.read('seller_userName') != null &&
-        _box.read('seller_userName') != 'null') {
+    if (_box.read('seller_userName') != null && _box.read('seller_userName') != 'null') {
       nameController.text = _box.read('seller_userName') ?? '';
     }
-    if (_box.read('seller_home') != null &&
-        _box.read('seller_home') != 'null') {
+    if (_box.read('seller_home') != null && _box.read('seller_home') != 'null') {
       homeController.text = _box.read('seller_home') ?? '';
     }
-    if (_box.read('seller_street') != null &&
-        _box.read('seller_street') != 'null') {
+    if (_box.read('seller_street') != null && _box.read('seller_street') != 'null') {
       streetController.text = _box.read('seller_street') ?? '';
     }
     if (_box.read('seller_iin') != null && _box.read('seller_iin') != 'null') {
       iinController.text = _box.read('seller_iin') ?? '';
     }
-    if (_box.read('seller_check') != null &&
-        _box.read('seller_check') != 'null') {
+    if (_box.read('seller_check') != null && _box.read('seller_check') != 'null') {
       checkController.text = _box.read('seller_check') ?? '';
     }
     if (_box.read('seller_type_organization') != null &&
         _box.read('seller_type_organization') != 'null') {
-      typeOrganization =
-          _box.read('seller_type_organization') == 'ИП' ? false : true;
+      typeOrganization = _box.read('seller_type_organization') == 'ИП' ? false : true;
     }
 
     if (_box.read('seller_kpp') != null && _box.read('seller_kpp') != 'null') {
       kppController.text = _box.read('seller_kpp') ?? '';
     }
 
-    if (_box.read('seller_ogrn') != null &&
-        _box.read('seller_ogrn') != 'null') {
+    if (_box.read('seller_ogrn') != null && _box.read('seller_ogrn') != 'null') {
       ogrnController.text = _box.read('seller_ogrn') ?? '';
     }
-    if (_box.read('seller_okved') != null &&
-        _box.read('seller_okved') != 'null') {
+    if (_box.read('seller_okved') != null && _box.read('seller_okved') != 'null') {
       okved.text = _box.read('seller_okved') ?? '';
     }
-    if (_box.read('seller_tax_authority') != null &&
-        _box.read('seller_tax_authority') != 'null') {
+    if (_box.read('seller_tax_authority') != null && _box.read('seller_tax_authority') != 'null') {
       taxAuthority.text = _box.read('seller_tax_authority') ?? '';
     }
-    if (_box.read('seller_date_register') != null &&
-        _box.read('seller_date_register') != 'null') {
+    if (_box.read('seller_date_register') != null && _box.read('seller_date_register') != 'null') {
       dateRegister.text = _box.read('seller_date_register') ?? '';
     }
-    if (_box.read('seller_legal_address') != null &&
-        _box.read('seller_legal_address') != 'null') {
+    if (_box.read('seller_legal_address') != null && _box.read('seller_legal_address') != 'null') {
       legalAddress.text = _box.read('seller_legal_address') ?? '';
     }
 
-    if (_box.read('seller_founder') != null &&
-        _box.read('seller_founder') != 'null') {
+    if (_box.read('seller_founder') != null && _box.read('seller_founder') != 'null') {
       founderController.text = _box.read('seller_founder') ?? '';
     }
-    if (_box.read('seller_date_of_birth') != null &&
-        _box.read('seller_date_of_birth') != 'null') {
+    if (_box.read('seller_date_of_birth') != null && _box.read('seller_date_of_birth') != 'null') {
       dateBirthday.text = _box.read('seller_date_of_birth') ?? '';
     }
-    if (_box.read('seller_citizenship') != null &&
-        _box.read('seller_citizenship') != 'null') {
+    if (_box.read('seller_citizenship') != null && _box.read('seller_citizenship') != 'null') {
       citizenshipController.text = _box.read('seller_citizenship') ?? '';
     }
     if (_box.read('seller_CEO') != null && _box.read('seller_CEO') != 'null') {
@@ -155,18 +136,15 @@ class _BankPageState extends State<BankPage> {
         _box.read('seller_organization_fr') != 'null') {
       frOrganizations.text = _box.read('seller_organization_fr') ?? '';
     }
-    if (_box.read('seller_bank') != null &&
-        _box.read('seller_bank') != 'null') {
+    if (_box.read('seller_bank') != null && _box.read('seller_bank') != 'null') {
       bankController.text = _box.read('seller_bank') ?? '';
     }
 
-    if (_box.read('seller_company_name') != null &&
-        _box.read('seller_company_name') != 'null') {
+    if (_box.read('seller_company_name') != null && _box.read('seller_company_name') != 'null') {
       companyNameController.text = _box.read('seller_company_name') ?? '';
     }
 
-    if (_box.read('seller_legal_address') != null &&
-        _box.read('seller_legal_address') != 'null') {
+    if (_box.read('seller_legal_address') != null && _box.read('seller_legal_address') != 'null') {
       legalAddress.text = _box.read('seller_legal_address') ?? '';
     }
   }
@@ -192,15 +170,11 @@ class _BankPageState extends State<BankPage> {
         centerTitle: true,
         title: const Text(
           'Тинькофф банк',
-          style: TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.w600,
-          ),
+          style: TextStyle(color: Colors.black, fontWeight: FontWeight.w600),
         ),
         actions: [
           IconButton(
-            icon: SvgPicture.asset('assets/icons/bell.svg',
-                color: AppColors.kPrimaryColor),
+            icon: SvgPicture.asset('assets/icons/bell.svg', color: AppColors.kPrimaryColor),
             onPressed: () {},
           ),
         ],
@@ -228,10 +202,7 @@ class _BankPageState extends State<BankPage> {
                       const Text(
                         'Если вы зарегистрированы как ИП — необходимо перейти на ООО.\n'
                         'Если вы уже ООО — обновите данные, которые не прошли проверку.',
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: AppColors.kGray500,
-                        ),
+                        style: TextStyle(fontSize: 14, color: AppColors.kGray500),
                       ),
                       const SizedBox(height: 6),
                       const Text(
@@ -251,10 +222,7 @@ class _BankPageState extends State<BankPage> {
                         '• Расчетный счёт, банк\n'
                         '• Генерального директора и учредителя\n'
                         '• Дату регистрации компании',
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: AppColors.kGray500,
-                        ),
+                        style: TextStyle(fontSize: 14, color: AppColors.kGray500),
                       ),
                     ],
                   ),
@@ -297,13 +265,7 @@ class _BankPageState extends State<BankPage> {
               ),
             ),
             const SizedBox(height: 16),
-            Row(
-              children: [
-                Expanded(
-                  child: _buildOrganizationTypeToggle(),
-                ),
-              ],
-            ),
+            Row(children: [Expanded(child: _buildOrganizationTypeToggle())]),
             const SizedBox(height: 16),
             _buildFormField(
               icon: Icons.fingerprint,
@@ -317,16 +279,8 @@ class _BankPageState extends State<BankPage> {
                 hintText: 'КПП',
               ),
             if (typeOrganization)
-              _buildFormField(
-                icon: Icons.business,
-                controller: ogrnController,
-                hintText: 'ОГРН',
-              ),
-            _buildFormField(
-              icon: Icons.business_center,
-              controller: okved,
-              hintText: 'ОКВэД',
-            ),
+              _buildFormField(icon: Icons.business, controller: ogrnController, hintText: 'ОГРН'),
+            _buildFormField(icon: Icons.business_center, controller: okved, hintText: 'ОКВэД'),
             _buildFormField(
               icon: Icons.account_balance,
               controller: taxAuthority,
@@ -404,19 +358,10 @@ class _BankPageState extends State<BankPage> {
       selectedColor: Colors.white,
       fillColor: AppColors.kPrimaryColor,
       color: AppColors.kPrimaryColor,
-      constraints: const BoxConstraints(
-        minHeight: 40,
-        minWidth: 0,
-      ),
+      constraints: const BoxConstraints(minHeight: 40, minWidth: 0),
       children: const [
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16),
-          child: Text('ИП'),
-        ),
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16),
-          child: Text('OOO'),
-        ),
+        Padding(padding: EdgeInsets.symmetric(horizontal: 16), child: Text('ИП')),
+        Padding(padding: EdgeInsets.symmetric(horizontal: 16), child: Text('OOO')),
       ],
     );
   }
@@ -448,11 +393,7 @@ class _BankPageState extends State<BankPage> {
               controller: shopNameController,
               hintText: 'Название Магазина',
             ),
-            _buildFormField(
-              icon: Icons.credit_card,
-              controller: checkController,
-              hintText: 'Счёт',
-            ),
+            _buildFormField(icon: Icons.credit_card, controller: checkController, hintText: 'Счёт'),
           ],
         ),
       ),
@@ -519,21 +460,9 @@ class _BankPageState extends State<BankPage> {
                 setState(() {});
               },
             ),
-            _buildFormField(
-              icon: Icons.route,
-              controller: streetController,
-              hintText: 'Улица',
-            ),
-            _buildFormField(
-              icon: Icons.home,
-              controller: homeController,
-              hintText: 'Дом',
-            ),
-            _buildFormField(
-              icon: Icons.map,
-              controller: addressController,
-              hintText: 'Адрес',
-            ),
+            _buildFormField(icon: Icons.route, controller: streetController, hintText: 'Улица'),
+            _buildFormField(icon: Icons.home, controller: homeController, hintText: 'Дом'),
+            _buildFormField(icon: Icons.map, controller: addressController, hintText: 'Адрес'),
           ],
         ),
       ),
@@ -568,8 +497,7 @@ class _BankPageState extends State<BankPage> {
           ),
           filled: true,
           fillColor: Colors.white,
-          contentPadding:
-              const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+          contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
         ),
       ),
     );
@@ -602,8 +530,7 @@ class _BankPageState extends State<BankPage> {
               ),
               filled: true,
               fillColor: Colors.white,
-              contentPadding:
-                  const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+              contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
             ),
           ),
         ),
@@ -625,10 +552,7 @@ class _BankPageState extends State<BankPage> {
         decoration: InputDecoration(
           prefixIcon: const Icon(Icons.lock, color: AppColors.kPrimaryColor),
           suffixIcon: IconButton(
-            icon: Icon(
-              obscureText ? Icons.visibility_off : Icons.visibility,
-              color: Colors.grey,
-            ),
+            icon: Icon(obscureText ? Icons.visibility_off : Icons.visibility, color: Colors.grey),
             onPressed: onToggle,
           ),
           hintText: hintText,
@@ -642,8 +566,7 @@ class _BankPageState extends State<BankPage> {
           ),
           filled: true,
           fillColor: Colors.white,
-          contentPadding:
-              const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+          contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
         ),
       ),
     );
@@ -667,9 +590,7 @@ class _BankPageState extends State<BankPage> {
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
           backgroundColor: AppColors.kPrimaryColor,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-          ),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
           padding: const EdgeInsets.symmetric(vertical: 16),
         ),
         onPressed: () async {
@@ -708,11 +629,7 @@ class _BankPageState extends State<BankPage> {
         },
         child: const Text(
           'Сохранить',
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
-            color: Colors.white,
-          ),
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: Colors.white),
         ),
       ),
     );

@@ -7,8 +7,7 @@ import 'package:haji_market/src/feature/seller/main/data/repository/seller_notif
 class SellerNotificationCubit extends Cubit<SellerNotificationState> {
   final SellerrNotificationRepository sellerrNotificationRepository;
 
-  SellerNotificationCubit({required this.sellerrNotificationRepository})
-      : super(InitState());
+  SellerNotificationCubit({required this.sellerrNotificationRepository}) : super(InitState());
 
   List<NotificationSellerModel> list = [];
 
@@ -16,8 +15,8 @@ class SellerNotificationCubit extends Cubit<SellerNotificationState> {
     try {
       list.clear();
       emit(LoadingState());
-      final List<NotificationSellerModel> data =
-          await sellerrNotificationRepository.notifications();
+      final List<NotificationSellerModel> data = await sellerrNotificationRepository
+          .notifications();
 
       list.addAll(data);
       emit(LoadedState(list));

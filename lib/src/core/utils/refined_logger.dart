@@ -21,14 +21,8 @@ RefinedLogger get logger => Zone.current[_loggerKey] as RefinedLogger? ?? _logge
 ///
 /// This is useful for testing purposes, where you can pass a mock logger
 /// to the callback.
-void runWithLogger<T>(
-  RefinedLogger logger,
-  T Function() callback,
-) {
-  runZoned(
-    callback,
-    zoneValues: {_loggerKey: logger},
-  );
+void runWithLogger<T>(RefinedLogger logger, T Function() callback) {
+  runZoned(callback, zoneValues: {_loggerKey: logger});
 }
 
 const _loggerKey = 'logger';
@@ -40,10 +34,7 @@ final _logger = DefaultLogger();
 ///
 /// This is a function type that takes a [LogMessage] and
 /// [LoggingOptions] and returns a formatted string.
-typedef LogFormatter = String Function(
-  LogWrapper wrappedMessage,
-  LoggingOptions options,
-);
+typedef LogFormatter = String Function(LogWrapper wrappedMessage, LoggingOptions options);
 
 /// Configuration options for logging behavior.
 ///
@@ -103,11 +94,7 @@ class LoggingOptions {
 /// Internal class used by [DefaultLogger] to wrap the log messages.
 class LogWrapper {
   /// Constructs an instance of [LogWrapper].
-  LogWrapper({
-    required this.message,
-    required this.printStackTrace,
-    required this.printError,
-  });
+  LogWrapper({required this.message, required this.printStackTrace, required this.printError});
 
   /// The log message to be wrapped.
   LogMessage message;
@@ -248,31 +235,22 @@ abstract class RefinedLogger {
   });
 
   /// Logs a zone error with [LogLevel.error].
-  void logZoneError(Object error, StackTrace stackTrace) => log(
-        'Zone error',
-        level: LogLevel.error,
-        error: error,
-        stackTrace: stackTrace,
-      );
+  void logZoneError(Object error, StackTrace stackTrace) =>
+      log('Zone error', level: LogLevel.error, error: error, stackTrace: stackTrace);
 
   /// Logs a flutter error with [LogLevel.error].
   void logFlutterError(FlutterErrorDetails details) => log(
-        details.toString(),
-        level: LogLevel.error,
-        error: details.exception,
-        stackTrace: details.stack,
-        printStackTrace: false,
-        printError: false,
-      );
+    details.toString(),
+    level: LogLevel.error,
+    error: details.exception,
+    stackTrace: details.stack,
+    printStackTrace: false,
+    printError: false,
+  );
 
   /// Logs a platform dispatcher error with [LogLevel.error].
   bool logPlatformDispatcherError(Object error, StackTrace stackTrace) {
-    log(
-      'Platform dispatcher error',
-      level: LogLevel.error,
-      error: error,
-      stackTrace: stackTrace,
-    );
+    log('Platform dispatcher error', level: LogLevel.error, error: error, stackTrace: stackTrace);
     return true;
   }
 
@@ -284,16 +262,15 @@ abstract class RefinedLogger {
     Map<String, Object?>? context,
     bool printStackTrace = true,
     bool printError = true,
-  }) =>
-      log(
-        message,
-        level: LogLevel.trace,
-        error: error,
-        stackTrace: stackTrace,
-        context: context,
-        printStackTrace: printStackTrace,
-        printError: printError,
-      );
+  }) => log(
+    message,
+    level: LogLevel.trace,
+    error: error,
+    stackTrace: stackTrace,
+    context: context,
+    printStackTrace: printStackTrace,
+    printError: printError,
+  );
 
   /// Logs a message with [LogLevel.debug].
   void debug(
@@ -303,16 +280,15 @@ abstract class RefinedLogger {
     Map<String, Object?>? context,
     bool printStackTrace = true,
     bool printError = true,
-  }) =>
-      log(
-        message,
-        level: LogLevel.debug,
-        error: error,
-        stackTrace: stackTrace,
-        context: context,
-        printStackTrace: printStackTrace,
-        printError: printError,
-      );
+  }) => log(
+    message,
+    level: LogLevel.debug,
+    error: error,
+    stackTrace: stackTrace,
+    context: context,
+    printStackTrace: printStackTrace,
+    printError: printError,
+  );
 
   /// Logs a message with [LogLevel.info].
   void info(
@@ -322,16 +298,15 @@ abstract class RefinedLogger {
     Map<String, Object?>? context,
     bool printStackTrace = true,
     bool printError = true,
-  }) =>
-      log(
-        message,
-        level: LogLevel.info,
-        error: error,
-        stackTrace: stackTrace,
-        context: context,
-        printStackTrace: printStackTrace,
-        printError: printError,
-      );
+  }) => log(
+    message,
+    level: LogLevel.info,
+    error: error,
+    stackTrace: stackTrace,
+    context: context,
+    printStackTrace: printStackTrace,
+    printError: printError,
+  );
 
   /// Logs a message with [LogLevel.warn].
   void warn(
@@ -341,16 +316,15 @@ abstract class RefinedLogger {
     Map<String, Object?>? context,
     bool printStackTrace = true,
     bool printError = true,
-  }) =>
-      log(
-        message,
-        level: LogLevel.warn,
-        error: error,
-        stackTrace: stackTrace,
-        context: context,
-        printStackTrace: printStackTrace,
-        printError: printError,
-      );
+  }) => log(
+    message,
+    level: LogLevel.warn,
+    error: error,
+    stackTrace: stackTrace,
+    context: context,
+    printStackTrace: printStackTrace,
+    printError: printError,
+  );
 
   /// Logs a message with [LogLevel.error].
   void error(
@@ -360,16 +334,15 @@ abstract class RefinedLogger {
     Map<String, Object?>? context,
     bool printStackTrace = true,
     bool printError = true,
-  }) =>
-      log(
-        message,
-        level: LogLevel.error,
-        error: error,
-        stackTrace: stackTrace,
-        context: context,
-        printStackTrace: printStackTrace,
-        printError: printError,
-      );
+  }) => log(
+    message,
+    level: LogLevel.error,
+    error: error,
+    stackTrace: stackTrace,
+    context: context,
+    printStackTrace: printStackTrace,
+    printError: printError,
+  );
 
   /// Logs a message with [LogLevel.fatal].
   void fatal(
@@ -379,16 +352,15 @@ abstract class RefinedLogger {
     Map<String, Object?>? context,
     bool printStackTrace = true,
     bool printError = true,
-  }) =>
-      log(
-        message,
-        level: LogLevel.fatal,
-        error: error,
-        stackTrace: stackTrace,
-        context: context,
-        printStackTrace: printStackTrace,
-        printError: printError,
-      );
+  }) => log(
+    message,
+    level: LogLevel.fatal,
+    error: error,
+    stackTrace: stackTrace,
+    context: context,
+    printStackTrace: printStackTrace,
+    printError: printError,
+  );
 }
 
 /// Represents a single log message with various details
@@ -479,11 +451,11 @@ enum LogLevel implements Comparable<LogLevel> {
 extension on LogLevel {
   /// Get emoji from the log level
   String get emoji => const {
-        LogLevel.trace: '🔍',
-        LogLevel.debug: '🐛',
-        LogLevel.info: 'ℹ️',
-        LogLevel.warn: '⚠️',
-        LogLevel.error: '❌',
-        LogLevel.fatal: '💥',
-      }[this]!;
+    LogLevel.trace: '🔍',
+    LogLevel.debug: '🐛',
+    LogLevel.info: 'ℹ️',
+    LogLevel.warn: '⚠️',
+    LogLevel.error: '❌',
+    LogLevel.fatal: '💥',
+  }[this]!;
 }

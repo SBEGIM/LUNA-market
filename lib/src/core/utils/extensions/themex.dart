@@ -5,10 +5,7 @@ extension ThemeDataX on ThemeData {
   //  context.theme.when(dark: () => AppDarkColors.main, light: () =>
   // AppLightColors.main,)
   // ''''
-  T when<T>({
-    required T Function() light,
-    required T Function() dark,
-  }) {
+  T when<T>({required T Function() light, required T Function() dark}) {
     switch (brightness) {
       case Brightness.light:
         return light();
@@ -17,10 +14,7 @@ extension ThemeDataX on ThemeData {
     }
   }
 
-  T whenByValue<T extends Object?>({
-    required T light,
-    required T dark,
-  }) {
+  T whenByValue<T extends Object?>({required T light, required T dark}) {
     switch (brightness) {
       case Brightness.light:
         return light;
@@ -29,13 +23,6 @@ extension ThemeDataX on ThemeData {
     }
   }
 
-  T maybeWhenByValue<T extends Object?>({
-    required T orElse,
-    T? light,
-    T? dark,
-  }) =>
-      whenByValue<T>(
-        light: light ?? orElse,
-        dark: dark ?? orElse,
-      );
+  T maybeWhenByValue<T extends Object?>({required T orElse, T? light, T? dark}) =>
+      whenByValue<T>(light: light ?? orElse, dark: dark ?? orElse);
 }

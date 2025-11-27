@@ -85,10 +85,7 @@ class FilterProvider extends ChangeNotifier {
     minPrice = range.start;
     maxPrice = range.end;
 
-    _box.write('priceFilter', {
-      'start': range.start,
-      'end': range.end,
-    });
+    _box.write('priceFilter', {'start': range.start, 'end': range.end});
 
     notifyListeners();
   }
@@ -237,10 +234,7 @@ class FilterProvider extends ChangeNotifier {
         minPrice = pf.start;
         maxPrice = pf.end;
 
-        _box.write('priceFilter', {
-          'start': pf.start,
-          'end': pf.end,
-        });
+        _box.write('priceFilter', {'start': pf.start, 'end': pf.end});
       } else {
         // мусор — просто не используем
       }

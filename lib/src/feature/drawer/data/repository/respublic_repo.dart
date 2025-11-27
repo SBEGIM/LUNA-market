@@ -17,8 +17,10 @@ class RespublicApi {
   Future<List<RespublicModel>> respublics() async {
     final String? token = _box.read('token');
 
-    final response = await http.get(Uri.parse("$baseUrl/list/respublics"),
-        headers: {"Authorization": "Bearer $token"});
+    final response = await http.get(
+      Uri.parse("$baseUrl/list/respublics"),
+      headers: {"Authorization": "Bearer $token"},
+    );
 
     final data = jsonDecode(response.body);
 

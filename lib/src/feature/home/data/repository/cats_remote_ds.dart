@@ -8,9 +8,7 @@ abstract interface class ICatsRemoteDS {
 }
 
 class CatsRemoteDSImpl implements ICatsRemoteDS {
-  const CatsRemoteDSImpl({
-    required this.restClient,
-  });
+  const CatsRemoteDSImpl({required this.restClient});
   final IRestClient restClient;
 
   @override
@@ -18,9 +16,7 @@ class CatsRemoteDSImpl implements ICatsRemoteDS {
     try {
       final Map<String, dynamic> response = await restClient.get('/list/cats');
 
-      return (response['data'] as List)
-          .map((e) => CatsModel.fromJson(e))
-          .toList();
+      return (response['data'] as List).map((e) => CatsModel.fromJson(e)).toList();
     } catch (e, st) {
       TalkerLoggerUtil.talker.error('#getCats- ', e, st);
       rethrow;
@@ -29,12 +25,9 @@ class CatsRemoteDSImpl implements ICatsRemoteDS {
 
   Future<List<CatsModel>> getBrandCats(int brandId) async {
     try {
-      final Map<String, dynamic> response =
-          await restClient.get('/list/cats?brand_id=$brandId');
+      final Map<String, dynamic> response = await restClient.get('/list/cats?brand_id=$brandId');
 
-      return (response['data'] as List)
-          .map((e) => CatsModel.fromJson(e))
-          .toList();
+      return (response['data'] as List).map((e) => CatsModel.fromJson(e)).toList();
     } catch (e, st) {
       TalkerLoggerUtil.talker.error('#getCats- ', e, st);
       rethrow;

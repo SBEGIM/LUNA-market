@@ -1,8 +1,5 @@
 class AdSellerDto {
-  AdSellerDto({
-    int? price,
-    int? viewCount,
-  }) {
+  AdSellerDto({int? price, int? viewCount}) {
     _price = price;
     _viewCount = viewCount;
   }

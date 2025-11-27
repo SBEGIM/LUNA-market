@@ -24,7 +24,8 @@ class Message {
 
       final response = await http.get(
         Uri.parse(
-            "$baseUrl/chat/message?page=$page& ${chatId == 0 ? 'user_id=$userId' : 'chat_id=$chatId'} "),
+          "$baseUrl/chat/message?page=$page& ${chatId == 0 ? 'user_id=$userId' : 'chat_id=$chatId'} ",
+        ),
         headers: {"Authorization": "Bearer $token"},
       );
       print('ok');
@@ -44,19 +45,12 @@ class Message {
     try {
       final String? token = _box.read('token');
 
-      final headers = {
-        'Authorization': 'Bearer $token',
-      };
+      final headers = {'Authorization': 'Bearer $token'};
 
-      final request = http.MultipartRequest(
-        'POST',
-        Uri.parse('$baseUrl/chat/message/upload-file'),
-      );
+      final request = http.MultipartRequest('POST', Uri.parse('$baseUrl/chat/message/upload-file'));
 
       if (avatar != '') {
-        request.files.add(
-          await http.MultipartFile.fromPath('file', avatar),
-        );
+        request.files.add(await http.MultipartFile.fromPath('file', avatar));
       }
       request.headers.addAll(headers);
 

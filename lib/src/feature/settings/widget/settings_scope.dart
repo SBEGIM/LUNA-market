@@ -6,19 +6,13 @@ import 'package:haji_market/src/feature/settings/model/app_settings.dart';
 
 /// SettingsScope widget.
 class SettingsScope extends StatefulWidget {
-  const SettingsScope({
-    required this.child,
-    super.key,
-  });
+  const SettingsScope({required this.child, super.key});
 
   /// The child widget.
   final Widget child;
 
   /// Get the [AppSettingsBloc] instance.
-  static AppSettingsBloc of(
-    BuildContext context, {
-    bool listen = true,
-  }) {
+  static AppSettingsBloc of(BuildContext context, {bool listen = true}) {
     final settingsScope = listen
         ? context.dependOnInheritedWidgetOfExactType<_InheritedSettings>()
         : context.getInheritedWidgetOfExactType<_InheritedSettings>();
@@ -26,10 +20,7 @@ class SettingsScope extends StatefulWidget {
   }
 
   /// Get the [AppSettings] instance.
-  static AppSettings settingsOf(
-    BuildContext context, {
-    bool listen = true,
-  }) {
+  static AppSettings settingsOf(BuildContext context, {bool listen = true}) {
     final settingsScope = listen
         ? context.dependOnInheritedWidgetOfExactType<_InheritedSettings>()
         : context.getInheritedWidgetOfExactType<_InheritedSettings>();
@@ -51,46 +42,36 @@ class _SettingsScopeState extends State<SettingsScope> {
   }
 
   @override
-  Widget build(BuildContext context) =>
-      BlocBuilder<AppSettingsBloc, AppSettingsState>(
-        bloc: _appSettingsBloc,
-        builder: (context, state) => MultiBlocProvider(
-          providers: [
-            // BlocProvider(
-            //   create: (context) => AppBloc(context.repository.authRepository),
-            // ),
-            // BlocProvider(
-            //   create: (context) => ProfileBLoC(
-            //     authRepository: context.repository.authRepository,
-            //     profileRepository: context.repository.profileRepository,
-            //   ),
-            // ),
-            // BlocProvider(
-            //   create: (context) => AppRoleBloc(),
-            // ),
-          ],
-          child: _InheritedSettings(
-            settings: state.appSettings,
-            state: this,
-            child: widget.child,
-          ),
-        ),
-      );
+  Widget build(BuildContext context) => BlocBuilder<AppSettingsBloc, AppSettingsState>(
+    bloc: _appSettingsBloc,
+    builder: (context, state) => MultiBlocProvider(
+      providers: [
+        // BlocProvider(
+        //   create: (context) => AppBloc(context.repository.authRepository),
+        // ),
+        // BlocProvider(
+        //   create: (context) => ProfileBLoC(
+        //     authRepository: context.repository.authRepository,
+        //     profileRepository: context.repository.profileRepository,
+        //   ),
+        // ),
+        // BlocProvider(
+        //   create: (context) => AppRoleBloc(),
+        // ),
+      ],
+      child: _InheritedSettings(settings: state.appSettings, state: this, child: widget.child),
+    ),
+  );
 }
 
 /// _InheritedSettings widget.
 class _InheritedSettings extends InheritedWidget {
-  const _InheritedSettings({
-    required super.child,
-    required this.state,
-    required this.settings,
-  });
+  const _InheritedSettings({required super.child, required this.state, required this.settings});
 
   /// _SettingsScopeState instance.
   final _SettingsScopeState state;
   final AppSettings? settings;
 
   @override
-  bool updateShouldNotify(covariant _InheritedSettings oldWidget) =>
-      settings != oldWidget.settings;
+  bool updateShouldNotify(covariant _InheritedSettings oldWidget) => settings != oldWidget.settings;
 }

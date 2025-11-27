@@ -7,8 +7,7 @@ import 'package:http/http.dart' as http;
 const baseUrl = 'https://lunamarket.ru/api';
 
 class ProfileStaticsAdminRepository {
-  final ProfileStaticsAdminToApi _profileStaticsBloggerToApinToApi =
-      ProfileStaticsAdminToApi();
+  final ProfileStaticsAdminToApi _profileStaticsBloggerToApinToApi = ProfileStaticsAdminToApi();
 
   Future<dynamic> statics() => _profileStaticsBloggerToApinToApi.statics();
 }
@@ -19,8 +18,9 @@ class ProfileStaticsAdminToApi {
   Future<dynamic> statics() async {
     final sellerId = _box.read('seller_id');
 
-    final response = await http
-        .get(Uri.parse('$baseUrl/seller/profile/statics?seller_id=$sellerId'));
+    final response = await http.get(
+      Uri.parse('$baseUrl/seller/profile/statics?seller_id=$sellerId'),
+    );
 
     return ProfileStaticsAdminModel.fromJson(jsonDecode(response.body));
   }

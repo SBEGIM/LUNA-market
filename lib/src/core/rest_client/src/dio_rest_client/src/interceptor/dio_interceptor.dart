@@ -9,10 +9,7 @@ class DioInterceptor extends Interceptor {
   const DioInterceptor();
 
   @override
-  Future<void> onError(
-    DioException err,
-    ErrorInterceptorHandler handler,
-  ) async {
+  Future<void> onError(DioException err, ErrorInterceptorHandler handler) async {
     final errorMessage = _parseDioError(err);
 
     if ((err.response?.statusCode ?? 0) == HttpStatus.unauthorized) {
@@ -44,8 +41,7 @@ class DioInterceptor extends Interceptor {
     switch (error.response?.statusCode) {
       case HttpStatus.unauthorized:
         try {
-          return ((error.response?.data as Map<String, dynamic>)['message']
-                  as String?) ??
+          return ((error.response?.data as Map<String, dynamic>)['message'] as String?) ??
               'HttpStatus.unauthorized';
         } catch (e, st) {
           TalkerLoggerUtil.talker.error('Not authorized: $e');
@@ -58,24 +54,18 @@ class DioInterceptor extends Interceptor {
         return 'Request Entity Too Large';
       case HttpStatus.internalServerError:
         try {
-          return ((error.response?.data as Map<String, dynamic>)['message']
-                  as String?) ??
+          return ((error.response?.data as Map<String, dynamic>)['message'] as String?) ??
               'Unknown error[500]';
         } catch (e, st) {
-          TalkerLoggerUtil.talker
-              .error('Something is wrong with our servers: $e');
+          TalkerLoggerUtil.talker.error('Something is wrong with our servers: $e');
 
-          _sentryLogger(
-            error: '''Something is wrong with our servers: $e''',
-            stackTrace: st,
-          );
+          _sentryLogger(error: '''Something is wrong with our servers: $e''', stackTrace: st);
           return '''Something is wrong with our servers, the problem will be solved soon!''';
         }
       default:
         try {
           _sentryLogger(error: error, stackTrace: error.stackTrace);
-          return ((error.response?.data as Map<String, dynamic>?)?['message']
-                  as String?) ??
+          return ((error.response?.data as Map<String, dynamic>?)?['message'] as String?) ??
               'Unknown error[${error.response?.statusCode}]';
         } catch (e, st) {
           TalkerLoggerUtil.talker.error(

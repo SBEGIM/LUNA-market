@@ -1,10 +1,8 @@
 class ShopsDrawerModel {
-  ShopsDrawerModel({
-      int? id, 
-      String? name,}){
+  ShopsDrawerModel({int? id, String? name}) {
     _id = id;
     _name = name;
-}
+  }
 
   ShopsDrawerModel.fromJson(dynamic json) {
     _id = json['id'];
@@ -22,5 +20,4 @@ class ShopsDrawerModel {
     map['name'] = _name;
     return map;
   }
-
 }

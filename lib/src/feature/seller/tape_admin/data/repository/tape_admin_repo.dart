@@ -9,8 +9,7 @@ const baseUrl = 'https://lunamarket.ru/api';
 class TapeAdminRepository {
   final TapeApi _tapeApi = TapeApi();
 
-  Future<List<TapeAdminModel>> tapes(inSub, inFav, search) =>
-      _tapeApi.tapes(inSub, inFav, search);
+  Future<List<TapeAdminModel>> tapes(inSub, inFav, search) => _tapeApi.tapes(inSub, inFav, search);
 }
 
 class TapeApi {
@@ -33,13 +32,12 @@ class TapeApi {
 
     final response = await http.get(
       Uri.parse(
-          '$baseUrl/seller/tape?token=${token.toString()}&shop_id=${sellerId.toString()}&search=$search'),
+        '$baseUrl/seller/tape?token=${token.toString()}&shop_id=${sellerId.toString()}&search=$search',
+      ),
     );
 
     final data = jsonDecode(response.body);
 
-    return (data['data'] as List)
-        .map((e) => TapeAdminModel.fromJson(e))
-        .toList();
+    return (data['data'] as List).map((e) => TapeAdminModel.fromJson(e)).toList();
   }
 }

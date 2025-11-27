@@ -4,8 +4,7 @@ abstract class _BasePreferencesEntry<T> implements PreferencesEntry<T> {
   final String _key;
   final ISharedPreferencesDao _delegate;
 
-  _BasePreferencesEntry._(String key, this._delegate)
-      : _key = _delegate.key(key);
+  _BasePreferencesEntry._(String key, this._delegate) : _key = _delegate.key(key);
 
   @override
   bool get exists => _delegate.containsKey(_key);
@@ -61,6 +60,5 @@ class _StringListEntry extends _BasePreferencesEntry<List<String>> {
   List<String>? get value => _delegate.getStringList(_key);
 
   @override
-  Future<void> setValue(List<String> value) =>
-      _delegate.setStringList(_key, value);
+  Future<void> setValue(List<String> value) => _delegate.setStringList(_key, value);
 }

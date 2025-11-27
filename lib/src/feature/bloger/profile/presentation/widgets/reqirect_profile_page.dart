@@ -23,8 +23,7 @@ class ReqirectBloggerProfilePage extends StatefulWidget {
   ReqirectBloggerProfilePage({required this.title, Key? key}) : super(key: key);
 
   @override
-  State<ReqirectBloggerProfilePage> createState() =>
-      _ReqirectProfilePageState();
+  State<ReqirectBloggerProfilePage> createState() => _ReqirectProfilePageState();
 }
 
 class _ReqirectProfilePageState extends State<ReqirectBloggerProfilePage> {
@@ -33,8 +32,7 @@ class _ReqirectProfilePageState extends State<ReqirectBloggerProfilePage> {
   final surNameController = TextEditingController();
 
   final nickNameController = TextEditingController();
-  TextEditingController phoneController =
-      MaskedTextController(mask: '(000)-000-00-00');
+  TextEditingController phoneController = MaskedTextController(mask: '(000)-000-00-00');
   final passwordController = TextEditingController();
   final iinController = TextEditingController();
   final legalStatusController = TextEditingController();
@@ -55,10 +53,7 @@ class _ReqirectProfilePageState extends State<ReqirectBloggerProfilePage> {
 
   CountrySellerDto? countrySellerDto;
 
-  Map<String, String?> fieldErrors = {
-    'phone': null,
-    'password': null,
-  };
+  Map<String, String?> fieldErrors = {'phone': null, 'password': null};
 
   @override
   void initState() {
@@ -68,7 +63,10 @@ class _ReqirectProfilePageState extends State<ReqirectBloggerProfilePage> {
 
   void _initializeControllers() {
     countrySellerDto = CountrySellerDto(
-        code: '+7', flagPath: Assets.icons.ruFlagIcon.path, name: 'Россия');
+      code: '+7',
+      flagPath: Assets.icons.ruFlagIcon.path,
+      name: 'Россия',
+    );
 
     firstNameController.text = _box.read('blogger_first_name') ?? '';
     lastNameController.text = _box.read('blogger_last_name') ?? '';
@@ -76,9 +74,7 @@ class _ReqirectProfilePageState extends State<ReqirectBloggerProfilePage> {
 
     phoneController.text = _box.read('blogger_phone') ?? '(000)-000-00-00';
     nickNameController.text = _box.read('blogger_nick_name') ?? '';
-    iinController.text = _box.read('blogger_iin') != 'null'
-        ? (_box.read('blogger_iin') ?? '')
-        : '';
+    iinController.text = _box.read('blogger_iin') != 'null' ? (_box.read('blogger_iin') ?? '') : '';
     socialNetworkController.text = _box.read('blogger_social_network') ?? '';
     emailController.text = _box.read('blogger_email') ?? '';
     bankNameController.text = _box.read('blogger_bank_name') ?? '';
@@ -90,8 +86,7 @@ class _ReqirectProfilePageState extends State<ReqirectBloggerProfilePage> {
     legalStatus = _box.read('blogger_legal_status');
 
     if (legalStatus != '') {
-      legalStatusController.text =
-          legalStatus != 'individual-entrepreneur' ? 'Самозанятый' : 'ИП';
+      legalStatusController.text = legalStatus != 'individual-entrepreneur' ? 'Самозанятый' : 'ИП';
     }
   }
 
@@ -110,8 +105,7 @@ class _ReqirectProfilePageState extends State<ReqirectBloggerProfilePage> {
     final pass = passwordController.text;
 
     setState(() {
-      fieldErrors['phone'] =
-          phone.length != 10 ? 'Введите корректный номер телефона' : null;
+      fieldErrors['phone'] = phone.length != 10 ? 'Введите корректный номер телефона' : null;
 
       fieldErrors['password'] = pass.isEmpty ? 'Введите пароль' : null;
     });
@@ -135,10 +129,7 @@ class _ReqirectProfilePageState extends State<ReqirectBloggerProfilePage> {
         backgroundColor: AppColors.kWhite,
         elevation: 0,
         centerTitle: true,
-        title: Text(
-          '${widget.title}',
-          style: AppTextStyles.appBarTextStyle,
-        ),
+        title: Text('${widget.title}', style: AppTextStyles.appBarTextStyle),
       ),
       body: BlocConsumer<EditBloggerCubit, EditBloggerState>(
         listener: (context, state) {
@@ -152,35 +143,25 @@ class _ReqirectProfilePageState extends State<ReqirectBloggerProfilePage> {
               child: Column(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 16, vertical: 16),
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Visibility(
-                            visible: widget.title == 'Основная информация',
-                            child: Column(children: [
-                              _buildFormField(
-                                controller: lastNameController,
-                                label: 'Фамилия',
-                              ),
-                              _buildFormField(
-                                controller: firstNameController,
-                                label: 'Имя',
-                              ),
-                              _buildFormField(
-                                controller: surNameController,
-                                label: 'Отчество',
-                              ),
-                            ])),
+                          visible: widget.title == 'Основная информация',
+                          child: Column(
+                            children: [
+                              _buildFormField(controller: lastNameController, label: 'Фамилия'),
+                              _buildFormField(controller: firstNameController, label: 'Имя'),
+                              _buildFormField(controller: surNameController, label: 'Отчество'),
+                            ],
+                          ),
+                        ),
                         Visibility(
                           visible: widget.title == 'Социальные сети',
                           child: Column(
                             children: [
-                              _buildFormField(
-                                controller: nickNameController,
-                                label: 'Никнейм',
-                              ),
+                              _buildFormField(controller: nickNameController, label: 'Никнейм'),
                               _buildFormField(
                                 controller: socialNetworkController,
                                 label: 'Ссылка на социальную сеть',
@@ -193,32 +174,29 @@ class _ReqirectProfilePageState extends State<ReqirectBloggerProfilePage> {
                           child: Column(
                             children: [
                               _buildStatusField(
-                                  controller: legalStatusController,
-                                  label: 'Выберите статус',
-                                  readOnly: true,
-                                  onTap: () {
-                                    showBloggerLegalStatusType(
-                                      context,
-                                      legalStatus == 'individual-entrepreneur'
-                                          ? false
-                                          : true,
-                                      typeCall: (value) {
-                                        if (value == true) {
-                                          legalStatus = 'self-employed';
+                                controller: legalStatusController,
+                                label: 'Выберите статус',
+                                readOnly: true,
+                                onTap: () {
+                                  showBloggerLegalStatusType(
+                                    context,
+                                    legalStatus == 'individual-entrepreneur' ? false : true,
+                                    typeCall: (value) {
+                                      if (value == true) {
+                                        legalStatus = 'self-employed';
 
-                                          legalStatusController.text =
-                                              'Самозанятый';
-                                        } else {
-                                          legalStatus =
-                                              'individual-entrepreneur';
-                                          legalStatusController.text = 'ИП';
-                                        }
+                                        legalStatusController.text = 'Самозанятый';
+                                      } else {
+                                        legalStatus = 'individual-entrepreneur';
+                                        legalStatusController.text = 'ИП';
+                                      }
 
-                                        setState(() {});
-                                      },
-                                    );
-                                  },
-                                  showArrow: true),
+                                      setState(() {});
+                                    },
+                                  );
+                                },
+                                showArrow: true,
+                              ),
                               _buildFormField(
                                 controller: iinController,
                                 label: 'ИИН',
@@ -241,10 +219,7 @@ class _ReqirectProfilePageState extends State<ReqirectBloggerProfilePage> {
                                 label: 'БИК банка',
                                 keyboardType: TextInputType.number,
                               ),
-                              _buildFormField(
-                                controller: checkController,
-                                label: 'Счёт',
-                              ),
+                              _buildFormField(controller: checkController, label: 'Счёт'),
                             ],
                           ),
                         ),
@@ -254,9 +229,12 @@ class _ReqirectProfilePageState extends State<ReqirectBloggerProfilePage> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text('Номер телефона',
-                                  style: AppTextStyles.size13Weight500
-                                      .copyWith(color: Color(0xff636366))),
+                              Text(
+                                'Номер телефона',
+                                style: AppTextStyles.size13Weight500.copyWith(
+                                  color: Color(0xff636366),
+                                ),
+                              ),
                               const SizedBox(height: 8),
                               Row(
                                 children: [
@@ -274,23 +252,20 @@ class _ReqirectProfilePageState extends State<ReqirectBloggerProfilePage> {
                                       child: Container(
                                         height: 52,
                                         width: 83,
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: 15),
+                                        padding: EdgeInsets.symmetric(horizontal: 15),
                                         decoration: BoxDecoration(
                                           color: Color(0xffEAECED),
                                           border: fieldErrors['phone'] != null
                                               ? Border.all(
                                                   color: AppColors.mainRedColor,
-                                                  width: 1.0)
+                                                  width: 1.0,
+                                                )
                                               : null,
-                                          borderRadius:
-                                              BorderRadius.circular(16),
+                                          borderRadius: BorderRadius.circular(16),
                                         ),
                                         child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          crossAxisAlignment: CrossAxisAlignment.center,
                                           children: [
                                             Image.asset(
                                               countrySellerDto!.flagPath,
@@ -298,9 +273,10 @@ class _ReqirectProfilePageState extends State<ReqirectBloggerProfilePage> {
                                               height: 24,
                                             ),
                                             SizedBox(width: 8),
-                                            Text('${countrySellerDto!.code}',
-                                                style: AppTextStyles
-                                                    .size16Weight400),
+                                            Text(
+                                              '${countrySellerDto!.code}',
+                                              style: AppTextStyles.size16Weight400,
+                                            ),
                                           ],
                                         ),
                                       ),
@@ -311,15 +287,12 @@ class _ReqirectProfilePageState extends State<ReqirectBloggerProfilePage> {
                                   Flexible(
                                     child: Container(
                                       height: 52,
-                                      padding:
-                                          EdgeInsets.symmetric(horizontal: 16),
+                                      padding: EdgeInsets.symmetric(horizontal: 16),
                                       decoration: BoxDecoration(
                                         color: Color(0xffEAECED),
                                         borderRadius: BorderRadius.circular(16),
                                         border: fieldErrors['phone'] != null
-                                            ? Border.all(
-                                                color: AppColors.mainRedColor,
-                                                width: 1.0)
+                                            ? Border.all(color: AppColors.mainRedColor, width: 1.0)
                                             : null,
                                       ),
                                       alignment: Alignment.center,
@@ -328,10 +301,9 @@ class _ReqirectProfilePageState extends State<ReqirectBloggerProfilePage> {
                                         keyboardType: TextInputType.phone,
                                         decoration: InputDecoration(
                                           hintText: 'Введите номер телефона',
-                                          hintStyle: AppTextStyles
-                                              .size16Weight400
-                                              .copyWith(
-                                                  color: Color(0xFF8E8E93)),
+                                          hintStyle: AppTextStyles.size16Weight400.copyWith(
+                                            color: Color(0xFF8E8E93),
+                                          ),
                                           border: InputBorder.none,
                                         ),
                                       ),
@@ -394,9 +366,7 @@ class _ReqirectProfilePageState extends State<ReqirectBloggerProfilePage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(label,
-              style: AppTextStyles.size13Weight500
-                  .copyWith(color: Color(0xFF636366))),
+          Text(label, style: AppTextStyles.size13Weight500.copyWith(color: Color(0xFF636366))),
           const SizedBox(height: 8),
           Container(
             height: 52,
@@ -406,19 +376,18 @@ class _ReqirectProfilePageState extends State<ReqirectBloggerProfilePage> {
               borderRadius: BorderRadius.circular(16),
             ),
             child: TextField(
-                controller: controller,
-                keyboardType: keyboardType,
-                inputFormatters: inputFormatters,
-                decoration: InputDecoration(
-                  border: InputBorder.none,
-                  hintText: 'Введите $label',
-                  hintStyle: AppTextStyles.size16Weight400
-                      .copyWith(color: Color(0xFF8E8E93)),
-                  contentPadding:
-                      EdgeInsets.zero, // Better control over padding
-                  isDense: true,
-                ),
-                style: AppTextStyles.size16Weight400),
+              controller: controller,
+              keyboardType: keyboardType,
+              inputFormatters: inputFormatters,
+              decoration: InputDecoration(
+                border: InputBorder.none,
+                hintText: 'Введите $label',
+                hintStyle: AppTextStyles.size16Weight400.copyWith(color: Color(0xFF8E8E93)),
+                contentPadding: EdgeInsets.zero, // Better control over padding
+                isDense: true,
+              ),
+              style: AppTextStyles.size16Weight400,
+            ),
           ),
         ],
       ),
@@ -439,9 +408,7 @@ class _ReqirectProfilePageState extends State<ReqirectBloggerProfilePage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(label,
-              style: AppTextStyles.size13Weight500
-                  .copyWith(color: Color(0xff636366))),
+          Text(label, style: AppTextStyles.size13Weight500.copyWith(color: Color(0xff636366))),
           const SizedBox(height: 8),
           GestureDetector(
             onTap: readOnly ? onTap : null,
@@ -464,16 +431,16 @@ class _ReqirectProfilePageState extends State<ReqirectBloggerProfilePage> {
                         inputFormatters: inputFormatters,
                         readOnly: readOnly,
                         decoration: InputDecoration.collapsed(
-                            hintText: 'Введите $label',
-                            hintStyle: AppTextStyles.size16Weight400
-                                .copyWith(color: Color(0xff8E8E93))),
+                          hintText: 'Введите $label',
+                          hintStyle: AppTextStyles.size16Weight400.copyWith(
+                            color: Color(0xff8E8E93),
+                          ),
+                        ),
                         style: AppTextStyles.size16Weight400,
                       ),
                     ),
                   ),
-                  if (showArrow)
-                    const Icon(Icons.arrow_forward_ios,
-                        size: 16, color: Colors.grey),
+                  if (showArrow) const Icon(Icons.arrow_forward_ios, size: 16, color: Colors.grey),
                 ],
               ),
             ),
@@ -494,13 +461,7 @@ class _ReqirectProfilePageState extends State<ReqirectBloggerProfilePage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            label,
-            style: const TextStyle(
-              fontSize: 14,
-              color: Colors.grey,
-            ),
-          ),
+          Text(label, style: const TextStyle(fontSize: 14, color: Colors.grey)),
           const SizedBox(height: 8),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -514,9 +475,7 @@ class _ReqirectProfilePageState extends State<ReqirectBloggerProfilePage> {
                   child: TextField(
                     controller: controller,
                     obscureText: obscureText,
-                    decoration: const InputDecoration(
-                      border: InputBorder.none,
-                    ),
+                    decoration: const InputDecoration(border: InputBorder.none),
                     style: const TextStyle(fontSize: 16),
                   ),
                 ),
@@ -545,9 +504,7 @@ class _ReqirectProfilePageState extends State<ReqirectBloggerProfilePage> {
         style: ElevatedButton.styleFrom(
           backgroundColor: AppColors.mainPurpleColor,
           elevation: 0,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
-          ),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
           padding: const EdgeInsets.symmetric(vertical: 14),
         ),
         onPressed: () async {
@@ -575,8 +532,7 @@ class _ReqirectProfilePageState extends State<ReqirectBloggerProfilePage> {
         },
         child: Text(
           'Сохранить',
-          style:
-              AppTextStyles.size18Weight600.copyWith(color: AppColors.kWhite),
+          style: AppTextStyles.size18Weight600.copyWith(color: AppColors.kWhite),
         ),
       ),
     );

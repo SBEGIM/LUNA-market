@@ -8,11 +8,7 @@ import 'package:haji_market/src/core/theme/resources.dart';
 /// {@endtemplate}
 class AppSettings with Diagnosticable {
   /// {@macro app_settings}
-  const AppSettings({
-    this.appTheme,
-    required this.locale,
-    this.textScale,
-  });
+  const AppSettings({this.appTheme, required this.locale, this.textScale});
 
   /// The theme of the app,
   final AppTheme? appTheme;
@@ -24,16 +20,11 @@ class AppSettings with Diagnosticable {
   final double? textScale;
 
   /// Copy the [AppSettings] with new values.
-  AppSettings copyWith({
-    AppTheme? appTheme,
-    Locale? locale,
-    double? textScale,
-  }) =>
-      AppSettings(
-        appTheme: appTheme ?? this.appTheme,
-        locale: locale ?? this.locale,
-        textScale: textScale ?? this.textScale,
-      );
+  AppSettings copyWith({AppTheme? appTheme, Locale? locale, double? textScale}) => AppSettings(
+    appTheme: appTheme ?? this.appTheme,
+    locale: locale ?? this.locale,
+    textScale: textScale ?? this.textScale,
+  );
 
   @override
   bool operator ==(Object other) {

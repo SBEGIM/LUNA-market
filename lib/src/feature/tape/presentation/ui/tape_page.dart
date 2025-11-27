@@ -23,10 +23,11 @@ class TapePage extends StatefulWidget {
 
 class _TapePageState extends State<TapePage> with TickerProviderStateMixin {
   late final TabController _tabs = TabController(
-      length: 3,
-      vsync: this,
-      initialIndex: 0,
-      animationDuration: Duration(seconds: 0));
+    length: 3,
+    vsync: this,
+    initialIndex: 0,
+    animationDuration: Duration(seconds: 0),
+  );
 
   final _tabKeys = List.generate(3, (_) => GlobalKey<_TapeTabState>());
 
@@ -40,10 +41,10 @@ class _TapePageState extends State<TapePage> with TickerProviderStateMixin {
   int random(int min, int max) => min + Random().nextInt(max - min);
 
   List<String> get noDataText => const [
-        'Загляните позже — мы готовим подборку \nдля вас',
-        'Пока здесь пусто \nЗдесь будут обзоры от тех, на кого \nвы подписаны',
-        'Пока здесь пусто \nВаши избранные видеообзоры \nпоявятся здесь',
-      ];
+    'Загляните позже — мы готовим подборку \nдля вас',
+    'Пока здесь пусто \nЗдесь будут обзоры от тех, на кого \nвы подписаны',
+    'Пока здесь пусто \nВаши избранные видеообзоры \nпоявятся здесь',
+  ];
 
   bool get _isSubs => _tabs.index == 1;
   bool get _isFavs => _tabs.index == 2;
@@ -52,11 +53,12 @@ class _TapePageState extends State<TapePage> with TickerProviderStateMixin {
     // Дёргать загрузку только при завершённой смене и смене индекса
     if (!_tabs.indexIsChanging && _lastTabIndex != _tabs.index) {
       _lastTabIndex = _tabs.index;
-      _tabs.animateTo(_lastTabIndex,
-          curve: Curves.easeInOut, duration: Duration(milliseconds: 300));
-      context
-          .read<TapeCubit>()
-          .tapes(_isSubs, _isFavs, searchController.text, 0);
+      _tabs.animateTo(
+        _lastTabIndex,
+        curve: Curves.easeInOut,
+        duration: Duration(milliseconds: 300),
+      );
+      context.read<TapeCubit>().tapes(_isSubs, _isFavs, searchController.text, 0);
     }
   }
 
@@ -103,22 +105,15 @@ class _TapePageState extends State<TapePage> with TickerProviderStateMixin {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     const SizedBox(width: 18),
-                    Image.asset(
-                      Assets.icons.defaultSearchIcon.path,
-                      height: 18,
-                      width: 18,
-                    ),
+                    Image.asset(Assets.icons.defaultSearchIcon.path, height: 18, width: 18),
                     const SizedBox(width: 10),
                     Expanded(
                       child: TextField(
                         controller: searchController,
                         onChanged: (value) {
                           _debounce?.cancel();
-                          _debounce =
-                              Timer(const Duration(milliseconds: 350), () {
-                            context
-                                .read<TapeCubit>()
-                                .tapes(_isSubs, _isFavs, value, 0);
+                          _debounce = Timer(const Duration(milliseconds: 350), () {
+                            context.read<TapeCubit>().tapes(_isSubs, _isFavs, value, 0);
                           });
                           // setState() не нужен — Cubit сам обновит UI
                         },
@@ -126,8 +121,9 @@ class _TapePageState extends State<TapePage> with TickerProviderStateMixin {
                         decoration: InputDecoration(
                           border: InputBorder.none,
                           hintText: 'Поиск',
-                          hintStyle: AppTextStyles.size16Weight400
-                              .copyWith(color: AppColors.kGray300),
+                          hintStyle: AppTextStyles.size16Weight400.copyWith(
+                            color: AppColors.kGray300,
+                          ),
                           enabledBorder: const UnderlineInputBorder(
                             borderSide: BorderSide(color: Colors.white),
                           ),
@@ -142,15 +138,13 @@ class _TapePageState extends State<TapePage> with TickerProviderStateMixin {
                 indicatorWeight: 0,
                 automaticIndicatorColorAdjustment: true,
                 indicatorPadding: EdgeInsets.zero,
-                labelStyle: AppTextStyles.size15Weight600
-                    .copyWith(color: const Color(0xFF3A3A3C)),
+                labelStyle: AppTextStyles.size15Weight600.copyWith(color: const Color(0xFF3A3A3C)),
                 indicatorColor: AppColors.kWhite,
                 labelColor: const Color(0xFF3A3A3C),
                 unselectedLabelColor: const Color(0xFF3A3A3C),
                 indicator: FixedWidthIndicator(
                   width: MediaQuery.of(context).size.width / 3,
-                  borderSide:
-                      const BorderSide(width: 1, color: Color(0xFF3A3A3C)),
+                  borderSide: const BorderSide(width: 1, color: Color(0xFF3A3A3C)),
                 ),
                 controller: _tabs,
                 tabs: const <Widget>[
@@ -168,24 +162,9 @@ class _TapePageState extends State<TapePage> with TickerProviderStateMixin {
         controller: _tabs,
         physics: BouncingScrollPhysics(),
         children: [
-          TapeTab(
-            key: _tabKeys[0],
-            isSubs: false,
-            isFavs: false,
-            search: searchController.text,
-          ),
-          TapeTab(
-            key: _tabKeys[1],
-            isSubs: true,
-            isFavs: false,
-            search: searchController.text,
-          ),
-          TapeTab(
-            key: _tabKeys[2],
-            isSubs: false,
-            isFavs: true,
-            search: searchController.text,
-          ),
+          TapeTab(key: _tabKeys[0], isSubs: false, isFavs: false, search: searchController.text),
+          TapeTab(key: _tabKeys[1], isSubs: true, isFavs: false, search: searchController.text),
+          TapeTab(key: _tabKeys[2], isSubs: false, isFavs: true, search: searchController.text),
         ],
       ),
       // Column(
@@ -313,10 +292,7 @@ class FixedWidthIndicator extends Decoration {
   final double width;
   final BorderSide borderSide;
 
-  const FixedWidthIndicator({
-    required this.width,
-    required this.borderSide,
-  });
+  const FixedWidthIndicator({required this.width, required this.borderSide});
 
   @override
   BoxPainter createBoxPainter([VoidCallback? onChanged]) {
@@ -327,8 +303,7 @@ class FixedWidthIndicator extends Decoration {
 class _FixedWidthPainter extends BoxPainter {
   final FixedWidthIndicator decoration;
 
-  _FixedWidthPainter(this.decoration, VoidCallback? onChanged)
-      : super(onChanged);
+  _FixedWidthPainter(this.decoration, VoidCallback? onChanged) : super(onChanged);
 
   @override
   void paint(Canvas canvas, Offset offset, ImageConfiguration configuration) {
@@ -338,9 +313,7 @@ class _FixedWidthPainter extends BoxPainter {
       ..style = PaintingStyle.stroke;
 
     final double tabCenter = offset.dx + configuration.size!.width / 2;
-    final double y = offset.dy +
-        configuration.size!.height -
-        decoration.borderSide.width / 2;
+    final double y = offset.dy + configuration.size!.height - decoration.borderSide.width / 2;
 
     final double startX = tabCenter - decoration.width / 2;
     final double endX = tabCenter + decoration.width / 2;
@@ -350,11 +323,7 @@ class _FixedWidthPainter extends BoxPainter {
 }
 
 class TapeTab extends StatefulWidget {
-  const TapeTab(
-      {super.key,
-      required this.isSubs,
-      required this.isFavs,
-      required this.search});
+  const TapeTab({super.key, required this.isSubs, required this.isFavs, required this.search});
 
   final bool isSubs;
   final bool isFavs;
@@ -364,10 +333,8 @@ class TapeTab extends StatefulWidget {
   State<TapeTab> createState() => _TapeTabState();
 }
 
-class _TapeTabState extends State<TapeTab>
-    with AutomaticKeepAliveClientMixin<TapeTab> {
-  final RefreshController refreshController =
-      RefreshController(initialRefresh: false);
+class _TapeTabState extends State<TapeTab> with AutomaticKeepAliveClientMixin<TapeTab> {
+  final RefreshController refreshController = RefreshController(initialRefresh: false);
 
   int _page = 0;
   String _query = '';
@@ -378,9 +345,7 @@ class _TapeTabState extends State<TapeTab>
     _page = 0;
 
     // FIX: ждём завершения запроса и корректно закрываем refresh
-    await context
-        .read<TapeCubit>()
-        .tapes(widget.isSubs, widget.isFavs, _query, _page);
+    await context.read<TapeCubit>().tapes(widget.isSubs, widget.isFavs, _query, _page);
     refreshController.resetNoData();
     refreshController.refreshCompleted();
   }
@@ -397,24 +362,18 @@ class _TapeTabState extends State<TapeTab>
     //   refreshController.loadNoData();
     // }
 
-    await context
-        .read<TapeCubit>()
-        .tapes(widget.isSubs, widget.isFavs, _query, _page);
+    await context.read<TapeCubit>().tapes(widget.isSubs, widget.isFavs, _query, _page);
     refreshController.loadComplete();
   }
 
   Future<void> _refresh() async {
-    await context
-        .read<TapeCubit>()
-        .tapes(widget.isSubs, widget.isFavs, _query, _page);
+    await context.read<TapeCubit>().tapes(widget.isSubs, widget.isFavs, _query, _page);
     refreshController.refreshCompleted();
   }
 
   Future<void> _loadMore() async {
     // Если у тебя в Cubit есть номер следующей страницы — подставь его вместо 0
-    await context
-        .read<TapeCubit>()
-        .tapePagination(widget.isSubs, widget.isFavs, _query, _page);
+    await context.read<TapeCubit>().tapePagination(widget.isSubs, widget.isFavs, _query, _page);
 
     refreshController.loadComplete();
   }
@@ -521,10 +480,7 @@ class _TapeTabState extends State<TapeTab>
                     borderRadius: BorderRadius.circular(12),
                     color: Color(0xffF7F7F7),
                   ),
-                  child: TapeCardWidget(
-                    tape: state.tapeModel[index],
-                    index: index,
-                  ),
+                  child: TapeCardWidget(tape: state.tapeModel[index], index: index),
                 );
               },
             ),
@@ -532,18 +488,14 @@ class _TapeTabState extends State<TapeTab>
         }
 
         // --- Fallback spinner ---
-        return const Center(
-          child: CircularProgressIndicator(color: Colors.indigoAccent),
-        );
+        return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
       },
     );
   }
 
   String _noDataByTab() {
-    if (widget.isSubs)
-      return 'Пока здесь пусто\nЗдесь будут обзоры от тех, на кого \nвы подписаны';
-    if (widget.isFavs)
-      return 'Пока здесь пусто\nВаши избранные видеообзоры \nпоявятся здесь';
+    if (widget.isSubs) return 'Пока здесь пусто\nЗдесь будут обзоры от тех, на кого \nвы подписаны';
+    if (widget.isFavs) return 'Пока здесь пусто\nВаши избранные видеообзоры \nпоявятся здесь';
     if (widget.search != '')
       return 'Мы ничего не нашли по вашему запросу';
     else

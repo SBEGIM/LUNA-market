@@ -1,11 +1,5 @@
 class BasketStatusTimelineItem {
-  BasketStatusTimelineItem({
-    String? key,
-    int? step,
-    String? title,
-    String? date,
-    bool? isDone,
-  }) {
+  BasketStatusTimelineItem({String? key, int? step, String? title, String? date, bool? isDone}) {
     _key = key;
     _step = step;
     _title = title;
@@ -492,8 +486,7 @@ class BasketOrderSellerModel {
   String? get returnDate => _returnDate;
   String? get expectedDeliveryDate => _expectedDeliveryDate;
   int? get currentStep => _currentStep;
-  List<BasketStatusTimelineItem>? get basketStatusTimeline =>
-      _basketStatusTimeline;
+  List<BasketStatusTimelineItem>? get basketStatusTimeline => _basketStatusTimeline;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -522,8 +515,7 @@ class BasketOrderSellerModel {
     map['expected_delivery_date'] = _expectedDeliveryDate;
     map['current_step'] = _currentStep;
     if (_basketStatusTimeline != null) {
-      map['basket_status_timeline'] =
-          _basketStatusTimeline?.map((v) => v.toJson()).toList();
+      map['basket_status_timeline'] = _basketStatusTimeline?.map((v) => v.toJson()).toList();
     }
     return map;
   }

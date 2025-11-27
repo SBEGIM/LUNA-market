@@ -7,9 +7,7 @@ abstract interface class ICatsRepository {
 }
 
 class CatsRepositoryImpl implements ICatsRepository {
-  const CatsRepositoryImpl({
-    required ICatsRemoteDS remoteDS,
-  }) : _remoteDS = remoteDS;
+  const CatsRepositoryImpl({required ICatsRemoteDS remoteDS}) : _remoteDS = remoteDS;
 
   final ICatsRemoteDS _remoteDS;
 

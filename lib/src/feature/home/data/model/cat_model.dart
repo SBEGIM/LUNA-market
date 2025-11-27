@@ -11,17 +11,17 @@ class CatsModel {
     List<CatSections>? catSections,
     dynamic createdAt,
     dynamic updatedAt,
-  })  : _id = id,
-        _name = name,
-        _icon = icon,
-        _image = image,
-        _text = text,
-        _bonus = bonus,
-        _credit = credit,
-        _isSelect = isSelect,
-        _catSections = catSections,
-        _createdAt = createdAt,
-        _updatedAt = updatedAt;
+  }) : _id = id,
+       _name = name,
+       _icon = icon,
+       _image = image,
+       _text = text,
+       _bonus = bonus,
+       _credit = credit,
+       _isSelect = isSelect,
+       _catSections = catSections,
+       _createdAt = createdAt,
+       _updatedAt = updatedAt;
 
   CatsModel.fromJson(Map<String, dynamic> json) {
     _id = _asInt(json['id']);
@@ -126,13 +126,13 @@ class CatSections {
     Section? section,
     dynamic createdAt,
     dynamic updatedAt,
-  })  : _id = id,
-        _sectionId = sectionId,
-        _catId = catId,
-        _subCatId = subCatId,
-        _section = section,
-        _createdAt = createdAt,
-        _updatedAt = updatedAt;
+  }) : _id = id,
+       _sectionId = sectionId,
+       _catId = catId,
+       _subCatId = subCatId,
+       _section = section,
+       _createdAt = createdAt,
+       _updatedAt = updatedAt;
 
   CatSections.fromJson(Map<String, dynamic> json) {
     _id = CatsModel._asInt(json['id']);
@@ -195,15 +195,11 @@ class CatSections {
 }
 
 class Section {
-  Section({
-    int? id,
-    String? name,
-    dynamic createdAt,
-    dynamic updatedAt,
-  })  : _id = id,
-        _name = name,
-        _createdAt = createdAt,
-        _updatedAt = updatedAt;
+  Section({int? id, String? name, dynamic createdAt, dynamic updatedAt})
+    : _id = id,
+      _name = name,
+      _createdAt = createdAt,
+      _updatedAt = updatedAt;
 
   Section.fromJson(Map<String, dynamic> json) {
     _id = CatsModel._asInt(json['id']);
@@ -223,20 +219,10 @@ class Section {
   dynamic get updatedAt => _updatedAt;
 
   Map<String, dynamic> toJson() {
-    return {
-      'id': _id,
-      'name': _name,
-      'created_at': _createdAt,
-      'updated_at': _updatedAt,
-    };
+    return {'id': _id, 'name': _name, 'created_at': _createdAt, 'updated_at': _updatedAt};
   }
 
-  Section copyWith({
-    int? id,
-    String? name,
-    dynamic createdAt,
-    dynamic updatedAt,
-  }) {
+  Section copyWith({int? id, String? name, dynamic createdAt, dynamic updatedAt}) {
     return Section(
       id: id ?? _id,
       name: name ?? _name,

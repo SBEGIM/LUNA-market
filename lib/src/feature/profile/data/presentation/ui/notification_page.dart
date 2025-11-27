@@ -40,17 +40,16 @@ class _NotificationPageState extends State<NotificationPage> {
         backgroundColor: Colors.white,
         leading: Padding(
           padding: const EdgeInsets.only(left: 22.0),
-          child: CustomBackButton(onTap: () {
-            Navigator.pop(context);
-          }),
+          child: CustomBackButton(
+            onTap: () {
+              Navigator.pop(context);
+            },
+          ),
         ),
         centerTitle: true,
         title: const Text(
           'Уведомления',
-          style: TextStyle(
-              color: AppColors.kGray900,
-              fontSize: 16,
-              fontWeight: FontWeight.w500),
+          style: TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w500),
         ),
         elevation: 0,
         // actions: const [
@@ -65,9 +64,7 @@ class _NotificationPageState extends State<NotificationPage> {
       ),
       body: Column(
         children: [
-          const SizedBox(
-            height: 8,
-          ),
+          const SizedBox(height: 8),
           Container(
             color: Colors.white,
             child: Column(
@@ -82,9 +79,10 @@ class _NotificationPageState extends State<NotificationPage> {
                       const Text(
                         'Транзакции',
                         style: TextStyle(
-                            color: AppColors.kGray900,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400),
+                          color: AppColors.kGray900,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400,
+                        ),
                       ),
                       Container(
                         child: Switch(
@@ -97,32 +95,27 @@ class _NotificationPageState extends State<NotificationPage> {
                           value: isSwitched1,
                           activeColor: const Color.fromRGBO(245, 245, 245, 1),
                           activeTrackColor: AppColors.kPrimaryColor,
-                          inactiveThumbColor:
-                              const Color.fromRGBO(245, 245, 245, 1),
-                          inactiveTrackColor:
-                              const Color.fromRGBO(237, 237, 237, 1),
+                          inactiveThumbColor: const Color.fromRGBO(245, 245, 245, 1),
+                          inactiveTrackColor: const Color.fromRGBO(237, 237, 237, 1),
                         ),
                       ),
                     ],
                   ),
                 ),
-                const Divider(
-                  height: 0,
-                  color: AppColors.kGray400,
-                ),
+                const Divider(height: 0, color: AppColors.kGray400),
                 Container(
                   height: 47,
-                  padding: const EdgeInsets.only(
-                      left: 16, right: 16, top: 8, bottom: 12),
+                  padding: const EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 12),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       const Text(
                         'Бонусы',
                         style: TextStyle(
-                            color: AppColors.kGray900,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400),
+                          color: AppColors.kGray900,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400,
+                        ),
                       ),
                       Container(
                         child: Switch(
@@ -134,32 +127,27 @@ class _NotificationPageState extends State<NotificationPage> {
                           value: isSwitched2,
                           activeColor: const Color.fromRGBO(245, 245, 245, 1),
                           activeTrackColor: AppColors.kPrimaryColor,
-                          inactiveThumbColor:
-                              const Color.fromRGBO(245, 245, 245, 1),
-                          inactiveTrackColor:
-                              const Color.fromRGBO(237, 237, 237, 1),
+                          inactiveThumbColor: const Color.fromRGBO(245, 245, 245, 1),
+                          inactiveTrackColor: const Color.fromRGBO(237, 237, 237, 1),
                         ),
                       ),
                     ],
                   ),
                 ),
-                const Divider(
-                  height: 0,
-                  color: AppColors.kGray400,
-                ),
+                const Divider(height: 0, color: AppColors.kGray400),
                 Container(
                   height: 47,
-                  padding: const EdgeInsets.only(
-                      left: 16, right: 16, top: 12, bottom: 16),
+                  padding: const EdgeInsets.only(left: 16, right: 16, top: 12, bottom: 16),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       const Text(
                         'Акции',
                         style: TextStyle(
-                            color: AppColors.kGray900,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400),
+                          color: AppColors.kGray900,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400,
+                        ),
                       ),
                       Container(
                         child: Switch(
@@ -171,10 +159,8 @@ class _NotificationPageState extends State<NotificationPage> {
                           value: isSwitched3,
                           activeColor: const Color.fromRGBO(245, 245, 245, 1),
                           activeTrackColor: AppColors.kPrimaryColor,
-                          inactiveThumbColor:
-                              const Color.fromRGBO(245, 245, 245, 1),
-                          inactiveTrackColor:
-                              const Color.fromRGBO(237, 237, 237, 1),
+                          inactiveThumbColor: const Color.fromRGBO(245, 245, 245, 1),
+                          inactiveTrackColor: const Color.fromRGBO(237, 237, 237, 1),
                         ),
                       ),
                     ],
@@ -182,7 +168,7 @@ class _NotificationPageState extends State<NotificationPage> {
                 ),
               ],
             ),
-          )
+          ),
         ],
       ),
     );

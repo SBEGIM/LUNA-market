@@ -35,11 +35,11 @@ class _BlogAuthRegisterPageState extends State<BlogAuthRegisterPage> {
           toolbarHeight: 18,
           backgroundColor: Colors.white,
           leading: InkWell(
-              onTap: () {
-                context.router.pop();
-              },
-              child:
-                  Image.asset(Assets.icons.defaultBackIcon.path, scale: 1.9)),
+            onTap: () {
+              context.router.pop();
+            },
+            child: Image.asset(Assets.icons.defaultBackIcon.path, scale: 1.9),
+          ),
         ),
         body: BlogAuthPage(),
       ),

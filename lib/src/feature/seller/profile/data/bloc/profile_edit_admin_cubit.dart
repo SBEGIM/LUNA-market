@@ -6,8 +6,7 @@ import '../repository/profile_edit_admin_repo.dart';
 class ProfileEditAdminCubit extends Cubit<ProfileEditAdminState> {
   final ProfileEditAdminRepository profileEditAdminRepository;
 
-  ProfileEditAdminCubit({required this.profileEditAdminRepository})
-      : super(InitState());
+  ProfileEditAdminCubit({required this.profileEditAdminRepository}) : super(InitState());
 
   Future<void> edit(
     String? name,
@@ -52,35 +51,36 @@ class ProfileEditAdminCubit extends Cubit<ProfileEditAdminState> {
       }
 
       await profileEditAdminRepository.edit(
-          name,
-          repPhone,
-          logo,
-          password_new,
-          password_old,
-          country,
-          city,
-          home,
-          street,
-          shopName,
-          iin,
-          check,
-          email,
-          card,
-          typeOrganization,
-          address,
-          kpp,
-          ogrn,
-          okved,
-          tax_authority,
-          date_register,
-          legal_address,
-          founder,
-          date_of_birth,
-          citizenship,
-          CEO,
-          organization_fr,
-          bank,
-          company_name);
+        name,
+        repPhone,
+        logo,
+        password_new,
+        password_old,
+        country,
+        city,
+        home,
+        street,
+        shopName,
+        iin,
+        check,
+        email,
+        card,
+        typeOrganization,
+        address,
+        kpp,
+        ogrn,
+        okved,
+        tax_authority,
+        date_register,
+        legal_address,
+        founder,
+        date_of_birth,
+        citizenship,
+        CEO,
+        organization_fr,
+        bank,
+        company_name,
+      );
 
       // if (data != null) {
       //  emit(LoadedState(loadedProfile: data));
@@ -101,9 +101,7 @@ class ProfileEditAdminCubit extends Cubit<ProfileEditAdminState> {
     }
   }
 
-  Future<void> cityCode(
-    int? code,
-  ) async {
+  Future<void> cityCode(int? code) async {
     try {
       //  emit(LoadingState());
       await profileEditAdminRepository.code(code);

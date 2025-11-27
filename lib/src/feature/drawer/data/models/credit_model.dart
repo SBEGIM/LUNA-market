@@ -1,10 +1,5 @@
 class CreditModel {
-  CreditModel({
-    int? id,
-    String? title,
-    String? description,
-    String? url,
-  }) {
+  CreditModel({int? id, String? title, String? description, String? url}) {
     _id = id;
     _title = title;
     _description = description;

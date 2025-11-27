@@ -12,8 +12,7 @@ class StatisticsAdminShowPage extends StatefulWidget {
   const StatisticsAdminShowPage({Key? key}) : super(key: key);
 
   @override
-  State<StatisticsAdminShowPage> createState() =>
-      _StatisticsAdminShowPageState();
+  State<StatisticsAdminShowPage> createState() => _StatisticsAdminShowPageState();
 }
 
 class _StatisticsAdminShowPageState extends State<StatisticsAdminShowPage> {
@@ -64,20 +63,20 @@ class _StatisticsAdminShowPageState extends State<StatisticsAdminShowPage> {
       //         color: Colors.black,
       //       ),
       //     )),
-      body: ListView(shrinkWrap: true, padding: EdgeInsets.zero, children: [
-        Stack(
-          children: [
-            Container(
+      body: ListView(
+        shrinkWrap: true,
+        padding: EdgeInsets.zero,
+        children: [
+          Stack(
+            children: [
+              Container(
                 height: 240,
                 width: double.infinity,
                 decoration: const BoxDecoration(
                   gradient: LinearGradient(
                     begin: Alignment(-0.75, -1),
                     end: Alignment(1, 1),
-                    colors: [
-                      Color(0xFF7D2DFF),
-                      Color(0xFF41DDFF),
-                    ],
+                    colors: [Color(0xFF7D2DFF), Color(0xFF41DDFF)],
                     stops: [0.2685, 1.0],
                   ),
                 ),
@@ -110,8 +109,9 @@ class _StatisticsAdminShowPageState extends State<StatisticsAdminShowPage> {
                               ),
                               Text(
                                 'Аналитика продаж',
-                                style: AppTextStyles.size18Weight600
-                                    .copyWith(color: AppColors.kWhite),
+                                style: AppTextStyles.size18Weight600.copyWith(
+                                  color: AppColors.kWhite,
+                                ),
                               ),
                             ],
                           ),
@@ -126,8 +126,9 @@ class _StatisticsAdminShowPageState extends State<StatisticsAdminShowPage> {
                               child: Container(
                                 height: 80,
                                 decoration: BoxDecoration(
-                                    color: Colors.white.withOpacity(0.1),
-                                    borderRadius: BorderRadius.circular(16)),
+                                  color: Colors.white.withOpacity(0.1),
+                                  borderRadius: BorderRadius.circular(16),
+                                ),
                                 child: Column(
                                   children: [
                                     SizedBox(height: 12.5),
@@ -139,17 +140,14 @@ class _StatisticsAdminShowPageState extends State<StatisticsAdminShowPage> {
                                     SizedBox(height: 6.5),
                                     Text(
                                       '$_summConfirm ₽',
-                                      style: AppTextStyles.appBarTextStylea
-                                          .copyWith(
-                                              color: Colors.white,
-                                              fontSize: 14,
-                                              fontFamily: 'SFProDisplay'),
+                                      style: AppTextStyles.appBarTextStylea.copyWith(
+                                        color: Colors.white,
+                                        fontSize: 14,
+                                        fontFamily: 'SFProDisplay',
+                                      ),
                                     ),
                                     SizedBox(height: 3),
-                                    Text(
-                                      'Мой заработок',
-                                      style: AppTextStyles.bannerTextStyle,
-                                    )
+                                    Text('Мой заработок', style: AppTextStyles.bannerTextStyle),
                                   ],
                                 ),
                               ),
@@ -159,30 +157,24 @@ class _StatisticsAdminShowPageState extends State<StatisticsAdminShowPage> {
                               child: Container(
                                 height: 80,
                                 decoration: BoxDecoration(
-                                    color: Colors.white.withOpacity(0.1),
-                                    borderRadius: BorderRadius.circular(16)),
+                                  color: Colors.white.withOpacity(0.1),
+                                  borderRadius: BorderRadius.circular(16),
+                                ),
                                 child: Column(
                                   children: [
                                     SizedBox(height: 12.5),
-                                    Image.asset(
-                                      Assets.icons.lock.path,
-                                      height: 16.5,
-                                      width: 22.5,
-                                    ),
+                                    Image.asset(Assets.icons.lock.path, height: 16.5, width: 22.5),
                                     SizedBox(height: 6.5),
                                     Text(
                                       '$_summFreeze ₽',
-                                      style: AppTextStyles.appBarTextStylea
-                                          .copyWith(
-                                              color: Colors.white,
-                                              fontSize: 14,
-                                              fontFamily: 'SFProDisplay'),
+                                      style: AppTextStyles.appBarTextStylea.copyWith(
+                                        color: Colors.white,
+                                        fontSize: 14,
+                                        fontFamily: 'SFProDisplay',
+                                      ),
                                     ),
                                     SizedBox(height: 3),
-                                    Text(
-                                      'В заморозке',
-                                      style: AppTextStyles.bannerTextStyle,
-                                    )
+                                    Text('В заморозке', style: AppTextStyles.bannerTextStyle),
                                   ],
                                 ),
                               ),
@@ -192,8 +184,9 @@ class _StatisticsAdminShowPageState extends State<StatisticsAdminShowPage> {
                               child: Container(
                                 height: 80,
                                 decoration: BoxDecoration(
-                                    color: Colors.white.withOpacity(0.1),
-                                    borderRadius: BorderRadius.circular(16)),
+                                  color: Colors.white.withOpacity(0.1),
+                                  borderRadius: BorderRadius.circular(16),
+                                ),
                                 child: Column(
                                   children: [
                                     SizedBox(height: 12.5),
@@ -205,119 +198,109 @@ class _StatisticsAdminShowPageState extends State<StatisticsAdminShowPage> {
                                     SizedBox(height: 6.5),
                                     Text(
                                       '$_total ₽',
-                                      style: AppTextStyles.appBarTextStylea
-                                          .copyWith(
-                                              color: Colors.white,
-                                              fontSize: 14,
-                                              fontFamily: 'SFProDisplay'),
+                                      style: AppTextStyles.appBarTextStylea.copyWith(
+                                        color: Colors.white,
+                                        fontSize: 14,
+                                        fontFamily: 'SFProDisplay',
+                                      ),
                                     ),
                                     SizedBox(height: 3),
-                                    Text(
-                                      'Заработок за год',
-                                      style: AppTextStyles.bannerTextStyle,
-                                    )
+                                    Text('Заработок за год', style: AppTextStyles.bannerTextStyle),
                                   ],
                                 ),
                               ),
                             ),
                           ],
                         ),
-                      )
-                    ],
-                  ),
-                )),
-            Container(
-              decoration: BoxDecoration(
-                  color: Colors.white, borderRadius: BorderRadius.circular(16)),
-              // color: Colors.white,
-              margin: const EdgeInsets.only(top: 210),
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                        width: 175,
-                        height: 36,
-                        padding: const EdgeInsets.symmetric(horizontal: 12),
-                        decoration: BoxDecoration(
-                            color: AppColors.kBackgroundColor,
-                            borderRadius: BorderRadius.circular(12)),
-                        child: GestureDetector(
-                          onTap: () => _showYearPickerBottomSheet(
-                              context, selectedYear, (year) {
-                            print(year);
-                            setState(() {
-                              selectedYear = year;
-                            });
-                          }),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text('$selectedYear',
-                                  style: AppTextStyles.size14Weight500),
-                              Image.asset(
-                                Assets.icons.dropDownIcon.path,
-                                width: 12,
-                                height: 6,
-                              )
-                            ],
-                          ),
-                        ),
                       ),
-                      Container(
-                        width: 175,
-                        height: 36,
-                        padding: const EdgeInsets.symmetric(horizontal: 12),
-                        decoration: BoxDecoration(
-                          color: AppColors.kBackgroundColor,
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: InkWell(
-                          borderRadius: BorderRadius.circular(12),
-                          onTap: () {
-                            _showMonthPickerBottomSheet(context, _selectIndex,
-                                (int selectedIndex) {
-                              _selectIndex = selectedIndex;
-                              _summConfirm = 0;
-                              _summFreeze = 0;
-
-                              setState(() {}); // достаточно одного вызова
-
-                              BlocProvider.of<ProfileMonthStaticsAdminCubit>(
-                                      context)
-                                  .statics(
-                                year,
-                                _selectIndex + 1,
-                              );
-                            });
-                          },
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(months[_selectIndex],
-                                  style: AppTextStyles.size14Weight500),
-                              Image.asset(
-                                Assets.icons.dropDownIcon.path,
-                                width: 12,
-                                height: 6,
-                              )
-                            ],
-                          ),
-                        ),
-                      )
                     ],
                   ),
-                  Container(
-                    padding: const EdgeInsets.only(top: 0),
-                    child: Column(
+                ),
+              ),
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                // color: Colors.white,
+                margin: const EdgeInsets.only(top: 210),
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          width: 175,
+                          height: 36,
+                          padding: const EdgeInsets.symmetric(horizontal: 12),
+                          decoration: BoxDecoration(
+                            color: AppColors.kBackgroundColor,
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: GestureDetector(
+                            onTap: () => _showYearPickerBottomSheet(context, selectedYear, (year) {
+                              print(year);
+                              setState(() {
+                                selectedYear = year;
+                              });
+                            }),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text('$selectedYear', style: AppTextStyles.size14Weight500),
+                                Image.asset(Assets.icons.dropDownIcon.path, width: 12, height: 6),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Container(
+                          width: 175,
+                          height: 36,
+                          padding: const EdgeInsets.symmetric(horizontal: 12),
+                          decoration: BoxDecoration(
+                            color: AppColors.kBackgroundColor,
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: InkWell(
+                            borderRadius: BorderRadius.circular(12),
+                            onTap: () {
+                              _showMonthPickerBottomSheet(context, _selectIndex, (
+                                int selectedIndex,
+                              ) {
+                                _selectIndex = selectedIndex;
+                                _summConfirm = 0;
+                                _summFreeze = 0;
+
+                                setState(() {}); // достаточно одного вызова
+
+                                BlocProvider.of<ProfileMonthStaticsAdminCubit>(
+                                  context,
+                                ).statics(year, _selectIndex + 1);
+                              });
+                            },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(months[_selectIndex], style: AppTextStyles.size14Weight500),
+                                Image.asset(Assets.icons.dropDownIcon.path, width: 12, height: 6),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Container(
+                      padding: const EdgeInsets.only(top: 0),
+                      child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          BlocConsumer<ProfileMonthStaticsAdminCubit,
-                              ProfileMonthStaticsAdminState>(
+                          BlocConsumer<
+                            ProfileMonthStaticsAdminCubit,
+                            ProfileMonthStaticsAdminState
+                          >(
                             listener: (context, state) {
                               // if (state is LoadedState) {}
                               if (state is LoadedState) {
@@ -336,254 +319,210 @@ class _StatisticsAdminShowPageState extends State<StatisticsAdminShowPage> {
                             builder: (context, state) {
                               if (state is LoadedState) {
                                 return SizedBox(
-                                  height:
-                                      MediaQuery.of(context).size.height / 1.9,
+                                  height: MediaQuery.of(context).size.height / 1.9,
                                   child: ListView.builder(
-                                      scrollDirection: Axis.vertical,
-                                      itemCount: state.loadedProfile.length,
-                                      itemBuilder: (context, index) {
-                                        _total =
-                                            state.loadedProfile[index].total ??
-                                                0;
+                                    scrollDirection: Axis.vertical,
+                                    itemCount: state.loadedProfile.length,
+                                    itemBuilder: (context, index) {
+                                      _total = state.loadedProfile[index].total ?? 0;
 
-                                        return state.loadedProfile[index].id ==
-                                                0
-                                            ? Center(
-                                                child: Container(
-                                                  margin:
-                                                      EdgeInsets.only(top: 130),
-                                                  alignment: Alignment.center,
-                                                  child: Column(
-                                                    children: [
-                                                      Image.asset(
-                                                        Assets.icons.emptyIcon
-                                                            .path,
-                                                        height: 72,
-                                                        width: 72,
+                                      return state.loadedProfile[index].id == 0
+                                          ? Center(
+                                              child: Container(
+                                                margin: EdgeInsets.only(top: 130),
+                                                alignment: Alignment.center,
+                                                child: Column(
+                                                  children: [
+                                                    Image.asset(
+                                                      Assets.icons.emptyIcon.path,
+                                                      height: 72,
+                                                      width: 72,
+                                                    ),
+                                                    SizedBox(height: 10),
+                                                    Text(
+                                                      'Список пока пуст',
+                                                      style: AppTextStyles.aboutTextStyle.copyWith(
+                                                        color: AppColors.kGray300,
                                                       ),
-                                                      SizedBox(height: 10),
-                                                      Text(
-                                                        'Список пока пуст',
-                                                        style: AppTextStyles
-                                                            .aboutTextStyle
-                                                            .copyWith(
-                                                                color: AppColors
-                                                                    .kGray300),
-                                                      )
-                                                    ],
-                                                  ),
+                                                    ),
+                                                  ],
                                                 ),
-                                              )
-                                            : Container(
-                                                height: 148,
-                                                width: 343,
-                                                margin:
-                                                    EdgeInsets.only(top: 10),
-                                                child: Container(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          top: 16,
-                                                          bottom: 10,
-                                                          left: 10,
-                                                          right: 20),
-                                                  decoration: BoxDecoration(
-                                                      color: AppColors
-                                                          .kBackgroundColor,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              16)),
-                                                  child: Row(
-                                                    children: [
-                                                      Container(
-                                                        height: 88,
-                                                        width: 88,
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          color:
-                                                              AppColors.kWhite,
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(12),
+                                              ),
+                                            )
+                                          : Container(
+                                              height: 148,
+                                              width: 343,
+                                              margin: EdgeInsets.only(top: 10),
+                                              child: Container(
+                                                padding: const EdgeInsets.only(
+                                                  top: 16,
+                                                  bottom: 10,
+                                                  left: 10,
+                                                  right: 20,
+                                                ),
+                                                decoration: BoxDecoration(
+                                                  color: AppColors.kBackgroundColor,
+                                                  borderRadius: BorderRadius.circular(16),
+                                                ),
+                                                child: Row(
+                                                  children: [
+                                                    Container(
+                                                      height: 88,
+                                                      width: 88,
+                                                      decoration: BoxDecoration(
+                                                        color: AppColors.kWhite,
+                                                        borderRadius: BorderRadius.circular(12),
+                                                      ),
+                                                      child: Center(
+                                                        child: Image.network(
+                                                          'https://lunamarket.ru/storage/${state.loadedProfile[index].path}',
+                                                          height: 72,
+                                                          width: 72,
+                                                          fit: BoxFit.contain,
                                                         ),
-                                                        child: Center(
-                                                          child: Image.network(
-                                                            'https://lunamarket.ru/storage/${state.loadedProfile[index].path}',
-                                                            height: 72,
-                                                            width: 72,
-                                                            fit: BoxFit.contain,
+                                                      ),
+                                                    ),
+                                                    const SizedBox(width: 16),
+                                                    Column(
+                                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                                      children: [
+                                                        SizedBox(
+                                                          width: 200,
+                                                          child: Text(
+                                                            state.loadedProfile[index].name ?? '',
+                                                            overflow: TextOverflow.ellipsis,
+                                                            maxLines: 1,
+                                                            style: AppTextStyles
+                                                                .kcolorPrimaryTextStyle
+                                                                .copyWith(
+                                                                  color: AppColors.kLightBlackColor,
+                                                                ),
                                                           ),
                                                         ),
-                                                      ),
-                                                      const SizedBox(
-                                                        width: 16,
-                                                      ),
-                                                      Column(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: [
-                                                          SizedBox(
-                                                            width: 200,
-                                                            child: Text(
-                                                              state
-                                                                      .loadedProfile[
-                                                                          index]
-                                                                      .name ??
-                                                                  '',
-                                                              overflow:
-                                                                  TextOverflow
-                                                                      .ellipsis,
-                                                              maxLines: 1,
-                                                              style: AppTextStyles
-                                                                  .kcolorPrimaryTextStyle
+                                                        const SizedBox(height: 5),
+                                                        Row(
+                                                          children: [
+                                                            Text(
+                                                              'Магазин: ',
+                                                              style: AppTextStyles.drawer2TextStyle
                                                                   .copyWith(
-                                                                      color: AppColors
-                                                                          .kLightBlackColor),
+                                                                    color: AppColors.kGray300,
+                                                                    fontSize: 14,
+                                                                    fontFamily: 'SFProDisplay',
+                                                                  ),
                                                             ),
-                                                          ),
-                                                          const SizedBox(
-                                                            height: 5,
-                                                          ),
-                                                          Row(
-                                                            children: [
-                                                              Text(
-                                                                'Магазин: ',
-                                                                style: AppTextStyles
-                                                                    .drawer2TextStyle
-                                                                    .copyWith(
-                                                                        color: AppColors
-                                                                            .kGray300,
-                                                                        fontSize:
-                                                                            14,
-                                                                        fontFamily:
-                                                                            'SFProDisplay'),
-                                                              ),
-                                                              Text(
-                                                                '${GetStorage().read('seller_name')} ',
-                                                                style: AppTextStyles
-                                                                    .drawer2TextStyle
-                                                                    .copyWith(
-                                                                        fontSize:
-                                                                            14,
-                                                                        fontFamily:
-                                                                            'SFProDisplay'),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                          const SizedBox(
-                                                            height: 5,
-                                                          ),
-                                                          Row(
-                                                            children: [
-                                                              Text(
-                                                                'Комиссия: ',
-                                                                style: AppTextStyles
-                                                                    .drawer2TextStyle
-                                                                    .copyWith(
-                                                                        color: AppColors
-                                                                            .kGray300,
-                                                                        fontSize:
-                                                                            14,
-                                                                        fontFamily:
-                                                                            'SFProDisplay'),
-                                                              ),
-                                                              Text(
-                                                                '${state.loadedProfile[index].bonusPercent} %',
-                                                                style: AppTextStyles
-                                                                    .drawer2TextStyle
-                                                                    .copyWith(
-                                                                        fontSize:
-                                                                            14,
-                                                                        fontFamily:
-                                                                            'SFProDisplay'),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                          const SizedBox(
-                                                            height: 5,
-                                                          ),
-                                                          Row(
-                                                            children: [
-                                                              Text(
-                                                                'Вознаградение блогера: ',
-                                                                style: AppTextStyles.drawer2TextStyle.copyWith(
-                                                                    color: AppColors
-                                                                        .kGray300,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w300,
-                                                                    fontSize:
-                                                                        14,
-                                                                    fontFamily:
-                                                                        'SFProDisplay'),
-                                                              ),
-                                                              Text(
-                                                                '${state.loadedProfile[index].pointBlogger ?? '0'} %',
-                                                                style: AppTextStyles
-                                                                    .drawer2TextStyle
-                                                                    .copyWith(
-                                                                        fontSize:
-                                                                            14,
-                                                                        fontFamily:
-                                                                            'SFProDisplay'),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                          SizedBox(height: 5),
-                                                          Row(
-                                                            // mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                                            children: [
-                                                              Text(
-                                                                ' ${state.loadedProfile[index].price.toString()}₽',
-                                                                style: AppTextStyles
-                                                                    .statisticsTextStyle,
-                                                              ),
-                                                              const SizedBox(
-                                                                  width: 45),
-                                                              Text(
-                                                                  'x${state.loadedProfile[index].count.toString()}',
-                                                                  style: AppTextStyles
-                                                                      .statisticsTextStyle
-                                                                      .copyWith(
-                                                                          color:
-                                                                              AppColors.kGray200)),
-                                                              const SizedBox(
-                                                                  width: 45),
-                                                              Text(
-                                                                  '= ${(state.loadedProfile[index].price! * state.loadedProfile[index].count!)} ₽',
-                                                                  style: AppTextStyles
-                                                                      .statisticsTextStyle
-                                                                      .copyWith(
-                                                                          color:
-                                                                              AppColors.mainPurpleColor)),
-                                                            ],
-                                                          )
-                                                        ],
-                                                      )
-                                                    ],
-                                                  ),
+                                                            Text(
+                                                              '${GetStorage().read('seller_name')} ',
+                                                              style: AppTextStyles.drawer2TextStyle
+                                                                  .copyWith(
+                                                                    fontSize: 14,
+                                                                    fontFamily: 'SFProDisplay',
+                                                                  ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                        const SizedBox(height: 5),
+                                                        Row(
+                                                          children: [
+                                                            Text(
+                                                              'Комиссия: ',
+                                                              style: AppTextStyles.drawer2TextStyle
+                                                                  .copyWith(
+                                                                    color: AppColors.kGray300,
+                                                                    fontSize: 14,
+                                                                    fontFamily: 'SFProDisplay',
+                                                                  ),
+                                                            ),
+                                                            Text(
+                                                              '${state.loadedProfile[index].bonusPercent} %',
+                                                              style: AppTextStyles.drawer2TextStyle
+                                                                  .copyWith(
+                                                                    fontSize: 14,
+                                                                    fontFamily: 'SFProDisplay',
+                                                                  ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                        const SizedBox(height: 5),
+                                                        Row(
+                                                          children: [
+                                                            Text(
+                                                              'Вознаградение блогера: ',
+                                                              style: AppTextStyles.drawer2TextStyle
+                                                                  .copyWith(
+                                                                    color: AppColors.kGray300,
+                                                                    fontWeight: FontWeight.w300,
+                                                                    fontSize: 14,
+                                                                    fontFamily: 'SFProDisplay',
+                                                                  ),
+                                                            ),
+                                                            Text(
+                                                              '${state.loadedProfile[index].pointBlogger ?? '0'} %',
+                                                              style: AppTextStyles.drawer2TextStyle
+                                                                  .copyWith(
+                                                                    fontSize: 14,
+                                                                    fontFamily: 'SFProDisplay',
+                                                                  ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                        SizedBox(height: 5),
+                                                        Row(
+                                                          // mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                                          children: [
+                                                            Text(
+                                                              ' ${state.loadedProfile[index].price.toString()}₽',
+                                                              style:
+                                                                  AppTextStyles.statisticsTextStyle,
+                                                            ),
+                                                            const SizedBox(width: 45),
+                                                            Text(
+                                                              'x${state.loadedProfile[index].count.toString()}',
+                                                              style: AppTextStyles
+                                                                  .statisticsTextStyle
+                                                                  .copyWith(
+                                                                    color: AppColors.kGray200,
+                                                                  ),
+                                                            ),
+                                                            const SizedBox(width: 45),
+                                                            Text(
+                                                              '= ${(state.loadedProfile[index].price! * state.loadedProfile[index].count!)} ₽',
+                                                              style: AppTextStyles
+                                                                  .statisticsTextStyle
+                                                                  .copyWith(
+                                                                    color:
+                                                                        AppColors.mainPurpleColor,
+                                                                  ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ],
                                                 ),
-                                              );
-                                      }),
+                                              ),
+                                            );
+                                    },
+                                  ),
                                 );
                               } else {
                                 return const Center(
-                                    child: CircularProgressIndicator(
-                                        color: Colors.indigoAccent));
+                                  child: CircularProgressIndicator(color: Colors.indigoAccent),
+                                );
                               }
                             },
                           ),
-                        ]),
-                  ),
-                ],
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
-        ),
-        const SizedBox(
-          height: 10,
-        ),
-      ]),
+            ],
+          ),
+          const SizedBox(height: 10),
+        ],
+      ),
     );
   }
 }
@@ -605,14 +544,13 @@ void _showMonthPickerBottomSheet(
     'Сентябрь',
     'Октябрь',
     'Ноябрь',
-    'Декабрь'
+    'Декабрь',
   ];
 
   // Текущий месяц (индекс с 0)
   final int currentMonthIndex = DateTime.now().month - 1;
 
-  final FixedExtentScrollController scrollController =
-      FixedExtentScrollController(
+  final FixedExtentScrollController scrollController = FixedExtentScrollController(
     initialItem: initialSelectedMonth ?? currentMonthIndex,
   );
 
@@ -636,10 +574,7 @@ void _showMonthPickerBottomSheet(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        'Выберите месяц',
-                        style: AppTextStyles.size16Weight500,
-                      ),
+                      Text('Выберите месяц', style: AppTextStyles.size16Weight500),
                       InkWell(
                         onTap: () {
                           Navigator.of(context).pop();
@@ -650,7 +585,7 @@ void _showMonthPickerBottomSheet(
                           width: 24,
                           height: 24,
                         ),
-                      )
+                      ),
                     ],
                   ),
                 ),
@@ -659,8 +594,9 @@ void _showMonthPickerBottomSheet(
                     width: 326,
                     height: 212,
                     decoration: BoxDecoration(
-                        color: AppColors.kWhite,
-                        borderRadius: BorderRadius.circular(16)),
+                      color: AppColors.kWhite,
+                      borderRadius: BorderRadius.circular(16),
+                    ),
                     child: ListWheelScrollView.useDelegate(
                       controller: scrollController,
                       itemExtent: 50,
@@ -681,17 +617,15 @@ void _showMonthPickerBottomSheet(
                             width: double.infinity,
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
-                              color: isSelected
-                                  ? Color(0xffEAECED)
-                                  : Colors.transparent,
+                              color: isSelected ? Color(0xffEAECED) : Colors.transparent,
                               borderRadius: BorderRadius.circular(8),
                             ),
-                            child: Text('$month',
-                                style: AppTextStyles.size20Weight500.copyWith(
-                                  color: isSelected
-                                      ? AppColors.kGray900
-                                      : Color(0xff8E8E93),
-                                )),
+                            child: Text(
+                              '$month',
+                              style: AppTextStyles.size20Weight500.copyWith(
+                                color: isSelected ? AppColors.kGray900 : Color(0xff8E8E93),
+                              ),
+                            ),
                           );
                         },
                       ),
@@ -699,19 +633,19 @@ void _showMonthPickerBottomSheet(
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(
-                      left: 16.0, right: 16, top: 16, bottom: 50),
+                  padding: const EdgeInsets.only(left: 16.0, right: 16, top: 16, bottom: 50),
                   child: DefaultButton(
-                      text: 'Выбрать',
-                      press: () {
-                        onMonthSelected(selectedMonth);
+                    text: 'Выбрать',
+                    press: () {
+                      onMonthSelected(selectedMonth);
 
-                        Navigator.of(context).pop();
-                      },
-                      color: AppColors.kWhite,
-                      backgroundColor: AppColors.mainPurpleColor,
-                      width: double.infinity),
-                )
+                      Navigator.of(context).pop();
+                    },
+                    color: AppColors.kWhite,
+                    backgroundColor: AppColors.mainPurpleColor,
+                    width: double.infinity,
+                  ),
+                ),
               ],
             ),
           );
@@ -730,10 +664,8 @@ void _showYearPickerBottomSheet(
   final List<int> years = List.generate(21, (index) => (baseYear + 5) - index);
 
   final int initialIndex = years.indexOf(initialSelectedYear);
-  final FixedExtentScrollController scrollController =
-      FixedExtentScrollController(
-    initialItem:
-        initialIndex == -1 ? 0 : initialIndex, // фолбэк, если года нет в списке
+  final FixedExtentScrollController scrollController = FixedExtentScrollController(
+    initialItem: initialIndex == -1 ? 0 : initialIndex, // фолбэк, если года нет в списке
   );
 
   showModalBottomSheet(
@@ -743,8 +675,7 @@ void _showYearPickerBottomSheet(
     ),
     backgroundColor: Color(0xffF7F7F7),
     builder: (context) {
-      int selectedYear =
-          initialSelectedYear; // Локальный selectedYear для обновления в билдере
+      int selectedYear = initialSelectedYear; // Локальный selectedYear для обновления в билдере
 
       return StatefulBuilder(
         builder: (context, setModalState) {
@@ -757,10 +688,7 @@ void _showYearPickerBottomSheet(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        'Выберите год',
-                        style: AppTextStyles.size16Weight500,
-                      ),
+                      Text('Выберите год', style: AppTextStyles.size16Weight500),
                       InkWell(
                         onTap: () {
                           Navigator.of(context).pop();
@@ -771,7 +699,7 @@ void _showYearPickerBottomSheet(
                           width: 24,
                           height: 24,
                         ),
-                      )
+                      ),
                     ],
                   ),
                 ),
@@ -780,8 +708,9 @@ void _showYearPickerBottomSheet(
                     width: 326,
                     height: 212,
                     decoration: BoxDecoration(
-                        color: AppColors.kWhite,
-                        borderRadius: BorderRadius.circular(16)),
+                      color: AppColors.kWhite,
+                      borderRadius: BorderRadius.circular(16),
+                    ),
                     child: ListWheelScrollView.useDelegate(
                       controller: scrollController,
                       itemExtent: 50,
@@ -802,19 +731,16 @@ void _showYearPickerBottomSheet(
                             width: double.infinity,
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
-                              color: isSelected
-                                  ? Color(0xffEAECED)
-                                  : Colors.transparent,
+                              color: isSelected ? Color(0xffEAECED) : Colors.transparent,
                               borderRadius: BorderRadius.circular(8),
                             ),
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 8, horizontal: 24),
-                            child: Text('$year',
-                                style: AppTextStyles.size20Weight500.copyWith(
-                                  color: isSelected
-                                      ? AppColors.kGray900
-                                      : Color(0xff8E8E93),
-                                )),
+                            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 24),
+                            child: Text(
+                              '$year',
+                              style: AppTextStyles.size20Weight500.copyWith(
+                                color: isSelected ? AppColors.kGray900 : Color(0xff8E8E93),
+                              ),
+                            ),
                           );
                         },
                       ),
@@ -822,19 +748,19 @@ void _showYearPickerBottomSheet(
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(
-                      left: 16.0, right: 16, top: 16, bottom: 50),
+                  padding: const EdgeInsets.only(left: 16.0, right: 16, top: 16, bottom: 50),
                   child: DefaultButton(
-                      text: 'Выбрать',
-                      press: () {
-                        onYearSelected(selectedYear);
+                    text: 'Выбрать',
+                    press: () {
+                      onYearSelected(selectedYear);
 
-                        Navigator.of(context).pop();
-                      },
-                      color: AppColors.kWhite,
-                      backgroundColor: AppColors.mainPurpleColor,
-                      width: double.infinity),
-                )
+                      Navigator.of(context).pop();
+                    },
+                    color: AppColors.kWhite,
+                    backgroundColor: AppColors.mainPurpleColor,
+                    width: double.infinity,
+                  ),
+                ),
               ],
             ),
           );
@@ -884,26 +810,24 @@ class StatisticWidgetContainer extends StatelessWidget {
                   // color: AppColors.kPrimaryColor,
                 )
               : Image.asset(url),
-          const SizedBox(
-            height: 12,
-          ),
+          const SizedBox(height: 12),
           Text(
             text,
             style: const TextStyle(
-                color: AppColors.kGray900,
-                fontSize: 24,
-                fontWeight: FontWeight.w700),
+              color: AppColors.kGray900,
+              fontSize: 24,
+              fontWeight: FontWeight.w700,
+            ),
           ),
-          const SizedBox(
-            height: 4,
-          ),
+          const SizedBox(height: 4),
           Text(
             subText,
             style: const TextStyle(
-                color: AppColors.kGray900,
-                fontSize: 14,
-                fontWeight: FontWeight.w400),
-          )
+              color: AppColors.kGray900,
+              fontSize: 14,
+              fontWeight: FontWeight.w400,
+            ),
+          ),
         ],
       ),
     );

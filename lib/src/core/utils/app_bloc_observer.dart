@@ -11,15 +11,14 @@ class AppBlocObserver extends BlocObserver {
   final RefinedLogger logger;
 
   @override
-  void onTransition(
-    Bloc<Object?, Object?> bloc,
-    Transition<Object?, Object?> transition,
-  ) {
+  void onTransition(Bloc<Object?, Object?> bloc, Transition<Object?, Object?> transition) {
     final logMessage = StringBuffer()
       ..writeln('Bloc: ${bloc.runtimeType}')
       ..writeln('Event: ${transition.event.runtimeType}')
-      ..writeln('Transition: ${transition.currentState.runtimeType} => '
-          '${transition.nextState.runtimeType}')
+      ..writeln(
+        'Transition: ${transition.currentState.runtimeType} => '
+        '${transition.nextState.runtimeType}',
+      )
       ..write('New State: ${transition.nextState.toString().limit(100)}');
 
     logger.info(logMessage.toString());
@@ -43,12 +42,7 @@ class AppBlocObserver extends BlocObserver {
       ..writeln('Bloc: ${bloc.runtimeType}')
       ..writeln(error.toString());
 
-    logger.error(
-      logMessage.toString(),
-      error: error,
-      stackTrace: stackTrace,
-      printError: false,
-    );
+    logger.error(logMessage.toString(), error: error, stackTrace: stackTrace, printError: false);
     super.onError(bloc, error, stackTrace);
   }
 }

@@ -180,9 +180,7 @@ class _MyAppState extends State<MyApp> {
               title: 'Luna Market',
               debugShowCheckedModeBanner: false,
               color: AppColors.kWhite,
-              theme: ThemeData(
-                fontFamily: 'SFProDisplay',
-              ),
+              theme: ThemeData(fontFamily: 'SFProDisplay'),
               home: MediaQuery.withNoTextScaling(
                 child: AppRouterBuilder(
                   createRouter: (context) => AppRouter(),
@@ -246,7 +244,6 @@ class _MyAppState extends State<MyApp> {
                     //     }
                     //   },
                     // ),
-
                     routeInformationParser: parser,
                     routerDelegate: delegate,
                     // onGenerateTitle: (context) => context.localized.appTitle,
@@ -275,99 +272,66 @@ class MultiBlocWrapper extends StatelessWidget {
         BlocProvider(create: (_) => AppBloc()),
         BlocProvider(create: (_) => NavigationCubit()),
         BlocProvider(create: (_) => AdminNavigationCubit()),
+        BlocProvider(create: (_) => LoginCubit(loginRepository: LoginRepository())),
         BlocProvider(
-          create: (_) => LoginCubit(
-            loginRepository: LoginRepository(),
-          ),
+          create: (_) => LoginBloggerCubit(loginBloggerRepository: LoginBloggerRepository()),
         ),
+        BlocProvider(create: (_) => SmsCubit(registerRepository: RegisterRepository())),
+        BlocProvider(create: (_) => RegisterCubit(registerRepository: RegisterRepository())),
+        BlocProvider(create: (_) => CatsCubit(catsRepository: context.repository.catsRepository)),
+        BlocProvider(create: (_) => SubCatsCubit(subCatRepository: SubCatsRepository())),
         BlocProvider(
-          create: (_) => LoginBloggerCubit(
-            loginBloggerRepository: LoginBloggerRepository(),
-          ),
+          create: (_) => BannersCubit(bannersRepository: context.repository.bannersRepository),
         ),
-        BlocProvider(
-            create: (_) => SmsCubit(registerRepository: RegisterRepository())),
-        BlocProvider(
-            create: (_) =>
-                RegisterCubit(registerRepository: RegisterRepository())),
-        BlocProvider(
-          create: (_) => CatsCubit(
-            catsRepository: context.repository.catsRepository,
-          ),
-        ),
-        BlocProvider(
-            create: (_) => SubCatsCubit(subCatRepository: SubCatsRepository())),
-        BlocProvider(
-            create: (_) => BannersCubit(
-                  bannersRepository: context.repository.bannersRepository,
-                )),
 
+        BlocProvider(create: (_) => NewsSellerCubit(newsSellerRepository: NewsSellerRepository())),
         BlocProvider(
-            create: (_) => NewsSellerCubit(
-                  newsSellerRepository: NewsSellerRepository(),
-                )),
+          create: (_) => StoriesSellerCubit(storesSellerRepository: StoriesSellerRepository()),
+        ),
         BlocProvider(
-            create: (_) => StoriesSellerCubit(
-                  storesSellerRepository: StoriesSellerRepository(),
-                )),
+          create: (_) => PopularShopsCubit(popularShopsRepository: PopularShopsRepository()),
+        ),
         BlocProvider(
-            create: (_) => PopularShopsCubit(
-                popularShopsRepository: PopularShopsRepository())),
+          create: (_) => ShopsDrawerCubit(shopsDrawerRepository: ShopsDrawerRepository()),
+        ),
+        BlocProvider(create: (_) => ProductCubit(productRepository: ProductRepository())),
+        BlocProvider(create: (_) => FavoriteCubit(favoriteRepository: FavoriteRepository())),
+        BlocProvider(create: (_) => BasketCubit(basketRepository: BasketRepository())),
+        BlocProvider(create: (_) => OrderCubit(basketRepository: BasketRepository())),
+        BlocProvider(create: (_) => BrandCubit(brandRepository: BrandsRepository())),
+        BlocProvider(create: (_) => LastArticulSellerCubit(repository: ProductSellerRepository())),
         BlocProvider(
-            create: (_) => ShopsDrawerCubit(
-                shopsDrawerRepository: ShopsDrawerRepository())),
-        BlocProvider(
-            create: (_) =>
-                ProductCubit(productRepository: ProductRepository())),
-        BlocProvider(
-            create: (_) =>
-                FavoriteCubit(favoriteRepository: FavoriteRepository())),
-        BlocProvider(
-            create: (_) => BasketCubit(basketRepository: BasketRepository())),
-        BlocProvider(
-            create: (_) => OrderCubit(basketRepository: BasketRepository())),
-        BlocProvider(
-            create: (_) => BrandCubit(brandRepository: BrandsRepository())),
-        BlocProvider(
-            create: (_) =>
-                LastArticulSellerCubit(repository: ProductSellerRepository())),
-        BlocProvider(
-            create: (_) => LoginSellerCubit(
-                loginAdminRepository: LoginSellerRepository())),
+          create: (_) => LoginSellerCubit(loginAdminRepository: LoginSellerRepository()),
+        ),
         // BlocProvider(
         //     create: (_) => ProductSellerCubit(
         //         productAdminRepository: ProductSellerRepository())),
+        BlocProvider(create: (_) => BasketSellerCubit(basketRepository: BasketSellerRepository())),
         BlocProvider(
-            create: (_) =>
-                BasketSellerCubit(basketRepository: BasketSellerRepository())),
+          create: (_) => OrderStatusSellerCubit(
+            basketAdminRepository: BasketSellerRepository(),
+            BasketRepository(),
+          ),
+        ),
+        BlocProvider(create: (_) => ColorSellerCubit(colorRepository: ColorSellerRepository())),
+        BlocProvider(create: (_) => TapeCubit(tapeRepository: TapeRepository())),
+        BlocProvider(create: (_) => SubsCubit(subsRepository: SubsRepository())),
         BlocProvider(
-            create: (_) => OrderStatusSellerCubit(
-                basketAdminRepository: BasketSellerRepository(),
-                BasketRepository())),
-        BlocProvider(
-            create: (_) =>
-                ColorSellerCubit(colorRepository: ColorSellerRepository())),
-        BlocProvider(
-            create: (_) => TapeCubit(tapeRepository: TapeRepository())),
-        BlocProvider(
-            create: (_) => SubsCubit(subsRepository: SubsRepository())),
-        BlocProvider(
-            create: (_) => ProfileStaticsBloggerCubit(
-                profileStaticsBloggerRepository:
-                    ProfileStaticsBloggerRepository())),
-        BlocProvider(
-            create: (_) => ProfileMonthStaticsBloggerCubit(
-                profileMonthStaticsBloggerRepository:
-                    ProfileMonthStaticsBloggerRepository())),
-        BlocProvider(
-          create: (_) => EditBloggerCubit(
-            editBloggerRepository: EditBloggerRepository(),
+          create: (_) => ProfileStaticsBloggerCubit(
+            profileStaticsBloggerRepository: ProfileStaticsBloggerRepository(),
           ),
         ),
         BlocProvider(
+          create: (_) => ProfileMonthStaticsBloggerCubit(
+            profileMonthStaticsBloggerRepository: ProfileMonthStaticsBloggerRepository(),
+          ),
+        ),
+        BlocProvider(
+          create: (_) => EditBloggerCubit(editBloggerRepository: EditBloggerRepository()),
+        ),
+        BlocProvider(
           create: (_) => BloggerProductStatisticsCubit(
-            bloggerProductStatisticsRepository:
-                BloggerProductsStatisticsRepository(),
+            bloggerProductStatisticsRepository: BloggerProductsStatisticsRepository(),
           ),
         ),
         BlocProvider(
@@ -375,11 +339,11 @@ class MultiBlocWrapper extends StatelessWidget {
             bloggerShopProductsRepository: BloggerShopProductsRepository(),
           ),
         ),
+
         // BlocProvider(
         //     create: (_) => BloggerVideoProductsCubit(
         //         bloggerShopProductsRepository:
         //             BloggerVideoProductsRepository())),
-
         BlocProvider(
           create: (_) => BloggerNotificationCubit(
             bloggerNotificationRepository: BloggerNotificationRepository(),
@@ -392,40 +356,20 @@ class MultiBlocWrapper extends StatelessWidget {
         ),
         BlocProvider(
           create: (_) => UploadVideoBLoggerCubit(
-            uploadVideoBloggerCubitRepository:
-                UploadVideoBloggerCubitRepository(),
+            uploadVideoBloggerCubitRepository: UploadVideoBloggerCubitRepository(),
           ),
         ),
+        BlocProvider(create: (_) => ChatCubit(chatRepository: ChatRepository())),
+        BlocProvider(create: (_) => MessageCubit(messageRepository: MessageRepository())),
+        BlocProvider(create: (_) => ChatSellerCubit(chatRepository: ChatSellerRepository())),
         BlocProvider(
-          create: (_) => ChatCubit(
-            chatRepository: ChatRepository(),
-          ),
-        ),
-        BlocProvider(
-          create: (_) => MessageCubit(
-            messageRepository: MessageRepository(),
-          ),
-        ),
-        BlocProvider(
-          create: (_) => ChatSellerCubit(
-            chatRepository: ChatSellerRepository(),
-          ),
-        ),
-        BlocProvider(
-          create: (_) => MessageSellerCubit(
-            messageRepository: MessageSellerRepository(),
-          ),
+          create: (_) => MessageSellerCubit(messageRepository: MessageSellerRepository()),
         ),
 
-        BlocProvider(
-          create: (_) => ChatBloggerCubit(
-            chatRepository: ChatBloggerRepository(),
-          ),
-        ),
+        BlocProvider(create: (_) => ChatBloggerCubit(chatRepository: ChatBloggerRepository())),
         BlocProvider(
           create: (_) => ProfileMonthStaticsAdminCubit(
-            profileMonthStaticsBloggerRepository:
-                ProfileMonthStaticsAdminRepository(),
+            profileMonthStaticsBloggerRepository: ProfileMonthStaticsAdminRepository(),
           ),
         ),
         BlocProvider(
@@ -434,105 +378,40 @@ class MultiBlocWrapper extends StatelessWidget {
           ),
         ),
         BlocProvider(
-          create: (_) => ReviewCubit(
-            reviewProductRepository: ReviewProductRepository(),
-          ),
+          create: (_) => ReviewCubit(reviewProductRepository: ReviewProductRepository()),
+        ),
+        BlocProvider(create: (_) => CreditCubit(creditRepository: CreditRepository())),
+        BlocProvider(create: (_) => CdekOfficeCubit(cdekRepository: CdekOfficeRepository())),
+        BlocProvider(
+          create: (_) =>
+              BloggerTapeUploadCubit(bloggerTapeUploadRepository: BloggerTapeUploadRepository()),
+        ),
+        BlocProvider(create: (_) => RespublicCubit(respublicRepository: RespublicRepository())),
+        BlocProvider(
+          create: (_) =>
+              ProfileEditAdminCubit(profileEditAdminRepository: ProfileEditAdminRepository()),
         ),
         BlocProvider(
-          create: (_) => CreditCubit(
-            creditRepository: CreditRepository(),
-          ),
+          create: (_) => RegisterSellerCubit(registerAdminRepository: RegisterSellerRepository()),
         ),
-        BlocProvider(
-          create: (_) => CdekOfficeCubit(
-            cdekRepository: CdekOfficeRepository(),
-          ),
-        ),
-        BlocProvider(
-          create: (_) => BloggerTapeUploadCubit(
-            bloggerTapeUploadRepository: BloggerTapeUploadRepository(),
-          ),
-        ),
-        BlocProvider(
-          create: (_) => RespublicCubit(
-            respublicRepository: RespublicRepository(),
-          ),
-        ),
-        BlocProvider(
-          create: (_) => ProfileEditAdminCubit(
-            profileEditAdminRepository: ProfileEditAdminRepository(),
-          ),
-        ),
-        BlocProvider(
-          create: (_) => RegisterSellerCubit(
-            registerAdminRepository: RegisterSellerRepository(),
-          ),
-        ),
-        BlocProvider(
-          create: (_) => SmsSellerCubit(
-            registerRepository: RegisterSellerRepository(),
-          ),
-        ),
-        BlocProvider(
-          create: (_) => TapeAdminCubit(
-            tapeRepository: TapeAdminRepository(),
-          ),
-        ),
-        BlocProvider(
-          create: (_) => CityCubit(
-            cityRepository: CityRepository(),
-          ),
-        ),
-        BlocProvider(
-          create: (_) => CountryCubit(
-            countryRepository: CountryRepository(),
-          ),
-        ),
-        BlocProvider(
-          create: (_) => ProductAdCubit(
-            productAdRepository: ProductAdRepository(),
-          ),
-        ),
+        BlocProvider(create: (_) => SmsSellerCubit(registerRepository: RegisterSellerRepository())),
+        BlocProvider(create: (_) => TapeAdminCubit(tapeRepository: TapeAdminRepository())),
+        BlocProvider(create: (_) => CityCubit(cityRepository: CityRepository())),
+        BlocProvider(create: (_) => CountryCubit(countryRepository: CountryRepository())),
+        BlocProvider(create: (_) => ProductAdCubit(productAdRepository: ProductAdRepository())),
 
         BlocProvider(
-          create: (_) => RecentlyWatchedProductCubit(
-            productRepository: RecentlyWatchedRepository(),
-          ),
+          create: (_) =>
+              RecentlyWatchedProductCubit(productRepository: RecentlyWatchedRepository()),
         ),
+        BlocProvider(create: (_) => ProfitCubit(profitRepository: ProfitRepository())),
+        BlocProvider(create: (_) => BonusCubit(bonusRepository: BonusRepository())),
+        BlocProvider(create: (_) => AddressCubit(addressRepository: AddressRepository())),
+        BlocProvider(create: (_) => TapeBloggerCubit(tapeRepository: TapeBloggerRepository())),
+        BlocProvider(create: (_) => PartnerCubit(partnerRepository: PartnerRepository())),
+        BlocProvider(create: (_) => SizeSellerCubit(sizeRepository: SizeSellerRepository())),
         BlocProvider(
-          create: (_) => ProfitCubit(
-            profitRepository: ProfitRepository(),
-          ),
-        ),
-        BlocProvider(
-          create: (_) => BonusCubit(
-            bonusRepository: BonusRepository(),
-          ),
-        ),
-        BlocProvider(
-          create: (_) => AddressCubit(
-            addressRepository: AddressRepository(),
-          ),
-        ),
-        BlocProvider(
-          create: (_) => TapeBloggerCubit(
-            tapeRepository: TapeBloggerRepository(),
-          ),
-        ),
-        BlocProvider(
-          create: (_) => PartnerCubit(
-            partnerRepository: PartnerRepository(),
-          ),
-        ),
-        BlocProvider(
-          create: (_) => SizeSellerCubit(
-            sizeRepository: SizeSellerRepository(),
-          ),
-        ),
-        BlocProvider(
-          create: (_) => DeleteImageSellerCubit(
-            colorRepository: ProductSellerRepository(),
-          ),
+          create: (_) => DeleteImageSellerCubit(colorRepository: ProductSellerRepository()),
         ),
         BlocProvider(
           create: (_) => StatisticsProductSellerCubit(
@@ -540,20 +419,13 @@ class MultiBlocWrapper extends StatelessWidget {
           ),
         ),
         BlocProvider(
-          create: (_) => CharacteristicSellerCubit(
-            characteristicRepository: CharacteristicSellerRepository(),
-          ),
+          create: (_) =>
+              CharacteristicSellerCubit(characteristicRepository: CharacteristicSellerRepository()),
         ),
         BlocProvider(
-          create: (_) => SmsBloggerCubit(
-            registerRepository: RegisterBloggerRepository(),
-          ),
+          create: (_) => SmsBloggerCubit(registerRepository: RegisterBloggerRepository()),
         ),
-        BlocProvider(
-          create: (_) => MetaCubit(
-            metaRepository: MetaRepository(),
-          ),
-        ),
+        BlocProvider(create: (_) => MetaCubit(metaRepository: MetaRepository())),
       ],
       child: child,
     );

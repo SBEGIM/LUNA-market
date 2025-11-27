@@ -21,8 +21,10 @@ class TapeBloggerPage extends StatefulWidget {
 }
 
 class _TapeBloggerPageState extends State<TapeBloggerPage> {
-  final List<Map> myProducts =
-      List.generate(6, (index) => {"id": index, "name": "Product "}).toList();
+  final List<Map> myProducts = List.generate(
+    6,
+    (index) => {"id": index, "name": "Product "},
+  ).toList();
 
   TextEditingController searchController = TextEditingController();
   final int _value = 1;
@@ -42,8 +44,7 @@ class _TapeBloggerPageState extends State<TapeBloggerPage> {
       appBar: AppBar(
         backgroundColor: AppColors.kWhite,
         elevation: 0,
-        title: const Text("Мои обзоры",
-            style: AppTextStyles.defaultAppBarTextStyle),
+        title: const Text("Мои обзоры", style: AppTextStyles.defaultAppBarTextStyle),
       ),
       body: SmartRefresher(
         controller: refreshController,
@@ -53,8 +54,7 @@ class _TapeBloggerPageState extends State<TapeBloggerPage> {
           refreshController.refreshCompleted();
         },
         child: CustomScrollView(
-          physics: const BouncingScrollPhysics(
-              parent: AlwaysScrollableScrollPhysics()),
+          physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
           slivers: [
             SliverToBoxAdapter(
               child: Container(
@@ -69,8 +69,7 @@ class _TapeBloggerPageState extends State<TapeBloggerPage> {
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Image.asset(Assets.icons.defaultSearchIcon.path,
-                        height: 20, width: 20),
+                    Image.asset(Assets.icons.defaultSearchIcon.path, height: 20, width: 20),
                     const SizedBox(width: 8),
                     Expanded(
                       child: TextField(
@@ -81,8 +80,9 @@ class _TapeBloggerPageState extends State<TapeBloggerPage> {
                           isCollapsed: true,
                           border: InputBorder.none,
                           hintText: 'Поиск',
-                          hintStyle: AppTextStyles.size16Weight400
-                              .copyWith(color: const Color(0xFF8E8E93)),
+                          hintStyle: AppTextStyles.size16Weight400.copyWith(
+                            color: const Color(0xFF8E8E93),
+                          ),
                           contentPadding: EdgeInsets.zero,
                         ),
                       ),
@@ -100,18 +100,14 @@ class _TapeBloggerPageState extends State<TapeBloggerPage> {
                 if (state is LoadingState) {
                   return const SliverFillRemaining(
                     hasScrollBody: false,
-                    child: Center(
-                        child: CircularProgressIndicator(
-                            color: Colors.indigoAccent)),
+                    child: Center(child: CircularProgressIndicator(color: Colors.indigoAccent)),
                   );
                 }
 
                 if (state is ErrorState) {
                   return const SliverFillRemaining(
                     hasScrollBody: false,
-                    child: Center(
-                        child: Text('Ошибка загрузки',
-                            style: TextStyle(fontSize: 18))),
+                    child: Center(child: Text('Ошибка загрузки', style: TextStyle(fontSize: 18))),
                   );
                 }
 
@@ -121,20 +117,19 @@ class _TapeBloggerPageState extends State<TapeBloggerPage> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Image.asset(
-                          Assets.icons.defaultNoDataIcon.path,
-                          height: 72,
-                          width: 72,
-                        ),
+                        Image.asset(Assets.icons.defaultNoDataIcon.path, height: 72, width: 72),
                         SizedBox(height: 16),
-                        Text('Пока здесь пусто',
-                            style: AppTextStyles.size16Weight500,
-                            textAlign: TextAlign.center),
+                        Text(
+                          'Пока здесь пусто',
+                          style: AppTextStyles.size16Weight500,
+                          textAlign: TextAlign.center,
+                        ),
                         SizedBox(height: 8),
-                        Text('Видеообзоры на ваши продукты появятся здесь',
-                            style: AppTextStyles.size14Weight400
-                                .copyWith(color: Color(0xff8E8E93)),
-                            textAlign: TextAlign.center),
+                        Text(
+                          'Видеообзоры на ваши продукты появятся здесь',
+                          style: AppTextStyles.size14Weight400.copyWith(color: Color(0xff8E8E93)),
+                          textAlign: TextAlign.center,
+                        ),
                       ],
                     ),
                   );
@@ -145,53 +140,50 @@ class _TapeBloggerPageState extends State<TapeBloggerPage> {
                     padding: EdgeInsets.only(
                       left: 0,
                       right: 0,
-                      bottom: 16 +
-                          MediaQuery.of(context)
-                              .padding
-                              .bottom, // чтобы последняя карточка была видна
+                      bottom:
+                          16 +
+                          MediaQuery.of(
+                            context,
+                          ).padding.bottom, // чтобы последняя карточка была видна
                     ),
                     sliver: SliverGrid(
-                      gridDelegate:
-                          const SliverGridDelegateWithMaxCrossAxisExtent(
+                      gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
                         maxCrossAxisExtent: 150,
                         childAspectRatio: 1 / 2,
                         mainAxisSpacing: 1,
                         crossAxisSpacing: 1,
                       ),
-                      delegate: SliverChildBuilderDelegate(
-                        (context, index) {
-                          final item = state.tapeModel[index];
-                          return Shimmer(
-                            duration: const Duration(seconds: 3),
-                            interval: const Duration(microseconds: 1),
-                            color: Colors.white,
-                            colorOpacity: 0,
-                            enabled: true,
-                            direction: const ShimmerDirection.fromLTRB(),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(8),
-                                color: Colors.black.withOpacity(1.0),
-                              ),
-                              child: InkWell(
-                                onTap: () {
-                                  context.router.push(
-                                      DetailTapeBloggerCardRoute(
-                                          index: index,
-                                          tapeId: item.tapeId,
-                                          tape: item,
-                                          tapeBloc:
-                                              context.read<TapeBloggerCubit>(),
-                                          shopName: item.shop!.name));
-                                },
-                                child: BloggerTapeCardPage(
-                                    tape: item, index: index),
-                              ),
+                      delegate: SliverChildBuilderDelegate((context, index) {
+                        final item = state.tapeModel[index];
+                        return Shimmer(
+                          duration: const Duration(seconds: 3),
+                          interval: const Duration(microseconds: 1),
+                          color: Colors.white,
+                          colorOpacity: 0,
+                          enabled: true,
+                          direction: const ShimmerDirection.fromLTRB(),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              color: Colors.black.withOpacity(1.0),
                             ),
-                          );
-                        },
-                        childCount: state.tapeModel.length,
-                      ),
+                            child: InkWell(
+                              onTap: () {
+                                context.router.push(
+                                  DetailTapeBloggerCardRoute(
+                                    index: index,
+                                    tapeId: item.tapeId,
+                                    tape: item,
+                                    tapeBloc: context.read<TapeBloggerCubit>(),
+                                    shopName: item.shop!.name,
+                                  ),
+                                );
+                              },
+                              child: BloggerTapeCardPage(tape: item, index: index),
+                            ),
+                          ),
+                        );
+                      }, childCount: state.tapeModel.length),
                     ),
                   );
                 }
@@ -199,9 +191,7 @@ class _TapeBloggerPageState extends State<TapeBloggerPage> {
                 // fallback
                 return const SliverFillRemaining(
                   hasScrollBody: false,
-                  child: Center(
-                      child: CircularProgressIndicator(
-                          color: Colors.indigoAccent)),
+                  child: Center(child: CircularProgressIndicator(color: Colors.indigoAccent)),
                 );
               },
             ),

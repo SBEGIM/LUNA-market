@@ -9,8 +9,7 @@ import 'package:haji_market/src/feature/product/provider/filter_provider.dart';
 class RecentlyWatchedProductCubit extends Cubit<RecentlyWatchedProductState> {
   final RecentlyWatchedRepository productRepository;
 
-  RecentlyWatchedProductCubit({required this.productRepository})
-      : super(InitState());
+  RecentlyWatchedProductCubit({required this.productRepository}) : super(InitState());
 
   Future<void> products(FilterProvider filter) async {
     try {

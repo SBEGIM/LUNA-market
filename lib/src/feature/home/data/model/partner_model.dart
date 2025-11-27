@@ -1,9 +1,5 @@
 class PartnerModel {
-  PartnerModel({
-    int? id,
-    String? name,
-    String? url,
-  }) {
+  PartnerModel({int? id, String? name, String? url}) {
     _id = id;
     _name = name;
     _url = url;

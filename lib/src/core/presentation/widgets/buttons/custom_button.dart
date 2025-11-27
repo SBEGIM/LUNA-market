@@ -28,26 +28,24 @@ class CustomButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Widget getWidget(bool allowTap) => SizedBox(
-          width: width ?? (isExpanded ? double.infinity : null),
-          height: height,
-          child: ElevatedButton(
-            onPressed: allowTap ? onPressed : null,
-            onLongPress: onLongPress,
-            style: style,
-            child: child ??
-                Text(
-                  text,
-                  style: TextStyle(
-                    fontWeight: FontWeight.w500,
-                    fontSize: context.deviceSize.maybeWhenByValue(
-                      orElse: 16,
-                      smallPhone: 14,
-                    ),
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-          ),
-        );
+      width: width ?? (isExpanded ? double.infinity : null),
+      height: height,
+      child: ElevatedButton(
+        onPressed: allowTap ? onPressed : null,
+        onLongPress: onLongPress,
+        style: style,
+        child:
+            child ??
+            Text(
+              text,
+              style: TextStyle(
+                fontWeight: FontWeight.w500,
+                fontSize: context.deviceSize.maybeWhenByValue(orElse: 16, smallPhone: 14),
+              ),
+              textAlign: TextAlign.center,
+            ),
+      ),
+    );
 
     if (allowTapButton != null) {
       return ValueListenableBuilder(
@@ -75,26 +73,22 @@ class CustomButtonStyles {
     Color? shadowColor,
     EdgeInsetsGeometry? padding,
     BorderSide side = BorderSide.none,
-  }) =>
-      ElevatedButton.styleFrom(
-        fixedSize: Size.fromHeight(height),
-        foregroundColor: foregroundColor,
-        backgroundColor: backgroundColor ?? AppColors.mainColor,
-        disabledForegroundColor: disabledForegroundColor,
-        // disabledBackgroundColor: disabledBackgroundColor ?? context.theme.mainColor.withOpacity(0.4),
-        elevation: elevation,
-        // shadowColor: shadowColor ?? context.theme.background50,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(radius)),
-          side: side,
-        ),
-        padding: padding,
-      );
+  }) => ElevatedButton.styleFrom(
+    fixedSize: Size.fromHeight(height),
+    foregroundColor: foregroundColor,
+    backgroundColor: backgroundColor ?? AppColors.mainColor,
+    disabledForegroundColor: disabledForegroundColor,
+    // disabledBackgroundColor: disabledBackgroundColor ?? context.theme.mainColor.withOpacity(0.4),
+    elevation: elevation,
+    // shadowColor: shadowColor ?? context.theme.background50,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.all(Radius.circular(radius)),
+      side: side,
+    ),
+    padding: padding,
+  );
 
-  static ButtonStyle whiteWithGreenBorders(
-    BuildContext context, {
-    EdgeInsets? padding,
-  }) =>
+  static ButtonStyle whiteWithGreenBorders(BuildContext context, {EdgeInsets? padding}) =>
       ElevatedButton.styleFrom(
         backgroundColor: Colors.white,
         foregroundColor: Colors.black,
@@ -104,10 +98,7 @@ class CustomButtonStyles {
         elevation: 0,
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(16)),
-          side: BorderSide(
-            width: 1.6,
-            color: AppColors.primaryGreen,
-          ),
+          side: BorderSide(width: 1.6, color: AppColors.primaryGreen),
         ),
       );
 }

@@ -7,14 +7,12 @@ import 'package:haji_market/src/feature/bloger/tape/data/repository/upload_video
 class UploadVideoBLoggerCubit extends Cubit<UploadVideoBloggerCubitState> {
   final UploadVideoBloggerCubitRepository uploadVideoBloggerCubitRepository;
 
-  UploadVideoBLoggerCubit({required this.uploadVideoBloggerCubitRepository})
-      : super(InitState());
+  UploadVideoBLoggerCubit({required this.uploadVideoBloggerCubitRepository}) : super(InitState());
 
   Future<void> upload(video, productId) async {
     try {
       emit(LoadingState());
-      final data =
-          await uploadVideoBloggerCubitRepository.upload(video, productId);
+      final data = await uploadVideoBloggerCubitRepository.upload(video, productId);
       if (data == 200) {
         emit(LoadedOrderState());
       } else {
@@ -26,14 +24,10 @@ class UploadVideoBLoggerCubit extends Cubit<UploadVideoBloggerCubitState> {
     }
   }
 
-  Future<void> delete({
-    required int tapeId,
-  }) async {
+  Future<void> delete({required int tapeId}) async {
     try {
       emit(LoadingState());
-      final data = await uploadVideoBloggerCubitRepository.deleteVideo(
-        tapeId: tapeId,
-      );
+      final data = await uploadVideoBloggerCubitRepository.deleteVideo(tapeId: tapeId);
       if (data == 200) {
         emit(LoadedOrderState());
       } else {

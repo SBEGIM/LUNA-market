@@ -80,11 +80,8 @@ class _AddressPageState extends State<AddressPage> {
                   borderRadius: BorderRadius.circular(16),
                 ),
                 child: Text(
-                  isChecked.isNotEmpty
-                      ? 'Сохранить и продолжить'
-                      : 'Добавить новый адрес',
-                  style: AppTextStyles.size18Weight600
-                      .copyWith(color: AppColors.kWhite),
+                  isChecked.isNotEmpty ? 'Сохранить и продолжить' : 'Добавить новый адрес',
+                  style: AppTextStyles.size18Weight600.copyWith(color: AppColors.kWhite),
                 ),
               ),
             ),
@@ -112,8 +109,7 @@ class _AddressPageState extends State<AddressPage> {
     if (state is LoadingState) {
       // Скелет (скроллящийся, чтобы pull-to-refresh был доступен)
       return ListView.separated(
-        padding:
-            const EdgeInsets.fromLTRB(16, 16, 16, 88), // 88 = запас под кнопку
+        padding: const EdgeInsets.fromLTRB(16, 16, 16, 88), // 88 = запас под кнопку
         itemCount: 6,
         separatorBuilder: (_, __) => const SizedBox(height: 12),
         itemBuilder: (_, __) => _ShimmerTile(),
@@ -129,8 +125,7 @@ class _AddressPageState extends State<AddressPage> {
             const SizedBox(height: 12),
             Text(
               state.message,
-              style: const TextStyle(
-                  fontSize: 16, color: AppColors.kLightBlackColor),
+              style: const TextStyle(fontSize: 16, color: AppColors.kLightBlackColor),
               textAlign: TextAlign.center,
             ),
           ],
@@ -144,8 +139,7 @@ class _AddressPageState extends State<AddressPage> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Image.asset(Assets.icons.defaultNoDataIcon.path,
-                height: 72, width: 72),
+            Image.asset(Assets.icons.defaultNoDataIcon.path, height: 72, width: 72),
             const SizedBox(height: 12),
             const Text(
               'Нет адресов',
@@ -155,8 +149,7 @@ class _AddressPageState extends State<AddressPage> {
             const SizedBox(height: 4),
             Text(
               'Здесь появятся адреса доставки,\nкоторые вы добавите',
-              style: AppTextStyles.size14Weight400
-                  .copyWith(color: AppColors.kGray300),
+              style: AppTextStyles.size14Weight400.copyWith(color: AppColors.kGray300),
               textAlign: TextAlign.center,
             ),
           ],
@@ -190,14 +183,13 @@ class _AddressPageState extends State<AddressPage> {
             decoration: BoxDecoration(
               color: AppColors.kWhite,
               borderRadius: index == 0
-                  ? BorderRadius.only(
-                      topLeft: Radius.circular(16),
-                      topRight: Radius.circular(16))
+                  ? BorderRadius.only(topLeft: Radius.circular(16), topRight: Radius.circular(16))
                   : items.length - 1 == index
-                      ? BorderRadius.only(
-                          bottomLeft: Radius.circular(16),
-                          bottomRight: Radius.circular(16))
-                      : null,
+                  ? BorderRadius.only(
+                      bottomLeft: Radius.circular(16),
+                      bottomRight: Radius.circular(16),
+                    )
+                  : null,
             ),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -218,8 +210,7 @@ class _AddressPageState extends State<AddressPage> {
                       // Телефон / id (оставляю как у тебя — примерный формат)
                       Text(
                         phoneText,
-                        style: AppTextStyles.size14Weight400
-                            .copyWith(color: Color(0xff8E8E93)),
+                        style: AppTextStyles.size14Weight400.copyWith(color: Color(0xff8E8E93)),
                       ),
                     ],
                   ),
@@ -258,8 +249,7 @@ class _AddressPageState extends State<AddressPage> {
                           final ok = await showBasketAlert(
                             context,
                             title: 'Удалить',
-                            message:
-                                'Вы действительно хотите удалить этот адрес?',
+                            message: 'Вы действительно хотите удалить этот адрес?',
                             mode: AccountAlertMode.confirm,
                             cancelText: 'Отмена',
                             primaryText: 'Да',
@@ -269,8 +259,7 @@ class _AddressPageState extends State<AddressPage> {
                             context.read<AddressCubit>().delete(context, a.id!);
                           }
                         },
-                        child: Image.asset(Assets.icons.trashIcon.path,
-                            height: 21),
+                        child: Image.asset(Assets.icons.trashIcon.path, height: 21),
                       ),
               ],
             ),
@@ -280,9 +269,7 @@ class _AddressPageState extends State<AddressPage> {
     }
 
     // Fallback (на всякий)
-    return const Center(
-      child: CircularProgressIndicator(color: Colors.indigoAccent),
-    );
+    return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
   }
 }
 
@@ -318,12 +305,7 @@ class _CenteredScroll extends StatelessWidget {
   Widget build(BuildContext context) {
     return CustomScrollView(
       physics: const AlwaysScrollableScrollPhysics(),
-      slivers: [
-        SliverFillRemaining(
-          hasScrollBody: false,
-          child: Center(child: child),
-        ),
-      ],
+      slivers: [SliverFillRemaining(hasScrollBody: false, child: Center(child: child))],
     );
   }
 }
@@ -334,10 +316,7 @@ class _ShimmerTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 86,
-      decoration: BoxDecoration(
-        color: AppColors.kWhite,
-        borderRadius: BorderRadius.circular(16),
-      ),
+      decoration: BoxDecoration(color: AppColors.kWhite, borderRadius: BorderRadius.circular(16)),
       padding: const EdgeInsets.all(16),
       child: Row(
         children: [
@@ -357,10 +336,7 @@ class _ShimmerTile extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Container(
-                    height: 14,
-                    width: double.infinity,
-                    color: AppColors.kGray200),
+                Container(height: 14, width: double.infinity, color: AppColors.kGray200),
                 const SizedBox(height: 8),
                 Container(height: 12, width: 120, color: AppColors.kGray200),
               ],

@@ -4,9 +4,7 @@ import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 
 class PunktsWidget extends StatelessWidget {
-  const PunktsWidget({
-    Key? key,
-  }) : super(key: key);
+  const PunktsWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -18,11 +16,8 @@ class PunktsWidget extends StatelessWidget {
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
         itemCount: 4,
-        separatorBuilder: (BuildContext context, int index) => const Divider(
-          height: 1,
-          thickness: 0.33,
-          color: Color(0xffC7C7CC),
-        ),
+        separatorBuilder: (BuildContext context, int index) =>
+            const Divider(height: 1, thickness: 0.33, color: Color(0xffC7C7CC)),
         itemBuilder: (BuildContext context, int index) {
           return SizedBox(
             height: 70,
@@ -30,17 +25,17 @@ class PunktsWidget extends StatelessWidget {
               contentPadding: EdgeInsets.zero,
               horizontalTitleGap: 11,
               leading: SizedBox(
-                  height: 24,
-                  width: 24,
-                  child: Image.asset(Assets.icons.location.path)),
+                height: 24,
+                width: 24,
+                child: Image.asset(Assets.icons.location.path),
+              ),
               title: const Text(
                 'Алматы, улица Байзакова, 280',
                 style: AppTextStyles.size18Weight600,
               ),
               subtitle: Text(
                 'Пн – Сб с 10:00 до 18:00, Вс – выходной',
-                style: AppTextStyles.size14Weight400
-                    .copyWith(color: Color(0xff8E8E93)),
+                style: AppTextStyles.size14Weight400.copyWith(color: Color(0xff8E8E93)),
               ),
             ),
           );

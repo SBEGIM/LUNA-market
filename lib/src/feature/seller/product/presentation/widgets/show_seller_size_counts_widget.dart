@@ -26,25 +26,19 @@ void showSellerSizeCountOptions(
           return ConstrainedBox(
             constraints: BoxConstraints(
               minHeight: 200,
-              maxHeight: (_filteredCategories.length * 85 + 100)
-                  .toDouble()
-                  .clamp(250, 500),
+              maxHeight: (_filteredCategories.length * 85 + 100).toDouble().clamp(250, 500),
             ),
             child: Column(
               children: [
                 // Заголовок
                 Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
                         title,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 16,
-                        ),
+                        style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
                       ),
                       InkWell(
                         onTap: () => Navigator.of(context).pop(),
@@ -73,8 +67,7 @@ void showSellerSizeCountOptions(
                         final isSelected = selectedCategory.contains(category);
 
                         return Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 12, vertical: 12),
+                          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -95,97 +88,75 @@ void showSellerSizeCountOptions(
                                 width: 111,
                                 height: 40,
                                 decoration: BoxDecoration(
-                                    color: AppColors.kGray1,
-                                    borderRadius: BorderRadius.circular(12)),
+                                  color: AppColors.kGray1,
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
                                 child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
+                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                                   children: [
                                     InkWell(
                                       onTap: () {
                                         print('minus');
 
                                         setState(() {
-                                          final myInt =
-                                              int.parse(category.count);
+                                          final myInt = int.parse(category.count);
 
                                           if (myInt <= 0) {
                                             return;
                                           }
-                                          final updatedCategory =
-                                              category.copyWith(
-                                                  count:
-                                                      (myInt - 1).toString());
-                                          _filteredCategories[index] =
-                                              updatedCategory;
+                                          final updatedCategory = category.copyWith(
+                                            count: (myInt - 1).toString(),
+                                          );
+                                          _filteredCategories[index] = updatedCategory;
 
-                                          if (int.parse(
-                                                  updatedCategory.count) <=
-                                              0) {
+                                          if (int.parse(updatedCategory.count) <= 0) {
                                             selectedCategory.removeWhere(
-                                                (element) =>
-                                                    element.id ==
-                                                    updatedCategory.id);
+                                              (element) => element.id == updatedCategory.id,
+                                            );
                                             return;
                                           }
 
                                           int indexModel = -1;
 
-                                          indexModel =
-                                              selectedCategory.indexWhere((e) =>
-                                                  e.id == updatedCategory.id);
+                                          indexModel = selectedCategory.indexWhere(
+                                            (e) => e.id == updatedCategory.id,
+                                          );
                                           if (indexModel != -1) {
                                             // Элемент найден — обновляем
-                                            selectedCategory[indexModel] =
-                                                updatedCategory;
+                                            selectedCategory[indexModel] = updatedCategory;
                                           } else {
                                             // Элемента нет — добавляем
-                                            selectedCategory
-                                                .add(updatedCategory);
+                                            selectedCategory.add(updatedCategory);
                                           }
                                         });
                                       },
-                                      child: Icon(
-                                        Icons.remove,
-                                        color: AppColors.mainPurpleColor,
-                                      ),
+                                      child: Icon(Icons.remove, color: AppColors.mainPurpleColor),
                                     ),
-                                    Text(
-                                      '${category.count}',
-                                      style: AppTextStyles.aboutTextStyle,
-                                    ),
+                                    Text('${category.count}', style: AppTextStyles.aboutTextStyle),
                                     InkWell(
                                       onTap: () {
                                         setState(() {
-                                          final myInt =
-                                              int.parse(category.count);
-                                          final updatedCategory =
-                                              category.copyWith(
-                                                  count:
-                                                      (myInt + 1).toString());
-                                          _filteredCategories[index] =
-                                              updatedCategory;
+                                          final myInt = int.parse(category.count);
+                                          final updatedCategory = category.copyWith(
+                                            count: (myInt + 1).toString(),
+                                          );
+                                          _filteredCategories[index] = updatedCategory;
 
                                           int indexModel = -1;
 
-                                          indexModel =
-                                              selectedCategory.indexWhere((e) =>
-                                                  e.id == updatedCategory.id);
+                                          indexModel = selectedCategory.indexWhere(
+                                            (e) => e.id == updatedCategory.id,
+                                          );
                                           if (indexModel != -1) {
                                             // Элемент найден — обновляем
-                                            selectedCategory[indexModel] =
-                                                updatedCategory;
+                                            selectedCategory[indexModel] = updatedCategory;
                                           } else {
                                             // Элемента нет — добавляем
-                                            selectedCategory
-                                                .add(updatedCategory);
+                                            selectedCategory.add(updatedCategory);
                                           }
                                         });
                                       },
-                                      child: Icon(
-                                        Icons.add,
-                                        color: AppColors.mainPurpleColor,
-                                      ),
+                                      child: Icon(Icons.add, color: AppColors.mainPurpleColor),
                                     ),
                                   ],
                                 ),
@@ -202,8 +173,7 @@ void showSellerSizeCountOptions(
 
                 // Кнопка "Выбрать"
                 Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
                   child: SizedBox(
                     width: double.infinity,
                     height: 48,
@@ -214,9 +184,7 @@ void showSellerSizeCountOptions(
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.mainPurpleColor,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                       ),
                       child: const Text(
                         "Выбрать",
@@ -285,61 +253,60 @@ class _FieldsProductRequestState extends State<FieldsProductRequest> {
               Text(
                 widget.titleText,
                 style: const TextStyle(
-                    fontWeight: FontWeight.w400,
-                    fontSize: 12,
-                    color: AppColors.kGray900),
+                  fontWeight: FontWeight.w400,
+                  fontSize: 12,
+                  color: AppColors.kGray900,
+                ),
               ),
               widget.star == true
                   ? const Text(
                       '*',
                       style: TextStyle(
-                          fontWeight: FontWeight.w400,
-                          fontSize: 12,
-                          color: Colors.red),
+                        fontWeight: FontWeight.w400,
+                        fontSize: 12,
+                        color: Colors.red,
+                      ),
                     )
-                  : Container()
+                  : Container(),
             ],
           ),
           const SizedBox(height: 4),
           Container(
             decoration: BoxDecoration(
-                color: AppColors.kGray2,
-                borderRadius: BorderRadius.circular(10)),
+              color: AppColors.kGray2,
+              borderRadius: BorderRadius.circular(10),
+            ),
             child: Padding(
               padding: const EdgeInsets.only(left: 14.0),
               child: TextField(
                 controller: widget.controller,
-                readOnly:
-                    (widget.hintColor == false || widget.hintColor == null)
-                        ? widget.readOnly
-                        : true,
+                readOnly: (widget.hintColor == false || widget.hintColor == null)
+                    ? widget.readOnly
+                    : true,
                 keyboardType: (widget.maxLines != null && widget.maxLines! > 1)
                     ? TextInputType.multiline
-                    : ((widget.textInputNumber == false ||
-                            widget.textInputNumber == null)
-                        ? TextInputType.text
-                        : const TextInputType.numberWithOptions(
-                            signed: true, decimal: true)),
+                    : ((widget.textInputNumber == false || widget.textInputNumber == null)
+                          ? TextInputType.text
+                          : const TextInputType.numberWithOptions(signed: true, decimal: true)),
                 maxLines: widget.maxLines ?? 1,
                 onChanged: widget.onChanged, // добавили
                 decoration: InputDecoration(
                   border: InputBorder.none,
                   hintText: widget.hintText,
                   hintStyle: TextStyle(
-                      color:
-                          (widget.hintColor == null || widget.hintColor != true)
-                              ? const Color.fromRGBO(194, 197, 200, 1)
-                              : Colors.black,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w400),
+                    color: (widget.hintColor == null || widget.hintColor != true)
+                        ? const Color.fromRGBO(194, 197, 200, 1)
+                        : Colors.black,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w400,
+                  ),
                   enabledBorder: const UnderlineInputBorder(
                     borderSide: BorderSide(color: Colors.white),
                   ),
                   suffixIcon: widget.arrow == true
                       ? IconButton(
                           onPressed: widget.onPressed,
-                          icon: SvgPicture.asset('assets/icons/back_menu.svg',
-                              color: Colors.grey),
+                          icon: SvgPicture.asset('assets/icons/back_menu.svg', color: Colors.grey),
                         )
                       : const SizedBox(),
                 ),

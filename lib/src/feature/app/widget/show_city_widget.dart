@@ -29,29 +29,27 @@ void showCitiesOptions(
             top: false,
             child: Padding(
               // Поднимаем контент над клавиатурой
-              padding: EdgeInsets.only(
-                bottom: MediaQuery.of(ctx).viewInsets.bottom,
-              ),
+              padding: EdgeInsets.only(bottom: MediaQuery.of(ctx).viewInsets.bottom),
               child: FractionallySizedBox(
-                heightFactor:
-                    0.9, // <- стабильная высота (не зависит от кол-ва элементов)
+                heightFactor: 0.9, // <- стабильная высота (не зависит от кол-ва элементов)
                 child: Column(
                   mainAxisSize: MainAxisSize.max,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // Хедер
                     Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 16),
+                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(title,
-                              style: const TextStyle(
-                                  fontWeight: FontWeight.w600, fontSize: 16)),
+                          Text(
+                            title,
+                            style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
+                          ),
                           InkWell(
-                              onTap: () => Navigator.of(ctx).pop(),
-                              child: const Icon(Icons.close)),
+                            onTap: () => Navigator.of(ctx).pop(),
+                            child: const Icon(Icons.close),
+                          ),
                         ],
                       ),
                     ),
@@ -76,9 +74,11 @@ void showCitiesOptions(
                               onChanged: (value) {
                                 setState(() {
                                   _filteredCategories = categories
-                                      .where((c) => (c.city ?? '')
-                                          .toLowerCase()
-                                          .contains(value.toLowerCase()))
+                                      .where(
+                                        (c) => (c.city ?? '').toLowerCase().contains(
+                                          value.toLowerCase(),
+                                        ),
+                                      )
                                       .toList();
                                   // Сброс выбора, если отфильтрованный список изменился
                                   selectedIndex = -1;
@@ -109,13 +109,11 @@ void showCitiesOptions(
                           : ListView.builder(
                               // c ModalScrollController скролл взаимодействует с листом правильно
                               controller: ModalScrollController.of(ctx),
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 16),
+                              padding: const EdgeInsets.symmetric(horizontal: 16),
                               itemCount: _filteredCategories.length,
                               itemBuilder: (context, index) {
                                 final category = _filteredCategories[index];
-                                final isSelected =
-                                    category.code == selectedCode;
+                                final isSelected = category.code == selectedCode;
 
                                 return GestureDetector(
                                   onTap: () => setState(() {
@@ -126,20 +124,18 @@ void showCitiesOptions(
                                   child: Container(
                                     margin: const EdgeInsets.only(bottom: 6),
                                     padding: const EdgeInsets.symmetric(
-                                        horizontal: 12, vertical: 12),
+                                      horizontal: 12,
+                                      vertical: 12,
+                                    ),
                                     decoration: BoxDecoration(
                                       color: Colors.white,
                                       borderRadius: BorderRadius.circular(8),
                                       border: isSelected
-                                          ? Border.all(
-                                              color: AppColors.mainPurpleColor,
-                                              width: 1.5,
-                                            )
+                                          ? Border.all(color: AppColors.mainPurpleColor, width: 1.5)
                                           : null,
                                     ),
                                     child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
                                           category.city ?? '',
@@ -153,9 +149,11 @@ void showCitiesOptions(
                                           ),
                                         ),
                                         if (isSelected)
-                                          const Icon(Icons.check,
-                                              color: AppColors.mainPurpleColor,
-                                              size: 18),
+                                          const Icon(
+                                            Icons.check,
+                                            color: AppColors.mainPurpleColor,
+                                            size: 18,
+                                          ),
                                       ],
                                     ),
                                   ),
@@ -168,33 +166,30 @@ void showCitiesOptions(
 
                     // Кнопка
                     Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 16),
+                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
                       child: SizedBox(
                         width: double.infinity,
                         height: 48,
                         child: ElevatedButton(
-                          onPressed: (selectedIndex >= 0 &&
-                                  selectedIndex < _filteredCategories.length)
+                          onPressed:
+                              (selectedIndex >= 0 && selectedIndex < _filteredCategories.length)
                               ? () {
-                                  callback
-                                      .call(_filteredCategories[selectedIndex]);
+                                  callback.call(_filteredCategories[selectedIndex]);
                                   Navigator.pop(ctx);
                                 }
                               : null,
                           style: ElevatedButton.styleFrom(
                             backgroundColor: AppColors.mainPurpleColor,
-                            disabledBackgroundColor:
-                                AppColors.mainPurpleColor.withOpacity(0.4),
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12)),
+                            disabledBackgroundColor: AppColors.mainPurpleColor.withOpacity(0.4),
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                           ),
                           child: const Text(
                             "Выбрать",
                             style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w600,
-                                fontSize: 16),
+                              color: Colors.white,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 16,
+                            ),
                           ),
                         ),
                       ),

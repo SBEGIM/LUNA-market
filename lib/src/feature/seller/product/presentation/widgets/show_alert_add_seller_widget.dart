@@ -9,18 +9,15 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 void showAdsOptions(BuildContext context, ProductSellerModel product) {
   showMaterialModalBottomSheet(
-      context: context,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(20),
-          topRight: Radius.circular(20),
-        ),
-      ),
-      builder: (context) => BlocProvider<AdSellerCubit>(
-            create: (_) => AdSellerCubit(repository: ProductSellerRepository())
-              ..getAdsList(),
-            child: AdsOptionsModal(product: product),
-          ));
+    context: context,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)),
+    ),
+    builder: (context) => BlocProvider<AdSellerCubit>(
+      create: (_) => AdSellerCubit(repository: ProductSellerRepository())..getAdsList(),
+      child: AdsOptionsModal(product: product),
+    ),
+  );
 }
 
 class AdsOptionsModal extends StatefulWidget {
@@ -50,13 +47,8 @@ class _AdsOptionsModalState extends State<AdsOptionsModal> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    'Рекламировать',
-                    style: AppTextStyles.defaultButtonTextStyle,
-                  ),
-                  InkWell(
-                      onTap: () => Navigator.pop(context),
-                      child: Icon(Icons.close))
+                  Text('Рекламировать', style: AppTextStyles.defaultButtonTextStyle),
+                  InkWell(onTap: () => Navigator.pop(context), child: Icon(Icons.close)),
                 ],
               ),
             ),
@@ -90,7 +82,11 @@ class _AdsOptionsModalState extends State<AdsOptionsModal> {
                                   });
                                 },
                                 contentPadding: EdgeInsets.only(
-                                    left: 12, right: 12, top: 0, bottom: 0),
+                                  left: 12,
+                                  right: 12,
+                                  top: 0,
+                                  bottom: 0,
+                                ),
                                 trailing: Icon(
                                   adPrice == e.price
                                       ? Icons.check_circle
@@ -106,22 +102,19 @@ class _AdsOptionsModalState extends State<AdsOptionsModal> {
                                 child: Text(
                                   ' ${e.price} ₽',
                                   textAlign: TextAlign.left,
-                                  style: AppTextStyles.catalogTextStyle
-                                      .copyWith(color: AppColors.kGray300),
+                                  style: AppTextStyles.catalogTextStyle.copyWith(
+                                    color: AppColors.kGray300,
+                                  ),
                                 ),
                               ),
-                              SizedBox(
-                                height: 12,
-                              )
+                              SizedBox(height: 12),
                             ],
                           ),
                         )
                         .toList(),
                   );
                 } else {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
+                  return const Center(child: CircularProgressIndicator());
                 }
               },
             ),
@@ -131,16 +124,18 @@ class _AdsOptionsModalState extends State<AdsOptionsModal> {
             Container(
               margin: EdgeInsets.only(left: 16, right: 16, bottom: 20),
               decoration: BoxDecoration(
-                  color: AppColors.mainPurpleColor,
-                  borderRadius: BorderRadius.circular(16)),
+                color: AppColors.mainPurpleColor,
+                borderRadius: BorderRadius.circular(16),
+              ),
               child: ListTile(
                 onTap: () async {
                   setState(() {
                     load = true;
                   });
 
-                  final data = await BlocProvider.of<AdSellerCubit>(context)
-                      .ad(widget.product.id!, adPrice);
+                  final data = await BlocProvider.of<AdSellerCubit>(
+                    context,
+                  ).ad(widget.product.id!, adPrice);
 
                   setState(() {
                     load = false;
@@ -150,18 +145,13 @@ class _AdsOptionsModalState extends State<AdsOptionsModal> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => PaymentWebviewPage(
-                          url: data,
-                          role: 'shop',
-                        ),
+                        builder: (context) => PaymentWebviewPage(url: data, role: 'shop'),
                       ),
                     );
                   }
                 },
                 title: load
-                    ? const CircularProgressIndicator(
-                        color: Colors.blueAccent,
-                      )
+                    ? const CircularProgressIndicator(color: Colors.blueAccent)
                     : Text(
                         'Оплатить  ${adPrice != -1 ? "$adPrice руб" : ''}',
                         textAlign: TextAlign.center,

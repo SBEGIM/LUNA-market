@@ -55,8 +55,7 @@ Future<bool?> showAccountAlert(
             ),
             Center(
               child: SlideTransition(
-                position: Tween(begin: const Offset(0, 0.04), end: Offset.zero)
-                    .animate(curved),
+                position: Tween(begin: const Offset(0, 0.04), end: Offset.zero).animate(curved),
                 child: Material(
                   color: Colors.transparent,
                   child: Container(
@@ -83,15 +82,18 @@ Future<bool?> showAccountAlert(
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Text(title,
-                                  textAlign: TextAlign.center,
-                                  style: AppTextStyles.size18Weight600),
+                              Text(
+                                title,
+                                textAlign: TextAlign.center,
+                                style: AppTextStyles.size18Weight600,
+                              ),
                               const SizedBox(height: 8),
                               Text(
                                 message,
                                 textAlign: TextAlign.center,
-                                style: AppTextStyles.size14Weight500
-                                    .copyWith(color: Color(0xff3A3A3C)),
+                                style: AppTextStyles.size14Weight500.copyWith(
+                                  color: Color(0xff3A3A3C),
+                                ),
                               ),
                               const SizedBox(height: 24),
                             ],
@@ -100,17 +102,16 @@ Future<bool?> showAccountAlert(
 
                         // кнопочная панель БЕЗ нижнего padding — линии вплотную к низу
                         ClipRRect(
-                          borderRadius: const BorderRadius.vertical(
-                              bottom: Radius.circular(20)),
+                          borderRadius: const BorderRadius.vertical(bottom: Radius.circular(20)),
                           child: Container(
                             height: 52,
                             decoration: const BoxDecoration(
                               color: Colors.white,
                               border: Border(
                                 top: BorderSide(
-                                    color: Color(0xFFD1D1D6),
-                                    width:
-                                        1), // сплошная линия сверху на всю ширину
+                                  color: Color(0xFFD1D1D6),
+                                  width: 1,
+                                ), // сплошная линия сверху на всю ширину
                               ),
                             ),
                             child: Row(
@@ -118,18 +119,20 @@ Future<bool?> showAccountAlert(
                                 // левая кнопка + вертикальный разделитель по центру
                                 Expanded(
                                   child: TextButton(
-                                    onPressed: () =>
-                                        Navigator.of(ctx).pop(false),
+                                    onPressed: () => Navigator.of(ctx).pop(false),
                                     style: TextButton.styleFrom(
                                       padding: EdgeInsets.zero,
                                       foregroundColor: Colors.black,
                                       shape: const RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.zero),
+                                        borderRadius: BorderRadius.zero,
+                                      ),
                                     ),
-                                    child: Text(cancelText,
-                                        style: AppTextStyles.size18Weight600
-                                            .copyWith(
-                                                color: Color(0xff636366))),
+                                    child: Text(
+                                      cancelText,
+                                      style: AppTextStyles.size18Weight600.copyWith(
+                                        color: Color(0xff636366),
+                                      ),
+                                    ),
                                   ),
                                 ),
                                 const VerticalDivider(
@@ -140,20 +143,20 @@ Future<bool?> showAccountAlert(
                                 ),
                                 Expanded(
                                   child: TextButton(
-                                    onPressed: () =>
-                                        Navigator.of(ctx).pop(true),
+                                    onPressed: () => Navigator.of(ctx).pop(true),
                                     style: TextButton.styleFrom(
                                       padding: EdgeInsets.zero,
-                                      foregroundColor:
-                                          primaryColor ?? Color(0xffFF3347),
+                                      foregroundColor: primaryColor ?? Color(0xffFF3347),
                                       shape: const RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.zero),
+                                        borderRadius: BorderRadius.zero,
+                                      ),
                                     ),
-                                    child: Text(primaryText,
-                                        style: AppTextStyles.size18Weight600
-                                            .copyWith(
-                                                color: primaryColor ??
-                                                    AppColors.mainRedColor)),
+                                    child: Text(
+                                      primaryText,
+                                      style: AppTextStyles.size18Weight600.copyWith(
+                                        color: primaryColor ?? AppColors.mainRedColor,
+                                      ),
+                                    ),
                                   ),
                                 ),
                               ],

@@ -256,7 +256,6 @@ class _BasketProductCardWidgetState extends State<BasketProductCardWidget> {
                                                     100))
                                             .toInt())));
 
-
                                 if (basketCount == 0) {
                                   await BlocProvider.of<BasketCubit>(context).basketShow();
                                   isVisible = false;

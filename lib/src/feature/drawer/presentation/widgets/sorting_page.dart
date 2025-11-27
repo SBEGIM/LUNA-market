@@ -22,7 +22,7 @@ class _SortingPageState extends State<SortingPage> {
     'Новинки',
     'Сначала дешевые',
     'Сначала дорогие',
-    'Высокий рейтинг'
+    'Высокий рейтинг',
   ];
 
   @override
@@ -35,23 +35,15 @@ class _SortingPageState extends State<SortingPage> {
         centerTitle: true,
         leading: InkWell(
           onTap: () {
-            final select = _selectedIndexSort == -1
-                ? 'Не выбрано'
-                : sort[_selectedIndexSort];
+            final select = _selectedIndexSort == -1 ? 'Не выбрано' : sort[_selectedIndexSort];
 
             Get.back(result: select);
           },
-          child: const Icon(
-            Icons.arrow_back_ios,
-            color: AppColors.kPrimaryColor,
-          ),
+          child: const Icon(Icons.arrow_back_ios, color: AppColors.kPrimaryColor),
         ),
         title: const Text(
           'Сортировка',
-          style: TextStyle(
-              color: AppColors.kGray900,
-              fontSize: 16,
-              fontWeight: FontWeight.w500),
+          style: TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w500),
         ),
       ),
       body: SizedBox(
@@ -64,62 +56,54 @@ class _SortingPageState extends State<SortingPage> {
             return Column(
               children: [
                 index == 0
-                    ? const Divider(
-                        height: 0.3,
-                        color: Color.fromRGBO(196, 200, 204, 1),
-                      )
+                    ? const Divider(height: 0.3, color: Color.fromRGBO(196, 200, 204, 1))
                     : Container(),
                 Container(
                   color: Colors.white,
                   height: 55,
                   child: InkWell(
-                      onTap: () {
-                        setState(() {
-                          _selectedIndexSort = index;
-                        });
-                        final filters = context.read<FilterProvider>();
+                    onTap: () {
+                      setState(() {
+                        _selectedIndexSort = index;
+                      });
+                      final filters = context.read<FilterProvider>();
 
-                        switch (sort[_selectedIndexSort]) {
-                          case 'Популярные':
-                            filters.setSort('orderByPopular');
-                            break;
-                          case 'Новинки':
-                            filters.setSort('orderByNew');
-                            break;
-                          case 'Сначала дешевые':
-                            filters.setSort('priceAsc');
-                            break;
-                          case 'Сначала дорогие':
-                            filters.setSort('priceDesc');
-                            break;
-                          case 'Высокий рейтинг':
-                            filters.setSort('rating');
-                            break;
-                        }
-                        BlocProvider.of<ProductCubit>(context)
-                            .products(filters);
-                      },
-                      child: ListTile(
-                        selected: index == _selectedIndexSort,
-                        leading: Text(sort[index],
-                            style: const TextStyle(
-                              fontSize: 16,
-                              color: AppColors.kLightBlackColor,
-                              fontWeight: FontWeight.w400,
-                            )),
-                        trailing: _selectedIndexSort == index
-                            ? SvgPicture.asset(
-                                'assets/icons/check_circle.svg',
-                              )
-                            : SvgPicture.asset(
-                                'assets/icons/check_circle_no_selected.svg',
-                              ),
-                      )),
+                      switch (sort[_selectedIndexSort]) {
+                        case 'Популярные':
+                          filters.setSort('orderByPopular');
+                          break;
+                        case 'Новинки':
+                          filters.setSort('orderByNew');
+                          break;
+                        case 'Сначала дешевые':
+                          filters.setSort('priceAsc');
+                          break;
+                        case 'Сначала дорогие':
+                          filters.setSort('priceDesc');
+                          break;
+                        case 'Высокий рейтинг':
+                          filters.setSort('rating');
+                          break;
+                      }
+                      BlocProvider.of<ProductCubit>(context).products(filters);
+                    },
+                    child: ListTile(
+                      selected: index == _selectedIndexSort,
+                      leading: Text(
+                        sort[index],
+                        style: const TextStyle(
+                          fontSize: 16,
+                          color: AppColors.kLightBlackColor,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                      trailing: _selectedIndexSort == index
+                          ? SvgPicture.asset('assets/icons/check_circle.svg')
+                          : SvgPicture.asset('assets/icons/check_circle_no_selected.svg'),
+                    ),
+                  ),
                 ),
-                const Divider(
-                  height: 0,
-                  color: Color.fromRGBO(196, 200, 204, 1),
-                ),
+                const Divider(height: 0, color: Color.fromRGBO(196, 200, 204, 1)),
               ],
             );
           },
@@ -127,31 +111,26 @@ class _SortingPageState extends State<SortingPage> {
       ),
       bottomSheet: Container(
         color: Colors.white,
-        padding:
-            const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 26),
+        padding: const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 26),
         child: GestureDetector(
           onTap: () {
-            final select = _selectedIndexSort == -1
-                ? 'Не выбрано'
-                : sort[_selectedIndexSort];
+            final select = _selectedIndexSort == -1 ? 'Не выбрано' : sort[_selectedIndexSort];
 
             Get.back(result: select);
           },
           child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                color: AppColors.kPrimaryColor,
-              ),
-              width: MediaQuery.of(context).size.width,
-              padding: const EdgeInsets.all(16),
-              child: const Text(
-                'Готово',
-                style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w400,
-                    fontSize: 16),
-                textAlign: TextAlign.center,
-              )),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              color: AppColors.kPrimaryColor,
+            ),
+            width: MediaQuery.of(context).size.width,
+            padding: const EdgeInsets.all(16),
+            child: const Text(
+              'Готово',
+              style: TextStyle(color: Colors.white, fontWeight: FontWeight.w400, fontSize: 16),
+              textAlign: TextAlign.center,
+            ),
+          ),
         ),
       ),
     );

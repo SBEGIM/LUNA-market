@@ -10,11 +10,9 @@ import '../data/repository/login_blogger_repo.dart';
 class LoginBloggerCubit extends Cubit<LoginBloggerState> {
   final LoginBloggerRepository loginBloggerRepository;
 
-  LoginBloggerCubit({required this.loginBloggerRepository})
-      : super(InitState());
+  LoginBloggerCubit({required this.loginBloggerRepository}) : super(InitState());
 
-  Future<void> login(
-      BuildContext context, String phone, String password) async {
+  Future<void> login(BuildContext context, String phone, String password) async {
     try {
       emit(LoadingState());
       final data = await loginBloggerRepository.login(phone, password);
@@ -25,20 +23,12 @@ class LoginBloggerCubit extends Cubit<LoginBloggerState> {
       }
       if (data == 400) {
         emit(InitState());
-        AppSnackBar.show(
-          context,
-          'Неверный номер телефона или пароль',
-          type: AppSnackType.error,
-        );
+        AppSnackBar.show(context, 'Неверный номер телефона или пароль', type: AppSnackType.error);
       }
       if (data == 500) {
         emit(InitState());
 
-        AppSnackBar.show(
-          context,
-          'Ошибка сервера',
-          type: AppSnackType.error,
-        );
+        AppSnackBar.show(context, 'Ошибка сервера', type: AppSnackType.error);
 
         // Get.snackbar('500', 'Ошибка сервера',
         //     backgroundColor: Colors.redAccent);
@@ -61,20 +51,12 @@ class LoginBloggerCubit extends Cubit<LoginBloggerState> {
       }
       if (data == 400) {
         emit(InitState());
-        AppSnackBar.show(
-          context,
-          'Телефон или Никнейм занято',
-          type: AppSnackType.error,
-        );
+        AppSnackBar.show(context, 'Телефон или Никнейм занято', type: AppSnackType.error);
         return 400;
       }
       if (data == 500) {
         emit(InitState());
-        AppSnackBar.show(
-          context,
-          'Ошибка сервера',
-          type: AppSnackType.error,
-        );
+        AppSnackBar.show(context, 'Ошибка сервера', type: AppSnackType.error);
         return 500;
       }
 

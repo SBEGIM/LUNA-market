@@ -8,17 +8,13 @@ class DeleteImageSellerCubit extends Cubit<DeleteImageSellerState> {
   final ProductSellerRepository _repository;
 
   DeleteImageSellerCubit({required ProductSellerRepository colorRepository})
-      : _repository = colorRepository,
-        super(InitState());
+    : _repository = colorRepository,
+      super(InitState());
 
-  Future<void> deleteImage({
-    required int productId,
-    required String imagePath,
-  }) async {
+  Future<void> deleteImage({required int productId, required String imagePath}) async {
     try {
       emit(LoadingState());
-      final data = await _repository.deleteImage(
-          productId: productId, imagePath: imagePath);
+      final data = await _repository.deleteImage(productId: productId, imagePath: imagePath);
       if (data == 200) {
         emit(LoadedState(deletingImagePath: imagePath));
       } else {
@@ -27,8 +23,7 @@ class DeleteImageSellerCubit extends Cubit<DeleteImageSellerState> {
     } catch (e) {
       log(e.toString());
       emit(ErrorState(message: 'Ошибка сервера'));
-      Get.snackbar('Ошибка при удаление продукта!', '',
-          backgroundColor: Colors.redAccent);
+      Get.snackbar('Ошибка при удаление продукта!', '', backgroundColor: Colors.redAccent);
     }
   }
 

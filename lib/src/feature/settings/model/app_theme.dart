@@ -9,16 +9,12 @@ import 'package:flutter/material.dart';
 final class AppTheme with Diagnosticable {
   /// {@macro app_theme}
   AppTheme({required this.themeMode, required this.seed})
-      : darkTheme = ThemeData(
-          colorSchemeSeed: seed,
-          brightness: Brightness.dark,
-          useMaterial3: true,
-        ),
-        lightTheme = ThemeData(
-          colorSchemeSeed: seed,
-          brightness: Brightness.light,
-          useMaterial3: true,
-        );
+    : darkTheme = ThemeData(colorSchemeSeed: seed, brightness: Brightness.dark, useMaterial3: true),
+      lightTheme = ThemeData(
+        colorSchemeSeed: seed,
+        brightness: Brightness.light,
+        useMaterial3: true,
+      );
 
   /// The type of theme to use.
   final ThemeMode themeMode;
@@ -33,10 +29,7 @@ final class AppTheme with Diagnosticable {
   final ThemeData lightTheme;
 
   /// The default [AppTheme].
-  static final defaultTheme = AppTheme(
-    themeMode: ThemeMode.system,
-    seed: Colors.blue,
-  );
+  static final defaultTheme = AppTheme(themeMode: ThemeMode.system, seed: Colors.blue);
 
   /// The [ThemeData] for this [AppTheme].
   /// This is computed based on the [themeMode].
@@ -47,7 +40,9 @@ final class AppTheme with Diagnosticable {
       case ThemeMode.dark:
         return darkTheme;
       case ThemeMode.system:
-        return PlatformDispatcher.instance.platformBrightness == Brightness.dark ? darkTheme : lightTheme;
+        return PlatformDispatcher.instance.platformBrightness == Brightness.dark
+            ? darkTheme
+            : lightTheme;
     }
   }
 
@@ -62,7 +57,8 @@ final class AppTheme with Diagnosticable {
 
   @override
   bool operator ==(Object other) =>
-      identical(this, other) || other is AppTheme && seed == other.seed && themeMode == other.themeMode;
+      identical(this, other) ||
+      other is AppTheme && seed == other.seed && themeMode == other.themeMode;
 
   @override
   int get hashCode => Object.hash(seed, themeMode);

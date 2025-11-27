@@ -9,8 +9,7 @@ const baseUrl = 'https://lunamarket.ru/api';
 class ShopsDrawerRepository {
   final ShopsDrawerApi _shopsApi = ShopsDrawerApi();
 
-  Future<List<ShopsDrawerModel>> shopsDrawer(int? cat_id) =>
-      _shopsApi.shopsDrawer(cat_id);
+  Future<List<ShopsDrawerModel>> shopsDrawer(int? cat_id) => _shopsApi.shopsDrawer(cat_id);
 }
 
 class ShopsDrawerApi {
@@ -20,8 +19,9 @@ class ShopsDrawerApi {
     final String? token = _box.read('token');
 
     final response = await http.get(
-        Uri.parse('$baseUrl/list/shops?cat_id=$cat_id'),
-        headers: {"Authorization": "Bearer $token"});
+      Uri.parse('$baseUrl/list/shops?cat_id=$cat_id'),
+      headers: {"Authorization": "Bearer $token"},
+    );
 
     final data = jsonDecode(response.body);
 

@@ -35,21 +35,12 @@ class _CustomRadioState extends State<CustomRadio> {
           color: selected ? Colors.black : AppColors.grey2,
           border: selected
               ? null
-              : const Border.fromBorderSide(
-                  BorderSide(
-                    color: Color(0xffe0e0e0),
-                    width: 1.5,
-                  ),
-                ),
+              : const Border.fromBorderSide(BorderSide(color: Color(0xffe0e0e0), width: 1.5)),
           shape: BoxShape.circle,
         ),
         child: Center(
           child: selected
-              ? const Icon(
-                  Icons.check,
-                  size: 17,
-                  color: Colors.white,
-                )
+              ? const Icon(Icons.check, size: 17, color: Colors.white)
               : const SizedBox(),
         ),
       ),

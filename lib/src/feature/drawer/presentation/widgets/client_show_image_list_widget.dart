@@ -8,8 +8,7 @@ import 'package:haji_market/src/feature/app/widgets/app_snack_bar.dart';
 import 'package:haji_market/src/feature/bloger/profile/presentation/widgets/show_module_profile_widget.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
-void showClientImageOptions(
-    BuildContext context, bool isAuth, String title, Function callback) {
+void showClientImageOptions(BuildContext context, bool isAuth, String title, Function callback) {
   bool? switchValue;
   String lang = GetStorage().read('language') ?? 'Русскийй';
 
@@ -37,15 +36,11 @@ void showClientImageOptions(
               children: [
                 // Заголовок и крестик
                 Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        title,
-                        style: AppTextStyles.size18Weight600,
-                      ),
+                      Text(title, style: AppTextStyles.size18Weight600),
                       InkWell(
                         onTap: () => Navigator.of(context).pop(),
                         child: Image.asset(
@@ -59,28 +54,32 @@ void showClientImageOptions(
                 ),
 
                 Container(
-                    margin: EdgeInsets.symmetric(horizontal: 16),
-                    decoration: BoxDecoration(
-                        color: AppColors.kWhite,
-                        borderRadius: BorderRadius.circular(16)),
-                    child: Column(
-                      children: [
-                        buildSettingItem(
-                            onTap: () {
-                              callback.call('image');
-                            },
-                            iconPath: Assets.icons.cameraIcon.path,
-                            title: 'Выбрать фото',
-                            widgetColor: Color(0xff3A3A3C)),
-                        buildSettingItem(
-                            onTap: () {
-                              callback.call('close');
-                            },
-                            iconPath: Assets.icons.trashIcon.path,
-                            title: 'Удалить фото',
-                            widgetColor: AppColors.mainRedColor),
-                      ],
-                    )),
+                  margin: EdgeInsets.symmetric(horizontal: 16),
+                  decoration: BoxDecoration(
+                    color: AppColors.kWhite,
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: Column(
+                    children: [
+                      buildSettingItem(
+                        onTap: () {
+                          callback.call('image');
+                        },
+                        iconPath: Assets.icons.cameraIcon.path,
+                        title: 'Выбрать фото',
+                        widgetColor: Color(0xff3A3A3C),
+                      ),
+                      buildSettingItem(
+                        onTap: () {
+                          callback.call('close');
+                        },
+                        iconPath: Assets.icons.trashIcon.path,
+                        title: 'Удалить фото',
+                        widgetColor: AppColors.mainRedColor,
+                      ),
+                    ],
+                  ),
+                ),
               ],
             ),
           );
@@ -110,13 +109,7 @@ Widget buildSettingItem({
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Image.asset(
-              iconPath!,
-              height: 24,
-              width: 24,
-              scale: 1.9,
-              color: widgetColor,
-            ),
+            Image.asset(iconPath!, height: 24, width: 24, scale: 1.9, color: widgetColor),
             SizedBox(width: 10),
             Text(
               title,

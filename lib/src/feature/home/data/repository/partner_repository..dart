@@ -17,8 +17,10 @@ class PartnerApi {
   Future<List<PartnerModel>> partner() async {
     final String? token = _box.read('token');
 
-    final response = await http.get(Uri.parse('$baseUrl/list/for_partner'),
-        headers: {"Authorization": "Bearer $token"});
+    final response = await http.get(
+      Uri.parse('$baseUrl/list/for_partner'),
+      headers: {"Authorization": "Bearer $token"},
+    );
 
     final data = jsonDecode(response.body);
 

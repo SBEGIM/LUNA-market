@@ -44,8 +44,7 @@ Future<bool?> showBrandedAlert(
             ),
             Center(
               child: SlideTransition(
-                position: Tween(begin: const Offset(0, 0.04), end: Offset.zero)
-                    .animate(curved),
+                position: Tween(begin: const Offset(0, 0.04), end: Offset.zero).animate(curved),
                 child: Material(
                   color: Colors.transparent,
                   child: Container(
@@ -75,8 +74,7 @@ Future<bool?> showBrandedAlert(
                         Text(
                           message,
                           textAlign: TextAlign.center,
-                          style: AppTextStyles.size16Weight400
-                              .copyWith(color: Color(0xff636366)),
+                          style: AppTextStyles.size16Weight400.copyWith(color: Color(0xff636366)),
                         ),
                         const SizedBox(height: 16),
                         if (mode == BrandedAlertMode.confirm)
@@ -86,8 +84,7 @@ Future<bool?> showBrandedAlert(
                                 child: SizedBox(
                                   height: 52,
                                   child: TextButton(
-                                    onPressed: () =>
-                                        Navigator.of(ctx).pop(false),
+                                    onPressed: () => Navigator.of(ctx).pop(false),
                                     style: TextButton.styleFrom(
                                       foregroundColor: const Color(0xFF111111),
                                       backgroundColor: const Color(0xFFF1F1F1),
@@ -95,8 +92,7 @@ Future<bool?> showBrandedAlert(
                                         borderRadius: BorderRadius.circular(16),
                                       ),
                                     ),
-                                    child: Text(cancelText,
-                                        style: AppTextStyles.size15Weight600),
+                                    child: Text(cancelText, style: AppTextStyles.size15Weight600),
                                   ),
                                 ),
                               ),
@@ -105,8 +101,7 @@ Future<bool?> showBrandedAlert(
                                 child: SizedBox(
                                   height: 52,
                                   child: ElevatedButton(
-                                    onPressed: () =>
-                                        Navigator.of(ctx).pop(true),
+                                    onPressed: () => Navigator.of(ctx).pop(true),
                                     style: ElevatedButton.styleFrom(
                                       backgroundColor: primaryColor,
                                       elevation: 0,
@@ -114,9 +109,12 @@ Future<bool?> showBrandedAlert(
                                         borderRadius: BorderRadius.circular(16),
                                       ),
                                     ),
-                                    child: Text(primaryText,
-                                        style: AppTextStyles.size15Weight600
-                                            .copyWith(color: AppColors.kWhite)),
+                                    child: Text(
+                                      primaryText,
+                                      style: AppTextStyles.size15Weight600.copyWith(
+                                        color: AppColors.kWhite,
+                                      ),
+                                    ),
                                   ),
                                 ),
                               ),
@@ -129,14 +127,12 @@ Future<bool?> showBrandedAlert(
                             onPressed: () => Navigator.of(ctx).pop(true),
                             height: 52,
                             borderRadius: 16,
-                            gradient: primaryGradient ??
+                            gradient:
+                                primaryGradient ??
                                 const LinearGradient(
                                   begin: Alignment.centerLeft,
                                   end: Alignment.centerRight,
-                                  colors: [
-                                    Color(0xFF7B61FF),
-                                    Color(0xFF9A57FF),
-                                  ],
+                                  colors: [Color(0xFF7B61FF), Color(0xFF9A57FF)],
                                 ),
                           ),
                       ],

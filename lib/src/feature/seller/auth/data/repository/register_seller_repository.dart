@@ -10,14 +10,11 @@ const baseUrl = 'https://lunamarket.ru/api';
 class RegisterSellerRepository {
   final RegisterToApi _registerToApi = RegisterToApi();
 
-  Future<dynamic> register(RegisterSellerDTO register) =>
-      _registerToApi.register(register);
+  Future<dynamic> register(RegisterSellerDTO register) => _registerToApi.register(register);
   Future<dynamic> smsSend(String phone) => _registerToApi.smsSend(phone);
-  Future<dynamic> smsCheck(String phone, String code) =>
-      _registerToApi.smsCheck(phone, code);
+  Future<dynamic> smsCheck(String phone, String code) => _registerToApi.smsCheck(phone, code);
   Future<dynamic> resetSend(String phone) => _registerToApi.resetSend(phone);
-  Future<dynamic> resetCheck(String phone, String code) =>
-      _registerToApi.resetCheck(phone, code);
+  Future<dynamic> resetCheck(String phone, String code) => _registerToApi.resetCheck(phone, code);
   Future<dynamic> passwordReset(String phone, String password) =>
       _registerToApi.passwordReset(phone, password);
 }
@@ -51,9 +48,7 @@ class RegisterToApi {
         org = 'ИП';
     }
 
-    final headers = {
-      'Authorization': 'Bearer $token',
-    };
+    final headers = {'Authorization': 'Bearer $token'};
     final body = {
       'name': register.name,
       'user_name': register.userName,
@@ -80,10 +75,7 @@ class RegisterToApi {
       'company_name': register.company_name ?? '',
     };
 
-    final request = http.MultipartRequest(
-      'POST',
-      Uri.parse('$baseUrl/seller/register'),
-    );
+    final request = http.MultipartRequest('POST', Uri.parse('$baseUrl/seller/register'));
 
     // if(register.avatar != ''){
     //   request.files.add(await http.MultipartFile.fromPath('avatar', register.avatar),);
@@ -107,10 +99,10 @@ class RegisterToApi {
     String s = phone;
     String result = s.substring(2);
 
-    final response =
-        await http.post(Uri.parse('$baseUrl/seller/register/send-code'), body: {
-      'phone': result.replaceAll(RegExp('[^0-9]'), ''),
-    });
+    final response = await http.post(
+      Uri.parse('$baseUrl/seller/register/send-code'),
+      body: {'phone': result.replaceAll(RegExp('[^0-9]'), '')},
+    );
 
     return response.statusCode;
   }
@@ -119,11 +111,10 @@ class RegisterToApi {
     String s = phone;
     String result = s.substring(2);
 
-    final response =
-        await http.post(Uri.parse('$baseUrl/seller/register/check'), body: {
-      'phone': result.replaceAll(RegExp('[^0-9]'), ''),
-      'code': code,
-    });
+    final response = await http.post(
+      Uri.parse('$baseUrl/seller/register/check'),
+      body: {'phone': result.replaceAll(RegExp('[^0-9]'), ''), 'code': code},
+    );
 
     return response.statusCode;
   }
@@ -133,10 +124,10 @@ class RegisterToApi {
     // print(s);
     // String result = s.substring(2);
 
-    final response = await http
-        .post(Uri.parse('$baseUrl/seller/password/reset/send-code'), body: {
-      'phone': phone.replaceAll(RegExp('[^0-9]'), ''),
-    });
+    final response = await http.post(
+      Uri.parse('$baseUrl/seller/password/reset/send-code'),
+      body: {'phone': phone.replaceAll(RegExp('[^0-9]'), '')},
+    );
 
     return response.statusCode;
   }
@@ -145,11 +136,10 @@ class RegisterToApi {
     String s = phone;
     String result = s.substring(2);
 
-    final response = await http
-        .post(Uri.parse('$baseUrl/seller/password/reset/check-code'), body: {
-      'phone': result.replaceAll(RegExp('[^0-9]'), ''),
-      'code': code,
-    });
+    final response = await http.post(
+      Uri.parse('$baseUrl/seller/password/reset/check-code'),
+      body: {'phone': result.replaceAll(RegExp('[^0-9]'), ''), 'code': code},
+    );
 
     return response.statusCode;
   }
@@ -158,11 +148,10 @@ class RegisterToApi {
     String s = phone;
     String result = s.substring(2);
 
-    final response =
-        await http.post(Uri.parse('$baseUrl/seller/password/reset'), body: {
-      'phone': result.replaceAll(RegExp('[^0-9]'), ''),
-      'password': password,
-    });
+    final response = await http.post(
+      Uri.parse('$baseUrl/seller/password/reset'),
+      body: {'phone': result.replaceAll(RegExp('[^0-9]'), ''), 'password': password},
+    );
 
     return response.statusCode;
   }

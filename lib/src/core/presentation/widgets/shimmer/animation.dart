@@ -32,26 +32,27 @@ class CustomSplashAnimation extends CustomPainter {
     ];
     paint
       ..style = PaintingStyle.fill
-      ..shader = LinearGradient(
-        tileMode: TileMode.decal,
-        begin: begin,
-        end: end,
-        stops: stops,
-        colors: [
-          Colors.transparent,
-          color.withValues(alpha: 0.05),
-          color.withValues(alpha: opacity),
-          color.withValues(alpha: 0.05),
-          Colors.transparent,
-        ],
-      ).createShader(
-        Rect.fromLTRB(
-          size.width * -0.5,
-          (size.height > size.width) ? 0 : size.height * -0.5,
-          size.width * 1.5,
-          size.height * 1.5,
-        ),
-      );
+      ..shader =
+          LinearGradient(
+            tileMode: TileMode.decal,
+            begin: begin,
+            end: end,
+            stops: stops,
+            colors: [
+              Colors.transparent,
+              color.withValues(alpha: 0.05),
+              color.withValues(alpha: opacity),
+              color.withValues(alpha: 0.05),
+              Colors.transparent,
+            ],
+          ).createShader(
+            Rect.fromLTRB(
+              size.width * -0.5,
+              (size.height > size.width) ? 0 : size.height * -0.5,
+              size.width * 1.5,
+              size.height * 1.5,
+            ),
+          );
 
     // Используем RRect для рисования прямоугольника с закругленными углами
     final rrect = RRect.fromRectAndRadius(

@@ -17,8 +17,7 @@ import '../../bloc/basket_seller_cubit.dart';
 @RoutePage()
 class DetailOrderSellerPage extends StatefulWidget implements AutoRouteWrapper {
   final BasketOrderSellerModel basket;
-  const DetailOrderSellerPage({required this.basket, Key? key})
-      : super(key: key);
+  const DetailOrderSellerPage({required this.basket, Key? key}) : super(key: key);
 
   @override
   Widget wrappedRoute(BuildContext context) {
@@ -251,19 +250,12 @@ class _DetailOrderSellerPageState extends State<DetailOrderSellerPage> {
         backgroundColor: Colors.white,
         elevation: 0,
         centerTitle: true,
-        title: Text(
-          '№${widget.basket.id}',
-          style: AppTextStyles.appBarTextStyle,
-        ),
+        title: Text('№${widget.basket.id}', style: AppTextStyles.appBarTextStyle),
         leading: InkWell(
           onTap: () {
             Navigator.pop(context);
           },
-          child: Icon(
-            Icons.arrow_back,
-            color: AppColors.arrowColor,
-            size: 30,
-          ),
+          child: Icon(Icons.arrow_back, color: AppColors.arrowColor, size: 30),
         ),
       ),
       body: (widget.basket.product?.isNotEmpty ?? false)
@@ -273,107 +265,98 @@ class _DetailOrderSellerPageState extends State<DetailOrderSellerPage> {
                 Padding(
                   padding: const EdgeInsets.all(16),
                   child: ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: widget.basket.product?.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return Container(
-                          height: 114,
-                          padding: EdgeInsets.only(
-                              left: 16, right: 16, top: 18, bottom: 12),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SizedBox(
-                                height: 72,
-                                width: 72,
-                                child: Image.network(
-                                  widget.basket.product![index].path != null &&
-                                          widget.basket.product![index].path!
-                                              .isNotEmpty
-                                      ? "https://lunamarket.ru/storage/${widget.basket.product![index].path?.first}"
-                                      : '',
-                                  fit: BoxFit.contain,
-                                  errorBuilder: (context, error, stackTrace) =>
-                                      const ErrorImageWidget(
-                                    height: 72,
-                                    width: 72,
+                    shrinkWrap: true,
+                    itemCount: widget.basket.product?.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return Container(
+                        height: 114,
+                        padding: EdgeInsets.only(left: 16, right: 16, top: 18, bottom: 12),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(
+                              height: 72,
+                              width: 72,
+                              child: Image.network(
+                                widget.basket.product![index].path != null &&
+                                        widget.basket.product![index].path!.isNotEmpty
+                                    ? "https://lunamarket.ru/storage/${widget.basket.product![index].path?.first}"
+                                    : '',
+                                fit: BoxFit.contain,
+                                errorBuilder: (context, error, stackTrace) =>
+                                    const ErrorImageWidget(height: 72, width: 72),
+                              ),
+                            ),
+                            SizedBox(width: 16),
+                            SizedBox(
+                              width: 220,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    '${widget.basket.product?[index].productName}',
+                                    style: AppTextStyles.size14Weight500,
                                   ),
-                                ),
+                                  const SizedBox(height: 4),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        'Сумма:',
+                                        style: AppTextStyles.size14Weight400.copyWith(
+                                          color: Color(0xff8E8E93),
+                                        ),
+                                      ),
+                                      Text(
+                                        '${widget.basket.product?[index].price}₽',
+                                        style: AppTextStyles.size14Weight500,
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        'Количество',
+                                        style: AppTextStyles.size14Weight400.copyWith(
+                                          color: Color(0xff8E8E93),
+                                        ),
+                                      ),
+                                      Text(
+                                        '${widget.basket.product?[index].count}',
+                                        style: AppTextStyles.size14Weight500,
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        'Доставка:',
+                                        style: AppTextStyles.size14Weight400.copyWith(
+                                          color: Color(0xff8E8E93),
+                                        ),
+                                      ),
+                                      Text(
+                                        ' ${widget.basket.deliveryDay} дней ',
+                                        style: AppTextStyles.size14Weight500,
+                                      ),
+                                    ],
+                                  ),
+                                ],
                               ),
-                              SizedBox(width: 16),
-                              SizedBox(
-                                width: 220,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      '${widget.basket.product?[index].productName}',
-                                      style: AppTextStyles.size14Weight500,
-                                    ),
-                                    const SizedBox(
-                                      height: 4,
-                                    ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          'Сумма:',
-                                          style: AppTextStyles.size14Weight400
-                                              .copyWith(
-                                                  color: Color(0xff8E8E93)),
-                                        ),
-                                        Text(
-                                          '${widget.basket.product?[index].price}₽',
-                                          style: AppTextStyles.size14Weight500,
-                                        ),
-                                      ],
-                                    ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          'Количество',
-                                          style: AppTextStyles.size14Weight400
-                                              .copyWith(
-                                                  color: Color(0xff8E8E93)),
-                                        ),
-                                        Text(
-                                          '${widget.basket.product?[index].count}',
-                                          style: AppTextStyles.size14Weight500,
-                                        ),
-                                      ],
-                                    ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          'Доставка:',
-                                          style: AppTextStyles.size14Weight400
-                                              .copyWith(
-                                                  color: Color(0xff8E8E93)),
-                                        ),
-                                        Text(
-                                          ' ${widget.basket.deliveryDay} дней ',
-                                          style: AppTextStyles.size14Weight500,
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        );
-                      }),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
                 ),
                 Container(
                   margin: EdgeInsets.symmetric(horizontal: 16),
@@ -382,109 +365,111 @@ class _DetailOrderSellerPageState extends State<DetailOrderSellerPage> {
                     borderRadius: BorderRadius.circular(16),
                   ),
                   child: Padding(
-                    padding: const EdgeInsets.only(
-                        left: 16.0, right: 16, top: 16, bottom: 16),
+                    padding: const EdgeInsets.only(left: 16.0, right: 16, top: 16, bottom: 16),
                     child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "${widget.basket.preorder == 1 ? 'Статус заказа предзаказа' : 'Статус заказа'}",
-                                style: AppTextStyles.size14Weight500
-                                    .copyWith(color: Color(0xff8E8E93)),
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "${widget.basket.preorder == 1 ? 'Статус заказа предзаказа' : 'Статус заказа'}",
+                              style: AppTextStyles.size14Weight500.copyWith(
+                                color: Color(0xff8E8E93),
                               ),
-                              Text(
-                                statusFBS,
-                                style: AppTextStyles.size16Weight600
-                                    .copyWith(color: AppColors.mainPurpleColor),
-                              )
-                            ],
-                          ),
-                          SizedBox(height: 6),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'Сумма без доставки',
-                                style: AppTextStyles.size14Weight500
-                                    .copyWith(color: Color(0xff8E8E93)),
+                            ),
+                            Text(
+                              statusFBS,
+                              style: AppTextStyles.size16Weight600.copyWith(
+                                color: AppColors.mainPurpleColor,
                               ),
-                              Text(
-                                '${widget.basket.summa} ₽ ',
-                                style: AppTextStyles.size16Weight600,
-                              )
-                            ],
-                          ),
-                          SizedBox(height: 6),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'Размер',
-                                style: AppTextStyles.size14Weight500
-                                    .copyWith(color: Color(0xff8E8E93)),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 6),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Сумма без доставки',
+                              style: AppTextStyles.size14Weight500.copyWith(
+                                color: Color(0xff8E8E93),
                               ),
-                              Text(
-                                '${widget.basket.size != 'null' ? (widget.basket.size ?? 'Не выбран') : 'Не выбран'} ',
-                                style: AppTextStyles.size16Weight600,
-                              )
-                            ],
-                          ),
-                          SizedBox(height: 6),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'Доставка',
-                                style: AppTextStyles.size14Weight500
-                                    .copyWith(color: Color(0xff8E8E93)),
+                            ),
+                            Text('${widget.basket.summa} ₽ ', style: AppTextStyles.size16Weight600),
+                          ],
+                        ),
+                        SizedBox(height: 6),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Размер',
+                              style: AppTextStyles.size14Weight500.copyWith(
+                                color: Color(0xff8E8E93),
                               ),
-                              Text(
-                                '${widget.basket.deliveryPrice}  ₽ ',
-                                style: AppTextStyles.size16Weight600,
-                              )
-                            ],
-                          ),
-                          SizedBox(height: 6),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'Сумма покупки ',
-                                style: AppTextStyles.size14Weight500
-                                    .copyWith(color: Color(0xff8E8E93)),
+                            ),
+                            Text(
+                              '${widget.basket.size != 'null' ? (widget.basket.size ?? 'Не выбран') : 'Не выбран'} ',
+                              style: AppTextStyles.size16Weight600,
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 6),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Доставка',
+                              style: AppTextStyles.size14Weight500.copyWith(
+                                color: Color(0xff8E8E93),
                               ),
-                              Text(
-                                '${widget.basket.summa! + widget.basket.deliveryPrice! - widget.basket.bonus!} ₽ ',
-                                style: AppTextStyles.size16Weight600,
-                              )
-                            ],
-                          ),
-                          SizedBox(height: 6),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'Оплата бонусами  ',
-                                style: AppTextStyles.size14Weight500
-                                    .copyWith(color: Color(0xff8E8E93)),
+                            ),
+                            Text(
+                              '${widget.basket.deliveryPrice}  ₽ ',
+                              style: AppTextStyles.size16Weight600,
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 6),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Сумма покупки ',
+                              style: AppTextStyles.size14Weight500.copyWith(
+                                color: Color(0xff8E8E93),
                               ),
-                              Text(
-                                '${widget.basket.bonus ?? 0} ₽ ',
-                                style: AppTextStyles.size16Weight600,
-                              )
-                            ],
-                          ),
-                        ]),
+                            ),
+                            Text(
+                              '${widget.basket.summa! + widget.basket.deliveryPrice! - widget.basket.bonus!} ₽ ',
+                              style: AppTextStyles.size16Weight600,
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 6),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Оплата бонусами  ',
+                              style: AppTextStyles.size14Weight500.copyWith(
+                                color: Color(0xff8E8E93),
+                              ),
+                            ),
+                            Text(
+                              '${widget.basket.bonus ?? 0} ₽ ',
+                              style: AppTextStyles.size16Weight600,
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-                const SizedBox(
-                  height: 10,
-                ),
+                const SizedBox(height: 10),
                 Padding(
                   padding: const EdgeInsets.all(16),
                   child: Container(
@@ -500,17 +485,19 @@ class _DetailOrderSellerPageState extends State<DetailOrderSellerPage> {
                         Text(
                           'Адрес доставки',
                           style: TextStyle(
-                              color: AppColors.kGray900,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w700),
+                            color: AppColors.kGray900,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w700,
+                          ),
                         ),
                         SizedBox(height: 5),
                         Text(
                           '${widget.basket.product!.first.address}',
                           style: const TextStyle(
-                              color: AppColors.kGray900,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w400),
+                            color: AppColors.kGray900,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400,
+                          ),
                         ),
                       ],
                     ),
@@ -524,32 +511,28 @@ class _DetailOrderSellerPageState extends State<DetailOrderSellerPage> {
                     children: [
                       Text(
                         'Клиент',
-                        style: AppTextStyles.aboutTextStyle
-                            .copyWith(color: AppColors.kGray300),
+                        style: AppTextStyles.aboutTextStyle.copyWith(color: AppColors.kGray300),
                       ),
-                      const SizedBox(
-                        height: 10,
-                      ),
+                      const SizedBox(height: 10),
                       Row(
                         children: [
                           Container(
                             height: 64,
                             width: 64,
                             decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(31),
-                                image: DecorationImage(
-                                  image: (widget.basket.user!.avatar != null)
-                                      ? NetworkImage(
-                                          "https://lunamarket.ru/storage/${widget.basket.user!.avatar}")
-                                      : const AssetImage(
-                                              'assets/icons/profile2.png')
+                              borderRadius: BorderRadius.circular(31),
+                              image: DecorationImage(
+                                image: (widget.basket.user!.avatar != null)
+                                    ? NetworkImage(
+                                        "https://lunamarket.ru/storage/${widget.basket.user!.avatar}",
+                                      )
+                                    : const AssetImage('assets/icons/profile2.png')
                                           as ImageProvider,
-                                  fit: BoxFit.cover,
-                                )),
+                                fit: BoxFit.cover,
+                              ),
+                            ),
                           ),
-                          const SizedBox(
-                            width: 20,
-                          ),
+                          const SizedBox(width: 20),
                           Container(
                             alignment: Alignment.center,
                             child: Column(
@@ -563,39 +546,40 @@ class _DetailOrderSellerPageState extends State<DetailOrderSellerPage> {
                                 const SizedBox(height: 10),
                                 InkWell(
                                   onTap: () {
-                                    Get.to(MessageSeller(
+                                    Get.to(
+                                      MessageSeller(
                                         userId: widget.basket.user!.id,
                                         userName: widget.basket.user!.fullName,
                                         // avatar: state.tapeModel[index].shop!.image,
-                                        chatId: widget.basket.chatId));
+                                        chatId: widget.basket.chatId,
+                                      ),
+                                    );
                                   },
                                   child: const Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Icon(
                                         Icons.chat_bubble,
                                         color: AppColors.mainPurpleColor,
                                         size: 20,
                                       ),
-                                      SizedBox(
-                                        width: 5,
-                                      ),
+                                      SizedBox(width: 5),
                                       Text(
                                         'Написать в чат',
                                         style: TextStyle(
-                                            color: AppColors.mainPurpleColor,
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w500),
+                                          color: AppColors.mainPurpleColor,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500,
+                                        ),
                                       ),
                                     ],
                                   ),
                                 ),
                               ],
                             ),
-                          )
+                          ),
                         ],
-                      )
+                      ),
                     ],
                   ),
                 ),
@@ -608,123 +592,123 @@ class _DetailOrderSellerPageState extends State<DetailOrderSellerPage> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Icon(
-                          Icons.download,
-                          color: AppColors.mainPurpleColor,
-                        ),
+                        const Icon(Icons.download, color: AppColors.mainPurpleColor),
                         Container(
                           alignment: Alignment.center,
                           padding: const EdgeInsets.only(left: 16),
-                          child: Text('Скачать накладную',
-                              style: AppTextStyles.defaultButtonTextStyle
-                                  .copyWith(color: AppColors.mainPurpleColor)),
+                          child: Text(
+                            'Скачать накладную',
+                            style: AppTextStyles.defaultButtonTextStyle.copyWith(
+                              color: AppColors.mainPurpleColor,
+                            ),
+                          ),
                         ),
                       ],
                     ),
                   ),
                 ),
-                const SizedBox(
-                  height: 15,
-                ),
+                const SizedBox(height: 15),
                 BlocConsumer<OrderStatusSellerCubit, OrderStatusSellerState>(
-                    listener: (context, state) {
-                  if (state is LoadedState) {
-                    BlocProvider.of<BasketSellerCubit>(context)
-                        .basketOrderShow('fbs');
-                    Navigator.pop(context);
-                  } else if (state is ErrorState) {
-                    Get.snackbar('Ошибка', state.message,
-                        backgroundColor: Colors.redAccent);
-                  }
-                }, builder: (context, state) {
-                  return Container(
-                    height: 65,
-                    color: Colors.white,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            if (postStatusFBS != '' &&
-                                statusFBS != 'in_process') {
-                              BlocProvider.of<OrderStatusSellerCubit>(context)
-                                  .basketStatus(
-                                      postStatusFBS,
-                                      widget.basket.id.toString(),
-                                      widget.basket.product!.first.id
-                                          .toString(),
-                                      'fbs');
+                  listener: (context, state) {
+                    if (state is LoadedState) {
+                      BlocProvider.of<BasketSellerCubit>(context).basketOrderShow('fbs');
+                      Navigator.pop(context);
+                    } else if (state is ErrorState) {
+                      Get.snackbar('Ошибка', state.message, backgroundColor: Colors.redAccent);
+                    }
+                  },
+                  builder: (context, state) {
+                    return Container(
+                      height: 65,
+                      color: Colors.white,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              if (postStatusFBS != '' && statusFBS != 'in_process') {
+                                BlocProvider.of<OrderStatusSellerCubit>(context).basketStatus(
+                                  postStatusFBS,
+                                  widget.basket.id.toString(),
+                                  widget.basket.product!.first.id.toString(),
+                                  'fbs',
+                                );
 
-                              BlocProvider.of<BasketSellerCubit>(context)
-                                  .basketOrderRealFBSshow('realFBS');
+                                BlocProvider.of<BasketSellerCubit>(
+                                  context,
+                                ).basketOrderRealFBSshow('realFBS');
 
-                              Get.back();
-                            } else {
-                              Get.snackbar(
-                                  'Заказ', 'Невозможно изменить статус',
-                                  backgroundColor: Colors.orangeAccent);
-                            }
-                          },
-                          child: Container(
-                            height: 46,
-                            decoration: BoxDecoration(
+                                Get.back();
+                              } else {
+                                Get.snackbar(
+                                  'Заказ',
+                                  'Невозможно изменить статус',
+                                  backgroundColor: Colors.orangeAccent,
+                                );
+                              }
+                            },
+                            child: Container(
+                              height: 46,
+                              decoration: BoxDecoration(
                                 color: AppColors.mainPurpleColor,
-                                borderRadius: BorderRadius.circular(10)),
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 13, horizontal: 25),
-                            child: state is LoadingState
-                                ? const Center(
-                                    child: CircularProgressIndicator.adaptive(),
-                                  )
-                                : Text(
-                                    buttonTextFBS,
-                                    style: const TextStyle(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              padding: const EdgeInsets.symmetric(vertical: 13, horizontal: 25),
+                              child: state is LoadingState
+                                  ? const Center(child: CircularProgressIndicator.adaptive())
+                                  : Text(
+                                      buttonTextFBS,
+                                      style: const TextStyle(
                                         color: Colors.white,
                                         fontSize: 14,
-                                        fontWeight: FontWeight.w500),
-                                  ),
-                          ),
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            if (postSecondStatusFBS != '') {
-                              BlocProvider.of<BasketSellerCubit>(context)
-                                  .basketStatus(
-                                      postSecondStatusFBS,
-                                      widget.basket.id.toString(),
-                                      widget.basket.product!.first.id
-                                          .toString(),
-                                      'fbs');
-                              BlocProvider.of<BasketSellerCubit>(context)
-                                  .basketOrderRealFBSshow('fbs');
-
-                              Get.back();
-                            } else {
-                              Get.snackbar(
-                                  'Заказ', 'Невозможно изменить статус',
-                                  backgroundColor: Colors.orangeAccent);
-                            }
-                          },
-                          child: Container(
-                            decoration: BoxDecoration(
-                                color: AppColors.kGray200,
-                                borderRadius: BorderRadius.circular(10)),
-                            padding: const EdgeInsets.all(
-                              13,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
                             ),
-                            child: Text(
-                              buttonSecondTextFBS,
-                              style: const TextStyle(
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              if (postSecondStatusFBS != '') {
+                                BlocProvider.of<BasketSellerCubit>(context).basketStatus(
+                                  postSecondStatusFBS,
+                                  widget.basket.id.toString(),
+                                  widget.basket.product!.first.id.toString(),
+                                  'fbs',
+                                );
+                                BlocProvider.of<BasketSellerCubit>(
+                                  context,
+                                ).basketOrderRealFBSshow('fbs');
+
+                                Get.back();
+                              } else {
+                                Get.snackbar(
+                                  'Заказ',
+                                  'Невозможно изменить статус',
+                                  backgroundColor: Colors.orangeAccent,
+                                );
+                              }
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: AppColors.kGray200,
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              padding: const EdgeInsets.all(13),
+                              child: Text(
+                                buttonSecondTextFBS,
+                                style: const TextStyle(
                                   color: AppColors.kLightBlackColor,
                                   fontSize: 14,
-                                  fontWeight: FontWeight.w500),
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
                             ),
                           ),
-                        )
-                      ],
-                    ),
-                  );
-                })
+                        ],
+                      ),
+                    );
+                  },
+                ),
               ],
             )
           : Container(
@@ -743,11 +727,12 @@ class _DetailOrderSellerPageState extends State<DetailOrderSellerPage> {
                   const Text(
                     'Отсутствует заказы fbs',
                     style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w400,
-                        color: Color(0xff717171)),
+                      fontSize: 16,
+                      fontWeight: FontWeight.w400,
+                      color: Color(0xff717171),
+                    ),
                     textAlign: TextAlign.center,
-                  )
+                  ),
                 ],
               ),
             ),

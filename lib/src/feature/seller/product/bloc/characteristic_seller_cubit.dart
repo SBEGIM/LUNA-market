@@ -6,16 +6,14 @@ import '../data/repository/characteristic_seller_repository.dart';
 class CharacteristicSellerCubit extends Cubit<CharacteristicSellerState> {
   final CharacteristicSellerRepository characteristicRepository;
 
-  CharacteristicSellerCubit({required this.characteristicRepository})
-      : super(InitState());
+  CharacteristicSellerCubit({required this.characteristicRepository}) : super(InitState());
 
   List<CharacteristicsModel> _characteristics = [];
 
   Future<List<CharacteristicsModel>?> characteristic() async {
     try {
       emit(LoadingState());
-      final List<CharacteristicsModel> data =
-          await characteristicRepository.get();
+      final List<CharacteristicsModel> data = await characteristicRepository.get();
       _characteristics = data;
       emit(LoadedState(data));
       return _characteristics;
@@ -28,8 +26,7 @@ class CharacteristicSellerCubit extends Cubit<CharacteristicSellerState> {
   Future<List<CharacteristicsModel>?> subCharacteristic({id}) async {
     try {
       emit(LoadingState());
-      final List<CharacteristicsModel> data =
-          await characteristicRepository.subGet(id);
+      final List<CharacteristicsModel> data = await characteristicRepository.subGet(id);
       _characteristics = data;
       emit(LoadedState(data));
       return _characteristics;
@@ -42,8 +39,7 @@ class CharacteristicSellerCubit extends Cubit<CharacteristicSellerState> {
   Future<List<CharacteristicsModel>?> subListCharacteristic() async {
     try {
       emit(LoadingState());
-      final List<CharacteristicsModel> data =
-          await characteristicRepository.subGet(null);
+      final List<CharacteristicsModel> data = await characteristicRepository.subGet(null);
       _characteristics = data;
       return _characteristics;
     } catch (e) {
@@ -52,9 +48,7 @@ class CharacteristicSellerCubit extends Cubit<CharacteristicSellerState> {
     return null;
   }
 
-  listSubCharacteristicsIndex(
-    int index,
-  ) async {
+  listSubCharacteristicsIndex(int index) async {
     if (_characteristics.isEmpty) {
       await characteristic();
       // final List<City> data = await listRepository.cities();
@@ -71,17 +65,14 @@ class CharacteristicSellerCubit extends Cubit<CharacteristicSellerState> {
     return _listSubCharacteristics;
   }
 
-  ColorById(
-    String name,
-  ) async {
+  ColorById(String name) async {
     if (name.isEmpty) return;
     if (_characteristics.isEmpty) {
       await characteristic();
       // final List<City> data = await listRepository.cities();
       // _cities = data;
     }
-    CharacteristicsModel color =
-        CharacteristicsModel(id: 0, key: 'Выберите характеристику');
+    CharacteristicsModel color = CharacteristicsModel(id: 0, key: 'Выберите характеристику');
     for (int i = 0; i < _characteristics.length; i++) {
       if (_characteristics[i].key == name) {
         color = _characteristics[i];

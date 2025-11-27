@@ -45,11 +45,11 @@ class _AuthSellerPageState extends State<AuthSellerPage> {
           //   style: AppTextStyles.appBarTextStyle,
           // ),
           leading: InkWell(
-              onTap: () {
-                Navigator.of(context).pop();
-              },
-              child:
-                  Image.asset(Assets.icons.defaultBackIcon.path, scale: 2.1)),
+            onTap: () {
+              Navigator.of(context).pop();
+            },
+            child: Image.asset(Assets.icons.defaultBackIcon.path, scale: 2.1),
+          ),
           // bottom: PreferredSize(
           //   preferredSize: const Size.fromHeight(60),
           //   child: Column(

@@ -21,8 +21,9 @@ class Chat {
       final String? token = _box.read('seller_token');
 
       final response = await http.get(
-          Uri.parse("$baseUrl/chat/shop?page=$page"),
-          headers: {"Authorization": "Bearer $token"});
+        Uri.parse("$baseUrl/chat/shop?page=$page"),
+        headers: {"Authorization": "Bearer $token"},
+      );
 
       final data = jsonDecode(response.body) as Map<String, dynamic>;
 

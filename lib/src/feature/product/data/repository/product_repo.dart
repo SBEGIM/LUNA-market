@@ -39,15 +39,9 @@ class ProductApi {
 
     final String? token = _box.read('token');
 
-    final uri =
-        Uri.parse('$baseUrl/shop/search').replace(queryParameters: queryParams);
+    final uri = Uri.parse('$baseUrl/shop/search').replace(queryParameters: queryParams);
 
-    final response = await http.get(
-      uri,
-      headers: {
-        "Authorization": "Bearer $token",
-      },
-    );
+    final response = await http.get(uri, headers: {"Authorization": "Bearer $token"});
 
     // if (response.statusCode < 200 || response.statusCode >= 300) {
     //   return;
@@ -55,8 +49,7 @@ class ProductApi {
 
     final data = jsonDecode(response.body);
 
-    final products =
-        (data['data'] as List).map((e) => ProductModel.fromJson(e)).toList();
+    final products = (data['data'] as List).map((e) => ProductModel.fromJson(e)).toList();
 
     return products;
   }

@@ -11,72 +11,55 @@ class ProductReviewPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColors.kBackgroundColor,
       appBar: AppBar(
-          iconTheme: const IconThemeData(color: AppColors.kPrimaryColor),
-          backgroundColor: Colors.white,
-          elevation: 0,
-          // leading: IconButton(
-          //   onPressed: () {
-          //     Navigator.pop(context);
-          //   },
-          //   icon: const Icon(
-          //     Icons.arrow_back_ios,
-          //     color: AppColors.kPrimaryColor,
-          //   ),
-          // ),
-          centerTitle: true,
-          title: const Text(
-            'Отзыв о товаре',
-            style: TextStyle(
-              color: Colors.black,
-            ),
-          )),
+        iconTheme: const IconThemeData(color: AppColors.kPrimaryColor),
+        backgroundColor: Colors.white,
+        elevation: 0,
+        // leading: IconButton(
+        //   onPressed: () {
+        //     Navigator.pop(context);
+        //   },
+        //   icon: const Icon(
+        //     Icons.arrow_back_ios,
+        //     color: AppColors.kPrimaryColor,
+        //   ),
+        // ),
+        centerTitle: true,
+        title: const Text('Отзыв о товаре', style: TextStyle(color: Colors.black)),
+      ),
       bottomSheet: Container(
         color: Colors.white,
-        padding:
-            const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 26),
+        padding: const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 26),
         child: InkWell(
           onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const PaymentPage()),
-            );
+            Navigator.push(context, MaterialPageRoute(builder: (context) => const PaymentPage()));
             // Navigator.pop(context);
           },
           child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                color: AppColors.kPrimaryColor,
-              ),
-              width: MediaQuery.of(context).size.width,
-              padding: const EdgeInsets.all(16),
-              child: const Text(
-                'Отправить',
-                style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w400,
-                    fontSize: 16),
-                textAlign: TextAlign.center,
-              )),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              color: AppColors.kPrimaryColor,
+            ),
+            width: MediaQuery.of(context).size.width,
+            padding: const EdgeInsets.all(16),
+            child: const Text(
+              'Отправить',
+              style: TextStyle(color: Colors.white, fontWeight: FontWeight.w400, fontSize: 16),
+              textAlign: TextAlign.center,
+            ),
+          ),
         ),
       ),
       body: Column(
         children: [
-          const SizedBox(
-            height: 10,
-          ),
+          const SizedBox(height: 10),
           Container(
             padding: const EdgeInsets.all(16),
             color: Colors.white,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  'Отзывы',
-                  style: TextStyle(color: AppColors.kGray900),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
+                const Text('Отзывы', style: TextStyle(color: AppColors.kGray900)),
+                const SizedBox(height: 10),
                 Column(
                   children: [
                     Row(
@@ -85,22 +68,23 @@ class ProductReviewPage extends StatelessWidget {
                           text: const TextSpan(
                             text: '4.8 ',
                             style: TextStyle(
-                                color: AppColors.kGray900,
-                                fontSize: 32,
-                                fontWeight: FontWeight.w700),
+                              color: AppColors.kGray900,
+                              fontSize: 32,
+                              fontWeight: FontWeight.w700,
+                            ),
                             children: <TextSpan>[
                               TextSpan(
-                                  text: 'из 5 ',
-                                  style: TextStyle(
-                                      color: AppColors.kGray300,
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w400)),
+                                text: 'из 5 ',
+                                style: TextStyle(
+                                  color: AppColors.kGray300,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
                             ],
                           ),
                         ),
-                        const SizedBox(
-                          width: 20,
-                        ),
+                        const SizedBox(width: 20),
                         Column(
                           children: [
                             RatingBar(
@@ -151,15 +135,10 @@ class ProductReviewPage extends StatelessWidget {
                     ),
                   ],
                 ),
-                const Divider(
-                  color: AppColors.kGray300,
-                ),
+                const Divider(color: AppColors.kGray300),
                 Row(
                   children: [
-                    const Text(
-                      'Оцените товар ',
-                      style: TextStyle(color: AppColors.kGray900),
-                    ),
+                    const Text('Оцените товар ', style: TextStyle(color: AppColors.kGray900)),
                     RatingBar(
                       ignoreGestures: true,
                       initialRating: 2,
@@ -176,22 +155,15 @@ class ProductReviewPage extends StatelessWidget {
                     ),
                   ],
                 ),
-                const Divider(
-                  color: AppColors.kGray300,
-                ),
+                const Divider(color: AppColors.kGray300),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: const [
-                    Text(
-                      'Напишите отзыв',
-                      style: TextStyle(color: AppColors.kGray300),
-                    ),
-                    SizedBox(
-                      height: 4,
-                    ),
-                    TextField()
+                    Text('Напишите отзыв', style: TextStyle(color: AppColors.kGray300)),
+                    SizedBox(height: 4),
+                    TextField(),
                   ],
-                )
+                ),
               ],
             ),
           ),

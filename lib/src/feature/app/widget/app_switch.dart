@@ -87,9 +87,7 @@ class AppSwitch extends StatelessWidget {
 
           // статичный белый кружок (без «дыхания»)
           thumbIcon: staticThumb
-              ? WidgetStateProperty.all(
-                  Icon(Icons.circle, size: thumbIconSize, color: thumbColor),
-                )
+              ? WidgetStateProperty.all(Icon(Icons.circle, size: thumbIconSize, color: thumbColor))
               : null,
         ),
       ),

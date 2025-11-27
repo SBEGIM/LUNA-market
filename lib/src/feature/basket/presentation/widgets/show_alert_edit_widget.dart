@@ -20,17 +20,18 @@ Future<dynamic> showAlertEditWidget(
   String? room,
 ) async {
   return showCupertinoModalPopup(
-      context: context,
-      builder: (BuildContext context) => AddressEditBottomSheet(
-            id: id,
-            country: country,
-            city: city,
-            street: street,
-            home: home,
-            floor: floor,
-            porch: porch,
-            room: room,
-          ));
+    context: context,
+    builder: (BuildContext context) => AddressEditBottomSheet(
+      id: id,
+      country: country,
+      city: city,
+      street: street,
+      home: home,
+      floor: floor,
+      porch: porch,
+      room: room,
+    ),
+  );
 }
 
 class AddressEditBottomSheet extends StatefulWidget {
@@ -42,16 +43,17 @@ class AddressEditBottomSheet extends StatefulWidget {
   final String? floor;
   final String? porch;
   final String? room;
-  const AddressEditBottomSheet(
-      {super.key,
-      required this.id,
-      this.country,
-      this.city,
-      this.street,
-      this.home,
-      this.floor,
-      this.porch,
-      this.room});
+  const AddressEditBottomSheet({
+    super.key,
+    required this.id,
+    this.country,
+    this.city,
+    this.street,
+    this.home,
+    this.floor,
+    this.porch,
+    this.room,
+  });
 
   @override
   State<AddressEditBottomSheet> createState() => _AddressEditBottomSheetState();
@@ -81,337 +83,312 @@ class _AddressEditBottomSheetState extends State<AddressEditBottomSheet> {
   @override
   Widget build(BuildContext context) {
     return Material(
-        type: MaterialType.transparency,
-        color: Colors.white,
-        elevation: 0,
-        child: Container(
-          constraints: BoxConstraints(
-              maxHeight: (MediaQuery.of(context).size.height) * 0.85),
-          height: (MediaQuery.of(context).size.height) - 200,
-          padding:
-              EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-          alignment: Alignment.topCenter,
-          child: ListView(
-              // mainAxisAlignment: MainAxisAlignment.center,
-              // mainAxisSize: MainAxisSize.min,
-              children: [
-                CustomCupertinoActionSheet(
-                  actions: <Widget>[
-                    CupertinoActionSheetAction(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Text(
-                            '  Редактировать',
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.w500,
-                                fontSize: 16),
-                            maxLines: 1,
-                          ),
-                          GestureDetector(
-                              onTap: () {
-                                Navigator.pop(context, 'Cancel');
-                              },
-                              child: const Icon(
-                                Icons.close,
-                                color: Colors.grey,
-                              ))
-                        ],
-                      ),
-                      onPressed: () {
-                        // showAlertAddWidget(context, product);
-                      },
-                    ),
-                    CupertinoActionSheetAction(
-                      child: Row(
-                        children: [
-                          SvgPicture.asset(
-                            'assets/icons/country.svg',
-                            height: 24,
-                            width: 24,
-                          ),
-                          const SizedBox(width: 8),
-                          Expanded(
-                            child: TextFormField(
-                              onChanged: (value) {
-                                GetStorage().write('country', value);
-                              },
-                              controller: countryController,
-                              decoration: const InputDecoration(
-                                border: InputBorder.none,
-                                hintText: 'Страна',
-                                enabledBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.white),
-                                  // borderRadius: BorderRadius.circular(3),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      onPressed: () {
-                        // showAlertAddWidget(context, product);
-                      },
-                    ),
-                    CupertinoActionSheetAction(
-                      child: Row(
-                        children: [
-                          SvgPicture.asset(
-                            'assets/icons/location.svg',
-                            height: 24,
-                            width: 24,
-                          ),
-                          const SizedBox(width: 8),
-                          Expanded(
-                            child: TextFormField(
-                              onChanged: (value) {
-                                GetStorage().write('city', value);
-                              },
-                              controller: cityController,
-                              decoration: const InputDecoration(
-                                border: InputBorder.none,
-                                hintText: 'Город',
-                                enabledBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.white),
-                                  // borderRadius: BorderRadius.circular(3),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      onPressed: () {
-                        // showAlertAddWidget(context, product);
-                      },
-                    ),
-                    CupertinoActionSheetAction(
-                      child: Row(
-                        children: [
-                          SvgPicture.asset(
-                            'assets/icons/street.svg',
-                            height: 24,
-                            width: 24,
-                          ),
-                          const SizedBox(width: 8),
-                          Expanded(
-                            child: TextFormField(
-                              controller: streetController,
-                              onChanged: (value) {
-                                GetStorage().write('street', value);
-                              },
-                              decoration: const InputDecoration(
-                                border: InputBorder.none,
-                                hintText: 'Улица',
-                                enabledBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.white),
-                                  // borderRadius: BorderRadius.circular(3),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      onPressed: () {
-                        // showAlertAddWidget(context, product);
-                      },
-                    ),
-                    CupertinoActionSheetAction(
-                      child: Row(
-                        children: [
-                          SvgPicture.asset(
-                            'assets/icons/Route.svg',
-                            height: 24,
-                            width: 24,
-                          ),
-                          const SizedBox(width: 8),
-                          Expanded(
-                            child: TextFormField(
-                              controller: homeController,
-                              onChanged: (value) {
-                                GetStorage().write('home', value);
-                              },
-                              decoration: const InputDecoration(
-                                border: InputBorder.none,
-                                hintText: 'Дом',
-                                enabledBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.white),
-                                  // borderRadius: BorderRadius.circular(3),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      onPressed: () {
-                        // showAlertAddWidget(context, product);
-                      },
-                    ),
-                    SizedBox(
-                      height: 48,
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: Container(
-                                padding: const EdgeInsets.only(left: 16),
-                                child: Row(
-                                  children: [
-                                    SvgPicture.asset(
-                                        'assets/icons/Door-open.svg'),
-                                    const SizedBox(
-                                      width: 21,
-                                    ),
-                                    Expanded(
-                                      child: TextFormField(
-                                        controller: porchController,
-                                        onChanged: (value) {
-                                          GetStorage().write('porch', value);
-                                        },
-                                        decoration: const InputDecoration(
-                                          border: InputBorder.none,
-                                          hintText: 'Подъезд',
-                                          enabledBorder: UnderlineInputBorder(
-                                            borderSide:
-                                                BorderSide(color: Colors.white),
-                                            // borderRadius: BorderRadius.circular(3),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                )),
-                          ),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          Expanded(
-                            child: Container(
-                                padding: const EdgeInsets.only(left: 16),
-                                child: Row(
-                                  children: [
-                                    SvgPicture.asset('assets/icons/Stairs.svg'),
-                                    const SizedBox(
-                                      width: 21,
-                                    ),
-                                    Expanded(
-                                      child: TextFormField(
-                                        controller: floorController,
-                                        onChanged: (value) {
-                                          GetStorage().write('floor', value);
-                                        },
-                                        decoration: const InputDecoration(
-                                          border: InputBorder.none,
-                                          hintText: 'Этаж',
-                                          enabledBorder: UnderlineInputBorder(
-                                            borderSide:
-                                                BorderSide(color: Colors.white),
-                                            // borderRadius: BorderRadius.circular(3),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    //  const Text('3 этаж'),
-                                  ],
-                                )),
-                          ),
-                        ],
-                      ),
-                    ),
-                    CupertinoActionSheetAction(
-                      child: Row(
-                        children: [
-                          SvgPicture.asset(
-                            'assets/icons/Key.svg',
-                            height: 24,
-                            width: 24,
-                          ),
-                          const SizedBox(width: 8),
-                          Expanded(
-                            child: TextFormField(
-                              controller: roomController,
-                              onChanged: (value) {
-                                GetStorage().write('room', value);
-                              },
-                              decoration: const InputDecoration(
-                                border: InputBorder.none,
-                                hintText: 'Квартира',
-                                enabledBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.white),
-                                  // borderRadius: BorderRadius.circular(3),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      onPressed: () {
-                        // showAlertAddWidget(context, product);
-                      },
-                    ),
-                  ],
-                  // cancelButton: null,
-                ),
-                GestureDetector(
-                  onTap: () async {
-                    await BlocProvider.of<AddressCubit>(context).update(
-                        widget.id,
-                        countryController.text,
-                        cityController.text,
-                        streetController.text,
-                        homeController.text,
-                        floorController.text,
-                        porchController.text,
-                        roomController.text,
-                        '',
-                        '');
-
-                    Get.back();
-                    Get.back();
-                    // Get.to(() => new BasketOrderAddressPage());
-                  },
-                  child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: Colors.white,
-                      ),
-                      width: MediaQuery.of(context).size.width,
-                      padding: EdgeInsets.all(16),
-                      child: const Text(
-                        'Сохранить',
+      type: MaterialType.transparency,
+      color: Colors.white,
+      elevation: 0,
+      child: Container(
+        constraints: BoxConstraints(maxHeight: (MediaQuery.of(context).size.height) * 0.85),
+        height: (MediaQuery.of(context).size.height) - 200,
+        padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+        alignment: Alignment.topCenter,
+        child: ListView(
+          // mainAxisAlignment: MainAxisAlignment.center,
+          // mainAxisSize: MainAxisSize.min,
+          children: [
+            CustomCupertinoActionSheet(
+              actions: <Widget>[
+                CupertinoActionSheetAction(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
+                        '  Редактировать',
                         style: TextStyle(
-                            color: AppColors.kPrimaryColor,
-                            fontWeight: FontWeight.w400,
-                            fontSize: 16),
-                        textAlign: TextAlign.center,
-                      )),
-                )
+                          color: Colors.black,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 16,
+                        ),
+                        maxLines: 1,
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.pop(context, 'Cancel');
+                        },
+                        child: const Icon(Icons.close, color: Colors.grey),
+                      ),
+                    ],
+                  ),
+                  onPressed: () {
+                    // showAlertAddWidget(context, product);
+                  },
+                ),
+                CupertinoActionSheetAction(
+                  child: Row(
+                    children: [
+                      SvgPicture.asset('assets/icons/country.svg', height: 24, width: 24),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: TextFormField(
+                          onChanged: (value) {
+                            GetStorage().write('country', value);
+                          },
+                          controller: countryController,
+                          decoration: const InputDecoration(
+                            border: InputBorder.none,
+                            hintText: 'Страна',
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white),
+                              // borderRadius: BorderRadius.circular(3),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  onPressed: () {
+                    // showAlertAddWidget(context, product);
+                  },
+                ),
+                CupertinoActionSheetAction(
+                  child: Row(
+                    children: [
+                      SvgPicture.asset('assets/icons/location.svg', height: 24, width: 24),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: TextFormField(
+                          onChanged: (value) {
+                            GetStorage().write('city', value);
+                          },
+                          controller: cityController,
+                          decoration: const InputDecoration(
+                            border: InputBorder.none,
+                            hintText: 'Город',
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white),
+                              // borderRadius: BorderRadius.circular(3),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  onPressed: () {
+                    // showAlertAddWidget(context, product);
+                  },
+                ),
+                CupertinoActionSheetAction(
+                  child: Row(
+                    children: [
+                      SvgPicture.asset('assets/icons/street.svg', height: 24, width: 24),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: TextFormField(
+                          controller: streetController,
+                          onChanged: (value) {
+                            GetStorage().write('street', value);
+                          },
+                          decoration: const InputDecoration(
+                            border: InputBorder.none,
+                            hintText: 'Улица',
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white),
+                              // borderRadius: BorderRadius.circular(3),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  onPressed: () {
+                    // showAlertAddWidget(context, product);
+                  },
+                ),
+                CupertinoActionSheetAction(
+                  child: Row(
+                    children: [
+                      SvgPicture.asset('assets/icons/Route.svg', height: 24, width: 24),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: TextFormField(
+                          controller: homeController,
+                          onChanged: (value) {
+                            GetStorage().write('home', value);
+                          },
+                          decoration: const InputDecoration(
+                            border: InputBorder.none,
+                            hintText: 'Дом',
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white),
+                              // borderRadius: BorderRadius.circular(3),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  onPressed: () {
+                    // showAlertAddWidget(context, product);
+                  },
+                ),
+                SizedBox(
+                  height: 48,
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Container(
+                          padding: const EdgeInsets.only(left: 16),
+                          child: Row(
+                            children: [
+                              SvgPicture.asset('assets/icons/Door-open.svg'),
+                              const SizedBox(width: 21),
+                              Expanded(
+                                child: TextFormField(
+                                  controller: porchController,
+                                  onChanged: (value) {
+                                    GetStorage().write('porch', value);
+                                  },
+                                  decoration: const InputDecoration(
+                                    border: InputBorder.none,
+                                    hintText: 'Подъезд',
+                                    enabledBorder: UnderlineInputBorder(
+                                      borderSide: BorderSide(color: Colors.white),
+                                      // borderRadius: BorderRadius.circular(3),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child: Container(
+                          padding: const EdgeInsets.only(left: 16),
+                          child: Row(
+                            children: [
+                              SvgPicture.asset('assets/icons/Stairs.svg'),
+                              const SizedBox(width: 21),
+                              Expanded(
+                                child: TextFormField(
+                                  controller: floorController,
+                                  onChanged: (value) {
+                                    GetStorage().write('floor', value);
+                                  },
+                                  decoration: const InputDecoration(
+                                    border: InputBorder.none,
+                                    hintText: 'Этаж',
+                                    enabledBorder: UnderlineInputBorder(
+                                      borderSide: BorderSide(color: Colors.white),
+                                      // borderRadius: BorderRadius.circular(3),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              //  const Text('3 этаж'),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                CupertinoActionSheetAction(
+                  child: Row(
+                    children: [
+                      SvgPicture.asset('assets/icons/Key.svg', height: 24, width: 24),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: TextFormField(
+                          controller: roomController,
+                          onChanged: (value) {
+                            GetStorage().write('room', value);
+                          },
+                          decoration: const InputDecoration(
+                            border: InputBorder.none,
+                            hintText: 'Квартира',
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white),
+                              // borderRadius: BorderRadius.circular(3),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  onPressed: () {
+                    // showAlertAddWidget(context, product);
+                  },
+                ),
+              ],
+              // cancelButton: null,
+            ),
+            GestureDetector(
+              onTap: () async {
+                await BlocProvider.of<AddressCubit>(context).update(
+                  widget.id,
+                  countryController.text,
+                  cityController.text,
+                  streetController.text,
+                  homeController.text,
+                  floorController.text,
+                  porchController.text,
+                  roomController.text,
+                  '',
+                  '',
+                );
 
-                //   cancelButton: CupertinoActionSheetAction(
-                //     child: GestureDetector(
-                //       onTap: () {
-                //         print('qwewqewq');
-                //         // await BlocProvider.of<AddressCubit>(context).store(AddressModel(
-                //         //     country: countryController.text,
-                //         //     city: cityController.text,
-                //         //     home: homeController.text,
-                //         //     floor: floorController.text,
-                //         //     room: roomController.text,
-                //         //     porch: porchController.text));
+                Get.back();
+                Get.back();
+                // Get.to(() => new BasketOrderAddressPage());
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: Colors.white,
+                ),
+                width: MediaQuery.of(context).size.width,
+                padding: EdgeInsets.all(16),
+                child: const Text(
+                  'Сохранить',
+                  style: TextStyle(
+                    color: AppColors.kPrimaryColor,
+                    fontWeight: FontWeight.w400,
+                    fontSize: 16,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ),
 
-                //         // Navigator.pop(context, 'Cancel');
-                //         //  Get.to(() => BasketOrderAddressPage());
-                //       },
-                //       child: const Text(
-                //         'Сохранить',
-                //         style: TextStyle(
-                //             color: AppColors.kPrimaryColor,
-                //             fontWeight: FontWeight.w600),
-                //       ),
-                //     ),
-                //     onPressed: () async {},
-                //   ),
-                // ),
-              ]),
-        ));
+            //   cancelButton: CupertinoActionSheetAction(
+            //     child: GestureDetector(
+            //       onTap: () {
+            //         print('qwewqewq');
+            //         // await BlocProvider.of<AddressCubit>(context).store(AddressModel(
+            //         //     country: countryController.text,
+            //         //     city: cityController.text,
+            //         //     home: homeController.text,
+            //         //     floor: floorController.text,
+            //         //     room: roomController.text,
+            //         //     porch: porchController.text));
+
+            //         // Navigator.pop(context, 'Cancel');
+            //         //  Get.to(() => BasketOrderAddressPage());
+            //       },
+            //       child: const Text(
+            //         'Сохранить',
+            //         style: TextStyle(
+            //             color: AppColors.kPrimaryColor,
+            //             fontWeight: FontWeight.w600),
+            //       ),
+            //     ),
+            //     onPressed: () async {},
+            //   ),
+            // ),
+          ],
+        ),
+      ),
+    );
   }
 }

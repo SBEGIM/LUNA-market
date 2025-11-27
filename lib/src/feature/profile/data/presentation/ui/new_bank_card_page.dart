@@ -20,24 +20,21 @@ class _NewBankCardPageState extends State<NewBankCardPage> {
         backgroundColor: Colors.white,
         title: const Text(
           'Новая карта',
-          style: TextStyle(
-              color: AppColors.kGray900,
-              fontSize: 16,
-              fontWeight: FontWeight.w500),
+          style: TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w500),
         ),
         leading: Padding(
           padding: const EdgeInsets.only(left: 22.0),
-          child: CustomBackButton(onTap: () {
-            Navigator.pop(context);
-          }),
+          child: CustomBackButton(
+            onTap: () {
+              Navigator.pop(context);
+            },
+          ),
         ),
         elevation: 0,
       ),
       body: Column(
         children: [
-          const SizedBox(
-            height: 10,
-          ),
+          const SizedBox(height: 10),
           Container(
             color: Colors.white,
             padding: const EdgeInsets.all(16),
@@ -46,13 +43,12 @@ class _NewBankCardPageState extends State<NewBankCardPage> {
                 const Text(
                   'Чтобы добавить новую карту, введите данные с передней и задней сторон вашей банковской карты',
                   style: TextStyle(
-                      fontWeight: FontWeight.w400,
-                      fontSize: 14,
-                      color: AppColors.kGray400),
+                    fontWeight: FontWeight.w400,
+                    fontSize: 14,
+                    color: AppColors.kGray400,
+                  ),
                 ),
-                const SizedBox(
-                  height: 10,
-                ),
+                const SizedBox(height: 10),
                 Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Container(
@@ -71,42 +67,37 @@ class _NewBankCardPageState extends State<NewBankCardPage> {
                     child: Column(
                       children: [
                         ListTile(
-                          leading:
-                              SvgPicture.asset('assets/icons/bank_card.svg'),
+                          leading: SvgPicture.asset('assets/icons/bank_card.svg'),
                           title: const TextField(
                             decoration: InputDecoration(
-                                border: InputBorder.none,
-                                hintText: 'Дайте название',
-                                hintStyle:
-                                    TextStyle(color: AppColors.kGray300)),
+                              border: InputBorder.none,
+                              hintText: 'Дайте название',
+                              hintStyle: TextStyle(color: AppColors.kGray300),
+                            ),
                           ),
-                          trailing: SvgPicture.asset(
-                              'assets/icons/delete_circle.svg'),
+                          trailing: SvgPicture.asset('assets/icons/delete_circle.svg'),
                         ),
                         ListTile(
                           leading: SvgPicture.asset('assets/icons/user.svg'),
                           title: const TextField(
                             decoration: InputDecoration(
-                                border: InputBorder.none,
-                                hintText: 'Имя держателя',
-                                hintStyle:
-                                    TextStyle(color: AppColors.kGray300)),
+                              border: InputBorder.none,
+                              hintText: 'Имя держателя',
+                              hintStyle: TextStyle(color: AppColors.kGray300),
+                            ),
                           ),
-                          trailing: SvgPicture.asset(
-                              'assets/icons/delete_circle.svg'),
+                          trailing: SvgPicture.asset('assets/icons/delete_circle.svg'),
                         ),
                         ListTile(
-                          leading:
-                              SvgPicture.asset('assets/icons/card_bank1.svg'),
+                          leading: SvgPicture.asset('assets/icons/card_bank1.svg'),
                           title: const TextField(
                             decoration: InputDecoration(
-                                border: InputBorder.none,
-                                hintText: 'Номер карты',
-                                hintStyle:
-                                    TextStyle(color: AppColors.kGray300)),
+                              border: InputBorder.none,
+                              hintText: 'Номер карты',
+                              hintStyle: TextStyle(color: AppColors.kGray300),
+                            ),
                           ),
-                          trailing:
-                              SvgPicture.asset('assets/icons/master_card.svg'),
+                          trailing: SvgPicture.asset('assets/icons/master_card.svg'),
                         ),
                         Container(
                           padding: const EdgeInsets.only(left: 16),
@@ -115,19 +106,19 @@ class _NewBankCardPageState extends State<NewBankCardPage> {
                               Flexible(
                                 child: TextField(
                                   decoration: InputDecoration(
-                                      border: InputBorder.none,
-                                      hintText: 'Срок действия',
-                                      hintStyle:
-                                          TextStyle(color: AppColors.kGray300)),
+                                    border: InputBorder.none,
+                                    hintText: 'Срок действия',
+                                    hintStyle: TextStyle(color: AppColors.kGray300),
+                                  ),
                                 ),
                               ),
                               Flexible(
                                 child: TextField(
                                   decoration: InputDecoration(
-                                      border: InputBorder.none,
-                                      hintText: 'CVV',
-                                      hintStyle:
-                                          TextStyle(color: AppColors.kGray300)),
+                                    border: InputBorder.none,
+                                    hintText: 'CVV',
+                                    hintStyle: TextStyle(color: AppColors.kGray300),
+                                  ),
                                 ),
                               ),
                             ],
@@ -137,18 +128,17 @@ class _NewBankCardPageState extends State<NewBankCardPage> {
                     ),
                   ),
                 ),
-                const SizedBox(
-                  height: 20,
-                ),
+                const SizedBox(height: 20),
                 DefaultButton(
-                    backgroundColor: AppColors.kPrimaryColor,
-                    text: 'Добавить',
-                    press: () {},
-                    color: Colors.white,
-                    width: MediaQuery.of(context).size.width)
+                  backgroundColor: AppColors.kPrimaryColor,
+                  text: 'Добавить',
+                  press: () {},
+                  color: Colors.white,
+                  width: MediaQuery.of(context).size.width,
+                ),
               ],
             ),
-          )
+          ),
         ],
       ),
     );

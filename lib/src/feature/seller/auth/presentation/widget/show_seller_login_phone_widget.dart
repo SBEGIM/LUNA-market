@@ -4,21 +4,20 @@ import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/feature/seller/auth/data/DTO/contry_seller_dto.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
-void showSellerLoginPhone(BuildContext context,
-    {required Function countryCall}) {
+void showSellerLoginPhone(BuildContext context, {required Function countryCall}) {
   String select = '';
 
   CountrySellerDto countrySellerDto = CountrySellerDto(
-      code: '+7', name: 'Россия', flagPath: Assets.icons.ruFlagIcon.path);
+    code: '+7',
+    name: 'Россия',
+    flagPath: Assets.icons.ruFlagIcon.path,
+  );
 
   showMaterialModalBottomSheet(
     context: context,
     backgroundColor: AppColors.kGray1,
     shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.only(
-        topLeft: Radius.circular(20),
-        topRight: Radius.circular(20),
-      ),
+      borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)),
     ),
     builder: (context) {
       return StatefulBuilder(
@@ -33,16 +32,13 @@ void showSellerLoginPhone(BuildContext context,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        'Выберите страну',
-                        style: AppTextStyles.size16Weight500,
-                      ),
+                      Text('Выберите страну', style: AppTextStyles.size16Weight500),
                       InkWell(
-                          onTap: () {
-                            Navigator.of(context).pop();
-                          },
-                          child: Image.asset(Assets.icons.defaultCloseIcon.path,
-                              scale: 1.9))
+                        onTap: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: Image.asset(Assets.icons.defaultCloseIcon.path, scale: 1.9),
+                      ),
                     ],
                   ),
                 ),
@@ -153,13 +149,11 @@ void showSellerLoginPhone(BuildContext context,
                     height: 52,
                     width: 358,
                     decoration: BoxDecoration(
-                        color: AppColors.mainPurpleColor,
-                        borderRadius: BorderRadius.circular(12)),
-                    alignment: Alignment.center,
-                    child: Text(
-                      'Выбрать',
-                      style: AppTextStyles.defButtonTextStyle,
+                      color: AppColors.mainPurpleColor,
+                      borderRadius: BorderRadius.circular(12),
                     ),
+                    alignment: Alignment.center,
+                    child: Text('Выбрать', style: AppTextStyles.defButtonTextStyle),
                   ),
                 ),
                 SizedBox(height: 50),
@@ -172,30 +166,25 @@ void showSellerLoginPhone(BuildContext context,
   );
 }
 
-Widget _buildOptionTile(
-    {required BuildContext context,
-    required String path,
-    required String title,
-    required String number,
-    required VoidCallback onTap,
-    CountrySellerDto? select}) {
+Widget _buildOptionTile({
+  required BuildContext context,
+  required String path,
+  required String title,
+  required String number,
+  required VoidCallback onTap,
+  CountrySellerDto? select,
+}) {
   return Container(
     height: 52,
     margin: EdgeInsets.only(left: 16, top: 8, right: 16),
     alignment: Alignment.center,
-    decoration: BoxDecoration(
-        color: AppColors.kWhite, borderRadius: BorderRadius.circular(16)),
+    decoration: BoxDecoration(color: AppColors.kWhite, borderRadius: BorderRadius.circular(16)),
     child: ListTile(
-      contentPadding: EdgeInsets.symmetric(
-          vertical: 0, horizontal: 18), // Минимальные отступы
+      contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 18), // Минимальные отступы
       minLeadingWidth: 0, // убирает лишний резерв под leading
-      visualDensity:
-          const VisualDensity(horizontal: -4, vertical: 0), // ещё компактнее
+      visualDensity: const VisualDensity(horizontal: -4, vertical: 0), // ещё компактнее
 
-      leading: Image.asset(
-        path,
-        scale: 2,
-      ),
+      leading: Image.asset(path, scale: 2),
       title: Text("$title $number", style: AppTextStyles.size16Weight600),
       onTap: onTap,
       tileColor: Colors.transparent, // Убираем фон у Tile, если он есть

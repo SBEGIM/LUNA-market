@@ -34,14 +34,13 @@ abstract base class RestClientBase implements IRestClient {
     Map<String, Object?>? headers,
     Map<String, Object?>? queryParams,
     bool returnFullData = false,
-  }) =>
-      send(
-        path: path,
-        method: 'DELETE',
-        headers: headers,
-        queryParams: queryParams,
-        returnFullData: returnFullData,
-      );
+  }) => send(
+    path: path,
+    method: 'DELETE',
+    headers: headers,
+    queryParams: queryParams,
+    returnFullData: returnFullData,
+  );
 
   @override
   Future<Map<String, Object?>> get(
@@ -49,14 +48,13 @@ abstract base class RestClientBase implements IRestClient {
     Map<String, Object?>? headers,
     Map<String, Object?>? queryParams,
     bool returnFullData = false,
-  }) =>
-      send(
-        path: path,
-        method: 'GET',
-        headers: headers,
-        queryParams: queryParams,
-        returnFullData: returnFullData,
-      );
+  }) => send(
+    path: path,
+    method: 'GET',
+    headers: headers,
+    queryParams: queryParams,
+    returnFullData: returnFullData,
+  );
 
   @override
   Future<Map<String, Object?>> patch(
@@ -65,15 +63,14 @@ abstract base class RestClientBase implements IRestClient {
     Map<String, Object?>? headers,
     Map<String, Object?>? queryParams,
     bool returnFullData = false,
-  }) =>
-      send(
-        path: path,
-        method: 'PATCH',
-        body: body,
-        headers: headers,
-        queryParams: queryParams,
-        returnFullData: returnFullData,
-      );
+  }) => send(
+    path: path,
+    method: 'PATCH',
+    body: body,
+    headers: headers,
+    queryParams: queryParams,
+    returnFullData: returnFullData,
+  );
 
   @override
   Future<Map<String, Object?>> post(
@@ -82,15 +79,14 @@ abstract base class RestClientBase implements IRestClient {
     Map<String, Object?>? headers,
     Map<String, Object?>? queryParams,
     bool returnFullData = false,
-  }) =>
-      send(
-        path: path,
-        method: 'POST',
-        body: body,
-        headers: headers,
-        queryParams: queryParams,
-        returnFullData: returnFullData,
-      );
+  }) => send(
+    path: path,
+    method: 'POST',
+    body: body,
+    headers: headers,
+    queryParams: queryParams,
+    returnFullData: returnFullData,
+  );
 
   @override
   Future<Map<String, Object?>> put(
@@ -99,15 +95,14 @@ abstract base class RestClientBase implements IRestClient {
     Map<String, Object?>? headers,
     Map<String, Object?>? queryParams,
     bool returnFullData = false,
-  }) =>
-      send(
-        path: path,
-        method: 'PUT',
-        body: body,
-        headers: headers,
-        queryParams: queryParams,
-        returnFullData: returnFullData,
-      );
+  }) => send(
+    path: path,
+    method: 'PUT',
+    body: body,
+    headers: headers,
+    queryParams: queryParams,
+    returnFullData: returnFullData,
+  );
 
   /// Encodes [body] to JSON and then to UTF8
   @protected
@@ -130,10 +125,7 @@ abstract base class RestClientBase implements IRestClient {
     final finalPath = p.join(baseUri.path, path);
     return baseUri.replace(
       path: finalPath,
-      queryParameters: {
-        ...baseUri.queryParameters,
-        if (queryParams != null) ...queryParams,
-      },
+      queryParameters: {...baseUri.queryParameters, if (queryParams != null) ...queryParams},
     );
   }
 
@@ -165,19 +157,13 @@ abstract base class RestClientBase implements IRestClient {
     try {
       final decodedBody = switch (body) {
         final Map<String, Object?> map => map,
-        final String str => str.contains('html')
-            ? {
-                'HTML error': str,
-              }
-            : await _decodeString(str),
+        final String str => str.contains('html') ? {'HTML error': str} : await _decodeString(str),
         final List<int> bytes => await _decodeBytes(bytes),
-        final List<dynamic> list => {
-            'data': list.cast<Map<String, dynamic>>(),
-          },
+        final List<dynamic> list => {'data': list.cast<Map<String, dynamic>>()},
         _ => throw WrongResponseTypeException(
-            message: 'Unexpected response: ${body.runtimeType}',
-            statusCode: statusCode,
-          ),
+          message: 'Unexpected response: ${body.runtimeType}',
+          statusCode: statusCode,
+        ),
       };
 
       if (returnFullData) {
@@ -185,19 +171,13 @@ abstract base class RestClientBase implements IRestClient {
       }
 
       if (decodedBody case {'error': final Map<String, Object?> error}) {
-        throw CustomBackendException(
-          cause: error,
-          statusCode: statusCode,
-          message: '',
-        );
+        throw CustomBackendException(cause: error, statusCode: statusCode, message: '');
       }
 
       if (decodedBody case {'data': final Map<String, Object?> data}) {
         return data;
       } else if (decodedBody case {'data': final List<dynamic> data}) {
-        return {
-          'data': data.cast<Map<String, dynamic>>(),
-        };
+        return {'data': data.cast<Map<String, dynamic>>()};
       }
 
       // Simply return decoded body if it is not an error or data
@@ -208,11 +188,7 @@ abstract base class RestClientBase implements IRestClient {
       rethrow;
     } on Object catch (e, stackTrace) {
       Error.throwWithStackTrace(
-        ClientException(
-          message: 'Error occured during decoding',
-          statusCode: statusCode,
-          cause: e,
-        ),
+        ClientException(message: 'Error occured during decoding', statusCode: statusCode, cause: e),
         stackTrace,
       );
     }
@@ -234,9 +210,7 @@ abstract base class RestClientBase implements IRestClient {
     if (bytes.isEmpty) return null;
 
     if (bytes.length > 1000) {
-      return Isolate.run(
-        () => _jsonUTF8.decode(bytes)! as Map<String, Object?>,
-      );
+      return Isolate.run(() => _jsonUTF8.decode(bytes)! as Map<String, Object?>);
     }
 
     return _jsonUTF8.decode(bytes)! as Map<String, Object?>;

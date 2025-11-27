@@ -35,26 +35,10 @@ class UniversalImage extends StatelessWidget {
   Widget _buildAssetImage(bool isSvg) {
     try {
       return isSvg
-          ? SvgPicture.asset(
-              image,
-              width: width,
-              height: height,
-              fit: fit,
-            )
-          : Image.asset(
-              image,
-              width: width,
-              height: height,
-              fit: fit,
-            );
+          ? SvgPicture.asset(image, width: width, height: height, fit: fit)
+          : Image.asset(image, width: width, height: height, fit: fit);
     } catch (e) {
-      return errorWidget ??
-          Center(
-            child: Icon(
-              Icons.broken_image,
-              size: width ?? 50,
-            ),
-          );
+      return errorWidget ?? Center(child: Icon(Icons.broken_image, size: width ?? 50));
     }
   }
 
@@ -66,10 +50,7 @@ class UniversalImage extends StatelessWidget {
             height: height,
             fit: fit,
             placeholderBuilder: (context) =>
-                placeholder ??
-                const Center(
-                  child: CircularProgressIndicator(),
-                ),
+                placeholder ?? const Center(child: CircularProgressIndicator()),
             clipBehavior: Clip.antiAlias,
           )
         : Image.network(
@@ -83,19 +64,14 @@ class UniversalImage extends StatelessWidget {
                   Center(
                     child: CircularProgressIndicator(
                       value: loadingProgress.expectedTotalBytes != null
-                          ? loadingProgress.cumulativeBytesLoaded / (loadingProgress.expectedTotalBytes ?? 1)
+                          ? loadingProgress.cumulativeBytesLoaded /
+                                (loadingProgress.expectedTotalBytes ?? 1)
                           : null,
                     ),
                   );
             },
             errorBuilder: (context, error, stackTrace) =>
-                errorWidget ??
-                Center(
-                  child: Icon(
-                    Icons.broken_image,
-                    size: width ?? 50,
-                  ),
-                ),
+                errorWidget ?? Center(child: Icon(Icons.broken_image, size: width ?? 50)),
           );
   }
 }

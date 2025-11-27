@@ -12,22 +12,16 @@ import 'package:haji_market/src/feature/basket/presentation/widgets/show_alert_c
 import 'package:haji_market/src/feature/drawer/bloc/country_cubit.dart';
 import 'package:haji_market/src/feature/home/data/model/cat_model.dart';
 import 'package:haji_market/src/feature/home/data/model/city_model.dart';
-import 'package:haji_market/src/feature/product/cubit/product_ad_cubit.dart'
-    as productAdCubit;
-import 'package:haji_market/src/feature/product/cubit/product_ad_state.dart'
-    as productAdState;
+import 'package:haji_market/src/feature/product/cubit/product_ad_cubit.dart' as productAdCubit;
+import 'package:haji_market/src/feature/product/cubit/product_ad_state.dart' as productAdState;
 import 'package:haji_market/src/feature/product/cubit/recently_watched_product_cubit.dart'
     as productRecentlyWatchedCubit;
 import 'package:haji_market/src/feature/product/cubit/recently_watched_product_state.dart'
     as productRecentlyWatchedState;
-import 'package:haji_market/src/feature/home/bloc/banners_cubit.dart'
-    as bannerCubit;
-import 'package:haji_market/src/feature/home/bloc/banners_state.dart'
-    as bannerState;
-import 'package:haji_market/src/feature/home/bloc/partner_cubit.dart'
-    as partnerCubit;
-import 'package:haji_market/src/feature/home/bloc/partner_state.dart'
-    as partnerState;
+import 'package:haji_market/src/feature/home/bloc/banners_cubit.dart' as bannerCubit;
+import 'package:haji_market/src/feature/home/bloc/banners_state.dart' as bannerState;
+import 'package:haji_market/src/feature/home/bloc/partner_cubit.dart' as partnerCubit;
+import 'package:haji_market/src/feature/home/bloc/partner_state.dart' as partnerState;
 import 'package:haji_market/src/feature/home/bloc/meta_cubit.dart' as metaCubit;
 import 'package:haji_market/src/feature/home/bloc/meta_state.dart' as metaState;
 import 'package:haji_market/src/feature/home/presentation/ui/banner_page.dart';
@@ -50,11 +44,7 @@ import '../../bloc/popular_shops_state.dart' as popShopsState;
 class HomePage extends StatefulWidget {
   final void Function()? drawerCallback;
   final GlobalKey<ScaffoldState>? globalKey;
-  const HomePage({
-    this.globalKey,
-    this.drawerCallback,
-    Key? key,
-  }) : super(key: key);
+  const HomePage({this.globalKey, this.drawerCallback, Key? key}) : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -68,7 +58,7 @@ class _HomePageState extends State<HomePage> {
     'Оферта для продавцов',
     'Политика конфиденциальности',
     'Типовой договор купли-продажи',
-    'Типовой договор на оказание рекламных услуг'
+    'Типовой договор на оказание рекламных услуг',
   ];
 
   List<String> metasBody = [];
@@ -78,7 +68,7 @@ class _HomePageState extends State<HomePage> {
   final box = GetStorage();
 
   CityModel? city;
-// Город
+  // Город
   CityModel? loadCity() {
     final data = box.read('city');
     if (data == null) return null;
@@ -101,8 +91,7 @@ class _HomePageState extends State<HomePage> {
       if (!mounted) return;
 
       // Banners
-      if (BlocProvider.of<bannerCubit.BannersCubit>(context).state
-          is! bannerState.LoadedState) {
+      if (BlocProvider.of<bannerCubit.BannersCubit>(context).state is! bannerState.LoadedState) {
         BlocProvider.of<bannerCubit.BannersCubit>(context).banners();
       }
 
@@ -115,12 +104,11 @@ class _HomePageState extends State<HomePage> {
 
       // Recently watched
       BlocProvider.of<productRecentlyWatchedCubit.RecentlyWatchedProductCubit>(
-              context)
-          .products(filters);
+        context,
+      ).products(filters);
 
       // Sub categories
-      BlocProvider.of<subCatCubit.SubCatsCubit>(context)
-          .subCats(0, isAddAllProducts: false);
+      BlocProvider.of<subCatCubit.SubCatsCubit>(context).subCats(0, isAddAllProducts: false);
 
       // Popular shops
       if (BlocProvider.of<popShopsCubit.PopularShopsCubit>(context).state
@@ -129,20 +117,17 @@ class _HomePageState extends State<HomePage> {
       }
 
       // Partners
-      if (BlocProvider.of<partnerCubit.PartnerCubit>(context).state
-          is! partnerState.LoadedState) {
+      if (BlocProvider.of<partnerCubit.PartnerCubit>(context).state is! partnerState.LoadedState) {
         BlocProvider.of<partnerCubit.PartnerCubit>(context).partners();
       }
 
       // Meta
-      if (BlocProvider.of<metaCubit.MetaCubit>(context).state
-          is! metaState.LoadedState) {
+      if (BlocProvider.of<metaCubit.MetaCubit>(context).state is! metaState.LoadedState) {
         BlocProvider.of<metaCubit.MetaCubit>(context).partners();
       }
 
       // Products
-      if (BlocProvider.of<productCubit.ProductCubit>(context).state
-          is! productState.LoadedState) {
+      if (BlocProvider.of<productCubit.ProductCubit>(context).state is! productState.LoadedState) {
         filters.resetAll(); // safe now, after first frame
         BlocProvider.of<productCubit.ProductCubit>(context).products(filters);
       }
@@ -151,8 +136,7 @@ class _HomePageState extends State<HomePage> {
       if (BlocProvider.of<productAdCubit.ProductAdCubit>(context).state
           is! productState.LoadedState) {
         filters.resetAll(); // or remove if you don't really need to reset twice
-        BlocProvider.of<productAdCubit.ProductAdCubit>(context)
-            .adProducts(filters);
+        BlocProvider.of<productAdCubit.ProductAdCubit>(context).adProducts(filters);
       }
     });
   }
@@ -172,11 +156,9 @@ class _HomePageState extends State<HomePage> {
           final filters = context.read<FilterProvider>();
 
           Future.wait([
-            BlocProvider.of<productCubit.ProductCubit>(context)
-                .products(filters),
+            BlocProvider.of<productCubit.ProductCubit>(context).products(filters),
             BlocProvider.of<partnerCubit.PartnerCubit>(context).partners(),
-            BlocProvider.of<popShopsCubit.PopularShopsCubit>(context)
-                .popShops(),
+            BlocProvider.of<popShopsCubit.PopularShopsCubit>(context).popShops(),
             BlocProvider.of<catCubit.CatsCubit>(context).cats(),
             BlocProvider.of<bannerCubit.BannersCubit>(context).banners(),
             BlocProvider.of<StoriesSellerCubit>(context).news(),
@@ -190,19 +172,19 @@ class _HomePageState extends State<HomePage> {
           children: [
             Container(
               decoration: BoxDecoration(
-                  color: AppColors.kWhite,
-                  borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(16),
-                      bottomRight: Radius.circular(16))),
+                color: AppColors.kWhite,
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(16),
+                  bottomRight: Radius.circular(16),
+                ),
+              ),
               child: Column(
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(left: 16.0, right: 20),
                     child: InkWell(
                       onTap: () {
-                        Future.wait(
-                          [BlocProvider.of<CountryCubit>(context).country()],
-                        );
+                        Future.wait([BlocProvider.of<CountryCubit>(context).country()]);
                         showAlertCountryWidget(context, () {
                           setState(() {});
                         }, false);
@@ -210,14 +192,8 @@ class _HomePageState extends State<HomePage> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          Image.asset(
-                            Assets.icons.location.path,
-                            height: 20,
-                            width: 20,
-                          ),
-                          SizedBox(
-                            width: 4.0,
-                          ),
+                          Image.asset(Assets.icons.location.path, height: 20, width: 20),
+                          SizedBox(width: 4.0),
                           Text(
                             '${loadCity()?.city ?? 'Не указан'}',
                             style: AppTextStyles.size16Weight500.copyWith(
@@ -229,35 +205,34 @@ class _HomePageState extends State<HomePage> {
                             Assets.icons.defaultNotificationIcon.path,
                             height: 26,
                             width: 26,
-                          )
+                          ),
                         ],
                       ),
                     ),
                   ),
                   SizedBox(height: 15),
                   BlocBuilder<StoriesSellerCubit, StoriesSellerState>(
-                      builder: (context, state) {
-                    if (state is ErrorState) {
-                      return Center(
-                        child: Text(
-                          state.message,
-                          style: const TextStyle(
-                              fontSize: 20.0, color: Colors.grey),
-                        ),
-                      );
-                    }
-                    if (state is LoadedState) {
-                      return SizedBox(
-                        height: 102,
-                        child: ListView.builder(
+                    builder: (context, state) {
+                      if (state is ErrorState) {
+                        return Center(
+                          child: Text(
+                            state.message,
+                            style: const TextStyle(fontSize: 20.0, color: Colors.grey),
+                          ),
+                        );
+                      }
+                      if (state is LoadedState) {
+                        return SizedBox(
+                          height: 102,
+                          child: ListView.builder(
                             padding: EdgeInsets.zero,
                             scrollDirection: Axis.horizontal,
                             itemCount: state.storiesSeelerModel.length,
                             itemBuilder: (context, index) {
                               return InkWell(
-                                onTap: () => Get.to(StoryScreen(
-                                    stories: state
-                                        .storiesSeelerModel[index].stories)),
+                                onTap: () => Get.to(
+                                  StoryScreen(stories: state.storiesSeelerModel[index].stories),
+                                ),
                                 child: Padding(
                                   padding: EdgeInsets.only(
                                     top: 8,
@@ -281,26 +256,24 @@ class _HomePageState extends State<HomePage> {
                                         height: 120,
                                         width: double.infinity,
                                         child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(13),
+                                          borderRadius: BorderRadius.circular(13),
                                           child: CachedNetworkImage(
                                             imageUrl:
                                                 "https://lunamarket.ru/storage/${state.storiesSeelerModel[index].image}",
                                             fit: BoxFit.cover,
-                                            progressIndicatorBuilder: (context,
-                                                url, downloadProgress) {
-                                              return Container(
-                                                color: Colors.grey[100],
-                                                child: Center(
-                                                  child:
-                                                      CircularProgressIndicator(
-                                                    value: downloadProgress
-                                                        .progress, // 0..1 или null
-                                                    strokeWidth: 2,
-                                                  ),
-                                                ),
-                                              );
-                                            },
+                                            progressIndicatorBuilder:
+                                                (context, url, downloadProgress) {
+                                                  return Container(
+                                                    color: Colors.grey[100],
+                                                    child: Center(
+                                                      child: CircularProgressIndicator(
+                                                        value: downloadProgress
+                                                            .progress, // 0..1 или null
+                                                        strokeWidth: 2,
+                                                      ),
+                                                    ),
+                                                  );
+                                                },
                                             errorWidget: (context, url, error) {
                                               return Container(
                                                 color: Colors.grey[100],
@@ -325,36 +298,35 @@ class _HomePageState extends State<HomePage> {
                                   ),
                                 ),
                               );
-                            }),
-                      );
-                    } else {
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 16, vertical: 5),
-                        child: SizedBox(
-                          height: 80,
-                          child: ListView.builder(
+                            },
+                          ),
+                        );
+                      } else {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 5),
+                          child: SizedBox(
+                            height: 80,
+                            child: ListView.builder(
                               scrollDirection: Axis.horizontal,
                               itemCount: 5,
                               itemBuilder: (context, index) {
                                 return Container(
-                                    margin: const EdgeInsets.only(left: 5),
-                                    height: 80,
-                                    width: 80,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(14),
-                                    ),
-                                    child: ShimmerBox(
-                                      color: Color(0xffF7F7F7),
-                                    ));
-                              }),
-                        ),
-                      );
-                    }
-                  }),
-                  SizedBox(
-                    height: 10,
+                                  margin: const EdgeInsets.only(left: 5),
+                                  height: 80,
+                                  width: 80,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(14),
+                                  ),
+                                  child: ShimmerBox(color: Color(0xffF7F7F7)),
+                                );
+                              },
+                            ),
+                          ),
+                        );
+                      }
+                    },
                   ),
+                  SizedBox(height: 10),
                   const BannerPage(),
                   InkWell(
                     onTap: () {
@@ -365,31 +337,26 @@ class _HomePageState extends State<HomePage> {
                       width: double.infinity,
                       padding: EdgeInsets.symmetric(horizontal: 16),
                       decoration: BoxDecoration(
-                          color: AppColors.kWhite,
-                          borderRadius: BorderRadius.circular(12)),
+                        color: AppColors.kWhite,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
                       child: Container(
                         height: 44,
                         decoration: BoxDecoration(
-                            color: Color(0xffF7F7F7),
-                            borderRadius: BorderRadius.circular(12)),
+                          color: Color(0xffF7F7F7),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
                         child: Row(
                           children: [
-                            SizedBox(
-                              width: 12,
-                            ),
-                            Image.asset(
-                              Assets.icons.defaultSearchIcon.path,
-                              height: 18,
-                              width: 18,
-                            ),
-                            SizedBox(
-                              width: 12,
-                            ),
+                            SizedBox(width: 12),
+                            Image.asset(Assets.icons.defaultSearchIcon.path, height: 18, width: 18),
+                            SizedBox(width: 12),
                             Text(
                               'Искать',
-                              style: AppTextStyles.size16Weight600
-                                  .copyWith(color: Color(0xff8E8E93)),
-                            )
+                              style: AppTextStyles.size16Weight600.copyWith(
+                                color: Color(0xff8E8E93),
+                              ),
+                            ),
                           ],
                         ),
                       ),
@@ -400,9 +367,7 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
 
-            const SizedBox(
-              height: 16,
-            ),
+            const SizedBox(height: 16),
             const CatsPage(),
 
             // const PopularCatsHomepage(),
@@ -423,82 +388,76 @@ class _HomePageState extends State<HomePage> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text('Рекомендуем',
-                            style: AppTextStyles.size18Weight700),
+                        const Text('Рекомендуем', style: AppTextStyles.size18Weight700),
                         InkWell(
                           onTap: () {
-                            context.router.push(
-                                ProductsRecommendedRoute(cats: CatsModel()));
+                            context.router.push(ProductsRecommendedRoute(cats: CatsModel()));
                           },
                           child: Text(
                             'Показать все',
-                            style: AppTextStyles.size14Weight500
-                                .copyWith(color: AppColors.mainPurpleColor),
+                            style: AppTextStyles.size14Weight500.copyWith(
+                              color: AppColors.mainPurpleColor,
+                            ),
                           ),
                         ),
                       ],
                     ),
-                    const SizedBox(
-                      height: 16,
-                    ),
-                    BlocConsumer<productAdCubit.ProductAdCubit,
-                            productAdState.ProductAdState>(
-                        listener: (context, state) {},
-                        builder: (context, state) {
-                          if (state is productAdState.ErrorState) {
-                            return Center(
-                              child: Text(
-                                state.message,
-                                style: const TextStyle(
-                                    fontSize: 20.0, color: Colors.grey),
+                    const SizedBox(height: 16),
+                    BlocConsumer<productAdCubit.ProductAdCubit, productAdState.ProductAdState>(
+                      listener: (context, state) {},
+                      builder: (context, state) {
+                        if (state is productAdState.ErrorState) {
+                          return Center(
+                            child: Text(
+                              state.message,
+                              style: const TextStyle(fontSize: 20.0, color: Colors.grey),
+                            ),
+                          );
+                        }
+                        if (state is productAdState.LoadingState) {
+                          return Container(
+                            color: Colors.transparent,
+                            child: SizedBox(
+                              height: 315,
+                              child: ListView.builder(
+                                scrollDirection: Axis.horizontal,
+                                itemCount: 2,
+                                itemBuilder: (BuildContext ctx, index) {
+                                  return Padding(
+                                    padding: EdgeInsets.only(right: 12),
+                                    child: const ShimmerBox(height: 315, width: 173, radius: 16),
+                                  );
+                                },
                               ),
-                            );
-                          }
-                          if (state is productAdState.LoadingState) {
-                            return Container(
-                              color: Colors.transparent,
-                              child: SizedBox(
-                                height: 315,
-                                child: ListView.builder(
-                                    scrollDirection: Axis.horizontal,
-                                    itemCount: 2,
-                                    itemBuilder: (BuildContext ctx, index) {
-                                      return Padding(
-                                        padding: EdgeInsets.only(right: 12),
-                                        child: const ShimmerBox(
-                                            height: 315,
-                                            width: 173,
-                                            radius: 16),
-                                      );
-                                    }),
-                              ),
-                            );
-                          }
+                            ),
+                          );
+                        }
 
-                          if (state is productAdState.LoadedState) {
-                            return SizedBox(
-                                height: 315,
-                                child: ListView.builder(
-                                  scrollDirection: Axis.horizontal,
-                                  itemCount: state.productModel.length,
-                                  itemBuilder: (context, index) {
-                                    return GestureDetector(
-                                      onTap: () => context.router.push(
-                                          DetailCardProductRoute(
-                                              product:
-                                                  state.productModel[index])),
-                                      child: ProductMbInterestingCard(
-                                        product: state.productModel[index],
-                                      ),
-                                    );
-                                  },
-                                ));
-                          } else {
-                            return const Center(
-                                child: CircularProgressIndicator(
-                                    color: Colors.indigoAccent));
-                          }
-                        }),
+                        if (state is productAdState.LoadedState) {
+                          return SizedBox(
+                            height: 315,
+                            child: ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: state.productModel.length,
+                              itemBuilder: (context, index) {
+                                return GestureDetector(
+                                  onTap: () => context.router.push(
+                                    DetailCardProductRoute(product: state.productModel[index]),
+                                  ),
+                                  child: ProductMbInterestingCard(
+                                    product: state.productModel[index],
+                                  ),
+                                );
+                              },
+                            ),
+                          );
+                        } else {
+                          return const Center(
+                            child: CircularProgressIndicator(color: Colors.indigoAccent),
+                          );
+                        }
+                      },
+                    ),
                     // SingleChildScrollView(
                     //     scrollDirection: Axis.horizontal,
                     //     child: Row(children: const <Widget>[
@@ -522,121 +481,107 @@ class _HomePageState extends State<HomePage> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text('Недавно смотрели',
-                            style: AppTextStyles.size18Weight700),
+                        const Text('Недавно смотрели', style: AppTextStyles.size18Weight700),
                         InkWell(
                           onTap: () {
-                            context.router.push(ProductsRecentlyWatchedRoute(
-                                cats: CatsModel(id: 0, name: '')));
+                            context.router.push(
+                              ProductsRecentlyWatchedRoute(cats: CatsModel(id: 0, name: '')),
+                            );
                           },
                           child: Text(
                             'Показать все',
-                            style: AppTextStyles.size14Weight500
-                                .copyWith(color: AppColors.mainPurpleColor),
+                            style: AppTextStyles.size14Weight500.copyWith(
+                              color: AppColors.mainPurpleColor,
+                            ),
                           ),
                         ),
                       ],
                     ),
-                    const SizedBox(
-                      height: 16,
-                    ),
+                    const SizedBox(height: 16),
                     BlocConsumer<
-                            productRecentlyWatchedCubit
-                            .RecentlyWatchedProductCubit,
-                            productRecentlyWatchedState
-                            .RecentlyWatchedProductState>(
-                        listener: (context, state) {},
-                        builder: (context, state) {
-                          if (state is productRecentlyWatchedState.ErrorState) {
-                            return Center(
-                              child: Text(
-                                state.message,
-                                style: const TextStyle(
-                                    fontSize: 20.0, color: Colors.grey),
+                      productRecentlyWatchedCubit.RecentlyWatchedProductCubit,
+                      productRecentlyWatchedState.RecentlyWatchedProductState
+                    >(
+                      listener: (context, state) {},
+                      builder: (context, state) {
+                        if (state is productRecentlyWatchedState.ErrorState) {
+                          return Center(
+                            child: Text(
+                              state.message,
+                              style: const TextStyle(fontSize: 20.0, color: Colors.grey),
+                            ),
+                          );
+                        }
+                        if (state is productRecentlyWatchedState.LoadingState) {
+                          return Container(
+                            color: Colors.transparent,
+                            child: SizedBox(
+                              height: 315,
+                              child: ListView.builder(
+                                scrollDirection: Axis.horizontal,
+                                itemCount: 2,
+                                itemBuilder: (BuildContext ctx, index) {
+                                  return Padding(
+                                    padding: EdgeInsets.only(right: 12),
+                                    child: const ShimmerBox(height: 315, width: 173, radius: 16),
+                                  );
+                                },
                               ),
-                            );
-                          }
-                          if (state
-                              is productRecentlyWatchedState.LoadingState) {
-                            return Container(
-                              color: Colors.transparent,
-                              child: SizedBox(
-                                height: 315,
-                                child: ListView.builder(
-                                    scrollDirection: Axis.horizontal,
-                                    itemCount: 2,
-                                    itemBuilder: (BuildContext ctx, index) {
-                                      return Padding(
-                                        padding: EdgeInsets.only(right: 12),
-                                        child: const ShimmerBox(
-                                            height: 315,
-                                            width: 173,
-                                            radius: 16),
-                                      );
-                                    }),
+                            ),
+                          );
+                        }
+                        if (state is productRecentlyWatchedState.NoDataState) {
+                          return const SizedBox(height: 20, width: 20);
+                        }
+                        if (state is productRecentlyWatchedState.LoadedState) {
+                          return SizedBox(
+                            // width: 400,
+                            height: state.productModel.length >= 2
+                                ? MediaQuery.of(context).size.height * 0.72
+                                : MediaQuery.of(context).size.height * 0.32,
+                            child: GridView.builder(
+                              scrollDirection: Axis.horizontal,
+                              shrinkWrap: false,
+                              // physics: NeverScrollableScrollPhysics(),
+                              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                                childAspectRatio: 1.70,
+                                crossAxisSpacing: 12,
+                                mainAxisSpacing: 0,
                               ),
-                            );
-                          }
-                          if (state
-                              is productRecentlyWatchedState.NoDataState) {
-                            return const SizedBox(
-                              height: 20,
-                              width: 20,
-                            );
-                          }
-                          if (state
-                              is productRecentlyWatchedState.LoadedState) {
-                            return SizedBox(
-                                // width: 400,
-                                height: state.productModel.length >= 2
-                                    ? MediaQuery.of(context).size.height * 0.72
-                                    : MediaQuery.of(context).size.height * 0.32,
-                                child: GridView.builder(
-                                  scrollDirection: Axis.horizontal,
-                                  shrinkWrap: false,
-                                  // physics: NeverScrollableScrollPhysics(),
-                                  gridDelegate:
-                                      SliverGridDelegateWithFixedCrossAxisCount(
-                                          crossAxisCount: 2,
-                                          childAspectRatio: 1.70,
-                                          crossAxisSpacing: 12,
-                                          mainAxisSpacing: 0),
-                                  itemCount: state.productModel.length >= 8
-                                      ? 8
-                                      : state.productModel.length,
-                                  itemBuilder: (BuildContext ctx, index) {
-                                    return GestureDetector(
-                                      onTap: () => context.router
-                                          .push(DetailCardProductRoute(
-                                        product: state.productModel[index],
-                                      )),
-                                      child: ProductAdCard(
-                                        product: state.productModel[index],
-                                      ),
-                                    );
-                                  },
-                                ));
-                          } else {
-                            return Container(
-                              color: Colors.transparent,
-                              child: SizedBox(
-                                height: 315,
-                                child: ListView.builder(
-                                    scrollDirection: Axis.horizontal,
-                                    itemCount: 2,
-                                    itemBuilder: (BuildContext ctx, index) {
-                                      return Padding(
-                                        padding: EdgeInsets.only(right: 12),
-                                        child: const ShimmerBox(
-                                            height: 315,
-                                            width: 173,
-                                            radius: 16),
-                                      );
-                                    }),
+                              itemCount: state.productModel.length >= 8
+                                  ? 8
+                                  : state.productModel.length,
+                              itemBuilder: (BuildContext ctx, index) {
+                                return GestureDetector(
+                                  onTap: () => context.router.push(
+                                    DetailCardProductRoute(product: state.productModel[index]),
+                                  ),
+                                  child: ProductAdCard(product: state.productModel[index]),
+                                );
+                              },
+                            ),
+                          );
+                        } else {
+                          return Container(
+                            color: Colors.transparent,
+                            child: SizedBox(
+                              height: 315,
+                              child: ListView.builder(
+                                scrollDirection: Axis.horizontal,
+                                itemCount: 2,
+                                itemBuilder: (BuildContext ctx, index) {
+                                  return Padding(
+                                    padding: EdgeInsets.only(right: 12),
+                                    child: const ShimmerBox(height: 315, width: 173, radius: 16),
+                                  );
+                                },
                               ),
-                            );
-                          }
-                        }),
+                            ),
+                          );
+                        }
+                      },
+                    ),
                     // SingleChildScrollView(
                     //     scrollDirection: Axis.horizontal,
                     //     child: Column(children: [
@@ -653,16 +598,12 @@ class _HomePageState extends State<HomePage> {
                     //         ],
                     //       )
                     //     ])),
-                    const SizedBox(
-                      height: 20,
-                    ),
+                    const SizedBox(height: 20),
                   ],
                 ),
               ),
             ),
-            const SizedBox(
-              height: 100,
-            ),
+            const SizedBox(height: 100),
             // BlocBuilder<metaCubit.MetaCubit, metaState.MetaState>(
             //     builder: (context, state) {
             //   if (state is metaState.LoadedState) {

@@ -10,9 +10,8 @@ abstract class IAuthDao {
 }
 
 class AuthDao extends TypedPreferencesDao implements IAuthDao {
-  AuthDao({
-    required SharedPreferencesWithCache sharedPreferences,
-  }) : super(sharedPreferences, name: 'auth');
+  AuthDao({required SharedPreferencesWithCache sharedPreferences})
+    : super(sharedPreferences, name: 'auth');
 
   @override
   PreferencesEntry<String> get user => stringEntry('user');
@@ -21,6 +20,5 @@ class AuthDao extends TypedPreferencesDao implements IAuthDao {
   PreferencesEntry<String> get deviceToken => stringEntry('deviceToken');
 
   @override
-  PreferencesEntry<List<String>> get pushTopics =>
-      stringListEntry('pushTopics');
+  PreferencesEntry<List<String>> get pushTopics => stringListEntry('pushTopics');
 }
