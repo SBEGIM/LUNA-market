@@ -16,7 +16,6 @@ import 'package:haji_market/src/feature/drawer/presentation/widgets/client_show_
 import 'package:haji_market/src/feature/drawer/presentation/widgets/client_show_list_widget.dart';
 import 'package:haji_market/src/feature/drawer/presentation/widgets/show_alert_account_widget.dart';
 import 'package:haji_market/src/feature/drawer/presentation/widgets/show_alert_cabinet_widget.dart';
-import 'package:haji_market/src/feature/drawer/presentation/widgets/show_language_widget.dart';
 import 'package:haji_market/src/feature/home/data/model/city_model.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -47,43 +46,12 @@ class _DrawerPageState extends State<DrawerPage> {
   bool change = false;
   int index = 0;
 
-  Future<void> _getImage(context) async {
+  Future<void> _getImage(BuildContext context) async {
     final image = change == true
         ? await _picker.pickImage(source: ImageSource.camera)
         : await _picker.pickImage(source: ImageSource.gallery);
 
-    print(' ${image!.path}');
-    // BlocProvider.of<>(context).edit(
-    //   '',
-    //   '',
-    //   image.path,
-    //   '',
-    //   '',
-    //   '',
-    //   '',
-    //   '',
-    //   '',
-    //   '',
-    //   '',
-    //   '',
-    //   '',
-    //   '',
-    //   null,
-    //   '',
-    //   '',
-    //   '',
-    //   '',
-    //   '',
-    //   '',
-    //   '',
-    //   '',
-    //   '',
-    //   '',
-    //   '',
-    //   '',
-    //   '',
-    //   '',
-    // );
+    debugPrint(' ${image!.path}');
 
     setState(() {
       _image = image;
@@ -156,6 +124,8 @@ class _DrawerPageState extends State<DrawerPage> {
                                       primaryText: 'Камера',
                                       primaryColor: Colors.red,
                                     );
+
+                                    if (!mounted) return;
 
                                     if (ok == true) {
                                       change = true;
@@ -395,7 +365,7 @@ class _DrawerPageState extends State<DrawerPage> {
                                   height: 258,
                                   width: double.infinity,
                                   decoration: BoxDecoration(
-                                    color: AppColors.kLightBlackColor.withOpacity(0.15),
+                                    color: AppColors.kLightBlackColor.withValues(alpha: .15),
                                     borderRadius: BorderRadius.circular(16),
                                   ),
                                   child: Column(
@@ -602,53 +572,6 @@ class _DrawerPageState extends State<DrawerPage> {
                       iconPath: Assets.icons.supportCenter.path,
                     ),
 
-                    // buildProfileItem(
-                    //   onTap: () {},
-                    //   switchWidget: true,
-                    //   switchValue: switchValue,
-                    //   onSwitchChanged: (value) {
-                    //     switchValue = value;
-                    //     print(value);
-                    //     setState(() {});
-                    //   },
-                    //   title: 'Уведомления',
-                    //   iconPath: Assets.icons.sellerNotification.path,
-                    // ),
-                    // Padding(
-                    //   padding:
-                    //       const EdgeInsets.only(left: 16.0, right: 16, top: 8),
-                    //   child: const Divider(
-                    //     thickness: 0.2,
-                    //     height: 0,
-                    //     color: AppColors.kGray200,
-                    //   ),
-                    // ),
-
-                    // buildProfileItem(
-                    //   onTap: () {
-                    //     final List<String> languages = [
-                    //       'Русский',
-                    //       'Қазақша',
-                    //       'Английский',
-                    //     ];
-
-                    //     showLanguageOptions(context, 'Язык', languages,
-                    //         (value) {
-                    //       setState(() {});
-                    //     });
-                    //   },
-                    //   title: 'Язык',
-                    //   iconPath: Assets.icons.sellerLanguageIcon.path,
-                    // ),
-                    // Padding(
-                    //   padding:
-                    //       const EdgeInsets.only(left: 16.0, right: 16, top: 8),
-                    //   child: const Divider(
-                    //     thickness: 0.2,
-                    //     height: 0,
-                    //     color: AppColors.kGray200,
-                    //   ),
-                    // ),
                     buildProfileItem(
                       onTap: () =>
                           showClientSettingOptions(context, isAuthUser, 'Настройки', () {}),
@@ -656,453 +579,9 @@ class _DrawerPageState extends State<DrawerPage> {
                       count: 4,
                       iconPath: Assets.icons.settingIcon.path,
                     ),
-                    // InkWell(
-                    //   onTap: () {
-                    //     _box.read('seller_token') != null
-                    //         ? BlocProvider.of<AppBloc>(context).add(
-                    //             const AppEvent.chageState(
-                    //                 state: AppState.inAppAdminState()))
-                    //         : context.router.push(AuthSellerRoute());
-                    //   },
-                    //   child: const DrawerListTile(
-                    //     text: 'Кабинет продавца',
-                    //   ),
-                    // ),
-                    // const Divider(
-                    //   color: AppColors.kGray200,
-                    // ),
-                    // InkWell(
-                    //   onTap: () {
-                    //     _box.read('blogger_token') != null
-                    //         ? BlocProvider.of<AppBloc>(context).add(
-                    //             const AppEvent.chageState(
-                    //                 state: AppState.inAppBlogerState()))
-                    //         : context.router.push(BlogAuthRegisterRoute());
-                    //   },
-                    //   child: const DrawerListTile(
-                    //     text: 'Кабинет блогера',
-                    //   ),
-                    // ),
-
-                    // const Divider(
-                    //   color: AppColors.kGray200,
-                    // ),
-                    // InkWell(
-                    //   onTap: () {
-                    //     _box.read('blogger_token') != null
-                    //         ? BlocProvider.of<AppBloc>(context)
-                    //             .add(const AppEvent.chageState(state: AppState.inAppManagerState()))
-                    //         : context.router.push(BlogAuthRegisterRoute());
-                    //   },
-                    //   child: const DrawerListTile(
-                    //     text: 'Кабинет менеджера',
-                    //   ),
-                    // ),
-                    // const Divider(
-                    //   color: AppColors.kGray200,
-                    // ),
-                    // InkWell(
-                    //   onTap: () {
-                    //     Navigator.push(
-                    //       context,
-                    //       MaterialPageRoute(builder: (context) => const CreditInfoPage()),
-                    //     );
-                    //   },
-                    //   child: const DrawerListTile(
-                    //     text: 'Рассрочка',
-                    //   ),
-                    // ),
-
-                    // InkWell(
-                    //   onTap: () {
-                    //     Navigator.push(
-                    //       context,
-                    //       MaterialPageRoute(builder: (context) => CityPage()),
-                    //     );
-                    //   },
-                    //   child: const DrawerListTile(
-                    //     text: 'Алматы',
-                    //   ),
-                    // ),
-                    // const Divider(
-                    //   color: AppColors.kGray200,
-                    // ),
-                    // InkWell(
-                    //   onTap: () {
-                    //     Navigator.push(
-                    //       context,
-                    //       MaterialPageRoute(builder: (context) => NotificationPage()),
-                    //     );
-                    //   },
-                    //   child: const DrawerListTile(
-                    //     text: 'Уведомления',
-                    //   ),
-                    // ),
-                    // const Divider(
-                    //   color: AppColors.kGray200,
-                    // ),
-                    // InkWell(
-                    //   onTap: () {
-                    //     Navigator.push(
-                    //       context,
-                    //       MaterialPageRoute(builder: (context) => CatalogPage()),
-                    //     );
-                    //   },
-                    //   child: const DrawerListTile(
-                    //     text: 'Каталог',
-                    //   ),
-                    // ),
-                    // const Divider(
-                    //   color: AppColors.kGray200,
-                    // ),
-                    // InkWell(
-                    //   onTap: () {
-                    //     Navigator.push(
-                    //       context,
-                    //       MaterialPageRoute(builder: (context) => CoopRequestPage()),
-                    //     );
-                    //   },
-                    //   child: const DrawerListTile(
-                    //     text: 'Продавать на Luna market',
-                    //   ),
-                    // ),
-                    // const Divider(
-                    //   color: AppColors.kGray200,
-                    // ),
-                    // InkWell(
-                    //   onTap: () {
-                    //     Navigator.pushAndRemoveUntil(
-                    //       context,
-                    //       MaterialPageRoute(
-                    //         builder: (context) => const Base(
-                    //           index: 1,
-                    //         ),
-                    //       ),
-                    //       (route) => false,
-                    //     );
-                    //   },
-                    //   child: const DrawerListTile(
-                    //     text: 'Маркет',
-                    //   ),
-                    // ),
-                    // const Divider(
-                    //   color: AppColors.kGray200,
-                    // ),
-                    // const DrawerListTile(
-                    //   text: 'Рассрочка',
-                    // ),
-
-                    // SizedBox(
-                    //   height: 55,
-                    //   child: Padding(
-                    //     padding: const EdgeInsets.all(13.0),
-                    //     child: Row(
-                    //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    //       mainAxisSize: MainAxisSize.max,
-                    //       children: [
-                    //         const Text(
-                    //           'Вход с Touch ID',
-                    //           style: AppTextStyles.drawer2TextStyle,
-                    //         ),
-                    //         SizedBox(
-                    //           height: 8,
-                    //           child: Transform.scale(
-                    //             scale: 0.9,
-                    //             child: CupertinoSwitch(
-                    //               value: isSwitchedTouch,
-                    //               onChanged: (value) {
-                    //                 setState(() {
-                    //                   isSwitchedTouch = value;
-                    //                   // print(isSwitched);
-                    //                 });
-                    //               },
-                    //               trackColor: Colors.grey.shade200,
-                    //               activeColor: AppColors.kPrimaryColor,
-                    //             ),
-                    //           ),
-                    //         ),
-                    //       ],
-                    //     ),
-                    //   ),
-                    // ),
-                    // const Divider(
-                    //   color: AppColors.kGray200,
-                    //   height: 0,
-                    // ),
-
-                    // GestureDetector(
-                    //   onTap: () {
-                    //     // Navigator.push(
-                    //     //   context,
-                    //     //   MaterialPageRoute(
-                    //     //       builder: (context) =>
-                    //     //           const ViewAuthRegisterPage(BackButton: true)),
-                    //     // );
-                    //   },
-                    //   child: SizedBox(
-                    //     height: 55,
-                    //     child: Padding(
-                    //       padding: const EdgeInsets.only(
-                    //           left: 13.0, right: 20, top: 13, bottom: 13),
-                    //       child: Row(
-                    //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    //         mainAxisSize: MainAxisSize.max,
-                    //         children: [
-                    //           const Text(
-                    //             'Выйти',
-                    //             style: TextStyle(
-                    //               fontSize: 16,
-                    //               color: Color(0xffFF3347),
-                    //               fontWeight: FontWeight.w400,
-                    //             ),
-                    //           ),
-                    //           SvgPicture.asset('assets/icons/logout.svg')
-                    //         ],
-                    //       ),
-                    //     ),
-                    //   ),
-                    // ),
-                    // const Divider(
-                    //   //height: 0,
-                    //   color: AppColors.kGray200,
-                    // ),
-                    // GestureDetector(
-
-                    //   onTap: () async {
-                    //     await BlocProvider.of<LoginCubit>(context).delete();
-                    //     GetStorage().erase();
-                    //     BlocProvider.of<AppBloc>(context)
-                    //         .add(const AppEvent.exiting());
-                    //     // Get.offAll(() => const ViewAuthRegisterPage(BackButton: true));
-
-                    //     Get.snackbar('Аккаунт удален', 'Account delete',
-                    //         backgroundColor: Colors.redAccent);
-
-                    //     // Navigator.push(
-                    //     //   context,
-                    //     //   MaterialPageRoute(
-                    //     //       builder: (context) =>
-                    //     //           const ViewAuthRegisterPage(BackButton: true)),
-                    //     // );
-                    //   },
-                    //   child: const SizedBox(
-                    //     height: 55,
-                    //     child: Padding(
-                    //       padding: EdgeInsets.only(
-                    //           left: 13.0, right: 20, top: 13, bottom: 13),
-                    //       child: Row(
-                    //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    //         mainAxisSize: MainAxisSize.max,
-                    //         children: [
-                    //           Text(
-                    //             'Удалить',
-                    //             style: TextStyle(
-                    //               fontSize: 16,
-                    //               color: Color(0xffFF3347),
-                    //               fontWeight: FontWeight.w400,
-                    //             ),
-                    //           ),
-                    //           Icon(
-                    //             Icons.delete,
-                    //             color: Color(0xffFF3347),
-                    //             size: 25,
-                    //           )
-                    //         ],
-                    //       ),
-                    //     ),
-                    //   ),
-                    // ),
-
-                    // GestureDetector(
-                    //   onTap: () {
-                    //     GetStorage().remove('token');
-                    //     Navigator.push(
-                    //       context,
-                    //       MaterialPageRoute(
-                    //           builder: (context) =>
-                    //               const ViewAuthRegisterPage(BackButton: true)),
-                    //     );
-                    //   },
-                    //   child: Container(
-                    //     padding: const EdgeInsets.only(
-                    //         left: 16, right: 16, top: 16.5, bottom: 16.5),
-                    //     child: Row(
-                    //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    //       children: [
-                    //         const Text(
-                    //           'Выйти',
-                    //           style: TextStyle(
-                    //               color: Color.fromRGBO(236, 72, 85, 1),
-                    //               fontSize: 16,
-                    //               fontWeight: FontWeight.w400),
-                    //         ),
-                    //         SvgPicture.asset('assets/icons/logout.svg')
-                    //       ],
-                    //     ),
-                    //   ),
-                    // ),
-                    // InkWell(
-                    //   onTap: () {
-                    //     Navigator.push(
-                    //       context,
-                    //       MaterialPageRoute(builder: (context) => AboutUsPage()),
-                    //     );
-                    //   },
-                    //   child: Container(
-                    //     padding: const EdgeInsets.only(
-                    //         left: 13,
-                    //         // right: 16,
-                    //         top: 10,
-                    //         bottom: 16),
-                    //     child: Row(
-                    //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    //       children: const [
-                    //         Text(
-                    //           'Удалить аккаунт',
-                    //           style: TextStyle(
-                    //               color: Colors.red,
-                    //               fontSize: 15,
-                    //               fontWeight: FontWeight.w400),
-                    //         ),
-                    //       ],
-                    //     ),
-                    //   ),
-                    // ),
-
-                    // GestureDetector(
-                    //   onTap: () async {
-                    //     Get.to(const CountryWidget());
-                    //     GetStorage().listen(() {
-                    //       if (GetStorage().read('country_index') != null) {
-                    //         setState(() {
-                    //           index = GetStorage().read('country_index');
-                    //         });
-                    //       }
-                    //     });
-                    //   },
-                    //   child: Container(
-                    //     height: 45,
-                    //     child: Row(
-                    //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    //       children: [
-                    //         Row(
-                    //           children: [
-                    //             const SizedBox(
-                    //               width: 12,
-                    //             ),
-                    //             if (index == 1 || index == 0)
-                    //               SvgPicture.asset('assets/temp/kaz.svg')
-                    //             else if (index == 2)
-                    //               SvgPicture.asset('assets/temp/rus.svg')
-                    //             else if (index == 3)
-                    //               SvgPicture.asset('assets/temp/ukr.svg')
-                    //             else if (index == 4)
-                    //               SvgPicture.asset('assets/temp/bel.svg'),
-                    //             const SizedBox(
-                    //               width: 12,
-                    //             ),
-                    //             if (index == 1 || index == 0)
-                    //               const Text(
-                    //                 'Казахстан',
-                    //                 style: AppTextStyles.drawer2TextStyle,
-                    //               )
-                    //             else if (index == 2)
-                    //               const Text(
-                    //                 'Россия',
-                    //                 style: AppTextStyles.drawer2TextStyle,
-                    //               )
-                    //             else if (index == 3)
-                    //               const Text(
-                    //                 'Украина',
-                    //                 style: AppTextStyles.drawer2TextStyle,
-                    //               )
-                    //             else if (index == 4)
-                    //               const Text(
-                    //                 'Беларус',
-                    //                 style: AppTextStyles.drawer2TextStyle,
-                    //               ),
-                    //           ],
-                    //         ),
-                    //         Row(
-                    //           children: [
-                    //             SvgPicture.asset('assets/icons/back_menu.svg'),
-                    //             const SizedBox(
-                    //               width: 16,
-                    //             ),
-                    //           ],
-                    //         ),
-                    //       ],
-                    //     ),
-                    //   ),
-                    // )
                   ],
                 ),
               ),
-              //const Divider(
-              //   color: AppColors.kGray200,
-              // ),
-              // Row(
-              //   crossAxisAlignment: CrossAxisAlignment.start,
-              //   children: [
-              // InkWell(
-              //   onTap: () {
-              //     GetStorage().write('app_lang', 'kz');
-              //     selected = true;
-              //     setState(() {});
-              //   },
-              //   child: Container(
-              //     height: 34,
-              //     width: 54,
-              //     decoration: BoxDecoration(
-              //         color: selected == false ? Colors.white : Colors.black,
-              //         border: Border.all(
-              //           color: AppColors.kGray900,
-              //         ),
-              //         borderRadius: const BorderRadius.all(Radius.circular(10))),
-              //     child: Center(
-              //         child: Text(
-              //       'Қаз',
-              //       style: TextStyle(
-              //         fontSize: 17,
-              //         color: selected == false ? Colors.black : Colors.white,
-              //         // AppColors.kLightBlackColor,
-              //         fontWeight: FontWeight.w500,
-              //       ),
-              //     )),
-              //   ),
-              // ),
-              // const SizedBox(
-              //   width: 8,
-              // ),
-              //   InkWell(
-              //     onTap: () {
-              //       GetStorage().write('app_lang', 'ru');
-              //       selected = false;
-              //       setState(() {});
-              //     },
-              //     child: Container(
-              //       height: 34,
-              //       width: 54,
-              //       decoration: BoxDecoration(
-              //           color: selected == true ? Colors.white : Colors.black,
-              //           border: Border.all(
-              //             color: AppColors.kGray900,
-              //           ),
-              //           borderRadius: const BorderRadius.all(Radius.circular(10))),
-              //       child: Center(
-              //           child: Text(
-              //         'Рус',
-              //         style: TextStyle(
-              //           fontSize: 17,
-              //           color: selected == true ? Colors.black : Colors.white,
-              //           // AppColors.kLightBlackColor,
-              //           fontWeight: FontWeight.w500,
-              //         ),
-              //       )),
-              //     ),
-              //   ),
-              //   ],
-              // )
             ],
           ),
         ],
@@ -1113,7 +592,7 @@ class _DrawerPageState extends State<DrawerPage> {
 
 class DrawerListTile extends StatelessWidget {
   final String text;
-  const DrawerListTile({Key? key, required this.text}) : super(key: key);
+  const DrawerListTile({super.key, required this.text});
 
   @override
   Widget build(BuildContext context) {
@@ -1127,16 +606,6 @@ class DrawerListTile extends StatelessWidget {
         ],
       ),
     );
-    // ListTile(
-    //   title: Text(
-    //     text,
-    //     style: AppTextStyles.drawer2TextStyle,
-    //   ),
-    //   trailing: const Icon(
-    //     Icons.arrow_forward_ios,
-    //     color: AppColors.kPrimaryColor,
-    //   ),
-    // );
   }
 }
 
@@ -1200,9 +669,9 @@ Widget buildProfileItem({
   );
 }
 
-Widget buildProfileAvatar(_box) {
-  final String? avatar = _box.read('avatar');
-  final String? name = _box.read('name');
+Widget buildProfileAvatar(GetStorage box) {
+  final String? avatar = box.read('avatar');
+  final String? name = box.read('name');
 
   final bool isAuthorized =
       avatar != null && avatar != 'null' && name != null && name != 'Не авторизированный';
@@ -1222,7 +691,7 @@ Widget buildProfileAvatar(_box) {
           width: 94,
           padding: isAuthorized ? EdgeInsets.zero : const EdgeInsets.all(29.5),
           decoration: BoxDecoration(
-            color: AppColors.kWhite.withOpacity(0.1),
+            color: AppColors.kWhite.withValues(alpha: .1),
             borderRadius: BorderRadius.circular(51),
           ),
           child: Image(
