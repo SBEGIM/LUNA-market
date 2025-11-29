@@ -4,7 +4,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:yandex_mapkit/yandex_mapkit.dart';
-
 import 'package:haji_market/src/core/common/constants.dart';
 
 @RoutePage()
@@ -12,7 +11,7 @@ class MapSellerPickerPage extends StatefulWidget {
   final double lat;
   final double long;
 
-  const MapSellerPickerPage({Key? key, required this.lat, required this.long}) : super(key: key);
+  const MapSellerPickerPage({super.key, required this.lat, required this.long});
 
   @override
   State<MapSellerPickerPage> createState() => _MapSellerPickerPageState();
@@ -40,8 +39,8 @@ class _MapSellerPickerPageState extends State<MapSellerPickerPage> {
   CircleMapObject _createCircle() {
     return CircleMapObject(
       mapId: const MapObjectId('radius_circle'),
-      strokeColor: AppColors.mainPurpleColor.withOpacity(0.5),
-      fillColor: AppColors.mainPurpleColor.withOpacity(0.2),
+      strokeColor: AppColors.mainPurpleColor.withValues(alpha: .5),
+      fillColor: AppColors.mainPurpleColor.withValues(alpha: 0.2),
       strokeWidth: 2,
       circle: Circle(center: _centerPoint, radius: _radius),
     );
@@ -179,7 +178,7 @@ class _MapSellerPickerPageState extends State<MapSellerPickerPage> {
                 ),
                 child: SvgPicture.asset(
                   'assets/icons/icon-tab-navigation.svg',
-                  color: AppColors.kPrimaryColor,
+                  colorFilter: ColorFilter.mode(AppColors.kPrimaryColor, BlendMode.srcIn),
                 ),
               ),
             ),

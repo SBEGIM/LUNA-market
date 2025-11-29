@@ -19,11 +19,11 @@ class ChatBloggerPage extends StatefulWidget {
 }
 
 class _ChatBloggerPageState extends State<ChatBloggerPage> {
-  RefreshController _refreshController = RefreshController(initialRefresh: false);
+  final RefreshController _refreshController = RefreshController(initialRefresh: false);
 
   TextEditingController searchController = TextEditingController();
 
-  parseDate(date) {
+  String parseDate(date) {
     final dateTimeString = date;
     final dateTime = DateTime.parse(dateTimeString);
 
