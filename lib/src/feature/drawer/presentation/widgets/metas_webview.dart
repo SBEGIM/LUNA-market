@@ -64,7 +64,7 @@ class _MetasPageState extends State<MetasPage> {
     'Оферта для продавцов',
     'Политика конфиденциальности',
     'Типовой договор купли-продажи',
-    'Типовой договор на оказание рекламных услуг'
+    'Типовой договор на оказание рекламных услуг',
   ];
   String type = '';
 
@@ -99,42 +99,33 @@ class _MetasPageState extends State<MetasPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-            backgroundColor: Colors.black,
-            title: Text(
-              widget.title ?? 'Рассрочка',
-              style: const TextStyle(
-                color: Colors.white,
-              ),
-            ),
-            centerTitle: true,
-            iconTheme: const IconThemeData(
-              color: Colors.blue,
-            ),
-            leading: IconButton(
-                color: Colors.white,
-                icon: const Icon(
-                  Icons.arrow_back_ios_new,
-                ),
-                onPressed: () {
-                  Navigator.pop(context);
-                }),
-            actions: [
-              IconButton(
-                  color: Colors.white,
-                  icon: const Icon(
-                    Icons.share,
-                  ),
-                  onPressed: () async {
-                    setState(() {});
+      appBar: AppBar(
+        backgroundColor: Colors.black,
+        title: Text(widget.title ?? 'Рассрочка', style: const TextStyle(color: Colors.white)),
+        centerTitle: true,
+        iconTheme: const IconThemeData(color: Colors.blue),
+        leading: IconButton(
+          color: Colors.white,
+          icon: const Icon(Icons.arrow_back_ios_new),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        actions: [
+          IconButton(
+            color: Colors.white,
+            icon: const Icon(Icons.share),
+            onPressed: () async {
+              setState(() {});
 
-                    // final pdf = await createDocument();
+              // final pdf = await createDocument();
 
-                    await Share.share("$baseUrl/pdf/$type");
-                  })
-            ]),
-        body: SingleChildScrollView(
-          child: Html(data: widget.body),
-        ));
+              await Share.share("$baseUrl/pdf/$type");
+            },
+          ),
+        ],
+      ),
+      body: SingleChildScrollView(child: Html(data: widget.body)),
+    );
   }
 }

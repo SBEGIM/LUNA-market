@@ -3,23 +3,20 @@ import 'package:auto_route/auto_route.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:get/get.dart';
 import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/feature/app/router/app_router.dart';
 import 'package:haji_market/src/feature/app/widget/show_upload_media_pricker_widget.dart';
 import 'package:haji_market/src/feature/bloger/shop/bloc/blogger_tape_upload_cubit.dart';
 import 'package:haji_market/src/feature/bloger/shop/bloc/blogger_tape_upload_state.dart';
-import 'package:haji_market/src/feature/drawer/presentation/widgets/show_alert_account_widget.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:video_player/video_player.dart';
 import '../../../../../core/common/constants.dart';
 
 @RoutePage()
 class EditTapeVideoPage extends StatefulWidget {
-  int id;
+  final int id;
 
-  EditTapeVideoPage({required this.id, super.key});
+  const EditTapeVideoPage({required this.id, super.key});
 
   @override
   State<EditTapeVideoPage> createState() => _EditTapeVidoePageState();
@@ -53,7 +50,8 @@ class _EditTapeVidoePageState extends State<EditTapeVideoPage> {
         ? await _picker.pickVideo(source: ImageSource.camera)
         : await _picker.pickVideo(
             source: ImageSource.gallery,
-            maxDuration: const Duration(minutes: 2));
+            maxDuration: const Duration(minutes: 2),
+          );
 
     setState(() {
       _video = image;
@@ -88,13 +86,9 @@ class _EditTapeVidoePageState extends State<EditTapeVideoPage> {
           onPressed: () {
             Navigator.pop(context);
           },
-          icon: Image.asset(
-            Assets.icons.defaultBackIcon.path,
-            scale: 1.9,
-          ),
+          icon: Image.asset(Assets.icons.defaultBackIcon.path, scale: 1.9),
         ),
-        title: const Text('Добавить видеообзор',
-            style: AppTextStyles.size18Weight600),
+        title: const Text('Добавить видеообзор', style: AppTextStyles.size18Weight600),
         elevation: 0,
       ),
       body: Container(
@@ -102,8 +96,7 @@ class _EditTapeVidoePageState extends State<EditTapeVideoPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Прикрепите видеообзор товара',
-                style: AppTextStyles.size16Weight600),
+            Text('Прикрепите видеообзор товара', style: AppTextStyles.size16Weight600),
             const SizedBox(height: 12),
             GestureDetector(
               onTap: () async {
@@ -112,17 +105,10 @@ class _EditTapeVidoePageState extends State<EditTapeVideoPage> {
                   return;
                 }
                 final List<Map<String, String>> options = [
-                  {
-                    'title': 'Выбрать из галереи',
-                    'iconPath': Assets.icons.galleryIcon.path,
-                  },
-                  {
-                    'title': 'Открыть камеру',
-                    'iconPath': Assets.icons.cameraIcon.path,
-                  },
+                  {'title': 'Выбрать из галереи', 'iconPath': Assets.icons.galleryIcon.path},
+                  {'title': 'Открыть камеру', 'iconPath': Assets.icons.cameraIcon.path},
                 ];
-                showUploadMediaPicker(context, 'Загрузить видео', options,
-                    (value) {
+                showUploadMediaPicker(context, 'Загрузить видео', options, (value) {
                   context.router.pop();
                   switch (value) {
                     case 'Выбрать из галереи':
@@ -192,17 +178,16 @@ class _EditTapeVidoePageState extends State<EditTapeVideoPage> {
                 width: 120,
                 height: 120,
                 decoration: BoxDecoration(
-                    color: AppColors.kGray1,
-                    borderRadius: BorderRadius.circular(16)),
+                  color: AppColors.kGray1,
+                  borderRadius: BorderRadius.circular(16),
+                ),
                 child: DottedBorder(
                   dashPattern: [4, 4],
                   strokeWidth: 1,
                   color: Color(0xff8E8E93),
                   radius: Radius.circular(16),
                   borderType: BorderType.RRect,
-                  child: (_video != null &&
-                          _controller != null &&
-                          _controller!.value.isInitialized)
+                  child: (_video != null && _controller != null && _controller!.value.isInitialized)
                       ? Stack(
                           children: [
                             Center(
@@ -251,14 +236,14 @@ class _EditTapeVidoePageState extends State<EditTapeVideoPage> {
               width: 358,
               padding: EdgeInsets.all(16),
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(16),
-                  color: Color(0xffF7F7F7)),
+                borderRadius: BorderRadius.circular(16),
+                color: Color(0xffF7F7F7),
+              ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Требования к видео',
-                      style: AppTextStyles.size16Weight600),
+                  Text('Требования к видео', style: AppTextStyles.size16Weight600),
                   const SizedBox(height: 16),
                   Row(
                     children: [
@@ -285,10 +270,7 @@ class _EditTapeVidoePageState extends State<EditTapeVideoPage> {
                         height: 20,
                       ),
                       SizedBox(width: 10),
-                      const Text(
-                        'Формат — mp4,mov',
-                        style: AppTextStyles.statisticsTextStyle,
-                      ),
+                      const Text('Формат — mp4,mov', style: AppTextStyles.statisticsTextStyle),
                     ],
                   ),
                   const SizedBox(height: 12),
@@ -301,10 +283,7 @@ class _EditTapeVidoePageState extends State<EditTapeVideoPage> {
                         height: 20,
                       ),
                       SizedBox(width: 10),
-                      const Text(
-                        'Размер — 4 ГБ',
-                        style: AppTextStyles.statisticsTextStyle,
-                      ),
+                      const Text('Размер — 4 ГБ', style: AppTextStyles.statisticsTextStyle),
                     ],
                   ),
                   const SizedBox(height: 12),
@@ -327,12 +306,10 @@ class _EditTapeVidoePageState extends State<EditTapeVideoPage> {
               ),
             ),
             Flexible(
-              child: ConstrainedBox(
-                  constraints: BoxConstraints(maxHeight: 170, minHeight: 170)),
+              child: ConstrainedBox(constraints: BoxConstraints(maxHeight: 170, minHeight: 170)),
             ),
             Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 7.5, vertical: 16),
+              padding: const EdgeInsets.symmetric(horizontal: 7.5, vertical: 16),
               child: SizedBox(
                 height: 60,
                 child: Row(
@@ -360,25 +337,25 @@ class _EditTapeVidoePageState extends State<EditTapeVideoPage> {
                         width: 311,
                         child: RichText(
                           text: TextSpan(
-                            style: AppTextStyles.size14Weight400
-                                .copyWith(color: Color(0xFF8E8E93)),
+                            style: AppTextStyles.size14Weight400.copyWith(color: Color(0xFF8E8E93)),
                             children: [
                               TextSpan(text: 'Размещая рекламные материалы, '),
                               TextSpan(
-                                  text: 'вы принимаете условия ',
-                                  style:
-                                      TextStyle(fontWeight: FontWeight.bold)),
+                                text: 'вы принимаете условия ',
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
                               TextSpan(
-                                  text:
-                                      'Типового договора на оказание рекламных услуг.',
-                                  style: TextStyle(
-                                      decoration: TextDecoration.underline,
-                                      color: AppColors.mainPurpleColor)),
+                                text: 'Типового договора на оказание рекламных услуг.',
+                                style: TextStyle(
+                                  decoration: TextDecoration.underline,
+                                  color: AppColors.mainPurpleColor,
+                                ),
+                              ),
                             ],
                           ),
                         ),
                       ),
-                    )
+                    ),
                   ],
                 ),
               ),
@@ -403,42 +380,40 @@ class _EditTapeVidoePageState extends State<EditTapeVideoPage> {
           return ColoredBox(
             color: AppColors.kWhite,
             child: InkWell(
-                onTap: () async {
-                  if (_video != null &&
-                      state is! LoadingState &&
-                      check == true) {
-                    button = true;
-                    await BlocProvider.of<BloggerTapeUploadCubit>(context)
-                        .uploadVideo(widget.id.toString(), _video!.path);
-                  }
-                },
-                child: Container(
-                    height: 52,
-                    padding: EdgeInsets.symmetric(horizontal: 16),
-                    margin: EdgeInsets.only(
-                        bottom: 42, top: 16, left: 16, right: 16),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(16),
-                      color: (_video != null && check == true)
-                          ? AppColors.mainPurpleColor
-                          : AppColors.mainPurpleColor.withOpacity(0.3),
-                    ),
-                    width: MediaQuery.of(context).size.width,
-                    alignment: Alignment.center,
-                    // padding: const EdgeInsets.only(left: 16, right: 16),
-                    child: state is LoadingState
-                        ? SizedBox(
-                            width: 20,
-                            height: 20,
-                            child: const CircularProgressIndicator(
-                              color: AppColors.kWhite,
-                            ))
-                        : Text(
-                            'Cохранить',
-                            style: AppTextStyles.size18Weight600
-                                .copyWith(color: AppColors.kWhite),
-                            textAlign: TextAlign.center,
-                          ))),
+              onTap: () async {
+                if (_video != null && state is! LoadingState && check == true) {
+                  button = true;
+                  await BlocProvider.of<BloggerTapeUploadCubit>(
+                    context,
+                  ).uploadVideo(widget.id.toString(), _video!.path);
+                }
+              },
+              child: Container(
+                height: 52,
+                padding: EdgeInsets.symmetric(horizontal: 16),
+                margin: EdgeInsets.only(bottom: 42, top: 16, left: 16, right: 16),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(16),
+                  color: (_video != null && check == true)
+                      ? AppColors.mainPurpleColor
+                      : AppColors.mainPurpleColor.withOpacity(0.3),
+                ),
+                width: MediaQuery.of(context).size.width,
+                alignment: Alignment.center,
+                // padding: const EdgeInsets.only(left: 16, right: 16),
+                child: state is LoadingState
+                    ? SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: const CircularProgressIndicator(color: AppColors.kWhite),
+                      )
+                    : Text(
+                        'Cохранить',
+                        style: AppTextStyles.size18Weight600.copyWith(color: AppColors.kWhite),
+                        textAlign: TextAlign.center,
+                      ),
+              ),
+            ),
           );
         },
       ),

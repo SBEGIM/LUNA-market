@@ -76,10 +76,7 @@ class _StoryScreenState extends State<StoryScreen> {
 
   void _nextStory() {
     if (_currentIndex < widget.stories.length - 1) {
-      _pageController.nextPage(
-        duration: const Duration(milliseconds: 700),
-        curve: Curves.linear,
-      );
+      _pageController.nextPage(duration: const Duration(milliseconds: 700), curve: Curves.linear);
     } else {
       Get.back();
     }
@@ -130,26 +127,16 @@ class _StoryScreenState extends State<StoryScreen> {
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                     transform: GradientRotation(4.2373),
-                    colors: [
-                      Color(0xFFFB62E2),
-                      Color(0xD6FF7171),
-                      Color(0x00FFF500),
-                    ],
+                    colors: [Color(0xFFFB62E2), Color(0xD6FF7171), Color(0x00FFF500)],
                   ),
                 ),
                 child: ClipRRect(
                   child: FadeInImage(
                     placeholder: MemoryImage(kTransparentImage),
-                    image: NetworkImage(
-                      "https://lunamarket.ru/storage/${story.image}",
-                    ),
+                    image: NetworkImage("https://lunamarket.ru/storage/${story.image}"),
                     fit: BoxFit.cover,
-                    placeholderErrorBuilder: (_, __, ___) =>
-                        _buildShimmerPlaceholder(),
-                    imageErrorBuilder: (_, __, ___) => const Icon(
-                      Icons.error,
-                      color: Colors.white,
-                    ),
+                    placeholderErrorBuilder: (_, __, ___) => _buildShimmerPlaceholder(),
+                    imageErrorBuilder: (_, __, ___) => const Icon(Icons.error, color: Colors.white),
                     fadeInDuration: const Duration(milliseconds: 400),
                   ),
                 ),
@@ -216,7 +203,8 @@ class _StoryScreenState extends State<StoryScreen> {
                                 minHeight: 2,
                                 backgroundColor: const Color(0xffC4C4C480),
                                 valueColor: const AlwaysStoppedAnimation<Color>(
-                                    Color(0xffFFFFFFBF)),
+                                  Color(0xffFFFFFFBF),
+                                ),
                               ),
                             ),
                           ),
@@ -236,7 +224,7 @@ class _StoryScreenState extends State<StoryScreen> {
                 ),
               ],
             ),
-          )
+          ),
         ],
       ),
     );

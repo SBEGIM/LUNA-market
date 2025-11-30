@@ -22,26 +22,30 @@ class _ProductImagesState extends State<ProductImages> {
   @override
   void initState() {
     if (widget.video != null) {
-      _controller = VideoPlayerController.network(
-          // 'https://lunamarket.ru/storage/${widget.product.path?.first ?? ''}'
-          'https://lunamarket.ru/storage/${widget.video}')
-        ..initialize().then((_) {
-          _controller!.pause();
-          // setState(() {});
-        });
+      _controller =
+          VideoPlayerController.network(
+              // 'https://lunamarket.ru/storage/${widget.product.path?.first ?? ''}'
+              'https://lunamarket.ru/storage/${widget.video}',
+            )
+            ..initialize().then((_) {
+              _controller!.pause();
+              // setState(() {});
+            });
 
       _controller!.addListener(() {
         _controller!.value.isPlaying == true ? icon = false : icon = true;
 
         setState(() {});
       });
-      _controller2 = VideoPlayerController.network(
-          // 'https://lunamarket.ru/storage/${widget.product.path?.first ?? ''}'
-          'https://lunamarket.ru/storage/${widget.video}')
-        ..initialize().then((_) {
-          _controller2!.pause();
-          // setState(() {});
-        });
+      _controller2 =
+          VideoPlayerController.network(
+              // 'https://lunamarket.ru/storage/${widget.product.path?.first ?? ''}'
+              'https://lunamarket.ru/storage/${widget.video}',
+            )
+            ..initialize().then((_) {
+              _controller2!.pause();
+              // setState(() {});
+            });
 
       _controller2!.addListener(() {
         _controller2!.value.isPlaying == true ? icon = false : icon = true;
@@ -62,10 +66,7 @@ class _ProductImagesState extends State<ProductImages> {
           onTap: () {
             Navigator.pop(context);
           },
-          child: const Icon(
-            Icons.arrow_back_ios,
-            color: AppColors.kPrimaryColor,
-          ),
+          child: const Icon(Icons.arrow_back_ios, color: AppColors.kPrimaryColor),
         ),
       ),
       body: Column(
@@ -78,37 +79,38 @@ class _ProductImagesState extends State<ProductImages> {
               width: 378,
               child: GestureDetector(
                 onTap: () {
-                  _controller!.value.isPlaying
-                      ? _controller!.pause()
-                      : _controller!.play();
+                  _controller!.value.isPlaying ? _controller!.pause() : _controller!.play();
                 },
-                child: Stack(children: [
-                  Center(
-                    child: AspectRatio(
-                      aspectRatio: _controller!.value.aspectRatio,
-                      child: VideoPlayer(_controller!),
+                child: Stack(
+                  children: [
+                    Center(
+                      child: AspectRatio(
+                        aspectRatio: _controller!.value.aspectRatio,
+                        child: VideoPlayer(_controller!),
+                      ),
                     ),
-                  ),
-                  // Positioned(
-                  //   bottom: 10,
-                  //   right: 0,
-                  //   left: 0,
-                  //   // alignment: Alignment.bottomCenter,
-                  //   // padding: EdgeInsets.only(bottom: MediaQuery.of(context).size.height * 0.01),
-                  //   child: VideoProgressIndicator(_controller!, allowScrubbing: true),
-                  // ),
-                  icon
-                      ? Positioned.fill(
-                          child: Center(
+                    // Positioned(
+                    //   bottom: 10,
+                    //   right: 0,
+                    //   left: 0,
+                    //   // alignment: Alignment.bottomCenter,
+                    //   // padding: EdgeInsets.only(bottom: MediaQuery.of(context).size.height * 0.01),
+                    //   child: VideoProgressIndicator(_controller!, allowScrubbing: true),
+                    // ),
+                    icon
+                        ? Positioned.fill(
+                            child: Center(
                               child: SvgPicture.asset(
-                            'assets/icons/play_tape.svg',
-                            height: 54,
-                            width: 54,
-                            color: const Color.fromRGBO(29, 196, 207, 1),
-                          )),
-                        )
-                      : const SizedBox(),
-                ]),
+                                'assets/icons/play_tape.svg',
+                                height: 54,
+                                width: 54,
+                                color: const Color.fromRGBO(29, 196, 207, 1),
+                              ),
+                            ),
+                          )
+                        : const SizedBox(),
+                  ],
+                ),
               ),
             )
           else
@@ -120,8 +122,8 @@ class _ProductImagesState extends State<ProductImages> {
                   ? Image.network(
                       "https://lunamarket.ru/storage/${widget.images![imageIndex]}",
                       fit: BoxFit.contain,
-                      errorBuilder: (context, error, stackTrace) =>
-                          const ErrorImageWidget())
+                      errorBuilder: (context, error, stackTrace) => const ErrorImageWidget(),
+                    )
                   : Image.asset('assets/icons/no_data.png'),
             ),
           Container(
@@ -131,8 +133,7 @@ class _ProductImagesState extends State<ProductImages> {
             // color: Colors.red,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
-              itemCount: (widget.images?.length ?? 0) +
-                  ((widget.video != null ? 1 : 0)),
+              itemCount: (widget.images?.length ?? 0) + ((widget.video != null ? 1 : 0)),
               itemBuilder: (context, index) {
                 return GestureDetector(
                   onTap: (() {
@@ -146,10 +147,9 @@ class _ProductImagesState extends State<ProductImages> {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8),
                       border: Border.all(
-                          width: 0.3,
-                          color: imageIndex == index
-                              ? AppColors.kPrimaryColor
-                              : Colors.grey),
+                        width: 0.3,
+                        color: imageIndex == index ? AppColors.kPrimaryColor : Colors.grey,
+                      ),
                     ),
                     //color: Colors.red,
                     child: index == (widget.images?.length ?? 0)
@@ -163,9 +163,7 @@ class _ProductImagesState extends State<ProductImages> {
               },
             ),
           ),
-          const SizedBox(
-            height: 10,
-          )
+          const SizedBox(height: 10),
         ],
       ),
     );

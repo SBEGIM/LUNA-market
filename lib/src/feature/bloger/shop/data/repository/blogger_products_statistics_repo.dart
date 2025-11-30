@@ -8,16 +8,14 @@ const baseUrl = 'https://lunamarket.ru/api';
 class BloggerProductsStatisticsRepository {
   final StatisticsToApi _statisticsToApi = StatisticsToApi();
 
-  Future<BloggerProductStatisticsModel> statistics() =>
-      _statisticsToApi.statistics();
+  Future<BloggerProductStatisticsModel> statistics() => _statisticsToApi.statistics();
 }
 
 class StatisticsToApi {
   final _box = GetStorage();
 
   Future<BloggerProductStatisticsModel> statistics() async {
-    final response =
-        await http.get(Uri.parse('$baseUrl/blogger/product/statistics'));
+    final response = await http.get(Uri.parse('$baseUrl/blogger/product/statistics'));
     final data = jsonDecode(response.body);
 
     return BloggerProductStatisticsModel.fromJson(data);

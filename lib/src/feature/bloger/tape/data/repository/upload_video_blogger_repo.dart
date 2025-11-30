@@ -10,8 +10,7 @@ class UploadVideoBloggerCubitRepository {
 
   Future<int> upload(video, int productId) => _video.upload(video, productId);
 
-  Future<int> deleteVideo({required int tapeId}) =>
-      _video.deleteVideo(tapeId: tapeId);
+  Future<int> deleteVideo({required int tapeId}) => _video.deleteVideo(tapeId: tapeId);
 }
 
 class UploadVideo {
@@ -20,21 +19,15 @@ class UploadVideo {
   Future<int> upload(video, productId) async {
     final String? token = _box.read('blogger_token');
 
-    final request = http.MultipartRequest(
-      'POST',
-      Uri.parse('$baseUrl/blogger/upload/video'),
-    );
+    final request = http.MultipartRequest('POST', Uri.parse('$baseUrl/blogger/upload/video'));
 
     if (video != '') {
-      request.files.add(
-        await http.MultipartFile.fromPath('video', video),
-      );
+      request.files.add(await http.MultipartFile.fromPath('video', video));
     }
     // request.headers.addAll({
     //   'Authorization': 'Bearer $token',
     // });
-    request.fields
-        .addAll({'product_id': productId.toString(), 'access_token': token!});
+    request.fields.addAll({'product_id': productId.toString(), 'access_token': token!});
 
     final http.StreamedResponse response = await request.send();
     final respStr = await response.stream.bytesToString();
@@ -45,16 +38,15 @@ class UploadVideo {
     return response.statusCode;
   }
 
-  Future<int> deleteVideo({
-    required int tapeId,
-  }) async {
+  Future<int> deleteVideo({required int tapeId}) async {
     try {
       final String? token = _box.read('blogger_token');
 
       final response = await http.post(
-          Uri.parse('$baseUrl/blogger/destroy/video'),
-          body: {'tape_id': tapeId.toString()},
-          headers: {"Authorization": "Bearer $token"});
+        Uri.parse('$baseUrl/blogger/destroy/video'),
+        body: {'tape_id': tapeId.toString()},
+        headers: {"Authorization": "Bearer $token"},
+      );
 
       // final request = http.MultipartRequest(
       //   'POST',

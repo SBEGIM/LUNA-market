@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 
 class Oferta extends StatefulWidget {
-  const Oferta({Key? key}) : super(key: key);
+  const Oferta({super.key});
 
   @override
   State<Oferta> createState() => _Oferta();
@@ -726,11 +726,7 @@ class _Oferta extends State<Oferta> {
         ),
         centerTitle: true,
       ),
-      body: SingleChildScrollView(
-        child: Html(
-          data: htmlData,
-        ),
-      ),
+      body: SingleChildScrollView(child: Html(data: htmlData)),
     );
   }
 }

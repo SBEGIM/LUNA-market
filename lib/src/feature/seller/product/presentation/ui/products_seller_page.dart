@@ -23,8 +23,7 @@ class MyProductsAdminPage extends StatefulWidget implements AutoRouteWrapper {
   @override
   Widget wrappedRoute(BuildContext context) {
     return BlocProvider(
-      create: (_) =>
-          ProductSellerCubit(productAdminRepository: ProductSellerRepository()),
+      create: (_) => ProductSellerCubit(productAdminRepository: ProductSellerRepository()),
       child: this,
     );
   }
@@ -87,13 +86,13 @@ class _MyProductsAdminPageState extends State<MyProductsAdminPage> {
                     Expanded(
                       child: TextField(
                         controller: nameController,
-                        onChanged: (value) =>
-                            context.read<ProductSellerCubit>().products(value),
+                        onChanged: (value) => context.read<ProductSellerCubit>().products(value),
                         decoration: InputDecoration(
                           border: InputBorder.none,
                           hintText: 'Поиск товаров',
-                          hintStyle: AppTextStyles.size16Weight400
-                              .copyWith(color: Color(0xff8E8E93)),
+                          hintStyle: AppTextStyles.size16Weight400.copyWith(
+                            color: Color(0xff8E8E93),
+                          ),
                         ),
                       ),
                     ),
@@ -117,9 +116,10 @@ class _MyProductsAdminPageState extends State<MyProductsAdminPage> {
                   builder: (context, state) {
                     if (state is ErrorState) {
                       return Center(
-                        child: Text(state.message,
-                            style: const TextStyle(
-                                fontSize: 20, color: Colors.grey)),
+                        child: Text(
+                          state.message,
+                          style: const TextStyle(fontSize: 20, color: Colors.grey),
+                        ),
                       );
                     }
                     if (state is LoadedState) {
@@ -134,8 +134,7 @@ class _MyProductsAdminPageState extends State<MyProductsAdminPage> {
                         child: ListView.builder(
                           padding: EdgeInsets.zero,
                           itemCount: state.productModel.length,
-                          itemBuilder: (context, index) =>
-                              ProductCardSellerPage(
+                          itemBuilder: (context, index) => ProductCardSellerPage(
                             context: context,
                             product: state.productModel[index],
                             cubit: context.read<ProductSellerCubit>(),
@@ -144,8 +143,8 @@ class _MyProductsAdminPageState extends State<MyProductsAdminPage> {
                       );
                     }
                     return const Center(
-                        child: CircularProgressIndicator(
-                            color: Colors.indigoAccent));
+                      child: CircularProgressIndicator(color: Colors.indigoAccent),
+                    );
                   },
                 ),
               ),
@@ -160,10 +159,12 @@ class _MyProductsAdminPageState extends State<MyProductsAdminPage> {
               color: Colors.transparent,
               child: InkWell(
                 onTap: () {
-                  context.pushRoute(CreateProductSellerRoute(
-                    cat: CatsModel(id: 0, name: 'Выберите из списка'),
-                    subCat: CatsModel(id: 0, name: 'Выберите из списка'),
-                  ));
+                  context.pushRoute(
+                    CreateProductSellerRoute(
+                      cat: CatsModel(id: 0, name: 'Выберите из списка'),
+                      subCat: CatsModel(id: 0, name: 'Выберите из списка'),
+                    ),
+                  );
                 },
                 splashColor: AppColors.mainPurpleColor.withOpacity(0.2),
                 highlightColor: AppColors.mainPurpleColor.withOpacity(0.1),
@@ -184,9 +185,10 @@ class _MyProductsAdminPageState extends State<MyProductsAdminPage> {
                   child: const Text(
                     'Добавить товар',
                     style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600),
+                      color: Colors.white,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                 ),
               ),

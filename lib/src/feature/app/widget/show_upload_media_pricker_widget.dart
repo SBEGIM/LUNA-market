@@ -4,8 +4,12 @@ import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
-void showUploadMediaPicker(BuildContext context, String title,
-    List<Map<String, String>> options, Function callback) {
+void showUploadMediaPicker(
+  BuildContext context,
+  String title,
+  List<Map<String, String>> options,
+  Function callback,
+) {
   bool? switchValue;
 
   showMaterialModalBottomSheet(
@@ -30,15 +34,11 @@ void showUploadMediaPicker(BuildContext context, String title,
               children: [
                 // Заголовок и крестик
                 Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        title,
-                        style: AppTextStyles.size18Weight600,
-                      ),
+                      Text(title, style: AppTextStyles.size18Weight600),
                       InkWell(
                         onTap: () => Navigator.of(context).pop(),
                         child: Image.asset(
@@ -53,18 +53,20 @@ void showUploadMediaPicker(BuildContext context, String title,
                 SizedBox(
                   height: options.length * 56,
                   child: ListView.builder(
-                      padding: EdgeInsets.zero,
-                      scrollDirection: Axis.vertical,
-                      itemCount: options.length,
-                      itemBuilder: (context, index) {
-                        return buildSettingItem(
-                            onTap: () {
-                              callback.call(options[index]['title']!);
-                            },
-                            iconPath: options[index]['iconPath']!,
-                            title: options[index]['title']!,
-                            widgetColor: Color(0xff3A3A3C));
-                      }),
+                    padding: EdgeInsets.zero,
+                    scrollDirection: Axis.vertical,
+                    itemCount: options.length,
+                    itemBuilder: (context, index) {
+                      return buildSettingItem(
+                        onTap: () {
+                          callback.call(options[index]['title']!);
+                        },
+                        iconPath: options[index]['iconPath']!,
+                        title: options[index]['title']!,
+                        widgetColor: Color(0xff3A3A3C),
+                      );
+                    },
+                  ),
                 ),
               ],
             ),
@@ -91,25 +93,16 @@ Widget buildSettingItem({
       height: 52,
       padding: const EdgeInsets.only(right: 16, left: 16),
       margin: EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-      decoration: BoxDecoration(
-          color: AppColors.kWhite, borderRadius: BorderRadius.circular(16)),
+      decoration: BoxDecoration(color: AppColors.kWhite, borderRadius: BorderRadius.circular(16)),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Image.asset(
-            iconPath!,
-            height: 24,
-            width: 24,
-            scale: 1.9,
-            color: widgetColor,
-          ),
+          Image.asset(iconPath!, height: 24, width: 24, scale: 1.9, color: widgetColor),
           SizedBox(width: 10),
           Text(
             title,
-            style: AppTextStyles.size16Weight600.copyWith(
-              color: widgetColor ?? AppColors.kGray900,
-            ),
+            style: AppTextStyles.size16Weight600.copyWith(color: widgetColor ?? AppColors.kGray900),
           ),
         ],
       ),

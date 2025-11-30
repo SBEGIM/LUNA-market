@@ -19,8 +19,7 @@ class ProductPromotionPage extends StatefulWidget implements AutoRouteWrapper {
   @override
   Widget wrappedRoute(BuildContext context) {
     return BlocProvider(
-      create: (_) =>
-          ProductSellerCubit(productAdminRepository: ProductSellerRepository()),
+      create: (_) => ProductSellerCubit(productAdminRepository: ProductSellerRepository()),
       child: this,
     );
   }
@@ -60,12 +59,13 @@ class ProductPromotionPageState extends State<ProductPromotionPage> {
       helpText: 'Выберите период',
       builder: (ctx, child) {
         // подкрашиваем под ваш фиолетовый
-        final scheme = Theme.of(ctx).colorScheme.copyWith(
-              primary: AppColors.mainPurpleColor,
-              onPrimary: Colors.white,
-            );
+        final scheme = Theme.of(
+          ctx,
+        ).colorScheme.copyWith(primary: AppColors.mainPurpleColor, onPrimary: Colors.white);
         return Theme(
-            data: Theme.of(ctx).copyWith(colorScheme: scheme), child: child!);
+          data: Theme.of(ctx).copyWith(colorScheme: scheme),
+          child: child!,
+        );
       },
       useRootNavigator: true, // чтобы поверх модалок
     );
@@ -91,9 +91,7 @@ class ProductPromotionPageState extends State<ProductPromotionPage> {
       lastDate: DateTime(now.year + 3, 12, 31),
       builder: (ctx, child) => Theme(
         data: Theme.of(ctx).copyWith(
-          colorScheme: Theme.of(ctx)
-              .colorScheme
-              .copyWith(primary: AppColors.mainPurpleColor),
+          colorScheme: Theme.of(ctx).colorScheme.copyWith(primary: AppColors.mainPurpleColor),
         ),
         child: child!,
       ),
@@ -114,15 +112,14 @@ class ProductPromotionPageState extends State<ProductPromotionPage> {
         backgroundColor: Colors.white,
         elevation: 0,
         centerTitle: true,
-        title: const Text(
-          'Акция на товар',
-          style: AppTextStyles.appBarTextStyle,
-        ),
+        title: const Text('Акция на товар', style: AppTextStyles.appBarTextStyle),
         leading: Padding(
           padding: const EdgeInsets.only(left: 22.0),
-          child: CustomBackButton(onTap: () {
-            Navigator.pop(context);
-          }),
+          child: CustomBackButton(
+            onTap: () {
+              Navigator.pop(context);
+            },
+          ),
         ),
       ),
       body: Padding(
@@ -166,37 +163,33 @@ class ProductPromotionPageState extends State<ProductPromotionPage> {
         ),
       ),
       bottomSheet: Container(
-          height: 140,
-          color: Colors.white,
-          padding:
-              const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 26),
-          child: Column(
-            children: [
-              InkWell(
-                onTap: () async {},
-                child: Container(
-                    height: 52,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(16),
-                      color: AppColors.mainPurpleColor,
-                    ),
-                    width: MediaQuery.of(context).size.width,
-                    padding: const EdgeInsets.all(16),
-                    alignment: Alignment.center,
-                    child: Text(
-                      'Изменить',
-                      style: AppTextStyles.size18Weight500
-                          .copyWith(color: AppColors.kWhite),
-                    )),
+        height: 140,
+        color: Colors.white,
+        padding: const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 26),
+        child: Column(
+          children: [
+            InkWell(
+              onTap: () async {},
+              child: Container(
+                height: 52,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(16),
+                  color: AppColors.mainPurpleColor,
+                ),
+                width: MediaQuery.of(context).size.width,
+                padding: const EdgeInsets.all(16),
+                alignment: Alignment.center,
+                child: Text(
+                  'Изменить',
+                  style: AppTextStyles.size18Weight500.copyWith(color: AppColors.kWhite),
+                ),
               ),
-              SizedBox(height: 8),
-              Text(
-                'Удалить',
-                style:
-                    AppTextStyles.size18Weight600.copyWith(color: Colors.red),
-              )
-            ],
-          )),
+            ),
+            SizedBox(height: 8),
+            Text('Удалить', style: AppTextStyles.size18Weight600.copyWith(color: Colors.red)),
+          ],
+        ),
+      ),
     );
   }
 }
@@ -243,52 +236,47 @@ class _FieldsProductRequestState extends State<FieldsProductRequest> {
         children: [
           Row(
             children: [
-              Text(
-                widget.titleText,
-                style: AppTextStyles.size13Weight500,
-              ),
+              Text(widget.titleText, style: AppTextStyles.size13Weight500),
               widget.star == true
                   ? const Text(
                       '*',
                       style: TextStyle(
-                          fontWeight: FontWeight.w400,
-                          fontSize: 12,
-                          color: Colors.red),
+                        fontWeight: FontWeight.w400,
+                        fontSize: 12,
+                        color: Colors.red,
+                      ),
                     )
-                  : Container()
+                  : Container(),
             ],
           ),
           const SizedBox(height: 4),
           Container(
             decoration: BoxDecoration(
-                color: AppColors.kGray2,
-                borderRadius: BorderRadius.circular(16)),
+              color: AppColors.kGray2,
+              borderRadius: BorderRadius.circular(16),
+            ),
             child: Padding(
               padding: const EdgeInsets.only(left: 14.0),
               child: TextField(
                 controller: widget.controller,
-                readOnly:
-                    (widget.hintColor == false || widget.hintColor == null)
-                        ? widget.readOnly
-                        : true,
+                readOnly: (widget.hintColor == false || widget.hintColor == null)
+                    ? widget.readOnly
+                    : true,
                 keyboardType: (widget.maxLines != null && widget.maxLines! > 1)
                     ? TextInputType.multiline
-                    : ((widget.textInputNumber == false ||
-                            widget.textInputNumber == null)
-                        ? TextInputType.text
-                        : const TextInputType.numberWithOptions(
-                            signed: true, decimal: true)),
+                    : ((widget.textInputNumber == false || widget.textInputNumber == null)
+                          ? TextInputType.text
+                          : const TextInputType.numberWithOptions(signed: true, decimal: true)),
                 maxLines: widget.maxLines ?? 1,
                 decoration: InputDecoration(
-                  suffixIconConstraints:
-                      const BoxConstraints(minWidth: 18, minHeight: 9),
+                  suffixIconConstraints: const BoxConstraints(minWidth: 18, minHeight: 9),
                   border: InputBorder.none,
                   hintText: widget.hintText,
                   hintStyle: AppTextStyles.size14Weight400.copyWith(
-                      color:
-                          widget.hintColor == null || widget.hintColor != true
-                              ? AppColors.kLightBlackColor
-                              : AppColors.kWhite),
+                    color: widget.hintColor == null || widget.hintColor != true
+                        ? AppColors.kLightBlackColor
+                        : AppColors.kWhite,
+                  ),
                   enabledBorder: const UnderlineInputBorder(
                     borderSide: BorderSide(color: Colors.white),
                   ),

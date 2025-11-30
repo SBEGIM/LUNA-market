@@ -6,14 +6,12 @@ import 'blogger_tape_upload_state.dart';
 class BloggerTapeUploadCubit extends Cubit<BloggerTapeUploadState> {
   final BloggerTapeUploadRepository bloggerTapeUploadRepository;
 
-  BloggerTapeUploadCubit({required this.bloggerTapeUploadRepository})
-      : super(InitState());
+  BloggerTapeUploadCubit({required this.bloggerTapeUploadRepository}) : super(InitState());
 
   Future<void> uploadVideo(String product_id, video) async {
     try {
       emit(LoadingState());
-      final data =
-          await bloggerTapeUploadRepository.uploadVideo(product_id, video);
+      final data = await bloggerTapeUploadRepository.uploadVideo(product_id, video);
       emit(LoadedState());
       emit(InitState());
     } catch (e) {

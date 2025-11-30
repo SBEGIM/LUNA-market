@@ -25,9 +25,7 @@ class SizeSellerCubit extends Cubit<SizeSellerState> {
     return null;
   }
 
-  ColorById(
-    String name,
-  ) async {
+  ColorById(String name) async {
     if (name.isEmpty) return;
     if (_colors.isEmpty) {
       await sizes();

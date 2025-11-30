@@ -52,10 +52,7 @@ class ValidatorUtil {
   //   }
   // }
 
-  static String? phone(
-    String? value, {
-    String? errorMessage,
-  }) {
+  static String? phone(String? value, {String? errorMessage}) {
     if (errorMessage != null) {
       return errorMessage;
     }
@@ -70,10 +67,7 @@ class ValidatorUtil {
     return null;
   }
 
-  static String? passwordValidator(
-    String? value, {
-    String? errorMessage,
-  }) {
+  static String? passwordValidator(String? value, {String? errorMessage}) {
     if (errorMessage != null) {
       return errorMessage;
     }
@@ -87,10 +81,7 @@ class ValidatorUtil {
     return null;
   }
 
-  static String? notEmptyFieldValidator(
-    String? value, {
-    String? errorLabel,
-  }) {
+  static String? notEmptyFieldValidator(String? value, {String? errorLabel}) {
     if (value == null || value.isEmpty) {
       return errorLabel ?? Localization.currentLocalizations.requiredFillIn;
     }
@@ -110,9 +101,7 @@ class ValidatorUtil {
   //   return null;
   // }
 
-  static bool? showTips(
-    String? value,
-  ) {
+  static bool? showTips(String? value) {
     if (value == null || value.isEmpty) {
       return false;
     }

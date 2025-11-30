@@ -5,19 +5,19 @@ import 'package:haji_market/src/feature/seller/profile/data/repository/profile_m
 
 import '../model/profile_month_admin_statics.dart';
 
-class ProfileMonthStaticsAdminCubit
-    extends Cubit<ProfileMonthStaticsAdminState> {
+class ProfileMonthStaticsAdminCubit extends Cubit<ProfileMonthStaticsAdminState> {
   final ProfileMonthStaticsAdminRepository profileMonthStaticsBloggerRepository;
 
-  ProfileMonthStaticsAdminCubit(
-      {required this.profileMonthStaticsBloggerRepository})
-      : super(InitState());
+  ProfileMonthStaticsAdminCubit({required this.profileMonthStaticsBloggerRepository})
+    : super(InitState());
 
   Future<void> statics(int year, int month) async {
     try {
       emit(LoadingState());
-      final List<ProfileMonthStatics> data =
-          await profileMonthStaticsBloggerRepository.statics(year, month);
+      final List<ProfileMonthStatics> data = await profileMonthStaticsBloggerRepository.statics(
+        year,
+        month,
+      );
 
       // if (data != null) {
       emit(LoadedState(loadedProfile: data));

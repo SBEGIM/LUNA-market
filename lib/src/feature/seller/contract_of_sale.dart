@@ -274,11 +274,7 @@ class _ContractOfSale extends State<ContractOfSale> {
         ),
         centerTitle: true,
       ),
-      body: SingleChildScrollView(
-        child: Html(
-          data: htmlData,
-        ),
-      ),
+      body: SingleChildScrollView(child: Html(data: htmlData)),
     );
   }
 }

@@ -10,8 +10,7 @@ const baseUrl = 'https://lunamarket.ru/api';
 class RecentlyWatchedRepository {
   final ProductApi _productApi = ProductApi();
 
-  Future<List<ProductModel>> product(FilterProvider filters) =>
-      _productApi.product(filters);
+  Future<List<ProductModel>> product(FilterProvider filters) => _productApi.product(filters);
 }
 
 class ProductApi {
@@ -40,20 +39,13 @@ class ProductApi {
 
     final String? token = _box.read('token');
 
-    final uri = Uri.parse('$baseUrl/shop/recently/watched')
-        .replace(queryParameters: queryParams);
+    final uri = Uri.parse('$baseUrl/shop/recently/watched').replace(queryParameters: queryParams);
 
-    final response = await http.get(
-      uri,
-      headers: {
-        "Authorization": "Bearer $token",
-      },
-    );
+    final response = await http.get(uri, headers: {"Authorization": "Bearer $token"});
 
     final data = jsonDecode(response.body);
 
-    final products =
-        (data['data'] as List).map((e) => ProductModel.fromJson(e)).toList();
+    final products = (data['data'] as List).map((e) => ProductModel.fromJson(e)).toList();
 
     return products;
   }

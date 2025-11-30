@@ -1,8 +1,5 @@
 class RespublicModel {
-  RespublicModel({
-    int? id,
-    String? name,
-  }) {
+  RespublicModel({int? id, String? name}) {
     _id = id;
     _name = name;
   }

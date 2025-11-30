@@ -9,15 +9,13 @@ class CityRepository {
   final CityApi _cityApi = CityApi();
 
   Future<List<CityModel>> cityApi() => _cityApi.cities();
-  Future<List<CityModel>> cityCdekApi(countryCode) =>
-      _cityApi.citiesCdek(countryCode);
+  Future<List<CityModel>> cityCdekApi(countryCode) => _cityApi.citiesCdek(countryCode);
 }
 
 class CityApi {
   Future<List<CityModel>> cities() async {
     final cityId = GetStorage().read('user_country_id');
-    final response =
-        await http.get(Uri.parse('$baseUrl/list/city?country_id=$cityId'));
+    final response = await http.get(Uri.parse('$baseUrl/list/city?country_id=$cityId'));
 
     final data = jsonDecode(response.body);
 
@@ -25,8 +23,7 @@ class CityApi {
   }
 
   Future<List<CityModel>> citiesCdek(countryCode) async {
-    final response = await http
-        .get(Uri.parse('$baseUrl/list/city?country_code=$countryCode'));
+    final response = await http.get(Uri.parse('$baseUrl/list/city?country_code=$countryCode'));
 
     final data = jsonDecode(response.body);
 

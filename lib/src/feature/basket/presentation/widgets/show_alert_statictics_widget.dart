@@ -10,8 +10,7 @@ import 'package:haji_market/src/feature/drawer/bloc/address_cubit.dart';
 import 'package:haji_market/src/feature/drawer/bloc/address_state.dart';
 import '../../../../core/common/constants.dart';
 
-Future<dynamic> showAlertAddressWidget(
-    BuildContext context, Function()? callBack) async {
+Future<dynamic> showAlertAddressWidget(BuildContext context, Function()? callBack) async {
   String? country;
   String? city;
   String? street;
@@ -22,28 +21,28 @@ Future<dynamic> showAlertAddressWidget(
 
   return showCupertinoModalPopup(
     context: context,
-    builder: (BuildContext context) =>
-        StatefulBuilder(builder: (context, setState) {
-      return CustomCupertinoActionSheet(
-        actions: <Widget>[
-          CupertinoActionSheetAction(
-            child: const Text(
-              'Выберите адрес доставки',
-              style:
-                  TextStyle(color: Colors.black, fontWeight: FontWeight.w500),
+    builder: (BuildContext context) => StatefulBuilder(
+      builder: (context, setState) {
+        return CustomCupertinoActionSheet(
+          actions: <Widget>[
+            CupertinoActionSheetAction(
+              child: const Text(
+                'Выберите адрес доставки',
+                style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500),
+              ),
+              onPressed: () {},
             ),
-            onPressed: () {},
-          ),
-          CupertinoActionSheetAction(
-            child: BlocConsumer<AddressCubit, AddressState>(
-              listener: (context, state) {},
-              builder: (context, state) {
-                if (state is LoadedState) {
-                  return Container(
-                    constraints: BoxConstraints(
-                        maxHeight: (MediaQuery.of(context).size.height) * 0.85),
-                    height: state.addressModel.length * 50,
-                    child: ListView.builder(
+            CupertinoActionSheetAction(
+              child: BlocConsumer<AddressCubit, AddressState>(
+                listener: (context, state) {},
+                builder: (context, state) {
+                  if (state is LoadedState) {
+                    return Container(
+                      constraints: BoxConstraints(
+                        maxHeight: (MediaQuery.of(context).size.height) * 0.85,
+                      ),
+                      height: state.addressModel.length * 50,
+                      child: ListView.builder(
                         itemCount: state.addressModel.length,
                         itemBuilder: (context, int index) {
                           return SizedBox(
@@ -70,8 +69,7 @@ Future<dynamic> showAlertAddressWidget(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
                                   Icon(
-                                    GetStorage().read('basket_address_box') ==
-                                            index
+                                    GetStorage().read('basket_address_box') == index
                                         ? Icons.check_circle
                                         : Icons.check_box_outline_blank,
                                     color: AppColors.kPrimaryColor,
@@ -83,9 +81,10 @@ Future<dynamic> showAlertAddressWidget(
                                     child: Text(
                                       "${(state.addressModel[index].country ?? '*') + ', г. ' + (state.addressModel[index].city ?? '*') + ', ул. ' + (state.addressModel[index].street ?? '*') + ', дом ' + (state.addressModel[index].home ?? '*') + ',подъезд ' + (state.addressModel[index].porch ?? '*') + ',этаж ' + (state.addressModel[index].floor ?? '*') + ',кв ' + (state.addressModel[index].room ?? '*')}",
                                       style: const TextStyle(
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 16),
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 16,
+                                      ),
                                       maxLines: 1,
                                     ),
                                   ),
@@ -104,16 +103,16 @@ Future<dynamic> showAlertAddressWidget(
                                       Navigator.pop(context);
 
                                       showAlertEditDestroyWidget(
-                                              context,
-                                              state.addressModel[index].id!,
-                                              state.addressModel[index].country,
-                                              state.addressModel[index].city,
-                                              state.addressModel[index].street,
-                                              state.addressModel[index].home,
-                                              state.addressModel[index].floor,
-                                              state.addressModel[index].porch,
-                                              state.addressModel[index].room)
-                                          .whenComplete(() {
+                                        context,
+                                        state.addressModel[index].id!,
+                                        state.addressModel[index].country,
+                                        state.addressModel[index].city,
+                                        state.addressModel[index].street,
+                                        state.addressModel[index].home,
+                                        state.addressModel[index].floor,
+                                        state.addressModel[index].porch,
+                                        state.addressModel[index].room,
+                                      ).whenComplete(() {
                                         callBack?.call();
                                       });
                                     },
@@ -127,86 +126,84 @@ Future<dynamic> showAlertAddressWidget(
                               ),
                             ),
                           );
-                        }),
-                  );
-                } else if (state is NoDataState) {
-                  return SizedBox(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        Image.asset('assets/icons/no_data.png'),
-                        const Text(
-                          'У вас нет адресов для доставки',
-                          style: TextStyle(
+                        },
+                      ),
+                    );
+                  } else if (state is NoDataState) {
+                    return SizedBox(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          Image.asset('assets/icons/no_data.png'),
+                          const Text(
+                            'У вас нет адресов для доставки',
+                            style: TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.w600,
-                              color: Colors.black),
-                          textAlign: TextAlign.center,
-                        ),
-                        const Text(
-                          'Добавьте адреса для доставки товаров',
-                          style: TextStyle(
+                              color: Colors.black,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                          const Text(
+                            'Добавьте адреса для доставки товаров',
+                            style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w400,
-                              color: Color(0xff717171)),
-                          textAlign: TextAlign.center,
-                        )
-                      ],
-                    ),
-                  );
-                } else {
-                  return const CircularProgressIndicator(
-                    backgroundColor: Colors.blueAccent,
-                  );
-                }
-              },
+                              color: Color(0xff717171),
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
+                      ),
+                    );
+                  } else {
+                    return const CircularProgressIndicator(backgroundColor: Colors.blueAccent);
+                  }
+                },
+              ),
+              onPressed: () {},
             ),
-            onPressed: () {},
-          ),
-          GestureDetector(
+            GestureDetector(
+              onTap: () {
+                // showAlertAddWidget(context, product);
+                Navigator.pop(context);
+                showAlertStoreWidget(context);
+              },
+              child: CupertinoActionSheetAction(
+                child: const Text(
+                  'Добавить новый адрес',
+                  style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500, fontSize: 16),
+                ),
+                onPressed: () {},
+              ),
+            ),
+          ],
+          cancelButton: GestureDetector(
             onTap: () {
-              // showAlertAddWidget(context, product);
-              Navigator.pop(context);
-              showAlertStoreWidget(context);
+              country != null ? GetStorage().write('country', country) : null;
+              city != null ? GetStorage().write('city', city) : null;
+              street != null ? GetStorage().write('street', street) : null;
+              home != null ? GetStorage().write('home', home) : null;
+              porch != null ? GetStorage().write('porch', porch) : null;
+              floor != null ? GetStorage().write('floor', floor) : null;
+              room != null ? GetStorage().write('home', room) : null;
+
+              // Get.back();
+              Get.back();
+              // Get.to(() => new BasketOrderAddressPage());
+              callBack?.call();
             },
             child: CupertinoActionSheetAction(
               child: const Text(
-                'Добавить новый адрес',
-                style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.w500,
-                    fontSize: 16),
+                'Выбрать',
+                style: TextStyle(color: AppColors.kPrimaryColor, fontWeight: FontWeight.w600),
               ),
               onPressed: () {},
             ),
           ),
-        ],
-        cancelButton: GestureDetector(
-          onTap: () {
-            country != null ? GetStorage().write('country', country) : null;
-            city != null ? GetStorage().write('city', city) : null;
-            street != null ? GetStorage().write('street', street) : null;
-            home != null ? GetStorage().write('home', home) : null;
-            porch != null ? GetStorage().write('porch', porch) : null;
-            floor != null ? GetStorage().write('floor', floor) : null;
-            room != null ? GetStorage().write('home', room) : null;
-
-            // Get.back();
-            Get.back();
-            // Get.to(() => new BasketOrderAddressPage());
-            callBack?.call();
-          },
-          child: CupertinoActionSheetAction(
-            child: const Text(
-              'Выбрать',
-              style: TextStyle(
-                  color: AppColors.kPrimaryColor, fontWeight: FontWeight.w600),
-            ),
-            onPressed: () {},
-          ),
-        ),
-      );
-    }),
+        );
+      },
+    ),
   );
 }

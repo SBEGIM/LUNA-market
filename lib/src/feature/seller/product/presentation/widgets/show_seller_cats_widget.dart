@@ -4,8 +4,13 @@ import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/feature/home/data/model/cat_model.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
-void showSellerCatsOptions(BuildContext context, String title,
-    List<CatsModel> categories, bool? searchWidget, Function callback) {
+void showSellerCatsOptions(
+  BuildContext context,
+  String title,
+  List<CatsModel> categories,
+  bool? searchWidget,
+  Function callback,
+) {
   List<CatsModel> _filteredCategories = [...categories];
 
   int selectedCategory = -1;
@@ -27,9 +32,7 @@ void showSellerCatsOptions(BuildContext context, String title,
           return ConstrainedBox(
             constraints: BoxConstraints(
               minHeight: 350.0,
-              maxHeight: (_filteredCategories.length * 90)
-                  .clamp(350.0, 500.0)
-                  .toDouble(),
+              maxHeight: (_filteredCategories.length * 90).clamp(350.0, 500.0).toDouble(),
             ),
             child: Column(
               mainAxisSize: MainAxisSize.max,
@@ -38,22 +41,19 @@ void showSellerCatsOptions(BuildContext context, String title,
               children: [
                 // Заголовок и крестик
                 Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        title,
-                        style: AppTextStyles.size16Weight500,
-                      ),
+                      Text(title, style: AppTextStyles.size16Weight500),
                       InkWell(
-                          onTap: () => Navigator.of(context).pop(),
-                          child: Image.asset(
-                            Assets.icons.defaultCloseIcon.path,
-                            height: 24,
-                            width: 24,
-                          )),
+                        onTap: () => Navigator.of(context).pop(),
+                        child: Image.asset(
+                          Assets.icons.defaultCloseIcon.path,
+                          height: 24,
+                          width: 24,
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -80,19 +80,19 @@ void showSellerCatsOptions(BuildContext context, String title,
                                 controller: searchController,
                                 onChanged: (value) {
                                   setState(() {
-                                    _filteredCategories =
-                                        categories.where((cat) {
-                                      return (cat.name ?? '')
-                                          .toLowerCase()
-                                          .contains(value.toLowerCase());
+                                    _filteredCategories = categories.where((cat) {
+                                      return (cat.name ?? '').toLowerCase().contains(
+                                        value.toLowerCase(),
+                                      );
                                     }).toList();
                                   });
                                 },
                                 style: AppTextStyles.size16Weight400,
                                 decoration: InputDecoration(
                                   hintText: 'Поиск',
-                                  hintStyle: AppTextStyles.size16Weight400
-                                      .copyWith(color: Color(0xFF8E8E93)),
+                                  hintStyle: AppTextStyles.size16Weight400.copyWith(
+                                    color: Color(0xFF8E8E93),
+                                  ),
                                   border: InputBorder.none,
                                 ),
                               ),
@@ -110,8 +110,9 @@ void showSellerCatsOptions(BuildContext context, String title,
                     margin: EdgeInsets.symmetric(horizontal: 16),
                     padding: EdgeInsets.zero,
                     decoration: BoxDecoration(
-                        color: AppColors.kWhite,
-                        borderRadius: BorderRadius.circular(12)),
+                      color: AppColors.kWhite,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
                     child: ListView.builder(
                       shrinkWrap: true,
                       padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -119,9 +120,9 @@ void showSellerCatsOptions(BuildContext context, String title,
                       itemBuilder: (context, index) {
                         final category = categories[index];
                         final isSelected = category.id == selectedCategory;
-                        final isMatch = category.name!
-                            .toLowerCase()
-                            .contains(searchController.text.toLowerCase());
+                        final isMatch = category.name!.toLowerCase().contains(
+                          searchController.text.toLowerCase(),
+                        );
 
                         if (!isMatch) return const SizedBox.shrink();
 
@@ -142,10 +143,7 @@ void showSellerCatsOptions(BuildContext context, String title,
                               boxShadow: null,
                               // borderRadius: BorderRadius.circular(8),
                               border: const Border(
-                                bottom: BorderSide(
-                                  color: Color(0xffEAECED),
-                                  width: 1,
-                                ),
+                                bottom: BorderSide(color: Color(0xffEAECED), width: 1),
                               ),
                             ),
                             child: Row(
@@ -155,12 +153,8 @@ void showSellerCatsOptions(BuildContext context, String title,
                                 Text(
                                   category.name!,
                                   style: AppTextStyles.size16Weight400.copyWith(
-                                    color: isSelected
-                                        ? AppColors.mainPurpleColor
-                                        : Colors.black,
-                                    fontWeight: isSelected
-                                        ? FontWeight.w600
-                                        : FontWeight.w400,
+                                    color: isSelected ? AppColors.mainPurpleColor : Colors.black,
+                                    fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
                                   ),
                                 ),
                                 if (isSelected)
@@ -182,8 +176,7 @@ void showSellerCatsOptions(BuildContext context, String title,
 
                 // Кнопка "Выбрать"
                 Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
                   child: SizedBox(
                     width: double.infinity,
                     height: 48,
@@ -194,13 +187,12 @@ void showSellerCatsOptions(BuildContext context, String title,
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.mainPurpleColor,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                       ),
-                      child: Text("Выбрать",
-                          style: AppTextStyles.size18Weight600
-                              .copyWith(color: AppColors.kWhite)),
+                      child: Text(
+                        "Выбрать",
+                        style: AppTextStyles.size18Weight600.copyWith(color: AppColors.kWhite),
+                      ),
                     ),
                   ),
                 ),

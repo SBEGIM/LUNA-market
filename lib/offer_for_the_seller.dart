@@ -1,11 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 
-class OfferForTheSeller extends StatefulWidget {
-  const OfferForTheSeller({Key? key}) : super(key: key);
+class OfferForTheSeller extends StatelessWidget {
+  const OfferForTheSeller({super.key});
 
   @override
-  _OfferForTheSeller createState() => _OfferForTheSeller();
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.black,
+        title: const Text(
+          'Оферта для продавцов',
+          style: TextStyle(color: Colors.white, fontSize: 15),
+        ),
+        centerTitle: true,
+      ),
+      body: SingleChildScrollView(child: Html(data: htmlData)),
+    );
+  }
 }
 
 const htmlData = r"""
@@ -241,24 +253,3 @@ const htmlData = r"""
 <tr style="height: 0pt;">
 <td style="vertical-align: top; padding: 5pt 5pt 5pt 5pt; overflow: hidden; overflow-wrap: break-word; border: solid #d9d9d9 1pt;">
 """;
-
-class _OfferForTheSeller extends State<OfferForTheSeller> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.black,
-        title: const Text(
-          'Оферта для продавцов',
-          style: TextStyle(color: Colors.white, fontSize: 15),
-        ),
-        centerTitle: true,
-      ),
-      body: SingleChildScrollView(
-        child: Html(
-          data: htmlData,
-        ),
-      ),
-    );
-  }
-}

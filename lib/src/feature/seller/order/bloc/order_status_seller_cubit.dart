@@ -9,20 +9,17 @@ class OrderStatusSellerCubit extends Cubit<OrderStatusSellerState> {
   final BasketSellerRepository basketAdminRepository;
   final BasketRepository basketRepository;
 
-  OrderStatusSellerCubit(this.basketRepository,
-      {required this.basketAdminRepository})
-      : super(InitState());
+  OrderStatusSellerCubit(this.basketRepository, {required this.basketAdminRepository})
+    : super(InitState());
 
   void toInitState() {
     emit(InitState());
   }
 
-  Future<void> basketStatus(
-      String status, String id, productId, String fulfillment) async {
+  Future<void> basketStatus(String status, String id, productId, String fulfillment) async {
     emit(LoadingState());
     try {
-      await basketAdminRepository.basketStatus(
-          status, id, productId, fulfillment);
+      await basketAdminRepository.basketStatus(status, id, productId, fulfillment);
 
       emit(LoadedState());
     } catch (e) {

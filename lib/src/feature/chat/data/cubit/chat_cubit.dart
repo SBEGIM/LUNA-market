@@ -51,8 +51,7 @@ class ChatCubit extends Cubit<ChatState> {
 
     List<ChatModel> temp = [];
     for (int i = 0; i < _chats.length; i++) {
-      if (_chats[i].name != null &&
-          _chats[i].name!.toLowerCase().contains(name.toLowerCase())) {
+      if (_chats[i].name != null && _chats[i].name!.toLowerCase().contains(name.toLowerCase())) {
         temp.add(_chats[i]);
       }
     }

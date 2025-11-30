@@ -1,11 +1,5 @@
 class BonusModel {
-  BonusModel({
-    int? id,
-    String? name,
-    String? logo,
-    String? image,
-    int? bonus,
-  }) {
+  BonusModel({int? id, String? name, String? logo, String? image, int? bonus}) {
     _id = id;
     _name = name;
     _logo = logo;

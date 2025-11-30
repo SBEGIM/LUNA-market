@@ -27,29 +27,18 @@ class Toaster {
         borderRadius: BorderRadius.circular(radius),
         color: color ?? Colors.white,
         boxShadow: const [
-          BoxShadow(
-            color: Color(0x28000000),
-            blurRadius: 24,
-          ),
-          BoxShadow(
-            color: Color(0x14000000),
-            blurRadius: 2,
-          ),
+          BoxShadow(color: Color(0x28000000), blurRadius: 24),
+          BoxShadow(color: Color(0x14000000), blurRadius: 2),
         ],
       ),
-      child: body ??
+      child:
+          body ??
           Row(
             mainAxisSize: MainAxisSize.min,
             children: [
               const Icon(Icons.done),
               const SizedBox(width: 12),
-              Text(
-                message,
-                style: const TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
+              Text(message, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
             ],
           ),
     );
@@ -59,12 +48,7 @@ class Toaster {
       gravity: ToastGravity.TOP,
       toastDuration: const Duration(milliseconds: 1500),
       positionedToastBuilder: (context, child, gravity) {
-        return Positioned(
-          top: 50.0,
-          left: 0,
-          right: 0,
-          child: child,
-        );
+        return Positioned(top: 50.0, left: 0, right: 0, child: child);
       },
     );
   }
@@ -73,8 +57,7 @@ class Toaster {
     BuildContext context,
     String message, {
     double radius = 12,
-    EdgeInsetsGeometry? padding =
-        const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+    EdgeInsetsGeometry? padding = const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
     Color? color,
     Widget? body,
   }) {
@@ -89,27 +72,16 @@ class Toaster {
           // border: Border.all(color: Colors.black, width: 0.5),
           color: color ?? Colors.white,
           boxShadow: const [
-            BoxShadow(
-              offset: Offset(0, 1),
-              color: Color.fromRGBO(12, 12, 13, 0.05),
-              blurRadius: 4,
-            ),
-            BoxShadow(
-              offset: Offset(0, 1),
-              color: Color.fromRGBO(12, 12, 13, 0.1),
-              blurRadius: 4,
-            ),
+            BoxShadow(offset: Offset(0, 1), color: Color.fromRGBO(12, 12, 13, 0.05), blurRadius: 4),
+            BoxShadow(offset: Offset(0, 1), color: Color.fromRGBO(12, 12, 13, 0.1), blurRadius: 4),
           ],
         ),
-        child: body ??
+        child:
+            body ??
             Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                SvgPicture.asset(
-                  Assets.icons.accountPng.path,
-                  width: 22,
-                  height: 22,
-                ),
+                SvgPicture.asset(Assets.icons.accountPng.path, width: 22, height: 22),
                 const Gap(8),
                 Flexible(
                   child: Text(

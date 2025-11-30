@@ -11,8 +11,7 @@ import '../data/repository/product_seller_repository.dart';
 class ProductSellerCubit extends Cubit<ProductAdminState> {
   final ProductSellerRepository productAdminRepository;
 
-  ProductSellerCubit({required this.productAdminRepository})
-      : super(InitState());
+  ProductSellerCubit({required this.productAdminRepository}) : super(InitState());
 
   List<ProductSellerModel> productsList = [];
 
@@ -48,31 +47,32 @@ class ProductSellerCubit extends Cubit<ProductAdminState> {
     try {
       emit(LoadingState());
       final data = await productAdminRepository.update(
-          price,
-          count,
-          compound,
-          catId,
-          subCatId,
-          brandId,
-          colorId,
-          description,
-          name,
-          height,
-          width,
-          massa,
-          productId,
-          articul,
-          currency,
-          isSwitchedBs,
-          deep,
-          image,
-          optom,
-          size,
-          fulfillment,
-          video,
-          point,
-          pointBlogger,
-          subIds);
+        price,
+        count,
+        compound,
+        catId,
+        subCatId,
+        brandId,
+        colorId,
+        description,
+        name,
+        height,
+        width,
+        massa,
+        productId,
+        articul,
+        currency,
+        isSwitchedBs,
+        deep,
+        image,
+        optom,
+        size,
+        fulfillment,
+        video,
+        point,
+        pointBlogger,
+        subIds,
+      );
 
       if (data == 200) {
         emit(InitState());
@@ -80,13 +80,15 @@ class ProductSellerCubit extends Cubit<ProductAdminState> {
       }
       if (data == 400) {
         emit(InitState());
-        Get.snackbar('Ошибка запроса!', 'Неверный телефон или пароль',
-            backgroundColor: Colors.redAccent);
+        Get.snackbar(
+          'Ошибка запроса!',
+          'Неверный телефон или пароль',
+          backgroundColor: Colors.redAccent,
+        );
       }
       if (data == 500) {
         emit(InitState());
-        Get.snackbar('500', 'Ошибка сервера',
-            backgroundColor: Colors.redAccent);
+        Get.snackbar('500', 'Ошибка сервера', backgroundColor: Colors.redAccent);
       }
     } catch (e) {
       log(e.toString());
@@ -95,57 +97,59 @@ class ProductSellerCubit extends Cubit<ProductAdminState> {
   }
 
   Future<void> store(
-      String price,
-      String count,
-      String compound,
-      String catId,
-      String? subCatId,
-      String? brandId,
-      String colorId,
-      String description,
-      String name,
-      String height,
-      String width,
-      String massa,
-      String point,
-      String pointBlogger,
-      String articul,
-      String currency,
-      bool isSwitchedBs,
-      String deep,
-      List<dynamic> image,
-      List<OptomPriceSellerDto> optom,
-      List<SizeCountSellerDto> size,
-      fulfillment,
-      List<int>? subIds,
-      String? video) async {
+    String price,
+    String count,
+    String compound,
+    String catId,
+    String? subCatId,
+    String? brandId,
+    String colorId,
+    String description,
+    String name,
+    String height,
+    String width,
+    String massa,
+    String point,
+    String pointBlogger,
+    String articul,
+    String currency,
+    bool isSwitchedBs,
+    String deep,
+    List<dynamic> image,
+    List<OptomPriceSellerDto> optom,
+    List<SizeCountSellerDto> size,
+    fulfillment,
+    List<int>? subIds,
+    String? video,
+  ) async {
     try {
       emit(LoadingState());
       final data = await productAdminRepository.store(
-          price,
-          count,
-          compound,
-          catId,
-          subCatId,
-          brandId,
-          colorId,
-          description,
-          name,
-          height,
-          width,
-          massa,
-          point,
-          pointBlogger,
-          articul,
-          currency,
-          isSwitchedBs,
-          deep,
-          image,
-          optom,
-          size,
-          fulfillment,
-          subIds,
-          video);
+        price,
+        count,
+        compound,
+        catId,
+        subCatId,
+        brandId,
+        colorId,
+        description,
+        name,
+        height,
+        width,
+        massa,
+        point,
+        pointBlogger,
+        articul,
+        currency,
+        isSwitchedBs,
+        deep,
+        image,
+        optom,
+        size,
+        fulfillment,
+        subIds,
+        video,
+      );
 
       if (data == 200) {
         emit(StoreState());
@@ -153,13 +157,15 @@ class ProductSellerCubit extends Cubit<ProductAdminState> {
       }
       if (data == 400) {
         emit(LoadedState(productsList));
-        Get.snackbar('Ошибка запроса!', 'Неверный телефон или пароль',
-            backgroundColor: Colors.redAccent);
+        Get.snackbar(
+          'Ошибка запроса!',
+          'Неверный телефон или пароль',
+          backgroundColor: Colors.redAccent,
+        );
       }
       if (data == 500) {
         emit(LoadedState(productsList));
-        Get.snackbar('500', 'Ошибка сервера',
-            backgroundColor: Colors.redAccent);
+        Get.snackbar('500', 'Ошибка сервера', backgroundColor: Colors.redAccent);
       }
     } catch (e) {
       emit(InitState());
@@ -172,8 +178,7 @@ class ProductSellerCubit extends Cubit<ProductAdminState> {
     try {
       page = 1;
       emit(LoadingState());
-      final List<ProductSellerModel> data =
-          await productAdminRepository.products(name, page);
+      final List<ProductSellerModel> data = await productAdminRepository.products(name, page);
       productsList.clear();
       data.forEach((element) {
         productsList.add(element);
@@ -189,8 +194,7 @@ class ProductSellerCubit extends Cubit<ProductAdminState> {
     try {
       page++;
       // emit(LoadingState());
-      final List<ProductSellerModel> data =
-          await productAdminRepository.products(name, page);
+      final List<ProductSellerModel> data = await productAdminRepository.products(name, page);
       // productsList.clear();
       // productsList.addAll(data);
       for (int i = 0; i < data.length; i++) {
@@ -218,8 +222,7 @@ class ProductSellerCubit extends Cubit<ProductAdminState> {
 
     if (data == 500) {
       emit(InitState());
-      Get.snackbar('Ошибка удаление', 'У продукта есть заказы',
-          backgroundColor: Colors.redAccent);
+      Get.snackbar('Ошибка удаление', 'У продукта есть заказы', backgroundColor: Colors.redAccent);
     }
 
     return data;

@@ -7,10 +7,7 @@ import 'package:haji_market/src/feature/my_order/presentation/widget/my_order_st
 class MyOrderCardWidget extends StatefulWidget {
   final BasketOrderModel basketOrder;
 
-  const MyOrderCardWidget({
-    Key? key,
-    required this.basketOrder,
-  }) : super(key: key);
+  const MyOrderCardWidget({Key? key, required this.basketOrder}) : super(key: key);
 
   @override
   State<MyOrderCardWidget> createState() => _MyOrderCardWidgetState();
@@ -107,8 +104,7 @@ class _MyOrderCardWidgetState extends State<MyOrderCardWidget> {
             ? Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) =>
-                      MyOrderStatusPage(basketOrder: widget.basketOrder),
+                  builder: (context) => MyOrderStatusPage(basketOrder: widget.basketOrder),
                 ),
               )
             : printError();
@@ -119,10 +115,7 @@ class _MyOrderCardWidgetState extends State<MyOrderCardWidget> {
           Container(
             width: MediaQuery.of(context).size.width,
             padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(16),
-            ),
+            decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(16)),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -132,13 +125,13 @@ class _MyOrderCardWidgetState extends State<MyOrderCardWidget> {
                     Text(
                       '№${widget.basketOrder.id}',
                       textAlign: TextAlign.right,
-                      style: AppTextStyles.size14Weight500
-                          .copyWith(color: const Color(0xff8E8E93)),
+                      style: AppTextStyles.size14Weight500.copyWith(color: const Color(0xff8E8E93)),
                     ),
                     Text(
                       _statusText,
                       style: AppTextStyles.size14Weight500.copyWith(
-                          color: statusColor(widget.basketOrder.status)),
+                        color: statusColor(widget.basketOrder.status),
+                      ),
                     ),
                   ],
                 ),
@@ -152,13 +145,15 @@ class _MyOrderCardWidgetState extends State<MyOrderCardWidget> {
                         children: [
                           Text(
                             '${widget.basketOrder.deliveryDay} дней',
-                            style: AppTextStyles.size16Weight500
-                                .copyWith(color: const Color(0xff3A3A3C)),
+                            style: AppTextStyles.size16Weight500.copyWith(
+                              color: const Color(0xff3A3A3C),
+                            ),
                           ),
                           Text(
                             '${widget.basketOrder.summa} ₽',
-                            style: AppTextStyles.size16Weight700
-                                .copyWith(color: const Color(0xff3A3A3C)),
+                            style: AppTextStyles.size16Weight700.copyWith(
+                              color: const Color(0xff3A3A3C),
+                            ),
                           ),
                         ],
                       ),
@@ -174,14 +169,10 @@ class _MyOrderCardWidgetState extends State<MyOrderCardWidget> {
                     physics: const NeverScrollableScrollPhysics(),
                     itemCount: widget.basketOrder.product?.length ?? 0,
                     itemBuilder: (BuildContext context, int i) {
-                      final path =
-                          widget.basketOrder.product?[i].path?.isNotEmpty ==
-                                  true
-                              ? widget.basketOrder.product![i].path!.first
-                              : null;
-                      final url = path != null
-                          ? 'https://lunamarket.ru/storage/$path'
+                      final path = widget.basketOrder.product?[i].path?.isNotEmpty == true
+                          ? widget.basketOrder.product![i].path!.first
                           : null;
+                      final url = path != null ? 'https://lunamarket.ru/storage/$path' : null;
 
                       final dpr = MediaQuery.of(context).devicePixelRatio;
                       final cacheSize = (48 * dpr).round();
@@ -208,9 +199,7 @@ class _MyOrderCardWidgetState extends State<MyOrderCardWidget> {
                                     child: SizedBox(
                                       width: 18,
                                       height: 18,
-                                      child: CircularProgressIndicator(
-                                        strokeWidth: 2,
-                                      ),
+                                      child: CircularProgressIndicator(strokeWidth: 2),
                                     ),
                                   );
                                 },

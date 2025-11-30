@@ -6,10 +6,7 @@ part 'common_dto.g.dart';
 /// This [CommonDTO] class will be used for objects such as the city, the student's class, etc
 @freezed
 sealed class CommonDTO with _$CommonDTO {
-  const factory CommonDTO({
-    required int id,
-    String? name,
-  }) = _CommonDTO;
+  const factory CommonDTO({required int id, String? name}) = _CommonDTO;
 
   factory CommonDTO.fromJson(Map<String, dynamic> json) => _$CommonDTOFromJson(json);
 }

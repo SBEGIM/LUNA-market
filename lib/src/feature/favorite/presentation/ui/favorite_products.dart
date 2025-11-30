@@ -11,16 +11,13 @@ import 'package:intl/intl.dart';
 class FavoriteProductsCardWidget extends StatefulWidget {
   final ProductModel product;
 
-  const FavoriteProductsCardWidget({required this.product, Key? key})
-      : super(key: key);
+  const FavoriteProductsCardWidget({required this.product, Key? key}) : super(key: key);
 
   @override
-  State<FavoriteProductsCardWidget> createState() =>
-      _FavoriteProductsCardWidgetState();
+  State<FavoriteProductsCardWidget> createState() => _FavoriteProductsCardWidgetState();
 }
 
-class _FavoriteProductsCardWidgetState
-    extends State<FavoriteProductsCardWidget> {
+class _FavoriteProductsCardWidgetState extends State<FavoriteProductsCardWidget> {
   int count = 0;
   bool isvisible = false;
   bool inFavorite = false;
@@ -34,13 +31,13 @@ class _FavoriteProductsCardWidgetState
       isvisible = true;
     }
     inFavorite = widget.product.inFavorite ?? false;
-    compoundPrice = (widget.product.price!.toInt() *
-            (((100 - widget.product.compound!.toInt())) / 100))
-        .toInt();
+    compoundPrice =
+        (widget.product.price!.toInt() * (((100 - widget.product.compound!.toInt())) / 100))
+            .toInt();
     procentPrice =
         ((widget.product.price!.toInt() - widget.product.compound!.toInt()) /
-                widget.product.price!.toInt()) *
-            100;
+            widget.product.price!.toInt()) *
+        100;
     super.initState();
   }
 
@@ -80,8 +77,7 @@ class _FavoriteProductsCardWidgetState
                         borderRadius: BorderRadius.circular(16),
                       ),
                       child: ClipRRect(
-                        borderRadius: BorderRadius.circular(
-                            12), // Slightly smaller than container
+                        borderRadius: BorderRadius.circular(12), // Slightly smaller than container
                         child: Image.network(
                           widget.product.path != null
                               ? "https://lunamarket.ru/storage/${widget.product.path!.first}"
@@ -93,21 +89,18 @@ class _FavoriteProductsCardWidgetState
                               color: Colors.grey[100],
                               child: Center(
                                 child: CircularProgressIndicator(
-                                  value: loadingProgress.expectedTotalBytes !=
-                                          null
+                                  value: loadingProgress.expectedTotalBytes != null
                                       ? loadingProgress.cumulativeBytesLoaded /
-                                          loadingProgress.expectedTotalBytes!
+                                            loadingProgress.expectedTotalBytes!
                                       : null,
                                   strokeWidth: 2,
                                 ),
                               ),
                             );
                           },
-                          errorBuilder: (context, error, stackTrace) =>
-                              Container(
+                          errorBuilder: (context, error, stackTrace) => Container(
                             color: Colors.grey[100],
-                            child: const Icon(Icons.broken_image,
-                                color: Colors.grey),
+                            child: const Icon(Icons.broken_image, color: Colors.grey),
                           ),
                         ),
                       ),
@@ -132,10 +125,8 @@ class _FavoriteProductsCardWidgetState
                     //     ),
                     //   ),
                     // ),
-
                     Padding(
-                      padding: const EdgeInsets.only(
-                          left: 8, right: 4, bottom: 8, top: 10),
+                      padding: const EdgeInsets.only(left: 8, right: 4, bottom: 8, top: 10),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -144,38 +135,34 @@ class _FavoriteProductsCardWidgetState
                             height: 22,
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
-                                color: AppColors.kYellowDark,
-                                borderRadius: BorderRadius.circular(24)),
-                            child: Text('0·0·12',
-                                style: AppTextStyles.size13Weight400),
+                              color: AppColors.kYellowDark,
+                              borderRadius: BorderRadius.circular(24),
+                            ),
+                            child: Text('0·0·12', style: AppTextStyles.size13Weight400),
                           ),
-                          const SizedBox(
-                            height: 4,
-                          ),
+                          const SizedBox(height: 4),
                           widget.product.point != 0
                               ? Container(
                                   width: 52,
                                   height: 22,
                                   alignment: Alignment.center,
                                   decoration: BoxDecoration(
-                                      gradient: LinearGradient(
-                                        begin: Alignment(-0.6,
-                                            -1), // приблизительное направление 128.49°
-                                        end: Alignment(1, 1),
-                                        colors: [
-                                          Color(0xFF7D2DFF),
-                                          Color(0xFF41DDFF),
-                                        ],
-                                        stops: [
-                                          0.2685,
-                                          1.0
-                                        ], // соответствуют 26.85% и 100%
-                                      ),
-                                      borderRadius: BorderRadius.circular(24)),
+                                    gradient: LinearGradient(
+                                      begin: Alignment(
+                                        -0.6,
+                                        -1,
+                                      ), // приблизительное направление 128.49°
+                                      end: Alignment(1, 1),
+                                      colors: [Color(0xFF7D2DFF), Color(0xFF41DDFF)],
+                                      stops: [0.2685, 1.0], // соответствуют 26.85% и 100%
+                                    ),
+                                    borderRadius: BorderRadius.circular(24),
+                                  ),
                                   child: Text(
                                     '${widget.product.point ?? 0}% Б',
-                                    style: AppTextStyles.size13Weight400
-                                        .copyWith(color: AppColors.kWhite),
+                                    style: AppTextStyles.size13Weight400.copyWith(
+                                      color: AppColors.kWhite,
+                                    ),
                                   ),
                                 )
                               : const SizedBox.shrink(),
@@ -314,22 +301,21 @@ class _FavoriteProductsCardWidgetState
                         ),
                         SizedBox(width: 8),
                         IconButton(
-                            onPressed: () async {
-                              final favorite =
-                                  BlocProvider.of<FavoriteCubit>(context);
-                              await favorite
-                                  .favorite(widget.product.id.toString());
-                              setState(() {
-                                inFavorite = !inFavorite;
-                              });
-                            },
-                            icon: Image.asset(
-                              Assets.icons.favoriteDetailProductIcon.path,
-                              scale: 1.9,
-                              color: inFavorite == true
-                                  ? const Color.fromRGBO(255, 50, 72, 1)
-                                  : Colors.grey,
-                            ))
+                          onPressed: () async {
+                            final favorite = BlocProvider.of<FavoriteCubit>(context);
+                            await favorite.favorite(widget.product.id.toString());
+                            setState(() {
+                              inFavorite = !inFavorite;
+                            });
+                          },
+                          icon: Image.asset(
+                            Assets.icons.favoriteDetailProductIcon.path,
+                            scale: 1.9,
+                            color: inFavorite == true
+                                ? const Color.fromRGBO(255, 50, 72, 1)
+                                : Colors.grey,
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -347,9 +333,10 @@ class _FavoriteProductsCardWidgetState
                             Text(
                               '${formatPrice(widget.product.price!)} ₽ ',
                               style: AppTextStyles.size14Weight600.copyWith(
-                                  decoration: TextDecoration.lineThrough,
-                                  color: Color(0xff8E8E93),
-                                  decorationColor: Color(0xff8E8E93)),
+                                decoration: TextDecoration.lineThrough,
+                                color: Color(0xff8E8E93),
+                                decorationColor: Color(0xff8E8E93),
+                              ),
                             ),
                           ],
                         )
@@ -362,94 +349,87 @@ class _FavoriteProductsCardWidgetState
                             fontSize: 14,
                           ),
                         ),
-                  const SizedBox(
-                    height: 7,
-                  ),
+                  const SizedBox(height: 7),
                   SizedBox(
-                      height: 25,
-                      width: MediaQuery.of(context).size.width * 0.55,
-                      child: Row(
-                        children: [
-                          Flexible(
-                            child: Container(
-                              padding: EdgeInsets.symmetric(horizontal: 8),
-                              constraints: const BoxConstraints(
-                                minWidth: 84,
+                    height: 25,
+                    width: MediaQuery.of(context).size.width * 0.55,
+                    child: Row(
+                      children: [
+                        Flexible(
+                          child: Container(
+                            padding: EdgeInsets.symmetric(horizontal: 8),
+                            constraints: const BoxConstraints(minWidth: 84),
+                            height: 32,
+                            decoration: BoxDecoration(
+                              color: AppColors.kYellowDark,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            alignment: Alignment.center,
+                            child: Text(
+                              '${formatPrice(int.parse((widget.product.price ?? 0 / 3).toString()))} ₽ / мес ',
+                              style: const TextStyle(
+                                color: Colors.black,
+                                fontSize: 11,
+                                letterSpacing: -1,
+                                fontWeight: FontWeight.w500,
                               ),
-                              height: 32,
+                            ),
+                          ),
+                        ),
+                        SizedBox(width: 8),
+                        Flexible(
+                          child: GestureDetector(
+                            onTap: () {
+                              if (count < 1) {
+                                BlocProvider.of<BasketCubit>(
+                                  context,
+                                ).basketAdd(widget.product.id.toString(), '1', 0, '', '');
+                                setState(() {
+                                  count += 1;
+                                  if (count == 0) {
+                                    isvisible = false;
+                                  } else {
+                                    isvisible = true;
+                                  }
+                                });
+                              } else {
+                                BlocProvider.of<BasketCubit>(
+                                  context,
+                                ).basketMinus(widget.product.id.toString(), '1', 0, 'fbs');
+                                setState(() {
+                                  if (count == 0) {
+                                    isvisible = false;
+                                  } else {
+                                    isvisible = true;
+                                  }
+                                  count -= 1;
+                                });
+                              }
+                            },
+                            child: Container(
+                              constraints: const BoxConstraints(minWidth: 84),
+                              height: 25,
                               decoration: BoxDecoration(
-                                color: AppColors.kYellowDark,
+                                color: count != 0 ? Color(0xFFD1D1D6) : AppColors.mainPurpleColor,
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               alignment: Alignment.center,
                               child: Text(
-                                '${formatPrice(int.parse((widget.product.price ?? 0 / 3).toString()))} ₽ / мес ',
-                                style: const TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 11,
-                                    letterSpacing: -1,
-                                    fontWeight: FontWeight.w500),
-                              ),
-                            ),
-                          ),
-                          SizedBox(width: 8),
-                          Flexible(
-                            child: GestureDetector(
-                              onTap: () {
-                                if (count < 1) {
-                                  BlocProvider.of<BasketCubit>(context)
-                                      .basketAdd(widget.product.id.toString(),
-                                          '1', 0, '', '');
-                                  setState(() {
-                                    count += 1;
-                                    if (count == 0) {
-                                      isvisible = false;
-                                    } else {
-                                      isvisible = true;
-                                    }
-                                  });
-                                } else {
-                                  BlocProvider.of<BasketCubit>(context)
-                                      .basketMinus(widget.product.id.toString(),
-                                          '1', 0, 'fbs');
-                                  setState(() {
-                                    if (count == 0) {
-                                      isvisible = false;
-                                    } else {
-                                      isvisible = true;
-                                    }
-                                    count -= 1;
-                                  });
-                                }
-                              },
-                              child: Container(
-                                constraints: const BoxConstraints(
-                                  minWidth: 84,
-                                ),
-                                height: 25,
-                                decoration: BoxDecoration(
-                                  color: count != 0
-                                      ? Color(0xFFD1D1D6)
-                                      : AppColors.mainPurpleColor,
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                alignment: Alignment.center,
-                                child: Text(
-                                  count == 0 ? 'В корзину' : 'В корзине ',
-                                  style: TextStyle(
-                                      color: count != 0
-                                          ? AppColors.kLightBlackColor
-                                          : Colors.white,
-                                      fontSize: 11,
-                                      fontWeight: FontWeight.w500),
+                                count == 0 ? 'В корзину' : 'В корзине ',
+                                style: TextStyle(
+                                  color: count != 0 ? AppColors.kLightBlackColor : Colors.white,
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.w500,
                                 ),
                               ),
                             ),
                           ),
-                        ],
-                      )),
+                        ),
+                      ],
+                    ),
+                  ),
                 ],
-              )
+              ),
             ],
           ),
         ),

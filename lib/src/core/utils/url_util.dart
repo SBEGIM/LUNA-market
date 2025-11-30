@@ -22,19 +22,10 @@ class UrlUtil {
       }
       final uri = Uri.parse(newUrl);
 
-      return launchUrl(
-        uri,
-        mode: mode,
-      );
+      return launchUrl(uri, mode: mode);
     } catch (e, st) {
-      TalkerLoggerUtil.talker.handle(
-        'UrlUtil.launch => $e',
-        st,
-      );
-      Toaster.showErrorTopShortToast(
-        context,
-        context.localized.invalidLinkFormat,
-      );
+      TalkerLoggerUtil.talker.handle('UrlUtil.launch => $e', st);
+      Toaster.showErrorTopShortToast(context, context.localized.invalidLinkFormat);
       return false;
     }
   }
@@ -102,52 +93,28 @@ class UrlUtil {
   //   }
   // }
 
-  static Future<bool> launchPhoneUrl(
-    BuildContext context, {
-    required String phone,
-  }) async {
+  static Future<bool> launchPhoneUrl(BuildContext context, {required String phone}) async {
     try {
-      final phoneLaunchUri = Uri(
-        scheme: 'tel',
-        path: phone,
-      );
+      final phoneLaunchUri = Uri(scheme: 'tel', path: phone);
 
       return launchUrl(phoneLaunchUri);
     } catch (e, st) {
-      TalkerLoggerUtil.talker.handle(
-        'UrlUtil.launchPhoneUrl => $e',
-        st,
-      );
+      TalkerLoggerUtil.talker.handle('UrlUtil.launchPhoneUrl => $e', st);
 
-      Toaster.showErrorTopShortToast(
-        context,
-        context.localized.invalidNumberFormat,
-      );
+      Toaster.showErrorTopShortToast(context, context.localized.invalidNumberFormat);
       return false;
     }
   }
 
-  static Future<bool> launchSMSUrl(
-    BuildContext context, {
-    required String phone,
-  }) async {
+  static Future<bool> launchSMSUrl(BuildContext context, {required String phone}) async {
     try {
-      final phoneLaunchUri = Uri(
-        scheme: 'sms',
-        path: phone,
-      );
+      final phoneLaunchUri = Uri(scheme: 'sms', path: phone);
 
       return launchUrl(phoneLaunchUri);
     } catch (e, st) {
-      TalkerLoggerUtil.talker.handle(
-        'UrlUtil.launchSMSUrl => $e',
-        st,
-      );
+      TalkerLoggerUtil.talker.handle('UrlUtil.launchSMSUrl => $e', st);
 
-      Toaster.showErrorTopShortToast(
-        context,
-        context.localized.invalidNumberFormat,
-      );
+      Toaster.showErrorTopShortToast(context, context.localized.invalidNumberFormat);
       return false;
     }
   }
@@ -165,15 +132,9 @@ class UrlUtil {
       );
       return launchUrl(phoneLaunchUri);
     } catch (e, st) {
-      TalkerLoggerUtil.talker.handle(
-        'UrlUtil.launchEmailUrl => $e',
-        st,
-      );
+      TalkerLoggerUtil.talker.handle('UrlUtil.launchEmailUrl => $e', st);
 
-      Toaster.showErrorTopShortToast(
-        context,
-        context.localized.incorrectEmailFormat,
-      );
+      Toaster.showErrorTopShortToast(context, context.localized.incorrectEmailFormat);
       return false;
     }
   }
@@ -188,23 +149,13 @@ class UrlUtil {
     try {
       final Uri phoneLaunchUri = Uri.parse(
         whatappUrlIos,
-      ).replace(
-        queryParameters: {
-          if (text != null) 'text': text,
-        },
-      );
+      ).replace(queryParameters: {if (text != null) 'text': text});
 
       return launchUrl(phoneLaunchUri, mode: LaunchMode.externalApplication);
     } catch (e, st) {
-      TalkerLoggerUtil.talker.handle(
-        'UrlUtil.launchWhatsappUrl => $e',
-        st,
-      );
+      TalkerLoggerUtil.talker.handle('UrlUtil.launchWhatsappUrl => $e', st);
 
-      Toaster.showErrorTopShortToast(
-        context,
-        context.localized.invalidNumberFormat,
-      );
+      Toaster.showErrorTopShortToast(context, context.localized.invalidNumberFormat);
       return false;
     }
   }
@@ -212,23 +163,21 @@ class UrlUtil {
   /// Converts fully qualified YouTube Url to video id.
   ///
   /// If videoId is passed as url then no conversion is done.
-  static String? convertUrlToYouTubeId(String url,
-      {bool trimWhitespaces = true}) {
+  static String? convertUrlToYouTubeId(String url, {bool trimWhitespaces = true}) {
     final result = url.trim();
     if (!result.contains('http') && (result.length == 11)) return url;
 
     for (final exp in [
+      RegExp(r'^https:\/\/(?:www\.|m\.)?youtube\.com\/watch\?v=([_\-a-zA-Z0-9]{11}).*$'),
+      RegExp(r'^https:\/\/(?:music\.)?youtube\.com\/watch\?v=([_\-a-zA-Z0-9]{11}).*$'),
+      RegExp(r'^https:\/\/(?:www\.|m\.)?youtube\.com\/shorts\/([_\-a-zA-Z0-9]{11}).*$'),
       RegExp(
-          r'^https:\/\/(?:www\.|m\.)?youtube\.com\/watch\?v=([_\-a-zA-Z0-9]{11}).*$'),
-      RegExp(
-          r'^https:\/\/(?:music\.)?youtube\.com\/watch\?v=([_\-a-zA-Z0-9]{11}).*$'),
-      RegExp(
-          r'^https:\/\/(?:www\.|m\.)?youtube\.com\/shorts\/([_\-a-zA-Z0-9]{11}).*$'),
-      RegExp(
-          r'^https:\/\/(?:www\.|m\.)?youtube(?:-nocookie)?\.com\/embed\/([_\-a-zA-Z0-9]{11}).*$'),
+        r'^https:\/\/(?:www\.|m\.)?youtube(?:-nocookie)?\.com\/embed\/([_\-a-zA-Z0-9]{11}).*$',
+      ),
       RegExp(r'^https:\/\/youtu\.be\/([_\-a-zA-Z0-9]{11}).*$'),
       RegExp(
-          r'^https:\/\/(?:www\.|m\.)?youtube\.com\/live\/([_\-a-zA-Z0-9]{11}).*$'), // Added RegExp for live videos
+        r'^https:\/\/(?:www\.|m\.)?youtube\.com\/live\/([_\-a-zA-Z0-9]{11}).*$',
+      ), // Added RegExp for live videos
     ]) {
       final Match? match = exp.firstMatch(result);
       if (match != null && match.groupCount >= 1) return match.group(1);

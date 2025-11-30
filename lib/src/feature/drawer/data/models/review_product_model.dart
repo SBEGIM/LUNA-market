@@ -1,13 +1,14 @@
 class ReviewProductModel {
-  ReviewProductModel(
-      {int? id,
-      User? user,
-      dynamic plus,
-      dynamic minus,
-      dynamic text,
-      int? rating,
-      dynamic date,
-      List<String>? images}) {
+  ReviewProductModel({
+    int? id,
+    User? user,
+    dynamic plus,
+    dynamic minus,
+    dynamic text,
+    int? rating,
+    dynamic date,
+    List<String>? images,
+  }) {
     _id = id;
     _user = user;
     _plus = plus;
@@ -63,11 +64,7 @@ class ReviewProductModel {
 }
 
 class User {
-  User({
-    String? first_name,
-    String? last_name,
-    dynamic avatar,
-  }) {
+  User({String? first_name, String? last_name, dynamic avatar}) {
     _first_name = first_name;
     _last_name = last_name;
     _avatar = avatar;
@@ -99,9 +96,7 @@ class User {
 }
 
 class Images {
-  Images({
-    String? image,
-  }) {
+  Images({String? image}) {
     _image = image;
   }
 

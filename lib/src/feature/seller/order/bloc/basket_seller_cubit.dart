@@ -16,8 +16,7 @@ class BasketSellerCubit extends Cubit<BasketAdminState> {
   Future<void> basketOrderShow(status) async {
     try {
       emit(LoadingState());
-      final List<BasketOrderSellerModel> data =
-          await basketRepository.basketOrderShow(status);
+      final List<BasketOrderSellerModel> data = await basketRepository.basketOrderShow(status);
       activeOrders.clear();
       activeOrders.addAll(data);
       emit(LoadedState(activeOrders, activeOrdersRealFBS, endOrders));
@@ -31,8 +30,9 @@ class BasketSellerCubit extends Cubit<BasketAdminState> {
     try {
       emit(LoadingState());
 
-      final List<BasketOrderSellerModel> data =
-          await basketRepository.basketOrderRealFbsShow('realFBS');
+      final List<BasketOrderSellerModel> data = await basketRepository.basketOrderRealFbsShow(
+        'realFBS',
+      );
       activeOrdersRealFBS.clear();
       activeOrdersRealFBS.addAll(data);
 
@@ -47,8 +47,7 @@ class BasketSellerCubit extends Cubit<BasketAdminState> {
   Future<void> basketOrderEndShow() async {
     try {
       emit(LoadingState());
-      final List<BasketOrderSellerModel> data =
-          await basketRepository.basketOrderEndShow();
+      final List<BasketOrderSellerModel> data = await basketRepository.basketOrderEndShow();
 
       endOrders.clear();
       endOrders.addAll(data);
@@ -78,8 +77,7 @@ class BasketSellerCubit extends Cubit<BasketAdminState> {
   //   }
   // }
 
-  Future<void> basketStatus(
-      String status, String id, productId, fulfillment) async {
+  Future<void> basketStatus(String status, String id, productId, fulfillment) async {
     try {
       await basketRepository.basketStatus(status, id, productId, fulfillment);
     } catch (e) {

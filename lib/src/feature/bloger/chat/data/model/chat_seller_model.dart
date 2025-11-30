@@ -66,13 +66,7 @@ class ChatSellerModel {
 }
 
 class LastMessage {
-  LastMessage({
-    int? id,
-    String? type,
-    int? read,
-    String? text,
-    String? date,
-  }) {
+  LastMessage({int? id, String? type, int? read, String? text, String? date}) {
     _id = id;
     _type = type;
     _read = read;

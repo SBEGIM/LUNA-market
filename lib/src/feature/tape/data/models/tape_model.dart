@@ -1,28 +1,29 @@
 class TapeModel {
-  TapeModel(
-      {int? id,
-      int? tapeId,
-      String? name,
-      String? catName,
-      int? view,
-      int? price,
-      int? count,
-      int? preOrder,
-      String? description,
-      int? compound,
-      int? point,
-      String? video,
-      String? image,
-      bool? inBasket,
-      int? chatId,
-      bool? inReport,
-      bool? inFavorite,
-      bool? inSubscribe,
-      bool? inSellerSubscribe,
-      bool? isLiked,
-      Shop? shop,
-      Blogger? blogger,
-      Statistics? statistics}) {
+  TapeModel({
+    int? id,
+    int? tapeId,
+    String? name,
+    String? catName,
+    int? view,
+    int? price,
+    int? count,
+    int? preOrder,
+    String? description,
+    int? compound,
+    int? point,
+    String? video,
+    String? image,
+    bool? inBasket,
+    int? chatId,
+    bool? inReport,
+    bool? inFavorite,
+    bool? inSubscribe,
+    bool? inSellerSubscribe,
+    bool? isLiked,
+    Shop? shop,
+    Blogger? blogger,
+    Statistics? statistics,
+  }) {
     _id = id;
     _tapeId = tapeId;
     _name = name;
@@ -48,30 +49,31 @@ class TapeModel {
     _statistics = statistics;
   }
 
-  TapeModel copyWith(
-      {int? id,
-      int? tapeId,
-      String? name,
-      String? catName,
-      int? view,
-      int? price,
-      int? count,
-      int? preOrder,
-      String? description,
-      int? compound,
-      int? point,
-      String? video,
-      String? image,
-      bool? inBasket,
-      int? chatId,
-      bool? inReport,
-      bool? inFavorite,
-      bool? inSubscribe,
-      bool? inSellerSubscribe,
-      bool? isLiked,
-      Shop? shop,
-      Blogger? blogger,
-      Statistics? statistics}) {
+  TapeModel copyWith({
+    int? id,
+    int? tapeId,
+    String? name,
+    String? catName,
+    int? view,
+    int? price,
+    int? count,
+    int? preOrder,
+    String? description,
+    int? compound,
+    int? point,
+    String? video,
+    String? image,
+    bool? inBasket,
+    int? chatId,
+    bool? inReport,
+    bool? inFavorite,
+    bool? inSubscribe,
+    bool? inSellerSubscribe,
+    bool? isLiked,
+    Shop? shop,
+    Blogger? blogger,
+    Statistics? statistics,
+  }) {
     return TapeModel(
       id: id ?? this.id,
       tapeId: tapeId ?? this.tapeId,
@@ -121,11 +123,8 @@ class TapeModel {
     _inSellerSubscribe = json['in_seller_subscribe'];
     _isLiked = json['is_liked'];
     _shop = json['shop'] != null ? Shop.fromJson(json['shop']) : null;
-    _blogger =
-        json['blogger'] != null ? Blogger.fromJson(json['blogger']) : null;
-    _statistics = json['statistics'] != null
-        ? Statistics.fromJson(json['statistics'])
-        : null;
+    _blogger = json['blogger'] != null ? Blogger.fromJson(json['blogger']) : null;
+    _statistics = json['statistics'] != null ? Statistics.fromJson(json['statistics']) : null;
   }
   int? _id;
   int? _tapeId;
@@ -311,12 +310,7 @@ class Shop {
 }
 
 class Blogger {
-  Blogger(
-      {int? id,
-      String? name,
-      String? nickName,
-      String? image,
-      String? createdAt}) {
+  Blogger({int? id, String? name, String? nickName, String? image, String? createdAt}) {
     _id = id;
     _name = name;
     _nickName = nickName;

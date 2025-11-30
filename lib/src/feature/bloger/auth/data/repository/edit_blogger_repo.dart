@@ -35,22 +35,15 @@ class EditToApi {
       'legal_status': dto.legalStatus ?? '',
       'social_network': dto.socialNetwork ?? '',
       'bank_name': dto.bankName ?? '',
-      'bank_bik': dto.bankBik ?? ''
+      'bank_bik': dto.bankBik ?? '',
     };
 
-    final header = {
-      "Authorization": "Bearer ${_box.read('blogger_token').toString()}"
-    };
+    final header = {"Authorization": "Bearer ${_box.read('blogger_token').toString()}"};
 
-    final request = http.MultipartRequest(
-      'POST',
-      Uri.parse('$baseUrl/blogger/edit'),
-    );
+    final request = http.MultipartRequest('POST', Uri.parse('$baseUrl/blogger/edit'));
 
     if (dto.avatar != '' && dto.avatar != null) {
-      request.files.add(
-        await http.MultipartFile.fromPath('avatar', dto.avatar),
-      );
+      request.files.add(await http.MultipartFile.fromPath('avatar', dto.avatar));
     }
     request.fields.addAll(body);
     request.headers.addAll(header);

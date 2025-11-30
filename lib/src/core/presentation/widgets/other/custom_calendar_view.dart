@@ -60,15 +60,11 @@ class _CustomCalendarViewState extends State<CustomCalendarView> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(16),
-        color: Colors.white,
-      ),
+      decoration: BoxDecoration(borderRadius: BorderRadius.circular(16), color: Colors.white),
       child: Column(
         children: <Widget>[
           Padding(
-            padding: const EdgeInsets.only(
-                left: 15.0, right: 15.0, top: 4, bottom: 4),
+            padding: const EdgeInsets.only(left: 15.0, right: 15.0, top: 4, bottom: 4),
             child: Row(
               children: <Widget>[
                 Padding(
@@ -76,8 +72,7 @@ class _CustomCalendarViewState extends State<CustomCalendarView> {
                   child: Material(
                     color: Colors.transparent,
                     child: InkWell(
-                      borderRadius:
-                          const BorderRadius.all(Radius.circular(24.0)),
+                      borderRadius: const BorderRadius.all(Radius.circular(24.0)),
                       onTap: () {
                         setState(() {
                           currentMonthDate = DateTime(
@@ -93,8 +88,7 @@ class _CustomCalendarViewState extends State<CustomCalendarView> {
                         transform: Matrix4.rotationY(pi),
                         child: SvgPicture.asset(
                           Assets.icons.accountPng.path,
-                          colorFilter: const ColorFilter.mode(
-                              AppColors.green1, BlendMode.srcIn),
+                          colorFilter: const ColorFilter.mode(AppColors.green1, BlendMode.srcIn),
                         ),
                       ),
                     ),
@@ -103,9 +97,7 @@ class _CustomCalendarViewState extends State<CustomCalendarView> {
                 Expanded(
                   child: Center(
                     child: Text(
-                      DateFormat('MMMM yyyy', widget.locale)
-                          .format(currentMonthDate)
-                          .capitalize(),
+                      DateFormat('MMMM yyyy', widget.locale).format(currentMonthDate).capitalize(),
                       style: const TextStyle(
                         fontWeight: FontWeight.w700,
                         fontSize: 14,
@@ -119,8 +111,7 @@ class _CustomCalendarViewState extends State<CustomCalendarView> {
                   child: Material(
                     color: Colors.transparent,
                     child: InkWell(
-                      borderRadius:
-                          const BorderRadius.all(Radius.circular(24.0)),
+                      borderRadius: const BorderRadius.all(Radius.circular(24.0)),
                       onTap: () {
                         setState(() {
                           currentMonthDate = DateTime(
@@ -133,8 +124,7 @@ class _CustomCalendarViewState extends State<CustomCalendarView> {
                       },
                       child: SvgPicture.asset(
                         Assets.icons.accountPng.path,
-                        colorFilter: const ColorFilter.mode(
-                            AppColors.green1, BlendMode.srcIn),
+                        colorFilter: const ColorFilter.mode(AppColors.green1, BlendMode.srcIn),
                       ),
                     ),
                   ),
@@ -144,15 +134,11 @@ class _CustomCalendarViewState extends State<CustomCalendarView> {
           ),
           Padding(
             padding: const EdgeInsets.only(right: 15, left: 15, bottom: 8),
-            child: Row(
-              children: getDaysNameUI(),
-            ),
+            child: Row(children: getDaysNameUI()),
           ),
           Padding(
             padding: const EdgeInsets.only(right: 15, left: 15),
-            child: Column(
-              children: getDaysNoUI(),
-            ),
+            child: Column(children: getDaysNoUI()),
           ),
         ],
       ),
@@ -219,10 +205,10 @@ class _CustomCalendarViewState extends State<CustomCalendarView> {
                         color: selectedDate?.isSameDay(date) ?? false
                             ? Colors.white
                             : date.isSameDay(DateTime.now())
-                                ? Colors.blueAccent
-                                : currentMonthDate.month == date.month
-                                    ? Colors.black
-                                    : Colors.grey,
+                            ? Colors.blueAccent
+                            : currentMonthDate.month == date.month
+                            ? Colors.black
+                            : Colors.grey,
                         fontWeight: FontWeight.w500,
                       ),
                     ),

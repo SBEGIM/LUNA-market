@@ -12,8 +12,7 @@ class LoadedState extends BasketAdminState {
   List<BasketOrderSellerModel> basketOrderModel;
   List<BasketOrderSellerModel> basketOrderRealFbsModel;
   List<BasketOrderSellerModel> basketEndOrderModel;
-  LoadedState(this.basketOrderModel, this.basketOrderRealFbsModel,
-      this.basketEndOrderModel);
+  LoadedState(this.basketOrderModel, this.basketOrderRealFbsModel, this.basketEndOrderModel);
 }
 
 // class LoadedOrderState extends BasketAdminState {

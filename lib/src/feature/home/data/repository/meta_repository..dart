@@ -17,8 +17,10 @@ class MetaApi {
   Future<MetaModel> metas() async {
     final String? token = _box.read('token');
 
-    final response = await http.get(Uri.parse('$baseUrl/list/metas'),
-        headers: {"Authorization": "Bearer $token"});
+    final response = await http.get(
+      Uri.parse('$baseUrl/list/metas'),
+      headers: {"Authorization": "Bearer $token"},
+    );
 
     final data = jsonDecode(response.body);
 

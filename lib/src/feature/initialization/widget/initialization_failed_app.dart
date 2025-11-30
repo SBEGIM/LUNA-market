@@ -26,8 +26,7 @@ class InitializationFailedApp extends StatefulWidget {
   });
 
   @override
-  State<InitializationFailedApp> createState() =>
-      _InitializationFailedAppState();
+  State<InitializationFailedApp> createState() => _InitializationFailedAppState();
 }
 
 class _InitializationFailedAppState extends State<InitializationFailedApp> {
@@ -48,22 +47,20 @@ class _InitializationFailedAppState extends State<InitializationFailedApp> {
 
   @override
   Widget build(BuildContext context) => MaterialApp(
-        color: AppColors.mainColor,
-        home: ValueListenableBuilder(
-          valueListenable: _inProgress,
-          builder: (context, v, c) {
-            if (_inProgress.value) {
-              return const Scaffold(
-                body: Center(child: CircularProgressIndicator()),
-              );
-            } else {
-              return ForceUpdatePage.noAvailable(
-                onTap: _retryInitialization,
-                error: widget.error,
-                stackTrace: widget.stackTrace,
-              );
-            }
-          },
-        ),
-      );
+    color: AppColors.mainColor,
+    home: ValueListenableBuilder(
+      valueListenable: _inProgress,
+      builder: (context, v, c) {
+        if (_inProgress.value) {
+          return const Scaffold(body: Center(child: CircularProgressIndicator()));
+        } else {
+          return ForceUpdatePage.noAvailable(
+            onTap: _retryInitialization,
+            error: widget.error,
+            stackTrace: widget.stackTrace,
+          );
+        }
+      },
+    ),
+  );
 }

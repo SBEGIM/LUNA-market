@@ -20,19 +20,13 @@ class _CreditInfoPageState extends State<CreditInfoPage> {
         elevation: 0,
         title: const Text(
           'Рассрочка',
-          style: TextStyle(
-              color: AppColors.kGray900,
-              fontSize: 16,
-              fontWeight: FontWeight.w500),
+          style: TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w500),
         ),
         leading: IconButton(
           onPressed: () {
             Navigator.pop(context);
           },
-          icon: const Icon(
-            Icons.arrow_back_ios,
-            color: AppColors.kPrimaryColor,
-          ),
+          icon: const Icon(Icons.arrow_back_ios, color: AppColors.kPrimaryColor),
         ),
       ),
       body: Container(
@@ -42,10 +36,7 @@ class _CreditInfoPageState extends State<CreditInfoPage> {
           shrinkWrap: true,
 
           children: [
-            Container(
-              height: 12,
-              color: AppColors.kBackgroundColor,
-            ),
+            Container(height: 12, color: AppColors.kBackgroundColor),
             // InkWell(
             //   onTap: () {
             //     // Navigator.push(
@@ -80,25 +71,19 @@ class _CreditInfoPageState extends State<CreditInfoPage> {
             //     text: 'Рассрочка Тинькофф',
             //   ),
             // ),
-            const Divider(
-              color: AppColors.kGray200,
-            ),
+            const Divider(color: AppColors.kGray200),
             InkWell(
               onTap: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) =>
-                          CreditInfoDetailPage(title: 'Рассрочка HALAL')),
+                    builder: (context) => CreditInfoDetailPage(title: 'Рассрочка HALAL'),
+                  ),
                 );
               },
-              child: const DrawerListTile(
-                text: 'Рассрочка HALAL',
-              ),
+              child: const DrawerListTile(text: 'Рассрочка HALAL'),
             ),
-            const Divider(
-              color: AppColors.kGray200,
-            ),
+            const Divider(color: AppColors.kGray200),
           ],
         ),
       ),
@@ -108,10 +93,7 @@ class _CreditInfoPageState extends State<CreditInfoPage> {
 
 class DrawerListTile extends StatelessWidget {
   final String text;
-  const DrawerListTile({
-    Key? key,
-    required this.text,
-  }) : super(key: key);
+  const DrawerListTile({Key? key, required this.text}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -120,11 +102,8 @@ class DrawerListTile extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            text,
-            style: AppTextStyles.drawer2TextStyle,
-          ),
-          SvgPicture.asset('assets/icons/back_menu.svg')
+          Text(text, style: AppTextStyles.drawer2TextStyle),
+          SvgPicture.asset('assets/icons/back_menu.svg'),
         ],
       ),
     );

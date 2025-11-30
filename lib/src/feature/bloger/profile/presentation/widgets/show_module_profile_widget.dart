@@ -35,21 +35,21 @@ void showModuleProfile(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 17),
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 17),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(title,
-                          style: const TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 16,
-                            height: 1.1,
-                          )),
+                      Text(
+                        title,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 16,
+                          height: 1.1,
+                        ),
+                      ),
                       InkWell(
                         onTap: () => Navigator.of(ctx).pop(),
-                        child: Image.asset(Assets.icons.defaultCloseIcon.path,
-                            scale: 1.9),
+                        child: Image.asset(Assets.icons.defaultCloseIcon.path, scale: 1.9),
                       ),
                     ],
                   ),
@@ -111,11 +111,7 @@ void showModuleProfile(
                                 ),
                               ),
                               if (isSelected)
-                                const Divider(
-                                  thickness: 0.2,
-                                  height: 0,
-                                  color: AppColors.kGray200,
-                                ),
+                                const Divider(thickness: 0.2, height: 0, color: AppColors.kGray200),
                             ],
                           ),
                         ),
@@ -129,8 +125,7 @@ void showModuleProfile(
                     width: double.infinity,
                     height: 52, // ← было 48
                     child: ElevatedButton(
-                      onPressed: (selectedIndex >= 0 &&
-                              selectedIndex < _filteredCategories.length)
+                      onPressed: (selectedIndex >= 0 && selectedIndex < _filteredCategories.length)
                           ? () async {
                               callback.call(_filteredCategories[selectedIndex]);
                               Navigator.pop(ctx);
@@ -160,9 +155,7 @@ void showModuleProfile(
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.mainPurpleColor,
                         disabledBackgroundColor: AppColors.mainPurpleColor,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                         padding: EdgeInsets.zero,
                         tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                       ),

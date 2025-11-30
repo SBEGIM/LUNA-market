@@ -44,15 +44,11 @@ class _TapeStatisticsPageState extends State<TapeStatisticsPage> {
         backgroundColor: AppColors.kWhite,
         elevation: 0,
         leading: InkWell(
-            onTap: () {
-              Get.back();
-            },
-            child: Image.asset(
-              Assets.icons.defaultBackIcon.path,
-              scale: 1.9,
-              width: 18,
-              height: 14,
-            )),
+          onTap: () {
+            Get.back();
+          },
+          child: Image.asset(Assets.icons.defaultBackIcon.path, scale: 1.9, width: 18, height: 14),
+        ),
         centerTitle: true,
         title:
             //  Row(
@@ -85,8 +81,9 @@ class _TapeStatisticsPageState extends State<TapeStatisticsPage> {
             margin: EdgeInsets.only(top: 12, left: 16, right: 16),
             padding: EdgeInsets.all(8),
             decoration: BoxDecoration(
-                color: AppColors.kWhite,
-                borderRadius: BorderRadius.circular(16)),
+              color: AppColors.kWhite,
+              borderRadius: BorderRadius.circular(16),
+            ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -95,17 +92,12 @@ class _TapeStatisticsPageState extends State<TapeStatisticsPage> {
                 Container(
                   height: 114,
                   width: 120,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
+                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(8)),
                   child: Image.network(
                     'https://lunamarket.ru/storage/${widget.tape.image}',
                     fit: BoxFit.contain,
                     errorBuilder: (context, error, stackTrace) =>
-                        const ErrorImageWidget(
-                      height: 114,
-                      width: 120,
-                    ),
+                        const ErrorImageWidget(height: 114, width: 120),
                   ),
                 ),
                 Column(
@@ -115,8 +107,7 @@ class _TapeStatisticsPageState extends State<TapeStatisticsPage> {
                     SizedBox(
                       child: Text(
                         '${widget.tape.catName}',
-                        style: AppTextStyles.size13Weight400
-                            .copyWith(color: Color(0xFF8E8E93)),
+                        style: AppTextStyles.size13Weight400.copyWith(color: Color(0xFF8E8E93)),
                       ),
                     ),
                     SizedBox(height: 4),
@@ -134,11 +125,9 @@ class _TapeStatisticsPageState extends State<TapeStatisticsPage> {
                       children: [
                         Text(
                           'Артикул: ',
-                          style: AppTextStyles.size14Weight600
-                              .copyWith(color: Color(0xFF8E8E93)),
+                          style: AppTextStyles.size14Weight600.copyWith(color: Color(0xFF8E8E93)),
                         ),
-                        Text('${widget.tape.id}',
-                            style: AppTextStyles.size14Weight500),
+                        Text('${widget.tape.id}', style: AppTextStyles.size14Weight500),
                       ],
                     ),
                     SizedBox(height: 4),
@@ -146,15 +135,16 @@ class _TapeStatisticsPageState extends State<TapeStatisticsPage> {
                       children: [
                         Text(
                           'Дата добавления: ',
-                          style: AppTextStyles.size14Weight600
-                              .copyWith(color: Color(0xFF8E8E93)),
+                          style: AppTextStyles.size14Weight600.copyWith(color: Color(0xFF8E8E93)),
                         ),
-                        Text('${widget.tape.shop?.createdAt}',
-                            style: AppTextStyles.size14Weight500),
+                        Text(
+                          '${widget.tape.shop?.createdAt}',
+                          style: AppTextStyles.size14Weight500,
+                        ),
                       ],
-                    )
+                    ),
                   ],
-                )
+                ),
               ],
             ),
           ),
@@ -176,8 +166,7 @@ class _TapeStatisticsPageState extends State<TapeStatisticsPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         GestureDetector(
-                          onTap: () => _showYearPickerBottomSheet(context, year,
-                              (value) {
+                          onTap: () => _showYearPickerBottomSheet(context, year, (value) {
                             year = value;
                             setState(() {});
                           }),
@@ -186,26 +175,21 @@ class _TapeStatisticsPageState extends State<TapeStatisticsPage> {
                             height: 36,
                             padding: EdgeInsets.symmetric(horizontal: 12),
                             decoration: BoxDecoration(
-                                color: Color(0xFFF7F7F7),
-                                borderRadius: BorderRadius.circular(12)),
+                              color: Color(0xFFF7F7F7),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text('$year',
-                                    style: AppTextStyles.size14Weight500),
-                                Image.asset(
-                                  Assets.icons.dropDownIcon.path,
-                                  height: 6,
-                                  width: 12,
-                                )
+                                Text('$year', style: AppTextStyles.size14Weight500),
+                                Image.asset(Assets.icons.dropDownIcon.path, height: 6, width: 12),
                               ],
                             ),
                           ),
                         ),
                         GestureDetector(
                           onTap: () {
-                            _showMonthPickerBottomSheet(context, _selectIndex,
-                                (int selectedIndex) {
+                            _showMonthPickerBottomSheet(context, _selectIndex, (int selectedIndex) {
                               _selectIndex = selectedIndex;
                               _summConfirm = 0;
                               _summFreeze = 0;
@@ -231,17 +215,12 @@ class _TapeStatisticsPageState extends State<TapeStatisticsPage> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text(months[_selectIndex],
-                                    style: AppTextStyles.size14Weight500),
-                                Image.asset(
-                                  Assets.icons.dropDownIcon.path,
-                                  height: 6,
-                                  width: 12,
-                                )
+                                Text(months[_selectIndex], style: AppTextStyles.size14Weight500),
+                                Image.asset(Assets.icons.dropDownIcon.path, height: 6, width: 12),
                               ],
                             ),
                           ),
-                        )
+                        ),
                       ],
                     ),
                     const SizedBox(height: 32),
@@ -291,7 +270,7 @@ class _TapeStatisticsPageState extends State<TapeStatisticsPage> {
                 ),
               ),
             ),
-          )
+          ),
         ],
       ),
     );
@@ -315,11 +294,10 @@ void _showMonthPickerBottomSheet(
     'Сентябрь',
     'Октябрь',
     'Ноябрь',
-    'Декабрь'
+    'Декабрь',
   ];
 
-  final FixedExtentScrollController scrollController =
-      FixedExtentScrollController(
+  final FixedExtentScrollController scrollController = FixedExtentScrollController(
     initialItem: initialSelectedMonth,
   );
 
@@ -343,10 +321,7 @@ void _showMonthPickerBottomSheet(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        'Выберите месяц',
-                        style: AppTextStyles.size16Weight500,
-                      ),
+                      Text('Выберите месяц', style: AppTextStyles.size16Weight500),
                       InkWell(
                         onTap: () {
                           Navigator.of(context).pop();
@@ -357,7 +332,7 @@ void _showMonthPickerBottomSheet(
                           width: 24,
                           height: 24,
                         ),
-                      )
+                      ),
                     ],
                   ),
                 ),
@@ -366,8 +341,9 @@ void _showMonthPickerBottomSheet(
                     width: 326,
                     height: 212,
                     decoration: BoxDecoration(
-                        color: AppColors.kWhite,
-                        borderRadius: BorderRadius.circular(16)),
+                      color: AppColors.kWhite,
+                      borderRadius: BorderRadius.circular(16),
+                    ),
                     child: ListWheelScrollView.useDelegate(
                       controller: scrollController,
                       itemExtent: 50,
@@ -388,17 +364,15 @@ void _showMonthPickerBottomSheet(
                             width: double.infinity,
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
-                              color: isSelected
-                                  ? Color(0xffEAECED)
-                                  : Colors.transparent,
+                              color: isSelected ? Color(0xffEAECED) : Colors.transparent,
                               borderRadius: BorderRadius.circular(8),
                             ),
-                            child: Text('$month',
-                                style: AppTextStyles.size20Weight500.copyWith(
-                                  color: isSelected
-                                      ? AppColors.kGray900
-                                      : Color(0xff8E8E93),
-                                )),
+                            child: Text(
+                              '$month',
+                              style: AppTextStyles.size20Weight500.copyWith(
+                                color: isSelected ? AppColors.kGray900 : Color(0xff8E8E93),
+                              ),
+                            ),
                           );
                         },
                       ),
@@ -406,19 +380,19 @@ void _showMonthPickerBottomSheet(
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(
-                      left: 16.0, right: 16, top: 16, bottom: 50),
+                  padding: const EdgeInsets.only(left: 16.0, right: 16, top: 16, bottom: 50),
                   child: DefaultButton(
-                      text: 'Выбрать',
-                      press: () {
-                        onMonthSelected(selectedMonth);
+                    text: 'Выбрать',
+                    press: () {
+                      onMonthSelected(selectedMonth);
 
-                        Navigator.of(context).pop();
-                      },
-                      color: AppColors.kWhite,
-                      backgroundColor: AppColors.mainPurpleColor,
-                      width: double.infinity),
-                )
+                      Navigator.of(context).pop();
+                    },
+                    color: AppColors.kWhite,
+                    backgroundColor: AppColors.mainPurpleColor,
+                    width: double.infinity,
+                  ),
+                ),
               ],
             ),
           );
@@ -433,10 +407,8 @@ void _showYearPickerBottomSheet(
   int initialSelectedYear,
   void Function(int) onYearSelected,
 ) {
-  final List<int> years =
-      List.generate(50, (index) => DateTime.now().year - index);
-  final FixedExtentScrollController scrollController =
-      FixedExtentScrollController(
+  final List<int> years = List.generate(50, (index) => DateTime.now().year - index);
+  final FixedExtentScrollController scrollController = FixedExtentScrollController(
     initialItem: years.indexOf(initialSelectedYear),
   );
 
@@ -447,8 +419,7 @@ void _showYearPickerBottomSheet(
     ),
     backgroundColor: Color(0xffF7F7F7),
     builder: (context) {
-      int selectedYear =
-          initialSelectedYear; // Локальный selectedYear для обновления в билдере
+      int selectedYear = initialSelectedYear; // Локальный selectedYear для обновления в билдере
 
       return StatefulBuilder(
         builder: (context, setModalState) {
@@ -461,10 +432,7 @@ void _showYearPickerBottomSheet(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        'Выберите год',
-                        style: AppTextStyles.size16Weight500,
-                      ),
+                      Text('Выберите год', style: AppTextStyles.size16Weight500),
                       InkWell(
                         onTap: () {
                           Navigator.of(context).pop();
@@ -475,7 +443,7 @@ void _showYearPickerBottomSheet(
                           width: 24,
                           height: 24,
                         ),
-                      )
+                      ),
                     ],
                   ),
                 ),
@@ -484,8 +452,9 @@ void _showYearPickerBottomSheet(
                     width: 326,
                     height: 212,
                     decoration: BoxDecoration(
-                        color: AppColors.kWhite,
-                        borderRadius: BorderRadius.circular(16)),
+                      color: AppColors.kWhite,
+                      borderRadius: BorderRadius.circular(16),
+                    ),
                     child: ListWheelScrollView.useDelegate(
                       controller: scrollController,
                       itemExtent: 50,
@@ -506,19 +475,16 @@ void _showYearPickerBottomSheet(
                             width: double.infinity,
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
-                              color: isSelected
-                                  ? Color(0xffEAECED)
-                                  : Colors.transparent,
+                              color: isSelected ? Color(0xffEAECED) : Colors.transparent,
                               borderRadius: BorderRadius.circular(8),
                             ),
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 8, horizontal: 24),
-                            child: Text('$year',
-                                style: AppTextStyles.size20Weight500.copyWith(
-                                  color: isSelected
-                                      ? AppColors.kGray900
-                                      : Color(0xff8E8E93),
-                                )),
+                            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 24),
+                            child: Text(
+                              '$year',
+                              style: AppTextStyles.size20Weight500.copyWith(
+                                color: isSelected ? AppColors.kGray900 : Color(0xff8E8E93),
+                              ),
+                            ),
                           );
                         },
                       ),
@@ -526,19 +492,19 @@ void _showYearPickerBottomSheet(
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(
-                      left: 16.0, right: 16, top: 16, bottom: 50),
+                  padding: const EdgeInsets.only(left: 16.0, right: 16, top: 16, bottom: 50),
                   child: DefaultButton(
-                      text: 'Выбрать',
-                      press: () {
-                        onYearSelected(selectedYear);
+                    text: 'Выбрать',
+                    press: () {
+                      onYearSelected(selectedYear);
 
-                        Navigator.of(context).pop();
-                      },
-                      color: AppColors.kWhite,
-                      backgroundColor: AppColors.mainPurpleColor,
-                      width: double.infinity),
-                )
+                      Navigator.of(context).pop();
+                    },
+                    color: AppColors.kWhite,
+                    backgroundColor: AppColors.mainPurpleColor,
+                    width: double.infinity,
+                  ),
+                ),
               ],
             ),
           );
@@ -553,12 +519,7 @@ class StatisticTile extends StatelessWidget {
   final String label;
   final String icon;
 
-  const StatisticTile({
-    super.key,
-    required this.value,
-    required this.label,
-    required this.icon,
-  });
+  const StatisticTile({super.key, required this.value, required this.label, required this.icon});
 
   @override
   Widget build(BuildContext context) {
@@ -582,11 +543,10 @@ class StatisticTile extends StatelessWidget {
               const SizedBox(height: 2),
               Text(
                 label,
-                style: AppTextStyles.size13Weight400
-                    .copyWith(color: const Color(0xFF8E8E93)),
+                style: AppTextStyles.size13Weight400.copyWith(color: const Color(0xFF8E8E93)),
               ),
             ],
-          )
+          ),
         ],
       ),
     );

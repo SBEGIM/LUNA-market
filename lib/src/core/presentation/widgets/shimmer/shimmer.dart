@@ -124,12 +124,10 @@ class ShimmerDirection {
   const factory ShimmerDirection.fromRBLT() = ShimmerDirection._fromRBLT;
 
   /// Animation starts from Left Center and moves towards the Right Center
-  const factory ShimmerDirection.fromLeftToRight() =
-      ShimmerDirection._fromLeftToRight;
+  const factory ShimmerDirection.fromLeftToRight() = ShimmerDirection._fromLeftToRight;
 
   /// Animation starts from Right Center and moves towards the Left Center
-  const factory ShimmerDirection.fromRightToLeft() =
-      ShimmerDirection._fromRightToLeft;
+  const factory ShimmerDirection.fromRightToLeft() = ShimmerDirection._fromRightToLeft;
   final Alignment begin;
   final Alignment end;
 }

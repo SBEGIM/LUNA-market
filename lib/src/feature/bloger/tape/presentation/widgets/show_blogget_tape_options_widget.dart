@@ -16,13 +16,8 @@ import 'package:haji_market/src/feature/bloger/tape/presentation/widgets/edit_ta
 import 'package:haji_market/src/feature/drawer/presentation/widgets/show_alert_account_widget.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
-void showBlogerTapeOptions(
-    BuildContext context, int id, TapeBloggerModel tape) {
-  final List<String> categories = [
-    "Редактировать",
-    "Статистика",
-    "Удалить",
-  ];
+void showBlogerTapeOptions(BuildContext context, int id, TapeBloggerModel tape) {
+  final List<String> categories = ["Редактировать", "Статистика", "Удалить"];
   final rootContext = context;
 
   List<String> filteredCategories = [...categories];
@@ -51,12 +46,14 @@ void showBlogerTapeOptions(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text('Управление видео',
-                          style: AppTextStyles.size16Weight500),
+                      Text('Управление видео', style: AppTextStyles.size16Weight500),
                       InkWell(
                         onTap: () => Navigator.of(sheetContext).pop(),
-                        child: Image.asset(Assets.icons.defaultCloseIcon.path,
-                            height: 24, width: 24),
+                        child: Image.asset(
+                          Assets.icons.defaultCloseIcon.path,
+                          height: 24,
+                          width: 24,
+                        ),
                       ),
                     ],
                   ),
@@ -70,27 +67,18 @@ void showBlogerTapeOptions(
                   child: Container(
                     height: 52,
                     padding: EdgeInsets.symmetric(horizontal: 16),
-                    margin:
-                        const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
+                    margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
                     decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(16),
-                        border: Border.all(
-                          color: AppColors.kGray,
-                          width: 1.5,
-                        )),
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(color: AppColors.kGray, width: 1.5),
+                    ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Image.asset(Assets.icons.editIcon.path,
-                            height: 18, width: 18),
-                        SizedBox(
-                          width: 12,
-                        ),
-                        Text(
-                          'Редактировать',
-                          style: AppTextStyles.size16Weight500,
-                        ),
+                        Image.asset(Assets.icons.editIcon.path, height: 18, width: 18),
+                        SizedBox(width: 12),
+                        Text('Редактировать', style: AppTextStyles.size16Weight500),
                       ],
                     ),
                   ),
@@ -105,27 +93,18 @@ void showBlogerTapeOptions(
                   child: Container(
                     height: 52,
                     padding: EdgeInsets.symmetric(horizontal: 16),
-                    margin:
-                        const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
+                    margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
                     decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(16),
-                        border: Border.all(
-                          color: AppColors.kGray,
-                          width: 1.5,
-                        )),
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(color: AppColors.kGray, width: 1.5),
+                    ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Image.asset(Assets.icons.statisticsIcon.path,
-                            height: 18, width: 18),
-                        SizedBox(
-                          width: 12,
-                        ),
-                        Text(
-                          'Статистика',
-                          style: AppTextStyles.size16Weight500,
-                        ),
+                        Image.asset(Assets.icons.statisticsIcon.path, height: 18, width: 18),
+                        SizedBox(width: 12),
+                        Text('Статистика', style: AppTextStyles.size16Weight500),
                       ],
                     ),
                   ),
@@ -138,26 +117,24 @@ void showBlogerTapeOptions(
 
                     // 2) Показали подтверждение через ЖИВОЙ контекст (rootContext), не через sheetContext
                     Future.microtask(() async {
-                      final ok = await showAccountAlert(context,
-                          title: 'Удаление видео обзора',
-                          message:
-                              'Вы уверены, что хотите удалить видео обзор?',
-                          mode: AccountAlertMode.confirm,
-                          cancelText: 'Отмена',
-                          primaryText: 'Да',
-                          primaryColor: Colors.red);
+                      final ok = await showAccountAlert(
+                        context,
+                        title: 'Удаление видео обзора',
+                        message: 'Вы уверены, что хотите удалить видео обзор?',
+                        mode: AccountAlertMode.confirm,
+                        cancelText: 'Отмена',
+                        primaryText: 'Да',
+                        primaryColor: Colors.red,
+                      );
 
                       if (ok == true) {
-                        await rootContext
-                            .read<UploadVideoBLoggerCubit>()
-                            .delete(tapeId: id);
+                        await rootContext.read<UploadVideoBLoggerCubit>().delete(tapeId: id);
 
                         final router = AutoRouter.of(context).root;
 
                         context.read<AppBloc>().add(
-                              const AppEvent.chageState(
-                                  state: AppState.inAppBlogerState(index: 1)),
-                            );
+                          const AppEvent.chageState(state: AppState.inAppBlogerState(index: 1)),
+                        );
                         router.replaceAll([const LauncherRoute()]);
                         AppSnackBar.show(
                           context,
@@ -171,27 +148,20 @@ void showBlogerTapeOptions(
                   child: Container(
                     height: 52,
                     padding: EdgeInsets.symmetric(horizontal: 16),
-                    margin:
-                        const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
+                    margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
                     decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(16),
-                        border: Border.all(
-                          color: AppColors.kGray,
-                          width: 1.5,
-                        )),
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(color: AppColors.kGray, width: 1.5),
+                    ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Image.asset(Assets.icons.trashIcon.path,
-                            height: 18, width: 18),
-                        SizedBox(
-                          width: 12,
-                        ),
+                        Image.asset(Assets.icons.trashIcon.path, height: 18, width: 18),
+                        SizedBox(width: 12),
                         Text(
                           'Удалить',
-                          style: AppTextStyles.size16Weight500
-                              .copyWith(color: Color(0xFFFF3347)),
+                          style: AppTextStyles.size16Weight500.copyWith(color: Color(0xFFFF3347)),
                         ),
                       ],
                     ),

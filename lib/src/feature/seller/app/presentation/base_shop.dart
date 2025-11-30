@@ -48,10 +48,7 @@ class _BaseShopState extends State<BaseShop> with TickerProviderStateMixin {
       backgroundColor: Colors.white,
       extendBody: true,
       transitionBuilder: (context, child, animation) {
-        return SafeArea(
-          bottom: false,
-          child: child,
-        );
+        return SafeArea(bottom: false, child: child);
       },
       // floatingActionButton: FloatingActionButton(onPressed: () {
       //   AutoTabsRouter.of(context).setActiveIndex(2);
@@ -62,8 +59,7 @@ class _BaseShopState extends State<BaseShop> with TickerProviderStateMixin {
           decoration: const BoxDecoration(
             color: AppColors.kWhite,
             border: Border(
-              top: BorderSide(
-                  color: Color(0x100F0F0F), width: 1), // stroke сверху
+              top: BorderSide(color: Color(0x100F0F0F), width: 1), // stroke сверху
             ),
           ),
           child: BottomNavigationBar(
@@ -149,10 +145,7 @@ class _BaseShopState extends State<BaseShop> with TickerProviderStateMixin {
                   color: AppColors.kunSelectColor,
                 ),
                 label: 'Чат',
-                activeIcon: SvgPicture.asset(
-                  'assets/icons/chat_2.svg',
-                  color: Colors.black,
-                ),
+                activeIcon: SvgPicture.asset('assets/icons/chat_2.svg', color: Colors.black),
               ),
               BottomNavigationBarItem(
                 icon: Image.asset(

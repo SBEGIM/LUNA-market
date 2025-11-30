@@ -27,25 +27,25 @@ class TapeBloggerCubit extends Cubit<TapeBloggerState> {
     }
   }
 
-  update(TapeBloggerModel tape, int index, bool? inSub, bool? inBas,
-      bool? inFav, bool? inReport) {
+  update(TapeBloggerModel tape, int index, bool? inSub, bool? inBas, bool? inFav, bool? inReport) {
     // data!.removeAt(index);
 
     try {
       final TapeBloggerModel tapeModel = TapeBloggerModel(
-          id: tape.id,
-          name: tape.name,
-          catName: tape.catName,
-          price: tape.price,
-          description: tape.description,
-          compound: tape.compound,
-          video: tape.video,
-          image: tape.image,
-          inBasket: inBas ?? tape.inBasket,
-          inReport: inReport ?? tape.inReport,
-          inFavorite: inFav ?? tape.inFavorite,
-          inSubscribe: inSub ?? tape.inSubscribe,
-          shop: tape.shop);
+        id: tape.id,
+        name: tape.name,
+        catName: tape.catName,
+        price: tape.price,
+        description: tape.description,
+        compound: tape.compound,
+        video: tape.video,
+        image: tape.image,
+        inBasket: inBas ?? tape.inBasket,
+        inReport: inReport ?? tape.inReport,
+        inFavorite: inFav ?? tape.inFavorite,
+        inSubscribe: inSub ?? tape.inSubscribe,
+        shop: tape.shop,
+      );
 
       // data!.removeAt(index);
       //data!.u(index);

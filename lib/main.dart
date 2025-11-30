@@ -43,15 +43,12 @@ Future<void> main() async {
     WidgetsFlutterBinding.ensureInitialized();
 
     // Now it's safe to call platform-channel APIs
-    await SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-    ]);
+    await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
     await GetStorage.init();
     await Firebase.initializeApp();
 
-    const initializationSettingsAndroid =
-        AndroidInitializationSettings('@mipmap/launcher_icon');
+    const initializationSettingsAndroid = AndroidInitializationSettings('@mipmap/launcher_icon');
     const initializationSettingsIOs = DarwinInitializationSettings();
     const initializationSettings = InitializationSettings(
       android: initializationSettingsAndroid,
@@ -59,8 +56,7 @@ Future<void> main() async {
     );
     await flutterLocalNotificationsPlugin.initialize(initializationSettings);
 
-    await FirebaseMessaging.instance
-        .setForegroundNotificationPresentationOptions(
+    await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
       alert: true,
       badge: true,
       sound: true,
@@ -86,8 +82,6 @@ Future<void> main() async {
   } finally {
     final result = await CompositionRoot(config, logger).compose();
 
-    runApp(
-      MyApp(result: result),
-    );
+    runApp(MyApp(result: result));
   }
 }

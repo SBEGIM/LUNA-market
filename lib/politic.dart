@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 
 class Politic extends StatefulWidget {
-  const Politic({Key? key}) : super(key: key);
+  const Politic({super.key});
 
   @override
-  _PoliticState createState() => _PoliticState();
+  State<Politic> createState() => _PoliticState();
 }
 
 class _PoliticState extends State<Politic> {
@@ -223,17 +223,10 @@ class _PoliticState extends State<Politic> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black,
-        title: const Text(
-          'Политика конфиденциальности',
-          style: TextStyle(fontSize: 14),
-        ),
+        title: const Text('Политика конфиденциальности', style: TextStyle(fontSize: 14)),
         centerTitle: true,
       ),
-      body: SingleChildScrollView(
-        child: Html(
-          data: htmlData,
-        ),
-      ),
+      body: SingleChildScrollView(child: Html(data: htmlData)),
     );
   }
 }

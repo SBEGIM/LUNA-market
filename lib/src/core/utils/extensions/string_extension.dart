@@ -7,51 +7,37 @@ import 'package:tuple/tuple.dart';
 /// Common extensions for [String]
 extension StringExtension on String {
   /// Returns a new string with the first [length] characters of this string.
-  String limit(int length) =>
-      length < this.length ? substring(0, length) : this;
+  String limit(int length) => length < this.length ? substring(0, length) : this;
 
   bool emailValidator() => RegExp(
-        // r"^[a-zA-Z0-9.a-zA-Z0-9._]+@[a-zA-Z0-9]+\.[a-zA-Z]+",
-        // r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+",
-        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$',
-      ).hasMatch(this);
+    // r"^[a-zA-Z0-9.a-zA-Z0-9._]+@[a-zA-Z0-9]+\.[a-zA-Z]+",
+    // r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+",
+    r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$',
+  ).hasMatch(this);
 
-  bool oneDigit() => RegExp(
-        r'^.*\d.*',
-      ).hasMatch(this);
+  bool oneDigit() => RegExp(r'^.*\d.*').hasMatch(this);
 
-  bool atLeastOneUpperAndOneLowerAZ() => RegExp(
-        r'^(?=.*[a-z])(?=.*[A-Z]).+$',
-      ).hasMatch(this);
+  bool atLeastOneUpperAndOneLowerAZ() => RegExp(r'^(?=.*[a-z])(?=.*[A-Z]).+$').hasMatch(this);
 
-  bool upperAndLowerAZ() => RegExp(
-        r'^.*[A-Za-z\s].*',
-      ).hasMatch(this);
+  bool upperAndLowerAZ() => RegExp(r'^.*[A-Za-z\s].*').hasMatch(this);
 
   bool oneSpecialChar() => RegExp(
-        r'^.*[^\A-Z0-9\a-z0-9\А-Я0-9\а-я0-9\u04D8\u04D9\u04B0\u04B1\u0406\u0456\u04A2\u04A3\u0492\u0493\u04AE\u04AF\u049A\u049B\u04E8\u04E9\u04BA\u04BB].*',
-      ).hasMatch(this);
+    r'^.*[^\A-Z0-9\a-z0-9\А-Я0-9\а-я0-9\u04D8\u04D9\u04B0\u04B1\u0406\u0456\u04A2\u04A3\u0492\u0493\u04AE\u04AF\u049A\u049B\u04E8\u04E9\u04BA\u04BB].*',
+  ).hasMatch(this);
 
   bool numberValidator() {
     if (length == 11) {
-      return RegExp(
-        r'^[0-9]{11}$',
-      ).hasMatch(this);
+      return RegExp(r'^[0-9]{11}$').hasMatch(this);
     }
-    return RegExp(
-      r'^[0-9]{10}$',
-    ).hasMatch(this);
+    return RegExp(r'^[0-9]{10}$').hasMatch(this);
   }
 
   bool isPhone() =>
-      RegExp(r'^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{5,5}$')
-          .hasMatch(this);
+      RegExp(r'^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{5,5}$').hasMatch(this);
 
   bool isOnlyDigits() {
     if (startsWith('+')) {
-      return RegExp(
-        r'^[\+]?[0-9]',
-      ).hasMatch(this);
+      return RegExp(r'^[\+]?[0-9]').hasMatch(this);
     }
 
     return false;
@@ -90,9 +76,7 @@ extension NullableImageExtension on String? {
     }
   }
 
-  String? addNewLine({
-    required String word,
-  }) {
+  String? addNewLine({required String word}) {
     if (this != null && this!.isNotEmpty) {
       if (this!.contains(word)) {
         final index = this!.indexOf(word);
@@ -109,9 +93,7 @@ extension NullableImageExtension on String? {
     }
   }
 
-  String? getLine({
-    required int index,
-  }) {
+  String? getLine({required int index}) {
     if (this != null && this!.isNotEmpty) {
       final list = this!.split(',');
       final first = StringBuffer();

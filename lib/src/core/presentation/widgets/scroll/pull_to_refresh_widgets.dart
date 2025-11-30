@@ -7,15 +7,15 @@ class RefreshClassicHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => ClassicHeader(
-        completeText: context.localized.successfullyUpdated,
-        releaseText: context.localized.update,
-        idleText: context.localized.pullDownToRefresh,
-        failedText: context.localized.unknownError,
-        refreshingText: context.localized.updateDotDotDot,
-        // completeText: '',
-        // completeIcon: null,
-        // completeDuration: Duration.zero,
-      );
+    completeText: context.localized.successfullyUpdated,
+    releaseText: context.localized.update,
+    idleText: context.localized.pullDownToRefresh,
+    failedText: context.localized.unknownError,
+    refreshingText: context.localized.updateDotDotDot,
+    // completeText: '',
+    // completeIcon: null,
+    // completeDuration: Duration.zero,
+  );
 }
 
 class RefreshClassicFooter extends StatelessWidget {
@@ -23,13 +23,13 @@ class RefreshClassicFooter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => ClassicFooter(
-        idleText: '',
-        failedText: context.localized.unknownError,
-        loadingText: context.localized.uploadingDotDotDot,
-        canLoadingText: context.localized.pullUpToLoadTheData,
-        noDataText: '',
-        idleIcon: null,
-      );
+    idleText: '',
+    failedText: context.localized.unknownError,
+    loadingText: context.localized.uploadingDotDotDot,
+    canLoadingText: context.localized.pullUpToLoadTheData,
+    noDataText: '',
+    idleIcon: null,
+  );
 }
 
 class TextfieldSearchFooter extends StatelessWidget {
@@ -37,11 +37,11 @@ class TextfieldSearchFooter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => ClassicFooter(
-        idleText: '',
-        failedText: context.localized.unknownError,
-        loadingText: context.localized.uploadingDotDotDot,
-        canLoadingText: context.localized.pullUpToLoadTheData,
-        noDataText: '',
-        idleIcon: null,
-      );
+    idleText: '',
+    failedText: context.localized.unknownError,
+    loadingText: context.localized.uploadingDotDotDot,
+    canLoadingText: context.localized.pullUpToLoadTheData,
+    noDataText: '',
+    idleIcon: null,
+  );
 }

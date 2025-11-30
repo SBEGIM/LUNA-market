@@ -5,17 +5,15 @@ import '../../data/models/product_seller_model.dart';
 
 class BannerWatcehRecentlySellerPage extends StatelessWidget {
   final ProductSellerModel product;
-  const BannerWatcehRecentlySellerPage({
-    required this.product,
-    Key? key,
-  }) : super(key: key);
+  const BannerWatcehRecentlySellerPage({required this.product, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-          color: const Color(0xFFFAFAFA),
-          borderRadius: BorderRadius.circular(10)),
+        color: const Color(0xFFFAFAFA),
+        borderRadius: BorderRadius.circular(10),
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -31,15 +29,11 @@ class BannerWatcehRecentlySellerPage extends StatelessWidget {
                   height: 160,
                   width: 160,
                   errorBuilder: (context, error, stackTrace) =>
-                      const ErrorImageWidget(
-                    height: 160,
-                    width: 160,
-                  ),
+                      const ErrorImageWidget(height: 160, width: 160),
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(
-                    left: 12, right: 0, bottom: 8, top: 14),
+                padding: const EdgeInsets.only(left: 12, right: 0, bottom: 8, top: 14),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -48,40 +42,40 @@ class BannerWatcehRecentlySellerPage extends StatelessWidget {
                       children: [
                         Container(
                           decoration: BoxDecoration(
-                              color: AppColors.kPrimaryColor,
-                              borderRadius: BorderRadius.circular(4)),
+                            color: AppColors.kPrimaryColor,
+                            borderRadius: BorderRadius.circular(4),
+                          ),
                           child: const Padding(
-                            padding: EdgeInsets.only(
-                                left: 8.0, right: 8, top: 4, bottom: 4),
+                            padding: EdgeInsets.only(left: 8.0, right: 8, top: 4, bottom: 4),
                             child: Text(
                               '0.0.12',
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w400),
+                                color: Colors.white,
+                                fontSize: 12,
+                                fontWeight: FontWeight.w400,
+                              ),
                             ),
                           ),
                         ),
                       ],
                     ),
-                    const SizedBox(
-                      height: 4,
-                    ),
+                    const SizedBox(height: 4),
                     Container(
                       decoration: BoxDecoration(
-                          color: Colors.black,
-                          borderRadius: BorderRadius.circular(4)),
+                        color: Colors.black,
+                        borderRadius: BorderRadius.circular(4),
+                      ),
                       child: const Padding(
-                        padding: EdgeInsets.only(
-                            left: 4.0, right: 4, top: 4, bottom: 4),
+                        padding: EdgeInsets.only(left: 4.0, right: 4, top: 4, bottom: 4),
                         child: Text(
                           '10% Б',
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 12,
-                              fontWeight: FontWeight.w400),
+                            color: Colors.white,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w400,
+                          ),
                         ),
                       ),
                     ),
@@ -99,24 +93,22 @@ class BannerWatcehRecentlySellerPage extends StatelessWidget {
                   '${product.name}',
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
-                      fontSize: 16,
-                      color: AppColors.kGray900,
-                      fontWeight: FontWeight.w400),
+                    fontSize: 16,
+                    color: AppColors.kGray900,
+                    fontWeight: FontWeight.w400,
+                  ),
                 ),
-                const SizedBox(
-                  height: 8,
-                ),
+                const SizedBox(height: 8),
                 const Text(
                   'Подкатегория',
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
-                      fontSize: 16,
-                      color: AppColors.kGray300,
-                      fontWeight: FontWeight.w400),
+                    fontSize: 16,
+                    color: AppColors.kGray300,
+                    fontWeight: FontWeight.w400,
+                  ),
                 ),
-                const SizedBox(
-                  height: 8,
-                ),
+                const SizedBox(height: 8),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -124,9 +116,10 @@ class BannerWatcehRecentlySellerPage extends StatelessWidget {
                       '${product.price} ₸ ',
                       overflow: TextOverflow.ellipsis,
                       style: const TextStyle(
-                          fontSize: 16,
-                          color: Colors.black,
-                          fontWeight: FontWeight.w700),
+                        fontSize: 16,
+                        color: Colors.black,
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
                     Row(
                       children: [
@@ -139,24 +132,20 @@ class BannerWatcehRecentlySellerPage extends StatelessWidget {
                           child: Text(
                             '${(product.price! / 3).toInt()}',
                             style: const TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.w500,
-                                fontSize: 16),
+                              color: Colors.black,
+                              fontWeight: FontWeight.w500,
+                              fontSize: 16,
+                            ),
                           ),
                         ),
-                        const SizedBox(
-                          width: 4,
-                        ),
+                        const SizedBox(width: 4),
                         const Text(
                           'х3',
-                          style: TextStyle(
-                              fontWeight: FontWeight.w500, color: Colors.grey),
+                          style: TextStyle(fontWeight: FontWeight.w500, color: Colors.grey),
                         ),
-                        const SizedBox(
-                          width: 4,
-                        ),
+                        const SizedBox(width: 4),
                       ],
-                    )
+                    ),
                   ],
                 ),
               ],
@@ -167,4 +156,5 @@ class BannerWatcehRecentlySellerPage extends StatelessWidget {
     );
   }
 }
+
 // fontSize: 12

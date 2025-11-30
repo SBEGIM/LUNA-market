@@ -7,14 +7,13 @@ import 'package:haji_market/src/feature/bloger/shop/data/repository/blogger_noti
 class BloggerNotificationCubit extends Cubit<BloggerNotificationState> {
   final BloggerNotificationRepository bloggerNotificationRepository;
 
-  BloggerNotificationCubit({required this.bloggerNotificationRepository})
-      : super(InitState());
+  BloggerNotificationCubit({required this.bloggerNotificationRepository}) : super(InitState());
 
   Future<void> notifications() async {
     try {
       emit(LoadingState());
-      final List<BloggerNotificationModel> data =
-          await bloggerNotificationRepository.notifications();
+      final List<BloggerNotificationModel> data = await bloggerNotificationRepository
+          .notifications();
       emit(LoadedState(data));
     } catch (e) {
       log(e.toString());

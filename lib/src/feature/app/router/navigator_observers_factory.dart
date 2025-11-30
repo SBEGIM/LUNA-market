@@ -5,7 +5,7 @@ class NavigatorObserversFactory {
   const NavigatorObserversFactory();
 
   List<NavigatorObserver> call() => [
-        // SentryNavigatorObserver(),
-        RouterObserver(),
-      ];
+    // SentryNavigatorObserver(),
+    RouterObserver(),
+  ];
 }

@@ -8,11 +8,9 @@ import '../model/profile_statics_blogger_model.dart';
 const baseUrl = 'https://lunamarket.ru/api';
 
 class ProfileStaticsBloggerRepository {
-  final ProfileStaticsBloggerToApi _profileStaticsBloggerToApinToApi =
-      ProfileStaticsBloggerToApi();
+  final ProfileStaticsBloggerToApi _profileStaticsBloggerToApinToApi = ProfileStaticsBloggerToApi();
 
-  Future<dynamic> statics(bloggerId) =>
-      _profileStaticsBloggerToApinToApi.statics(bloggerId);
+  Future<dynamic> statics(bloggerId) => _profileStaticsBloggerToApinToApi.statics(bloggerId);
 }
 
 class ProfileStaticsBloggerToApi {
@@ -24,7 +22,8 @@ class ProfileStaticsBloggerToApi {
     }
 
     final response = await http.get(
-        Uri.parse('$baseUrl/blogger/profile/statics?blogger_id=$bloggerId'));
+      Uri.parse('$baseUrl/blogger/profile/statics?blogger_id=$bloggerId'),
+    );
 
     return ProfileStaticsBloggerModel.fromJson(jsonDecode(response.body));
   }

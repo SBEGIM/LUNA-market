@@ -22,22 +22,22 @@ class ShimmerBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Shimmer(
-        color: backgroundColor ?? Colors.white,
-        colorOpacity: 1,
-        cornerRadius: radius,
-        direction: direction ?? const ShimmerDirection.fromLeftToRight(),
-        child: SizedBox(
-          width: width,
-          height: height,
-          child: DecoratedBox(
-            decoration: BoxDecoration(
-              border: border,
-              borderRadius: BorderRadius.all(Radius.circular(radius)),
-              color: color ?? const Color(0xffEAECED),
-            ),
-          ),
+    color: backgroundColor ?? Colors.white,
+    colorOpacity: 1,
+    cornerRadius: radius,
+    direction: direction ?? const ShimmerDirection.fromLeftToRight(),
+    child: SizedBox(
+      width: width,
+      height: height,
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          border: border,
+          borderRadius: BorderRadius.all(Radius.circular(radius)),
+          color: color ?? const Color(0xffEAECED),
         ),
-      );
+      ),
+    ),
+  );
   // Shimmer.fromColors(
   //   baseColor: const Color(0xffEAECED).withOpacity(0.9),
   //   highlightColor: const Color(0xffEAECED).withOpacity(0.3),

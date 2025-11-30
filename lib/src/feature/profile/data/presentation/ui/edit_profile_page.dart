@@ -23,16 +23,16 @@ class EditProfilePage extends StatefulWidget {
   final String? birthday;
   final String? email;
 
-  const EditProfilePage(
-      {required this.firstName,
-      required this.lastName,
-      required this.surName,
-      required this.phone,
-      required this.gender,
-      required this.birthday,
-      required this.email,
-      Key? key})
-      : super(key: key);
+  const EditProfilePage({
+    required this.firstName,
+    required this.lastName,
+    required this.surName,
+    required this.phone,
+    required this.gender,
+    required this.birthday,
+    required this.email,
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<EditProfilePage> createState() => _EditProfilePageState();
@@ -80,15 +80,15 @@ class _EditProfilePageState extends State<EditProfilePage> {
   bool _obscureTextRepeat = false;
   CountrySellerDto? countrySellerDto;
 
-  Map<String, String?> fieldErrors = {
-    'phone': null,
-    'password': null,
-  };
+  Map<String, String?> fieldErrors = {'phone': null, 'password': null};
 
   @override
   void initState() {
     countrySellerDto = CountrySellerDto(
-        code: '+7', flagPath: Assets.icons.ruFlagIcon.path, name: 'Россия');
+      code: '+7',
+      flagPath: Assets.icons.ruFlagIcon.path,
+      name: 'Россия',
+    );
     firstNameController.text = widget.firstName ?? '';
     lastNameController.text = widget.lastName ?? '';
     surNameController.text = widget.surName ?? '';
@@ -114,8 +114,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
     final pass = passwordController.text;
 
     setState(() {
-      fieldErrors['phone'] =
-          phone.length != 10 ? 'Введите корректный номер телефона' : null;
+      fieldErrors['phone'] = phone.length != 10 ? 'Введите корректный номер телефона' : null;
 
       fieldErrors['password'] = pass.isEmpty ? 'Введите пароль' : null;
     });
@@ -142,20 +141,12 @@ class _EditProfilePageState extends State<EditProfilePage> {
         backgroundColor: AppColors.kWhite,
         elevation: 0,
         centerTitle: true,
-        title: const Text(
-          'Мои данные',
-          style: AppTextStyles.size18Weight600,
-        ),
+        title: const Text('Мои данные', style: AppTextStyles.size18Weight600),
         leading: InkWell(
           onTap: () {
             Get.back(result: 'ok');
           },
-          child: Image.asset(
-            Assets.icons.defaultBackIcon.path,
-            height: 24,
-            width: 24,
-            scale: 1.9,
-          ),
+          child: Image.asset(Assets.icons.defaultBackIcon.path, height: 24, width: 24, scale: 1.9),
         ),
       ),
       body: SafeArea(
@@ -170,21 +161,13 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    _buildFormField(
-                      controller: firstNameController,
-                      label: 'Имя',
+                    _buildFormField(controller: firstNameController, label: 'Имя'),
+                    _buildFormField(controller: lastNameController, label: 'Фамилия'),
+                    _buildFormField(controller: surNameController, label: 'Отчество'),
+                    Text(
+                      'Номер телефона',
+                      style: AppTextStyles.size13Weight500.copyWith(color: Color(0xff636366)),
                     ),
-                    _buildFormField(
-                      controller: lastNameController,
-                      label: 'Фамилия',
-                    ),
-                    _buildFormField(
-                      controller: surNameController,
-                      label: 'Отчество',
-                    ),
-                    Text('Номер телефона',
-                        style: AppTextStyles.size13Weight500
-                            .copyWith(color: Color(0xff636366))),
                     const SizedBox(height: 8),
                     Row(
                       children: [
@@ -206,9 +189,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                               decoration: BoxDecoration(
                                 color: Color(0xffEAECED),
                                 border: fieldErrors['phone'] != null
-                                    ? Border.all(
-                                        color: AppColors.mainRedColor,
-                                        width: 1.0)
+                                    ? Border.all(color: AppColors.mainRedColor, width: 1.0)
                                     : null,
                                 borderRadius: BorderRadius.circular(16),
                               ),
@@ -216,14 +197,12 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  Image.asset(
-                                    countrySellerDto!.flagPath,
-                                    width: 24,
-                                    height: 24,
-                                  ),
+                                  Image.asset(countrySellerDto!.flagPath, width: 24, height: 24),
                                   SizedBox(width: 8),
-                                  Text('${countrySellerDto!.code}',
-                                      style: AppTextStyles.size16Weight400),
+                                  Text(
+                                    '${countrySellerDto!.code}',
+                                    style: AppTextStyles.size16Weight400,
+                                  ),
                                 ],
                               ),
                             ),
@@ -238,8 +217,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                               color: AppColors.kGray2,
                               borderRadius: BorderRadius.circular(16),
                               border: fieldErrors['phone'] != null
-                                  ? Border.all(
-                                      color: AppColors.mainRedColor, width: 1.0)
+                                  ? Border.all(color: AppColors.mainRedColor, width: 1.0)
                                   : null,
                             ),
                             alignment: Alignment.center,
@@ -248,8 +226,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
                               keyboardType: TextInputType.phone,
                               decoration: InputDecoration(
                                 hintText: 'Введите номер телефона',
-                                hintStyle: AppTextStyles.size16Weight400
-                                    .copyWith(color: Color(0xFF8E8E93)),
+                                hintStyle: AppTextStyles.size16Weight400.copyWith(
+                                  color: Color(0xFF8E8E93),
+                                ),
                                 border: InputBorder.none,
                               ),
                             ),
@@ -264,41 +243,43 @@ class _EditProfilePageState extends State<EditProfilePage> {
                       keyboardType: TextInputType.emailAddress,
                     ),
                     _buildDateOfBirthField(
-                        callback: () {
-                          setState(() {});
-                        },
-                        context: context,
-                        controller: birthdayController,
-                        label: 'Дата рождения'),
+                      callback: () {
+                        setState(() {});
+                      },
+                      context: context,
+                      controller: birthdayController,
+                      label: 'Дата рождения',
+                    ),
                     _buildFormField(
-                        controller: genController,
-                        label: 'Выберите пол',
-                        readOnly: true,
-                        onTap: () {
-                          showGenderType(
-                            context,
-                            gender == 'x' ? true : false,
-                            typeCall: (value) {
-                              print(value);
+                      controller: genController,
+                      label: 'Выберите пол',
+                      readOnly: true,
+                      onTap: () {
+                        showGenderType(
+                          context,
+                          gender == 'x' ? true : false,
+                          typeCall: (value) {
+                            print(value);
 
-                              if (value == true) {
-                                man = true;
-                                woman = false;
-                                gender = 'x';
-                              } else {
-                                woman = true;
-                                man = false;
-                                gender = 'y';
-                              }
+                            if (value == true) {
+                              man = true;
+                              woman = false;
+                              gender = 'x';
+                            } else {
+                              woman = true;
+                              man = false;
+                              gender = 'y';
+                            }
 
-                              setState(() {});
-                            },
-                          );
-                        },
-                        showArrow: true),
+                            setState(() {});
+                          },
+                        );
+                      },
+                      showArrow: true,
+                    ),
                   ],
                 ),
-              )
+              ),
             ],
           ),
         ),
@@ -310,40 +291,39 @@ class _EditProfilePageState extends State<EditProfilePage> {
           onTap: () async {
             final edit = BlocProvider.of<LoginCubit>(context);
             await edit.edit(
-                firstNameController.text,
-                lastNameController.text,
-                surNameController.text,
-                phoneController.text != widget.phone
-                    ? phoneController.text
-                    : '',
-                _image != null ? _image!.path : "",
-                gender,
-                birthdayController.text,
-                countryController.text,
-                cityController.text,
-                streetController.text,
-                homeController.text,
-                doorController.text,
-                spaceController.text,
-                kvController.text,
-                emailController.text);
+              firstNameController.text,
+              lastNameController.text,
+              surNameController.text,
+              phoneController.text != widget.phone ? phoneController.text : '',
+              _image != null ? _image!.path : "",
+              gender,
+              birthdayController.text,
+              countryController.text,
+              cityController.text,
+              streetController.text,
+              homeController.text,
+              doorController.text,
+              spaceController.text,
+              kvController.text,
+              emailController.text,
+            );
 
             Get.back(result: 'ok');
             // Navigator.pop(context);
           },
           child: Container(
-              height: 52,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(16),
-                color: AppColors.mainPurpleColor,
-              ),
-              width: MediaQuery.of(context).size.width,
-              alignment: Alignment.center,
-              child: Text(
-                'Сохранить',
-                style: AppTextStyles.size18Weight600
-                    .copyWith(color: AppColors.kWhite),
-              )),
+            height: 52,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(16),
+              color: AppColors.mainPurpleColor,
+            ),
+            width: MediaQuery.of(context).size.width,
+            alignment: Alignment.center,
+            child: Text(
+              'Сохранить',
+              style: AppTextStyles.size18Weight600.copyWith(color: AppColors.kWhite),
+            ),
+          ),
         ),
       ),
     );
@@ -364,9 +344,7 @@ Widget _buildFormField({
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label,
-            style: AppTextStyles.size13Weight500
-                .copyWith(color: Color(0xff636366))),
+        Text(label, style: AppTextStyles.size13Weight500.copyWith(color: Color(0xff636366))),
         const SizedBox(height: 8),
         GestureDetector(
           onTap: readOnly ? onTap : null,
@@ -389,16 +367,14 @@ Widget _buildFormField({
                       inputFormatters: inputFormatters,
                       readOnly: readOnly,
                       decoration: InputDecoration.collapsed(
-                          hintText: 'Введите $label',
-                          hintStyle: AppTextStyles.size16Weight400
-                              .copyWith(color: Color(0xff8E8E93))),
+                        hintText: 'Введите $label',
+                        hintStyle: AppTextStyles.size16Weight400.copyWith(color: Color(0xff8E8E93)),
+                      ),
                       style: AppTextStyles.size16Weight400,
                     ),
                   ),
                 ),
-                if (showArrow)
-                  const Icon(Icons.arrow_forward_ios,
-                      size: 16, color: Colors.grey),
+                if (showArrow) const Icon(Icons.arrow_forward_ios, size: 16, color: Colors.grey),
               ],
             ),
           ),
@@ -419,9 +395,7 @@ Widget _buildPasswordField({
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label,
-            style: AppTextStyles.size13Weight500
-                .copyWith(color: Color(0xff636366))),
+        Text(label, style: AppTextStyles.size13Weight500.copyWith(color: Color(0xff636366))),
         const SizedBox(height: 8),
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -435,9 +409,7 @@ Widget _buildPasswordField({
                 child: TextField(
                   controller: controller,
                   obscureText: obscureText,
-                  decoration: const InputDecoration(
-                    border: InputBorder.none,
-                  ),
+                  decoration: const InputDecoration(border: InputBorder.none),
                   style: const TextStyle(fontSize: 16),
                 ),
               ),
@@ -470,9 +442,7 @@ Widget _buildDateOfBirthField({
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label,
-            style: AppTextStyles.size13Weight500
-                .copyWith(color: Color(0xff636366))),
+        Text(label, style: AppTextStyles.size13Weight500.copyWith(color: Color(0xff636366))),
         const SizedBox(height: 8),
         GestureDetector(
           onTap: () async {
@@ -502,10 +472,7 @@ Widget _buildDateOfBirthField({
                 Expanded(
                   child: Text(
                     controller.text.isEmpty ? 'дд.дд.гггг' : controller.text,
-                    style: const TextStyle(
-                      fontSize: 16,
-                      color: Colors.black,
-                    ),
+                    style: const TextStyle(fontSize: 16, color: Colors.black),
                   ),
                 ),
                 const Icon(Icons.calendar_today, size: 16, color: Colors.grey),

@@ -10,25 +10,25 @@ const _tag = 'messageRepository';
 class MessageSellerRepository {
   final Message _message = Message();
 
-  Future<List<MessageSellerDTO>> messageList(
-          int page, int chatId, int userId) =>
+  Future<List<MessageSellerDTO>> messageList(int page, int chatId, int userId) =>
       _message.messageList(page, chatId, userId);
 }
 
 class Message {
   final _box = GetStorage();
 
-  Future<List<MessageSellerDTO>> messageList(
-      int page, int chatId, int userId) async {
+  Future<List<MessageSellerDTO>> messageList(int page, int chatId, int userId) async {
     try {
       final String? token = _box.read('token');
 
       final response = await http.get(
-          Uri.parse(
-              "$baseUrl/chat/message?page=$page& ${chatId == 0 ? 'user_id=$userId' : 'chat_id=$chatId'} "),
+        Uri.parse(
+          "$baseUrl/chat/message?page=$page& ${chatId == 0 ? 'user_id=$userId' : 'chat_id=$chatId'} ",
+        ),
 
-          //    Uri.parse("$baseUrl/chat/message?page=$page&chat_id=$chatId"),
-          headers: {"Authorization": "Bearer $token"});
+        //    Uri.parse("$baseUrl/chat/message?page=$page&chat_id=$chatId"),
+        headers: {"Authorization": "Bearer $token"},
+      );
 
       final data = jsonDecode(response.body) as Map<String, dynamic>;
 

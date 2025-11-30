@@ -1,9 +1,5 @@
 class ProfileStaticsBloggerModel {
-  ProfileStaticsBloggerModel({
-    int? videoReview,
-    int? subscribers,
-    int? sales,
-  }) {
+  ProfileStaticsBloggerModel({int? videoReview, int? subscribers, int? sales}) {
     _videoReview = videoReview;
     _subscribers = subscribers;
     _sales = sales;

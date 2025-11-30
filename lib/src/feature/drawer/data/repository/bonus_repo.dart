@@ -17,8 +17,10 @@ class BonusApi {
   Future<List<BonusModel>> bonuses() async {
     final String? token = _box.read('token');
 
-    final response = await http.get(Uri.parse('$baseUrl/user/bonus'),
-        headers: {"Authorization": "Bearer $token"});
+    final response = await http.get(
+      Uri.parse('$baseUrl/user/bonus'),
+      headers: {"Authorization": "Bearer $token"},
+    );
 
     final data = jsonDecode(response.body);
 

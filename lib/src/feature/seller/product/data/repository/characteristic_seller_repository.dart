@@ -10,8 +10,7 @@ class CharacteristicSellerRepository {
   final CharacteristicToApi _characteristicToApi = CharacteristicToApi();
 
   Future<List<CharacteristicsModel>> get() => _characteristicToApi.get();
-  Future<List<CharacteristicsModel>> subGet(id) =>
-      _characteristicToApi.subGet(id);
+  Future<List<CharacteristicsModel>> subGet(id) => _characteristicToApi.subGet(id);
 }
 
 class CharacteristicToApi {
@@ -24,8 +23,7 @@ class CharacteristicToApi {
   }
 
   Future<List<CharacteristicsModel>> subGet(id) async {
-    final response =
-        await http.get(Uri.parse('$baseUrl/list/sub/characteristics?id=$id'));
+    final response = await http.get(Uri.parse('$baseUrl/list/sub/characteristics?id=$id'));
 
     final data = jsonDecode(response.body);
 

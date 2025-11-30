@@ -5,8 +5,7 @@ import 'package:get/route_manager.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/feature/basket/presentation/widgets/show_module_cities_widget.dart';
-import 'package:haji_market/src/feature/drawer/bloc/city_cubit.dart'
-    as cityCubit;
+import 'package:haji_market/src/feature/drawer/bloc/city_cubit.dart' as cityCubit;
 import 'package:haji_market/src/feature/drawer/bloc/country_state.dart';
 import 'package:haji_market/src/feature/home/data/model/city_model.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
@@ -56,22 +55,19 @@ Future<dynamic> showAlertCountryWidget(
                       const Expanded(
                         child: Text(
                           'Выберите страну для СДЕК',
-                          style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 18,
-                            height: 1.1,
-                          ),
+                          style: TextStyle(fontWeight: FontWeight.w600, fontSize: 18, height: 1.1),
                         ),
                       ),
                       InkWell(
                         onTap: () => Navigator.of(ctx).pop(),
                         child: SizedBox(
-                            width: 22,
-                            height: 22,
-                            child: Image.asset(
-                              Assets.icons.defaultCloseIcon.path,
-                              fit: BoxFit.contain,
-                            )),
+                          width: 22,
+                          height: 22,
+                          child: Image.asset(
+                            Assets.icons.defaultCloseIcon.path,
+                            fit: BoxFit.contain,
+                          ),
+                        ),
                       ),
                     ],
                   ),
@@ -95,50 +91,40 @@ Future<dynamic> showAlertCountryWidget(
                               if (searchController.text.isNotEmpty) {
                                 final q = searchController.text.toLowerCase();
                                 filteredCountries = allCountries.where((c) {
-                                  final name =
-                                      (c.name ?? '').toString().toLowerCase();
+                                  final name = (c.name ?? '').toString().toLowerCase();
                                   return name.contains(q);
                                 }).toList();
                               }
                             }
 
-                            final list = (filteredCountries.isNotEmpty ||
-                                    searchController.text.isNotEmpty)
+                            final list =
+                                (filteredCountries.isNotEmpty || searchController.text.isNotEmpty)
                                 ? filteredCountries
                                 : allCountries;
 
                             return ListView.separated(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 16,
-                                vertical: 8,
-                              ),
+                              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                               itemCount: list.length,
-                              separatorBuilder: (_, __) => const Divider(
-                                height: 1,
-                                color: AppColors.kGray2,
-                              ),
+                              separatorBuilder: (_, __) =>
+                                  const Divider(height: 1, color: AppColors.kGray2),
                               itemBuilder: (context, index) {
                                 final item = list[index];
                                 final bool isSelected =
-                                    selectedCountryId != null &&
-                                        selectedCountryId == item.id;
+                                    selectedCountryId != null && selectedCountryId == item.id;
 
                                 return InkWell(
                                   borderRadius: BorderRadius.circular(8),
                                   onTap: () {
                                     setState(() {
                                       selectedCountryId = item.id as int?;
-                                      selectedCountryCode =
-                                          item.code?.toString();
-                                      selectedCountryName =
-                                          item.name?.toString();
+                                      selectedCountryCode = item.code?.toString();
+                                      selectedCountryName = item.name?.toString();
                                     });
                                   },
                                   child: Container(
                                     height: 52,
                                     child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
                                         Expanded(
                                           child: Text(
@@ -170,9 +156,7 @@ Future<dynamic> showAlertCountryWidget(
                               },
                             );
                           } else {
-                            return const Center(
-                              child: CircularProgressIndicator.adaptive(),
-                            );
+                            return const Center(child: CircularProgressIndicator.adaptive());
                           }
                         },
                       ),
@@ -196,8 +180,7 @@ Future<dynamic> showAlertCountryWidget(
                       onPressed: selectedCountryId != null
                           ? () async {
                               // Берём кубит городов и стабильный контекст
-                              final citiesCubit =
-                                  BlocProvider.of<cityCubit.CityCubit>(ctx);
+                              final citiesCubit = BlocProvider.of<cityCubit.CityCubit>(ctx);
                               final navigatorContext = Get.context ?? ctx;
 
                               // закрываем модалку стран
@@ -205,49 +188,39 @@ Future<dynamic> showAlertCountryWidget(
 
                               // сохраняем выбранную страну
                               if (selectedCountryName != null) {
-                                GetStorage()
-                                    .write('country', selectedCountryName);
+                                GetStorage().write('country', selectedCountryName);
                               }
                               if (selectedCountryId != null) {
-                                GetStorage().write(
-                                  'user_country_id',
-                                  selectedCountryId.toString(),
-                                );
+                                GetStorage().write('user_country_id', selectedCountryId.toString());
                               }
 
                               // грузим города по коду страны
-                              final data = await citiesCubit
-                                  .citiesCdek(selectedCountryCode ?? 'KZ');
+                              final data = await citiesCubit.citiesCdek(
+                                selectedCountryCode ?? 'KZ',
+                              );
 
                               // открываем модалку городов в новом контексте
-                              showModuleCities(
-                                navigatorContext,
-                                'Область/Район ОГД',
-                                data,
-                                (CityModel city) {
-                                  print(city.lat);
-                                  print(city.long);
-                                  final box = GetStorage();
-                                  box.write('city', city.toJson());
-                                  callBack?.call();
-                                },
-                              );
+                              showModuleCities(navigatorContext, 'Область/Район ОГД', data, (
+                                CityModel city,
+                              ) {
+                                print(city.lat);
+                                print(city.long);
+                                final box = GetStorage();
+                                box.write('city', city.toJson());
+                                callBack?.call();
+                              });
                             }
                           : null,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.mainPurpleColor,
-                        disabledBackgroundColor:
-                            AppColors.boxDecorBackgroundPurpleColor,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16),
-                        ),
+                        disabledBackgroundColor: AppColors.boxDecorBackgroundPurpleColor,
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                         padding: EdgeInsets.zero,
                         tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                       ),
                       child: Text(
                         'Выбрать',
-                        style: AppTextStyles.size18Weight600
-                            .copyWith(color: AppColors.kWhite),
+                        style: AppTextStyles.size18Weight600.copyWith(color: AppColors.kWhite),
                       ),
                     ),
                   ),

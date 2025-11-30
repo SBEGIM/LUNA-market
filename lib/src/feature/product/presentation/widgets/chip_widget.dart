@@ -1,17 +1,9 @@
 import 'package:flutter/material.dart';
 
-Widget chip(
-  String label,
-  Color color,
-) {
+Widget chip(String label, Color color) {
   return Chip(
     labelPadding: const EdgeInsets.all(4.0),
-    label: Text(
-      label,
-      style: const TextStyle(
-        color: Colors.white,
-      ),
-    ),
+    label: Text(label, style: const TextStyle(color: Colors.white)),
     backgroundColor: color,
     elevation: 1.0,
 

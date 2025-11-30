@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/feature/home/data/model/cat_model.dart';
 import 'package:shimmer_animation/shimmer_animation.dart';
-import '../../../../core/constant/generated/assets.gen.dart';
 
 class GridLayoutCategory {
   String? title;
@@ -12,13 +11,12 @@ class GridLayoutCategory {
   List<CatsModel>? catOptions;
   void Function()? onTap;
 
-  GridLayoutCategory(
-      {this.title, this.icon, this.onTap, this.image, this.catOptions});
+  GridLayoutCategory({this.title, this.icon, this.onTap, this.image, this.catOptions});
 }
 
 class GridOptionsCategory extends StatelessWidget {
   final GridLayoutCategory layout;
-  const GridOptionsCategory({Key? key, required this.layout}) : super(key: key);
+  const GridOptionsCategory({super.key, required this.layout});
 
   @override
   Widget build(BuildContext context) {
@@ -28,8 +26,7 @@ class GridOptionsCategory extends StatelessWidget {
         ? 'https://lunamarket.ru/storage/${layout.image ?? ''}'
         : 'https://lunamarket.ru/img/all_cats.png';
     // Шиммер исчезнет, когда картинка окажется в кеше/загрузится
-    final Future<void> precache =
-        precacheImage(NetworkImage(imageUrl), context);
+    final Future<void> precache = precacheImage(NetworkImage(imageUrl), context);
 
     return Material(
       color: Colors.transparent,
@@ -50,8 +47,7 @@ class GridOptionsCategory extends StatelessWidget {
                 Positioned(
                   top: 8,
                   left: 8,
-                  right:
-                      8, // если нужно не перекрывать картинку: right: imageSize + 16,
+                  right: 8, // если нужно не перекрывать картинку: right: imageSize + 16,
                   child: Text(
                     layout.title ?? '',
                     maxLines: 2,
@@ -70,8 +66,7 @@ class GridOptionsCategory extends StatelessWidget {
                     child: CachedNetworkImage(
                       imageUrl: imageUrl,
                       fit: BoxFit.cover,
-                      progressIndicatorBuilder:
-                          (context, url, downloadProgress) {
+                      progressIndicatorBuilder: (context, url, downloadProgress) {
                         return Center(
                           child: CircularProgressIndicator(
                             value: downloadProgress.progress, // 0..1 или null
@@ -82,10 +77,7 @@ class GridOptionsCategory extends StatelessWidget {
                       errorWidget: (context, url, error) {
                         return Container(
                           color: Colors.grey[100],
-                          child: const Icon(
-                            Icons.broken_image,
-                            color: Colors.grey,
-                          ),
+                          child: const Icon(Icons.broken_image, color: Colors.grey),
                         );
                       },
                     ),
@@ -111,8 +103,7 @@ class GridOptionsCategory extends StatelessWidget {
                   child: FutureBuilder<void>(
                     future: precache,
                     builder: (context, snapshot) {
-                      final bool loading =
-                          snapshot.connectionState != ConnectionState.done;
+                      final bool loading = snapshot.connectionState != ConnectionState.done;
                       // если была ошибка загрузки — убираем оверлей, пусть покажется errorBuilder
                       final bool show = loading && !snapshot.hasError;
 
@@ -126,7 +117,7 @@ class GridOptionsCategory extends StatelessWidget {
                             // shimmer_animation: Shimmer(child: ...)
                             child: Container(
                               // лёгкая подложка, чтобы блик был заметен
-                              color: Colors.white.withOpacity(0.06),
+                              color: Colors.white.withValues(alpha: 0.06),
                             ),
                           ),
                         ),

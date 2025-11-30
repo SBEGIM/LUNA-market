@@ -16,8 +16,9 @@ class ReviewCubit extends Cubit<ReviewState> {
   Future<void> reviews(String product_id) async {
     try {
       emit(LoadingState());
-      final List<ReviewProductModel> data =
-          await reviewProductRepository.productReviews(product_id);
+      final List<ReviewProductModel> data = await reviewProductRepository.productReviews(
+        product_id,
+      );
 
       emit(LoadedState(data));
     } catch (e) {
@@ -36,28 +37,27 @@ class ReviewCubit extends Cubit<ReviewState> {
     try {
       emit(LoadingState());
       final statusCode = await reviewProductRepository.storeReview(
-          orderId, review, rating, productId, images);
+        orderId,
+        review,
+        rating,
+        productId,
+        images,
+      );
       if (statusCode == 200) {
-        final List<ReviewProductModel> data =
-            await reviewProductRepository.productReviews(productId);
+        final List<ReviewProductModel> data = await reviewProductRepository.productReviews(
+          productId,
+        );
 
         emit(LoadedState(data));
-        AppSnackBar.show(
-          context,
-          'Ваш  отзыв добавлен',
-          type: AppSnackType.success,
-        );
+        AppSnackBar.show(context, 'Ваш  отзыв добавлен', type: AppSnackType.success);
       } else {
-        final List<ReviewProductModel> data =
-            await reviewProductRepository.productReviews(productId);
+        final List<ReviewProductModel> data = await reviewProductRepository.productReviews(
+          productId,
+        );
 
         emit(LoadedState(data));
 
-        AppSnackBar.show(
-          context,
-          'Вы не можете оставлять отзыв',
-          type: AppSnackType.error,
-        );
+        AppSnackBar.show(context, 'Вы не можете оставлять отзыв', type: AppSnackType.error);
       }
     } catch (e) {
       log(e.toString());

@@ -24,8 +24,7 @@ class BasketShowSellerModel {
   }
 
   BasketShowSellerModel.fromJson(dynamic json) {
-    _product =
-        json['product'] != null ? Product.fromJson(json['product']) : null;
+    _product = json['product'] != null ? Product.fromJson(json['product']) : null;
     _image = json['image'] != null ? json['image'].cast<String>() : [];
     _priceCourier = json['price_courier'];
     _price = json['price'];
@@ -84,14 +83,7 @@ class BasketShowSellerModel {
 }
 
 class Product {
-  Product({
-    int? id,
-    int? shopId,
-    String? name,
-    int? price,
-    int? compound,
-    int? courierPrice,
-  }) {
+  Product({int? id, int? shopId, String? name, int? price, int? compound, int? courierPrice}) {
     _id = id;
     _shopId = shopId;
     _name = name;

@@ -13,8 +13,7 @@ class SuccessSellerRegisterPage extends StatefulWidget {
   const SuccessSellerRegisterPage({Key? key}) : super(key: key);
 
   @override
-  State<SuccessSellerRegisterPage> createState() =>
-      _SuccessSellerRegisterPageState();
+  State<SuccessSellerRegisterPage> createState() => _SuccessSellerRegisterPageState();
 }
 
 class _SuccessSellerRegisterPageState extends State<SuccessSellerRegisterPage> {
@@ -29,10 +28,7 @@ class _SuccessSellerRegisterPageState extends State<SuccessSellerRegisterPage> {
           children: [
             SvgPicture.asset(Assets.icons.successRegisterSeller.path),
             SizedBox(height: 16),
-            Text(
-              'Регистрация прошла успешно',
-              style: AppTextStyles.size22Weight700,
-            ),
+            Text('Регистрация прошла успешно', style: AppTextStyles.size22Weight700),
             SizedBox(height: 16),
             Text(
               'Ваша заявка находится на модерации. Обычно это занимает от 1 до 2 рабочих дней',
@@ -46,10 +42,10 @@ class _SuccessSellerRegisterPageState extends State<SuccessSellerRegisterPage> {
         onTap: () {
           // context.router.push(AuthSellerRoute());
 
-          BlocProvider.of<AppBloc>(context).add(
-              const AppEvent.chageState(state: AppState.inAppAdminState()));
-          context.router
-              .popUntil((route) => route.settings.name == LauncherRoute.name);
+          BlocProvider.of<AppBloc>(
+            context,
+          ).add(const AppEvent.chageState(state: AppState.inAppAdminState()));
+          context.router.popUntil((route) => route.settings.name == LauncherRoute.name);
         },
         child: Container(
           width: 358,
@@ -57,12 +53,12 @@ class _SuccessSellerRegisterPageState extends State<SuccessSellerRegisterPage> {
           margin: EdgeInsets.only(bottom: 50),
           alignment: Alignment.center,
           decoration: BoxDecoration(
-              color: AppColors.mainPurpleColor,
-              borderRadius: BorderRadius.circular(16)),
+            color: AppColors.mainPurpleColor,
+            borderRadius: BorderRadius.circular(16),
+          ),
           child: Text(
             'Перейти на главную',
-            style: AppTextStyles.defaultButtonTextStyle
-                .copyWith(color: AppColors.kWhite),
+            style: AppTextStyles.defaultButtonTextStyle.copyWith(color: AppColors.kWhite),
           ),
         ),
       ),

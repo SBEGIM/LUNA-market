@@ -3,18 +3,12 @@ import 'package:http/http.dart';
 /// A mixin that provides a method to retry a request.
 mixin class RetryRequestMixin {
   /// Retries the request.
-  Future<StreamedResponse> retryRequest(
-    StreamedResponse response, [
-    Client? client,
-  ]) async {
+  Future<StreamedResponse> retryRequest(StreamedResponse response, [Client? client]) async {
     final oldRequest = response.request;
     final $client = client ?? Client();
 
     if (oldRequest is Request) {
-      final newRequest = Request(
-        oldRequest.method,
-        oldRequest.url,
-      );
+      final newRequest = Request(oldRequest.method, oldRequest.url);
 
       newRequest.headers.addAll(oldRequest.headers);
       newRequest.followRedirects = oldRequest.followRedirects;
@@ -27,10 +21,7 @@ mixin class RetryRequestMixin {
     }
 
     if (oldRequest is MultipartRequest) {
-      final newRequest = MultipartRequest(
-        oldRequest.method,
-        oldRequest.url,
-      );
+      final newRequest = MultipartRequest(oldRequest.method, oldRequest.url);
 
       newRequest.headers.addAll(oldRequest.headers);
       newRequest.followRedirects = oldRequest.followRedirects;

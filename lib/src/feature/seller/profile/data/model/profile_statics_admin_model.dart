@@ -1,10 +1,11 @@
 class ProfileStaticsAdminModel {
-  ProfileStaticsAdminModel(
-      {int? videoReview,
-      int? subscribers,
-      int? sales,
-      int? productCount,
-      int? salesSum}) {
+  ProfileStaticsAdminModel({
+    int? videoReview,
+    int? subscribers,
+    int? sales,
+    int? productCount,
+    int? salesSum,
+  }) {
     _videoReview = videoReview;
     _subscribers = subscribers;
     _sales = sales;

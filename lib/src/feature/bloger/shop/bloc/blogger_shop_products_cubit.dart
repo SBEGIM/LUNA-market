@@ -7,8 +7,7 @@ import '../data/repository/blogger_shop_products_repo.dart';
 class BloggerShopProductsCubit extends Cubit<BloggerShopProductsState> {
   final BloggerShopProductsRepository bloggerShopProductsRepository;
 
-  BloggerShopProductsCubit({required this.bloggerShopProductsRepository})
-      : super(InitState());
+  BloggerShopProductsCubit({required this.bloggerShopProductsRepository}) : super(InitState());
 
   int page = 1;
 
@@ -19,8 +18,11 @@ class BloggerShopProductsCubit extends Cubit<BloggerShopProductsState> {
       emit(LoadingState());
       page = 1;
 
-      final List<BloggerShopProductModel> data =
-          await bloggerShopProductsRepository.products(name, shopId, page);
+      final List<BloggerShopProductModel> data = await bloggerShopProductsRepository.products(
+        name,
+        shopId,
+        page,
+      );
       if (data.isEmpty) {
         emit(NoDataState());
       } else {
@@ -35,8 +37,7 @@ class BloggerShopProductsCubit extends Cubit<BloggerShopProductsState> {
   Future<void> productsPagination(String? name, int? shopId) async {
     try {
       // emit(LoadingState());
-      final data =
-          await bloggerShopProductsRepository.products(name, shopId, page);
+      final data = await bloggerShopProductsRepository.products(name, shopId, page);
 
       // for (int i = 0; i < data.length; i++) {
       //   array.add(data[i]);

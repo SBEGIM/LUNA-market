@@ -17,42 +17,12 @@ class _LocationPageState extends State<LocationPage> {
   String contryCode = 'KZ';
 
   final List<Map<String, dynamic>> countries = [
-    {
-      'icon': Assets.icons.ruFlagIcon.path,
-      'id': 1,
-      'name': 'Россия',
-      'code': 'RU',
-    },
-    {
-      'icon': Assets.icons.belFlagIcon.path,
-      'id': 2,
-      'name': 'Беларусь',
-      'code': 'BY',
-    },
-    {
-      'icon': Assets.icons.kzFlagIcon.path,
-      'id': 3,
-      'name': 'Казахстан',
-      'code': 'KZ',
-    },
-    {
-      'icon': Assets.icons.krFlagIcon.path,
-      'id': 4,
-      'name': 'Киргизия',
-      'code': 'KG',
-    },
-    {
-      'icon': Assets.icons.arFlagIcon.path,
-      'id': 5,
-      'name': 'Армения',
-      'code': 'AM',
-    },
-    {
-      'icon': Assets.icons.uzFlagIcon.path,
-      'id': 6,
-      'name': 'Узбекстан',
-      'code': 'UZ',
-    },
+    {'icon': Assets.icons.ruFlagIcon.path, 'id': 1, 'name': 'Россия', 'code': 'RU'},
+    {'icon': Assets.icons.belFlagIcon.path, 'id': 2, 'name': 'Беларусь', 'code': 'BY'},
+    {'icon': Assets.icons.kzFlagIcon.path, 'id': 3, 'name': 'Казахстан', 'code': 'KZ'},
+    {'icon': Assets.icons.krFlagIcon.path, 'id': 4, 'name': 'Киргизия', 'code': 'KG'},
+    {'icon': Assets.icons.arFlagIcon.path, 'id': 5, 'name': 'Армения', 'code': 'AM'},
+    {'icon': Assets.icons.uzFlagIcon.path, 'id': 6, 'name': 'Узбекстан', 'code': 'UZ'},
   ];
 
   int _select = -1;
@@ -91,23 +61,23 @@ class _LocationPageState extends State<LocationPage> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    SizedBox(
-                      height: 54,
-                    ),
+                    SizedBox(height: 54),
                     Text(
                       'Добро пожаловать!',
                       style: AppTextStyles.defButtonTextStyle.copyWith(
-                          color: AppColors.kWhite,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 22),
+                        color: AppColors.kWhite,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 22,
+                      ),
                     ),
                     const SizedBox(height: 4),
                     Text(
                       'Пожалуйста, выберите страну:',
                       style: AppTextStyles.catalogTextStyle.copyWith(
-                          color: AppColors.kGray1.withOpacity(0.7),
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
+                        color: AppColors.kGray1.withOpacity(0.7),
+                        fontSize: 16,
+                        fontWeight: FontWeight.w400,
+                      ),
                     ),
                     const SizedBox(height: 32),
                     Expanded(
@@ -136,8 +106,7 @@ class _LocationPageState extends State<LocationPage> {
                               child: Container(
                                 height: 60,
                                 alignment: Alignment.center,
-                                padding:
-                                    const EdgeInsets.only(left: 16, right: 16),
+                                padding: const EdgeInsets.only(left: 16, right: 16),
                                 decoration: BoxDecoration(
                                   color: Color(0xFFEAECED).withOpacity(0.1),
                                   borderRadius: BorderRadius.circular(16),
@@ -145,19 +114,14 @@ class _LocationPageState extends State<LocationPage> {
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
-                                    Image.asset(
-                                      '${countries[index]['icon']}',
-                                      height: 32,
-                                    ),
-                                    SizedBox(
-                                      width: 5,
-                                    ),
+                                    Image.asset('${countries[index]['icon']}', height: 32),
+                                    SizedBox(width: 5),
                                     Text(
                                       '${countries[index]['name']}',
-                                      style: AppTextStyles.catalogTextStyle
-                                          .copyWith(
-                                              color: AppColors.kWhite,
-                                              fontWeight: FontWeight.w600),
+                                      style: AppTextStyles.catalogTextStyle.copyWith(
+                                        color: AppColors.kWhite,
+                                        fontWeight: FontWeight.w600,
+                                      ),
                                     ),
                                     Spacer(),
                                     _select == index
@@ -165,15 +129,14 @@ class _LocationPageState extends State<LocationPage> {
                                             height: 24,
                                             width: 24,
                                             child: Image.asset(
-                                              Assets
-                                                  .icons.defaultCheckIcon.path,
+                                              Assets.icons.defaultCheckIcon.path,
                                               color: AppColors.kWhite,
                                             ),
                                           )
                                         : Icon(
                                             Icons.radio_button_unchecked,
                                             color: AppColors.kWhite,
-                                          )
+                                          ),
                                   ],
                                 ),
                               ),
@@ -189,24 +152,21 @@ class _LocationPageState extends State<LocationPage> {
             Padding(
               padding: const EdgeInsets.only(left: 16.0, right: 16, bottom: 20),
               child: DefaultButton(
-                  text: 'Продолжить',
-                  press: () {
-                    if (_select != -1) {
-                      Get.off(GeoPositionPage(
-                        contryId: contryId,
-                        countryCode: contryCode,
-                      ));
-                    }
-                  },
-                  color: AppColors.kLightBlackColor,
-                  backgroundColor: AppColors.kWhite,
-                  textStyle: AppTextStyles.titleTextStyle.copyWith(
-                      height: 1.33,
-                      color: _select != -1
-                          ? Color(0xFF0F0F0F)
-                          : Color(0XFFD1D1D6)),
-                  width: double.infinity),
-            )
+                text: 'Продолжить',
+                press: () {
+                  if (_select != -1) {
+                    Get.off(GeoPositionPage(contryId: contryId, countryCode: contryCode));
+                  }
+                },
+                color: AppColors.kLightBlackColor,
+                backgroundColor: AppColors.kWhite,
+                textStyle: AppTextStyles.titleTextStyle.copyWith(
+                  height: 1.33,
+                  color: _select != -1 ? Color(0xFF0F0F0F) : Color(0XFFD1D1D6),
+                ),
+                width: double.infinity,
+              ),
+            ),
           ],
         ),
       ),

@@ -57,77 +57,74 @@ class _InitSellerPageState extends State<InitSellerPage> {
         backgroundColor: Colors.white,
         elevation: 0,
         centerTitle: true,
-        title: const Text(
-          'Регистрация магазина',
-          style: AppTextStyles.appBarTextStyle,
-        ),
+        title: const Text('Регистрация магазина', style: AppTextStyles.appBarTextStyle),
         leading: Padding(
           padding: const EdgeInsets.only(left: 22.0),
-          child: CustomBackButton(onTap: () {
-            Navigator.pop(context);
-          }),
+          child: CustomBackButton(
+            onTap: () {
+              Navigator.pop(context);
+            },
+          ),
         ),
       ),
       body: Column(
         children: [
-          const SizedBox(
-            height: 20,
-          ),
+          const SizedBox(height: 20),
           Center(
             child: Column(
               children: [
                 GestureDetector(
                   onTap: () {
                     Get.defaultDialog(
-                        title: "Изменить фото",
-                        middleText: '',
-                        textConfirm: 'Камера',
-                        textCancel: 'Фото',
-                        titlePadding: const EdgeInsets.only(top: 40),
-                        onConfirm: () {
-                          change = true;
-                          setState(() {
-                            change;
-                          });
-                          _getImage();
-                        },
-                        onCancel: () {
-                          change = false;
-                          setState(() {
-                            change;
-                          });
-                          _getImage();
+                      title: "Изменить фото",
+                      middleText: '',
+                      textConfirm: 'Камера',
+                      textCancel: 'Фото',
+                      titlePadding: const EdgeInsets.only(top: 40),
+                      onConfirm: () {
+                        change = true;
+                        setState(() {
+                          change;
                         });
+                        _getImage();
+                      },
+                      onCancel: () {
+                        change = false;
+                        setState(() {
+                          change;
+                        });
+                        _getImage();
+                      },
+                    );
                   },
                   child: Container(
-                      height: 120,
-                      width: 120,
-                      color: Colors.white,
-                      child: Stack(
-                        children: [
-                          SvgPicture.asset('assets/icons/border.svg'),
-                          Center(
-                              child: _image != null
-                                  ? CircleAvatar(
-                                      backgroundImage: FileImage(
-                                        File(_image!.path),
-                                      ),
-                                      radius: 34,
-                                      child: Container())
-                                  : SvgPicture.asset(
-                                      'assets/icons/camera2.svg')),
-                        ],
-                      )),
+                    height: 120,
+                    width: 120,
+                    color: Colors.white,
+                    child: Stack(
+                      children: [
+                        SvgPicture.asset('assets/icons/border.svg'),
+                        Center(
+                          child: _image != null
+                              ? CircleAvatar(
+                                  backgroundImage: FileImage(File(_image!.path)),
+                                  radius: 34,
+                                  child: Container(),
+                                )
+                              : SvgPicture.asset('assets/icons/camera2.svg'),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
-                const SizedBox(
-                  height: 16,
-                ),
+                const SizedBox(height: 16),
                 const Text(
                   'ЗАГРУЗИТЬ ЛОГОТИП',
                   style: TextStyle(
-                      color: AppColors.kPrimaryColor,
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500),
+                    color: AppColors.kPrimaryColor,
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
               ],
             ),
@@ -136,7 +133,9 @@ class _InitSellerPageState extends State<InitSellerPage> {
             padding: const EdgeInsets.all(16),
             child: Container(
               decoration: BoxDecoration(
-                  color: Colors.white, borderRadius: BorderRadius.circular(10)),
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10),
+              ),
               child: ListTile(
                 leading: SvgPicture.asset(
                   'assets/icons/shop1.svg',
@@ -152,9 +151,10 @@ class _InitSellerPageState extends State<InitSellerPage> {
                     border: InputBorder.none,
                     hintText: 'Название магазина',
                     hintStyle: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w400,
-                        color: Color.fromRGBO(170, 174, 179, 1)),
+                      fontSize: 16,
+                      fontWeight: FontWeight.w400,
+                      color: Color.fromRGBO(170, 174, 179, 1),
+                    ),
                     enabledBorder: UnderlineInputBorder(
                       borderSide: BorderSide(color: Colors.white),
                       // borderRadius: BorderRadius.circular(3),
@@ -171,30 +171,26 @@ class _InitSellerPageState extends State<InitSellerPage> {
           ),
           const Spacer(),
           Padding(
-            padding: EdgeInsets.only(
-              bottom: MediaQuery.of(context).viewInsets.bottom * 0.01,
-            ),
+            padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom * 0.01),
             child: DefaultButton(
-                backgroundColor: AppColors.kPrimaryColor,
-                text: 'Войти',
-                press: () {
-                  context.router.popUntil(
-                      (route) => route.settings.name == LauncherRoute.name);
-                  BlocProvider.of<AppBloc>(context).add(
-                      const AppEvent.chageState(
-                          state: AppState.inAppAdminState()));
+              backgroundColor: AppColors.kPrimaryColor,
+              text: 'Войти',
+              press: () {
+                context.router.popUntil((route) => route.settings.name == LauncherRoute.name);
+                BlocProvider.of<AppBloc>(
+                  context,
+                ).add(const AppEvent.chageState(state: AppState.inAppAdminState()));
 
-                  //                    Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(builder: (context) => const HomePage()),
-                  // );
-                },
-                color: Colors.white,
-                width: 343),
+                //                    Navigator.push(
+                //   context,
+                //   MaterialPageRoute(builder: (context) => const HomePage()),
+                // );
+              },
+              color: Colors.white,
+              width: 343,
+            ),
           ),
-          const SizedBox(
-            height: 60,
-          )
+          const SizedBox(height: 60),
         ],
       ),
     );

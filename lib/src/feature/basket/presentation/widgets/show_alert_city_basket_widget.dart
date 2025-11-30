@@ -11,8 +11,7 @@ import 'package:haji_market/src/feature/drawer/bloc/city_cubit.dart';
 import 'package:haji_market/src/feature/drawer/bloc/city_state.dart';
 import '../../../../core/common/constants.dart';
 
-Future<dynamic> showAlertCityBasketWidget(
-    BuildContext context, bool shop) async {
+Future<dynamic> showAlertCityBasketWidget(BuildContext context, bool shop) async {
   int? city;
   int? cityCode;
   double? lat;
@@ -21,60 +20,55 @@ Future<dynamic> showAlertCityBasketWidget(
 
   return showCupertinoModalPopup(
     context: context,
-    builder: (BuildContext context) =>
-        StatefulBuilder(builder: (context, setState) {
-      return CustomCupertinoActionSheet(
-        actions: <Widget>[
-          CupertinoActionSheetAction(
-            isDefaultAction: false,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text(
-                  'Выберите город',
-                  style: TextStyle(
-                      color: Colors.black, fontWeight: FontWeight.w400),
-                ),
-                GestureDetector(
-                  onTap: () => Get.back(),
-                  child: Icon(
-                    Icons.close,
-                    color: AppColors.kDark,
+    builder: (BuildContext context) => StatefulBuilder(
+      builder: (context, setState) {
+        return CustomCupertinoActionSheet(
+          actions: <Widget>[
+            CupertinoActionSheetAction(
+              isDefaultAction: false,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    'Выберите город',
+                    style: TextStyle(color: Colors.black, fontWeight: FontWeight.w400),
                   ),
-                )
-              ],
+                  GestureDetector(
+                    onTap: () => Get.back(),
+                    child: Icon(Icons.close, color: AppColors.kDark),
+                  ),
+                ],
+              ),
+              onPressed: () {},
             ),
-            onPressed: () {},
-          ),
-          CupertinoActionSheetAction(
-            child: BlocConsumer<CityCubit, CityState>(
-              listener: (context, state) {
-                if (state is LoadedState) {
-                  setState(() {});
-                }
-              },
-              builder: (context, state) {
-                if (state is LoadedState) {
-                  return Column(
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.all(8),
-                        child: CupertinoTextField(
-                          controller: controller,
-                          placeholder: 'Поиск городов ...',
-                          onChanged: (value) {
-                            BlocProvider.of<CityCubit>(context)
-                                .searchCdekCity(value);
-                          },
+            CupertinoActionSheetAction(
+              child: BlocConsumer<CityCubit, CityState>(
+                listener: (context, state) {
+                  if (state is LoadedState) {
+                    setState(() {});
+                  }
+                },
+                builder: (context, state) {
+                  if (state is LoadedState) {
+                    return Column(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(8),
+                          child: CupertinoTextField(
+                            controller: controller,
+                            placeholder: 'Поиск городов ...',
+                            onChanged: (value) {
+                              BlocProvider.of<CityCubit>(context).searchCdekCity(value);
+                            },
+                          ),
                         ),
-                      ),
-                      SizedBox(height: 10),
-                      Container(
-                        constraints: BoxConstraints(
-                            maxHeight:
-                                (MediaQuery.of(context).size.height) * 0.85),
-                        height: state.city.length * 50,
-                        child: ListView.builder(
+                        SizedBox(height: 10),
+                        Container(
+                          constraints: BoxConstraints(
+                            maxHeight: (MediaQuery.of(context).size.height) * 0.85,
+                          ),
+                          height: state.city.length * 50,
+                          child: ListView.builder(
                             padding: EdgeInsets.zero,
                             itemCount: state.city.length,
                             itemBuilder: (context, int index) {
@@ -89,10 +83,8 @@ Future<dynamic> showAlertCityBasketWidget(
                                     setState(() {});
                                   },
                                   child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
                                       Icon(
@@ -107,9 +99,10 @@ Future<dynamic> showAlertCityBasketWidget(
                                         child: Text(
                                           "${state.city[index].city ?? ''}",
                                           style: const TextStyle(
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.w500,
-                                              fontSize: 16),
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 16,
+                                          ),
                                           maxLines: 1,
                                         ),
                                       ),
@@ -117,132 +110,135 @@ Future<dynamic> showAlertCityBasketWidget(
                                       Text(
                                         "${state.city[index].code ?? '--'}",
                                         style: const TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.w500,
-                                            fontSize: 16),
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 16,
+                                        ),
                                         maxLines: 1,
                                       ),
                                     ],
                                   ),
                                 ),
                               );
-                            }),
-                      ),
-                    ],
-                  );
-                  // } else if (state is NoDataState) {
-                  //   return SizedBox(
-                  //     child: Column(
-                  //       crossAxisAlignment: CrossAxisAlignment.center,
-                  //       mainAxisSize: MainAxisSize.max,
-                  //       children: [
-                  //         Image.asset('assets/icons/no_data.png'),
-                  //         const Text(
-                  //           'У вас нет адресов для доставки',
-                  //           style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600, color: Colors.black),
-                  //           textAlign: TextAlign.center,
-                  //         ),
-                  //         const Text(
-                  //           'Добавьте адреса для доставки товаров',
-                  //           style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: Color(0xff717171)),
-                  //           textAlign: TextAlign.center,
-                  //         )
-                  //       ],
-                  //     ),
-                  //   );
-                  // }
-                } else if (state is NodataState) {
-                  return SizedBox(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        Image.asset('assets/icons/no_data.png'),
-                        const Text(
-                          'Нет данных',
-                          style: TextStyle(
+                            },
+                          ),
+                        ),
+                      ],
+                    );
+                    // } else if (state is NoDataState) {
+                    //   return SizedBox(
+                    //     child: Column(
+                    //       crossAxisAlignment: CrossAxisAlignment.center,
+                    //       mainAxisSize: MainAxisSize.max,
+                    //       children: [
+                    //         Image.asset('assets/icons/no_data.png'),
+                    //         const Text(
+                    //           'У вас нет адресов для доставки',
+                    //           style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600, color: Colors.black),
+                    //           textAlign: TextAlign.center,
+                    //         ),
+                    //         const Text(
+                    //           'Добавьте адреса для доставки товаров',
+                    //           style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: Color(0xff717171)),
+                    //           textAlign: TextAlign.center,
+                    //         )
+                    //       ],
+                    //     ),
+                    //   );
+                    // }
+                  } else if (state is NodataState) {
+                    return SizedBox(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          Image.asset('assets/icons/no_data.png'),
+                          const Text(
+                            'Нет данных',
+                            style: TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.w600,
-                              color: Colors.black),
-                          textAlign: TextAlign.center,
-                        ),
-                        const Text(
-                          'Для этой страны не найдены города',
-                          style: TextStyle(
+                              color: Colors.black,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                          const Text(
+                            'Для этой страны не найдены города',
+                            style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w400,
-                              color: Color(0xff717171)),
-                          textAlign: TextAlign.center,
-                        )
-                      ],
-                    ),
-                  );
-                } else {
-                  return const CircularProgressIndicator.adaptive();
-                }
-              },
+                              color: Color(0xff717171),
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
+                      ),
+                    );
+                  } else {
+                    return const CircularProgressIndicator.adaptive();
+                  }
+                },
+              ),
+              onPressed: () {},
             ),
-            onPressed: () {},
-          ),
-          // CupertinoActionSheetAction(
-          //   child: const Text(
-          //     'Добавить новый адрес',
-          //     style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500, fontSize: 16),
-          //   ),
-          //   onPressed: () {
-          //     // showAlertAddWidget(context, product);
-          //     Navigator.pop(context);
-          //     showAlertStoreWidget(context);
-          //   },
-          // ),
-        ],
-        cancelButton: GestureDetector(
-          onTap: () async {
-            // city != null ? GetStorage().write('country', country) : null;
-            // Get.back();
-            // if (!shop) {
-            //   final edit = BlocProvider.of<LoginCubit>(context);
-            //   await edit.cityCode(cityCode);
-            // } else {
-            //   await BlocProvider.of<ProfileEditAdminCubit>(context).cityCode(cityCode);
-            // }
+            // CupertinoActionSheetAction(
+            //   child: const Text(
+            //     'Добавить новый адрес',
+            //     style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500, fontSize: 16),
+            //   ),
+            //   onPressed: () {
+            //     // showAlertAddWidget(context, product);
+            //     Navigator.pop(context);
+            //     showAlertStoreWidget(context);
+            //   },
+            // ),
+          ],
+          cancelButton: GestureDetector(
+            onTap: () async {
+              // city != null ? GetStorage().write('country', country) : null;
+              // Get.back();
+              // if (!shop) {
+              //   final edit = BlocProvider.of<LoginCubit>(context);
+              //   await edit.cityCode(cityCode);
+              // } else {
+              //   await BlocProvider.of<ProfileEditAdminCubit>(context).cityCode(cityCode);
+              // }
 
-            context.router
-                .push(MapPickerRoute(cc: cityCode, lat: lat, long: long));
+              context.router.push(MapPickerRoute(cc: cityCode, lat: lat, long: long));
 
-            // Get.to(() => MapPickerPage(
-            //       cc: cityCode,
-            //       lat: lat,
-            //       long: long,
-            //     ));
+              // Get.to(() => MapPickerPage(
+              //       cc: cityCode,
+              //       lat: lat,
+              //       long: long,
+              //     ));
 
-            // GetStorage().write('cc', data);
+              // GetStorage().write('cc', data);
 
-            //  Get.back(result: place);
+              //  Get.back(result: place);
 
-            // Get.back();
+              // Get.back();
 
-            // if (data != null) {
-            //   context.router.push(BasketOrderAddressRoute(office: data));
+              // if (data != null) {
+              //   context.router.push(BasketOrderAddressRoute(office: data));
 
-            //   // Get.to(() => BasketOrderAddressPage(
-            //   //       office: data,
-            //   //       fulfillment: 'fbs',
-            //   //     ));
-            // }
+              //   // Get.to(() => BasketOrderAddressPage(
+              //   //       office: data,
+              //   //       fulfillment: 'fbs',
+              //   //     ));
+              // }
 
-            // callBack?.call();
-          },
-          child: CupertinoActionSheetAction(
-            child: const Text(
-              'Выбрать',
-              style: TextStyle(
-                  color: AppColors.kPrimaryColor, fontWeight: FontWeight.w600),
+              // callBack?.call();
+            },
+            child: CupertinoActionSheetAction(
+              child: const Text(
+                'Выбрать',
+                style: TextStyle(color: AppColors.kPrimaryColor, fontWeight: FontWeight.w600),
+              ),
+              onPressed: () async {},
             ),
-            onPressed: () async {},
           ),
-        ),
-      );
-    }),
+        );
+      },
+    ),
   );
 }

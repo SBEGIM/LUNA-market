@@ -75,17 +75,15 @@ class _DeliveryNoteSellerPageState extends State<DeliveryNoteSellerPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.white,
-          iconTheme: const IconThemeData(color: AppColors.kPrimaryColor),
-          elevation: 0,
-          centerTitle: true,
-          title: const Text(
-            'Накладная',
-            style: TextStyle(color: Colors.black, fontSize: 16),
-          ),
-        ),
-        body: SizedBox());
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        iconTheme: const IconThemeData(color: AppColors.kPrimaryColor),
+        elevation: 0,
+        centerTitle: true,
+        title: const Text('Накладная', style: TextStyle(color: Colors.black, fontSize: 16)),
+      ),
+      body: SizedBox(),
+    );
   }
   //       body: Screenshot(
   //         controller: screenshotController,

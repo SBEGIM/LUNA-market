@@ -24,6 +24,5 @@ final class AppSettingsRepositoryImpl implements AppSettingsRepository {
   Future<AppSettings> getAppSettings() => datasource.getAppSettings();
 
   @override
-  Future<void> setAppSettings(AppSettings appSettings) =>
-      datasource.setAppSettings(appSettings);
+  Future<void> setAppSettings(AppSettings appSettings) => datasource.setAppSettings(appSettings);
 }

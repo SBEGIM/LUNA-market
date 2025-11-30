@@ -8,8 +8,7 @@ const baseUrl = 'https://lunamarket.ru/api';
 class BloggerNotificationRepository {
   final NotifactionToApi _notificationToApi = NotifactionToApi();
 
-  Future<List<BloggerNotificationModel>> notifications() =>
-      _notificationToApi.notifications();
+  Future<List<BloggerNotificationModel>> notifications() => _notificationToApi.notifications();
 }
 
 class NotifactionToApi {
@@ -21,14 +20,11 @@ class NotifactionToApi {
     print(_box.read('blogger_token'));
 
     final response = await http.get(
-      Uri.parse(
-          '$baseUrl/list/notifications?notificationable=App/Models/Blogger'),
+      Uri.parse('$baseUrl/list/notifications?notificationable=App/Models/Blogger'),
       headers: {"Authorization": "Bearer $token"},
     );
     final data = jsonDecode(response.body);
 
-    return (data as List)
-        .map((e) => BloggerNotificationModel.fromJson(e))
-        .toList();
+    return (data as List).map((e) => BloggerNotificationModel.fromJson(e)).toList();
   }
 }

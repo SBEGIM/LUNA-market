@@ -1,10 +1,5 @@
 class CharacteristicsModel {
-  CharacteristicsModel({
-    int? id,
-    int? mainId,
-    String? key,
-    String? value,
-  }) {
+  CharacteristicsModel({int? id, int? mainId, String? key, String? value}) {
     _id = id;
     _mainId = mainId;
     _key = key;

@@ -24,17 +24,11 @@ class _SpecificationsPageState extends State<SpecificationsPage> {
           onTap: () {
             Navigator.pop(context);
           },
-          child: const Icon(
-            Icons.arrow_back_ios,
-            color: AppColors.kPrimaryColor,
-          ),
+          child: const Icon(Icons.arrow_back_ios, color: AppColors.kPrimaryColor),
         ),
         title: const Text(
           'Характеристики',
-          style: TextStyle(
-              color: AppColors.kGray900,
-              fontWeight: FontWeight.w600,
-              fontSize: 18),
+          style: TextStyle(color: AppColors.kGray900, fontWeight: FontWeight.w600, fontSize: 18),
         ),
       ),
       body: Column(
@@ -49,13 +43,12 @@ class _SpecificationsPageState extends State<SpecificationsPage> {
                 const Text(
                   'Основные характеристики',
                   style: TextStyle(
-                      color: AppColors.kGray900,
-                      fontSize: 17,
-                      fontWeight: FontWeight.w500),
+                    color: AppColors.kGray900,
+                    fontSize: 17,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
-                const SizedBox(
-                  height: 10,
-                ),
+                const SizedBox(height: 10),
                 SizedBox(
                   height: (widget.product.characteristics?.length ?? 0) * 20,
                   child: ListView.builder(
@@ -69,20 +62,20 @@ class _SpecificationsPageState extends State<SpecificationsPage> {
                             child: Text(
                               '${widget.product.characteristics![index].name}',
                               style: const TextStyle(
-                                  color: AppColors.kGray400,
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w400),
+                                color: AppColors.kGray400,
+                                fontSize: 15,
+                                fontWeight: FontWeight.w400,
+                              ),
                             ),
                           ),
-                          const SizedBox(
-                            width: 40,
-                          ),
+                          const SizedBox(width: 40),
                           Text(
                             '${widget.product.characteristics![index].value}',
                             style: const TextStyle(
-                                color: AppColors.kGray1000,
-                                fontSize: 14,
-                                fontWeight: FontWeight.w400),
+                              color: AppColors.kGray1000,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400,
+                            ),
                           ),
                         ],
                       );

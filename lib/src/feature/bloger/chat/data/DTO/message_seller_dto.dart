@@ -28,9 +28,7 @@ class MessageSellerDTO {
     _name = json['name'];
     _text = json['text'];
     _path = json['path'];
-    _createdAt = json['created_at'] == null
-        ? null
-        : DateTime.parse(json['created_at'] as String);
+    _createdAt = json['created_at'] == null ? null : DateTime.parse(json['created_at'] as String);
     _userId = json['user_id'];
     _avatar = json['avatar'];
   }

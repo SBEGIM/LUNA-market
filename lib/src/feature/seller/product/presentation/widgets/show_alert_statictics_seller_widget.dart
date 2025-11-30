@@ -22,10 +22,7 @@ void showProductOptions(
     backgroundColor: AppColors.kBackgroundColor,
     useRootNavigator: true, // <-- чтобы модалка в корневом навигаторе
     shape: const RoundedRectangleBorder(
-      borderRadius: BorderRadius.only(
-        topLeft: Radius.circular(20),
-        topRight: Radius.circular(20),
-      ),
+      borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)),
     ),
     builder: (sheetCtx) {
       // <-- контекст МОДАЛКИ
@@ -41,11 +38,9 @@ void showProductOptions(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text('Управление товаром',
-                        style: AppTextStyles.defaultButtonTextStyle),
+                    Text('Управление товаром', style: AppTextStyles.defaultButtonTextStyle),
                     InkWell(
-                      onTap: () => Navigator.of(sheetCtx)
-                          .pop(), // закрываем модалку её контекстом
+                      onTap: () => Navigator.of(sheetCtx).pop(), // закрываем модалку её контекстом
                       child: const Icon(Icons.close_rounded),
                     ),
                   ],
@@ -58,8 +53,9 @@ void showProductOptions(
                 title: 'Редактировать',
                 onTap: () {
                   Navigator.of(sheetCtx).pop(); // закрыть модалку
-                  parentCtx.router.push(EditProductSellerRoute(
-                      product: product)); // пушим из РОДИТЕЛЯ
+                  parentCtx.router.push(
+                    EditProductSellerRoute(product: product),
+                  ); // пушим из РОДИТЕЛЯ
                 },
               ),
               _buildOptionTile(
@@ -91,10 +87,7 @@ void showProductOptions(
                   Navigator.pop(sheetCtx, 'stats');
                   Navigator.push(
                     parentCtx,
-                    MaterialPageRoute(
-                      builder: (context) =>
-                          StatisticsSellerPage(product: product),
-                    ),
+                    MaterialPageRoute(builder: (context) => StatisticsSellerPage(product: product)),
                   );
                 },
               ),
@@ -105,51 +98,50 @@ void showProductOptions(
                 title: 'Рекламировать товар',
                 onTap: () {
                   Navigator.of(sheetCtx).pop();
-                  showAdsOptions(
-                      parentCtx, product); // вызываем с родительским контекстом
+                  showAdsOptions(parentCtx, product); // вызываем с родительским контекстом
                 },
               ),
               _buildOptionTile(
-                  context: sheetCtx,
-                  icon: Assets.icons.trashIcon.path,
-                  color: Colors.red,
-                  title: 'Удалить',
-                  onTap: () async {
-                    Navigator.of(sheetCtx).pop();
+                context: sheetCtx,
+                icon: Assets.icons.trashIcon.path,
+                color: Colors.red,
+                title: 'Удалить',
+                onTap: () async {
+                  Navigator.of(sheetCtx).pop();
 
-                    final ok = await showAccountAlert(
-                      parentCtx,
-                      title: 'Удаление товара',
-                      message: 'Вы уверены, что хотите удалить этот товар?',
-                      mode: AccountAlertMode.confirm,
-                      cancelText: 'Нет',
-                      primaryText: 'Да',
-                      primaryColor: Colors.red,
-                    );
+                  final ok = await showAccountAlert(
+                    parentCtx,
+                    title: 'Удаление товара',
+                    message: 'Вы уверены, что хотите удалить этот товар?',
+                    mode: AccountAlertMode.confirm,
+                    cancelText: 'Нет',
+                    primaryText: 'Да',
+                    primaryColor: Colors.red,
+                  );
 
-                    if (ok == true) {
-                      final rootCtx =
-                          parentCtx.router.root.navigatorKey.currentContext;
+                  if (ok == true) {
+                    final rootCtx = parentCtx.router.root.navigatorKey.currentContext;
 
-                      if (rootCtx != null) {
-                        WidgetsBinding.instance.addPostFrameCallback((_) {
-                          AppSnackBar.show(
-                            rootCtx,
-                            'Товар успешно удален',
-                            type: AppSnackType.success,
-                          );
-                        });
-                      }
-                      await cubit.delete(product.id.toString());
-                      cubit
-                        ..resetState()
-                        ..products('');
-
-                      // if (parentCtx.mounted) {
-                      //   parentCtx.router.pop();
-                      // }
+                    if (rootCtx != null) {
+                      WidgetsBinding.instance.addPostFrameCallback((_) {
+                        AppSnackBar.show(
+                          rootCtx,
+                          'Товар успешно удален',
+                          type: AppSnackType.success,
+                        );
+                      });
                     }
-                  }),
+                    await cubit.delete(product.id.toString());
+                    cubit
+                      ..resetState()
+                      ..products('');
+
+                    // if (parentCtx.mounted) {
+                    //   parentCtx.router.pop();
+                    // }
+                  }
+                },
+              ),
               const SizedBox(height: 30),
             ],
           ),
@@ -170,14 +162,11 @@ Widget _buildOptionTile({
     height: 52,
     margin: EdgeInsets.only(left: 16, top: 8, right: 16),
     alignment: Alignment.center,
-    decoration: BoxDecoration(
-        color: AppColors.kWhite, borderRadius: BorderRadius.circular(12)),
+    decoration: BoxDecoration(color: AppColors.kWhite, borderRadius: BorderRadius.circular(12)),
     child: ListTile(
-      contentPadding: EdgeInsets.symmetric(
-          vertical: 0, horizontal: 12), // Минимальные отступы
+      contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 12), // Минимальные отступы
       leading: Image.asset(icon, scale: 1.9),
-      title: Text(title,
-          style: AppTextStyles.size16Weight500.copyWith(color: color)),
+      title: Text(title, style: AppTextStyles.size16Weight500.copyWith(color: color)),
       onTap: onTap,
       tileColor: Colors.transparent, // Убираем фон у Tile, если он есть
       shape: RoundedRectangleBorder(

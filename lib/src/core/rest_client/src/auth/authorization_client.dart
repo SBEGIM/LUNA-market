@@ -31,4 +31,5 @@ class RevokeTokenException implements Exception {
   @override
   String toString() => 'RevokeTokenException: $message';
 }
+
 // coverage-ignore:end

@@ -8,14 +8,12 @@ import '../repository/profile_statics_admin_repo.dart';
 class ProfileStaticsAdminCubit extends Cubit<ProfileStaticsAdminState> {
   final ProfileStaticsAdminRepository profileStaticsBloggerRepository;
 
-  ProfileStaticsAdminCubit({required this.profileStaticsBloggerRepository})
-      : super(InitState());
+  ProfileStaticsAdminCubit({required this.profileStaticsBloggerRepository}) : super(InitState());
 
   Future<void> statics() async {
     try {
       emit(LoadingState());
-      final ProfileStaticsAdminModel data =
-          await profileStaticsBloggerRepository.statics();
+      final ProfileStaticsAdminModel data = await profileStaticsBloggerRepository.statics();
 
       // if (data != null) {
       emit(LoadedState(loadedProfile: data));

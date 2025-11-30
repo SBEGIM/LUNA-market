@@ -17,12 +17,10 @@ import 'blogger_products_card_widget.dart';
 class ShopProductsBloggerPage extends StatefulWidget {
   String title;
   int id;
-  ShopProductsBloggerPage({required this.title, required this.id, Key? key})
-      : super(key: key);
+  ShopProductsBloggerPage({required this.title, required this.id, Key? key}) : super(key: key);
 
   @override
-  State<ShopProductsBloggerPage> createState() =>
-      _ShopProductsBloggerPageState();
+  State<ShopProductsBloggerPage> createState() => _ShopProductsBloggerPageState();
 }
 
 class _ShopProductsBloggerPageState extends State<ShopProductsBloggerPage> {
@@ -46,8 +44,9 @@ class _ShopProductsBloggerPageState extends State<ShopProductsBloggerPage> {
     RefreshController refreshController = RefreshController();
 
     Future<void> onLoading() async {
-      await BlocProvider.of<BloggerShopProductsCubit>(context)
-          .productsPagination(searchController.text, widget.id);
+      await BlocProvider.of<BloggerShopProductsCubit>(
+        context,
+      ).productsPagination(searchController.text, widget.id);
       await Future.delayed(const Duration(milliseconds: 2000));
       refreshController.loadComplete();
     }
@@ -61,25 +60,19 @@ class _ShopProductsBloggerPageState extends State<ShopProductsBloggerPage> {
         centerTitle: true,
         elevation: 0,
         leading: InkWell(
-            onTap: () {
-              Navigator.pop(context);
-            },
-            child: Image.asset(
-              Assets.icons.defaultBackIcon.path,
-              scale: 1.9,
-            )),
-        title: Text(
-          widget.title,
-          style: AppTextStyles.defaultAppBarTextStyle,
+          onTap: () {
+            Navigator.pop(context);
+          },
+          child: Image.asset(Assets.icons.defaultBackIcon.path, scale: 1.9),
         ),
+        title: Text(widget.title, style: AppTextStyles.defaultAppBarTextStyle),
       ),
       body: Column(
         children: [
           Container(
             height: 44,
             alignment: Alignment.center,
-            margin:
-                const EdgeInsets.only(top: 10, bottom: 12, left: 12, right: 12),
+            margin: const EdgeInsets.only(top: 10, bottom: 12, left: 12, right: 12),
             decoration: BoxDecoration(
               color: Color(0xFFEAECED),
               borderRadius: BorderRadius.circular(12),
@@ -87,33 +80,28 @@ class _ShopProductsBloggerPageState extends State<ShopProductsBloggerPage> {
             padding: const EdgeInsets.symmetric(horizontal: 12),
             child: Row(
               children: [
-                Image.asset(
-                  Assets.icons.defaultSearchIcon.path,
-                  height: 19,
-                  width: 19,
-                ),
+                Image.asset(Assets.icons.defaultSearchIcon.path, height: 19, width: 19),
                 const SizedBox(width: 10),
                 Expanded(
                   child: TextField(
                     onChanged: (value) {
                       // print(value);
-                      BlocProvider.of<BloggerShopProductsCubit>(context)
-                          .products(searchController.text, widget.id);
+                      BlocProvider.of<BloggerShopProductsCubit>(
+                        context,
+                      ).products(searchController.text, widget.id);
                     },
                     keyboardType: TextInputType.text,
                     controller: searchController,
                     decoration: InputDecoration(
                       hintText: 'Поиск товаров',
-                      hintStyle: AppTextStyles.size16Weight400
-                          .copyWith(color: AppColors.kGray300),
+                      hintStyle: AppTextStyles.size16Weight400.copyWith(color: AppColors.kGray300),
                       border: InputBorder.none,
                       enabledBorder: InputBorder.none,
                       focusedBorder: InputBorder.none,
                       disabledBorder: InputBorder.none,
                       isCollapsed: true, // Убирает внутренние отступы
                     ),
-                    style:
-                        TextStyle(height: 1.2), // Центрирует текст по вертикали
+                    style: TextStyle(height: 1.2), // Центрирует текст по вертикали
                   ),
                 ),
                 GestureDetector(
@@ -125,193 +113,193 @@ class _ShopProductsBloggerPageState extends State<ShopProductsBloggerPage> {
                     });
                   },
                   child: _visibleIconClear == true
-                      ? SvgPicture.asset(
-                          'assets/icons/delete_circle.svg',
-                        )
+                      ? SvgPicture.asset('assets/icons/delete_circle.svg')
                       : const SizedBox(width: 5),
                 ),
               ],
             ),
           ),
           BlocConsumer<BloggerShopProductsCubit, BloggerShopProductsState>(
-              listener: (context, state) {},
-              builder: (context, state) {
-                if (state is ErrorState) {
-                  return Center(
-                    child: Text(
-                      state.message,
-                      style:
-                          const TextStyle(fontSize: 20.0, color: Colors.grey),
-                    ),
-                  );
-                }
+            listener: (context, state) {},
+            builder: (context, state) {
+              if (state is ErrorState) {
+                return Center(
+                  child: Text(
+                    state.message,
+                    style: const TextStyle(fontSize: 20.0, color: Colors.grey),
+                  ),
+                );
+              }
 
-                if (state is NoDataState) {
-                  return Expanded(
-                    child: SmartRefresher(
-                      controller: refreshController,
-                      enablePullUp: true,
-                      onLoading: () {
-                        onLoading();
-                      },
-                      onRefresh: () {
-                        BlocProvider.of<BloggerShopProductsCubit>(context)
-                            .products(searchController.text, widget.id);
-                        refreshController.refreshCompleted();
-                      },
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisSize: MainAxisSize.max,
-                        children: [
-                          Container(
-                            margin: const EdgeInsets.only(top: 220),
-                            height: 72,
-                            width: 72,
-                            child: Image.asset(
-                                Assets.icons.defaultNoDataIcon.path),
-                          ),
-                          SizedBox(height: 12),
-                          const Text(
-                            'Нет товаров',
-                            style: AppTextStyles.size16Weight500,
-                            textAlign: TextAlign.center,
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
-                }
-                if (state is LoadedState) {
-                  return Expanded(
-                      child: SmartRefresher(
+              if (state is NoDataState) {
+                return Expanded(
+                  child: SmartRefresher(
                     controller: refreshController,
                     enablePullUp: true,
                     onLoading: () {
                       onLoading();
                     },
                     onRefresh: () {
-                      BlocProvider.of<BloggerShopProductsCubit>(context)
-                          .products(searchController.text, widget.id);
+                      BlocProvider.of<BloggerShopProductsCubit>(
+                        context,
+                      ).products(searchController.text, widget.id);
+                      refreshController.refreshCompleted();
+                    },
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.only(top: 220),
+                          height: 72,
+                          width: 72,
+                          child: Image.asset(Assets.icons.defaultNoDataIcon.path),
+                        ),
+                        SizedBox(height: 12),
+                        const Text(
+                          'Нет товаров',
+                          style: AppTextStyles.size16Weight500,
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              }
+              if (state is LoadedState) {
+                return Expanded(
+                  child: SmartRefresher(
+                    controller: refreshController,
+                    enablePullUp: true,
+                    onLoading: () {
+                      onLoading();
+                    },
+                    onRefresh: () {
+                      BlocProvider.of<BloggerShopProductsCubit>(
+                        context,
+                      ).products(searchController.text, widget.id);
                       refreshController.refreshCompleted();
                     },
                     child: ListView.builder(
-                        padding: EdgeInsets.zero,
-                        // physics: const NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        itemCount: state.productModel.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return BloggerProductCardWidget(
-                            product: state.productModel[index],
-                            isSelected: isSelected,
-                            index: selectedIndex,
-                            onSelectionChanged: (selected, setIndex) {
-                              if (selectedIndex == setIndex) {
-                                isSelected = false;
-                                selectedIndex = -1;
-                                setState(() {});
-                                return;
-                              }
+                      padding: EdgeInsets.zero,
+                      // physics: const NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: state.productModel.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return BloggerProductCardWidget(
+                          product: state.productModel[index],
+                          isSelected: isSelected,
+                          index: selectedIndex,
+                          onSelectionChanged: (selected, setIndex) {
+                            if (selectedIndex == setIndex) {
+                              isSelected = false;
+                              selectedIndex = -1;
+                              setState(() {});
+                              return;
+                            }
 
-                              setState(() {
-                                isSelected = selected;
-                                selectedIndex = setIndex;
-                              });
-                            },
-                          );
-                          //  product: state.productModel[index]);
-                        }),
-                  ));
-                  //   Expanded(
-                  //     child: Container(
-                  //       color: Colors.white,
-                  //       padding: const EdgeInsets.only(
-                  //         left: 16,
-                  //         right: 16,
-                  //       ),
-                  //       child: GridView.builder(
-                  //           padding: const EdgeInsets.only(
-                  //               top: 16, left: 0, right: 0, bottom: 0),
-                  //           gridDelegate:
-                  //               const SliverGridDelegateWithMaxCrossAxisExtent(
-                  //                   maxCrossAxisExtent: 190,
-                  //                   childAspectRatio: 2 / 3.2,
-                  //                   crossAxisSpacing: 8,
-                  //                   mainAxisSpacing: 16),
-                  //           itemCount: state.productModel.length,
-                  //           itemBuilder: (BuildContext ctx, index) {
-                  //             return Stack(
-                  //               children: [
-                  //                 GestureDetector(
-                  //                   onTap: (() => Get.to(() =>
-                  //                       UploadProductVideoPage(
-                  //                           id: state.productModel[index].id ??
-                  //                               0))),
-                  //                   child: title == 'Мои видео обзоры'
-                  //                       ? ProductDetail(
-                  //                           product: state.productModel[index])
-                  //                       : ProductVideo(
-                  //                           product: state.productModel[index],
-                  //                         ),
-                  //                 ),
-                  //                 // Container(
-                  //                 //   decoration: BoxDecoration(
-                  //                 //       borderRadius: BorderRadius.circular(10)),
-                  //                 // ),
-                  //                 // InkWell(
-                  //                 //   onTap: () {
-                  //                 //     showAlertStaticticsWidget(
-                  //                 //         context, state.productModel[index]);
-                  //                 //   },
-                  //                 //   child: Container(
-                  //                 //     height: 28,
-                  //                 //     width: 28,
-                  //                 //     margin: const EdgeInsets.only(
-                  //                 //         top: 8.0, right: 8.0, left: 135),
-                  //                 //     alignment: Alignment.center,
-                  //                 //     decoration: BoxDecoration(
-                  //                 //         color: Colors.white,
-                  //                 //         borderRadius: BorderRadius.circular(8)),
-                  //                 //     child: const Icon(
-                  //                 //       Icons.more_vert_rounded,
-                  //                 //       color: AppColors.kPrimaryColor,
-                  //                 //     ),
-                  //                 //   ),
-                  //                 // ),
-                  //               ],
-                  //             );
-                  //           }),
-                  //     ),
-                  //   );
-                } else {
-                  return Expanded(
-                    child: SmartRefresher(
-                      controller: refreshController,
-                      enablePullUp: true,
-                      onLoading: () {
-                        onLoading();
+                            setState(() {
+                              isSelected = selected;
+                              selectedIndex = setIndex;
+                            });
+                          },
+                        );
+                        //  product: state.productModel[index]);
                       },
-                      onRefresh: () {
-                        BlocProvider.of<BloggerShopProductsCubit>(context)
-                            .products(searchController.text, widget.id);
-                        refreshController.refreshCompleted();
-                      },
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisSize: MainAxisSize.max,
-                        children: [
-                          Container(
-                            margin: const EdgeInsets.only(top: 220),
-                            child: CircularProgressIndicator(
-                              color: AppColors.mainPurpleColor,
-                            ),
-                          ),
-                        ],
-                      ),
                     ),
-                  );
-                }
-              }),
-          SizedBox(height: 120)
+                  ),
+                );
+                //   Expanded(
+                //     child: Container(
+                //       color: Colors.white,
+                //       padding: const EdgeInsets.only(
+                //         left: 16,
+                //         right: 16,
+                //       ),
+                //       child: GridView.builder(
+                //           padding: const EdgeInsets.only(
+                //               top: 16, left: 0, right: 0, bottom: 0),
+                //           gridDelegate:
+                //               const SliverGridDelegateWithMaxCrossAxisExtent(
+                //                   maxCrossAxisExtent: 190,
+                //                   childAspectRatio: 2 / 3.2,
+                //                   crossAxisSpacing: 8,
+                //                   mainAxisSpacing: 16),
+                //           itemCount: state.productModel.length,
+                //           itemBuilder: (BuildContext ctx, index) {
+                //             return Stack(
+                //               children: [
+                //                 GestureDetector(
+                //                   onTap: (() => Get.to(() =>
+                //                       UploadProductVideoPage(
+                //                           id: state.productModel[index].id ??
+                //                               0))),
+                //                   child: title == 'Мои видео обзоры'
+                //                       ? ProductDetail(
+                //                           product: state.productModel[index])
+                //                       : ProductVideo(
+                //                           product: state.productModel[index],
+                //                         ),
+                //                 ),
+                //                 // Container(
+                //                 //   decoration: BoxDecoration(
+                //                 //       borderRadius: BorderRadius.circular(10)),
+                //                 // ),
+                //                 // InkWell(
+                //                 //   onTap: () {
+                //                 //     showAlertStaticticsWidget(
+                //                 //         context, state.productModel[index]);
+                //                 //   },
+                //                 //   child: Container(
+                //                 //     height: 28,
+                //                 //     width: 28,
+                //                 //     margin: const EdgeInsets.only(
+                //                 //         top: 8.0, right: 8.0, left: 135),
+                //                 //     alignment: Alignment.center,
+                //                 //     decoration: BoxDecoration(
+                //                 //         color: Colors.white,
+                //                 //         borderRadius: BorderRadius.circular(8)),
+                //                 //     child: const Icon(
+                //                 //       Icons.more_vert_rounded,
+                //                 //       color: AppColors.kPrimaryColor,
+                //                 //     ),
+                //                 //   ),
+                //                 // ),
+                //               ],
+                //             );
+                //           }),
+                //     ),
+                //   );
+              } else {
+                return Expanded(
+                  child: SmartRefresher(
+                    controller: refreshController,
+                    enablePullUp: true,
+                    onLoading: () {
+                      onLoading();
+                    },
+                    onRefresh: () {
+                      BlocProvider.of<BloggerShopProductsCubit>(
+                        context,
+                      ).products(searchController.text, widget.id);
+                      refreshController.refreshCompleted();
+                    },
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.only(top: 220),
+                          child: CircularProgressIndicator(color: AppColors.mainPurpleColor),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              }
+            },
+          ),
+          SizedBox(height: 120),
         ],
       ),
       bottomSheet: Container(
@@ -346,8 +334,7 @@ class _ShopProductsBloggerPageState extends State<ShopProductsBloggerPage> {
             child: Text(
               'Сделать обзор',
               // textAlign: TextAlign.center,
-              style: AppTextStyles.defaultButtonTextStyle
-                  .copyWith(color: AppColors.kWhite),
+              style: AppTextStyles.defaultButtonTextStyle.copyWith(color: AppColors.kWhite),
             ),
           ),
         ),

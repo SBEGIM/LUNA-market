@@ -32,18 +32,16 @@ class _CreditInfoDetailPageState extends State<CreditInfoDetailPage> {
         title: Text(
           widget.title,
           style: const TextStyle(
-              color: AppColors.kGray900,
-              fontSize: 16,
-              fontWeight: FontWeight.w500),
+            color: AppColors.kGray900,
+            fontSize: 16,
+            fontWeight: FontWeight.w500,
+          ),
         ),
         leading: IconButton(
           onPressed: () {
             Navigator.pop(context);
           },
-          icon: const Icon(
-            Icons.arrow_back_ios,
-            color: AppColors.kPrimaryColor,
-          ),
+          icon: const Icon(Icons.arrow_back_ios, color: AppColors.kPrimaryColor),
         ),
       ),
       body: Container(
@@ -51,16 +49,12 @@ class _CreditInfoDetailPageState extends State<CreditInfoDetailPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              height: 12,
-              color: AppColors.kBackgroundColor,
-            ),
+            Container(height: 12, color: AppColors.kBackgroundColor),
             Padding(
               padding: const EdgeInsets.all(16),
               child: Text(
                 '${widget.title} - Для приобретения товаров в рассрочку по нормам Ислама, перейдите по соответсвующей ссылке по вашему Региону прописки.',
-                style:
-                    const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+                style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
               ),
             ),
             Container(
@@ -72,44 +66,43 @@ class _CreditInfoDetailPageState extends State<CreditInfoDetailPage> {
               ),
             ),
             BlocConsumer<RespublicCubit, RespublicState>(
-                listener: (context, state) {},
-                builder: (context, state) {
-                  if (state is LoadedState) {
-                    return Container(
-                        margin: const EdgeInsets.all(16),
-                        padding: const EdgeInsets.all(16),
-                        width: 343,
-                        height: 60 * state.respublicModel.length.toDouble(),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: ListView.builder(
-                            itemCount: state.respublicModel.length,
-                            itemBuilder: (BuildContext ctx, index) {
-                              return InkWell(
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            CreditInfoDetailShowPage(
-                                                id: state
-                                                    .respublicModel[index].id!,
-                                                title: widget.title)),
-                                  );
-                                },
-                                child: DrawerListTile(
-                                  text: '${state.respublicModel[index].name}',
+              listener: (context, state) {},
+              builder: (context, state) {
+                if (state is LoadedState) {
+                  return Container(
+                    margin: const EdgeInsets.all(16),
+                    padding: const EdgeInsets.all(16),
+                    width: 343,
+                    height: 60 * state.respublicModel.length.toDouble(),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: ListView.builder(
+                      itemCount: state.respublicModel.length,
+                      itemBuilder: (BuildContext ctx, index) {
+                        return InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => CreditInfoDetailShowPage(
+                                  id: state.respublicModel[index].id!,
+                                  title: widget.title,
                                 ),
-                              );
-                            }));
-                  } else {
-                    return const Center(
-                        child: CircularProgressIndicator(
-                            color: Colors.indigoAccent));
-                  }
-                }),
+                              ),
+                            );
+                          },
+                          child: DrawerListTile(text: '${state.respublicModel[index].name}'),
+                        );
+                      },
+                    ),
+                  );
+                } else {
+                  return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
+                }
+              },
+            ),
             // Container(
             //   margin: const EdgeInsets.all(16),
             //   padding: const EdgeInsets.all(16),
@@ -173,10 +166,7 @@ class _CreditInfoDetailPageState extends State<CreditInfoDetailPage> {
 
 class DrawerListTile extends StatelessWidget {
   final String text;
-  const DrawerListTile({
-    Key? key,
-    required this.text,
-  }) : super(key: key);
+  const DrawerListTile({Key? key, required this.text}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -185,11 +175,8 @@ class DrawerListTile extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            text,
-            style: AppTextStyles.drawer2TextStyle,
-          ),
-          SvgPicture.asset('assets/icons/back_menu.svg')
+          Text(text, style: AppTextStyles.drawer2TextStyle),
+          SvgPicture.asset('assets/icons/back_menu.svg'),
         ],
       ),
     );

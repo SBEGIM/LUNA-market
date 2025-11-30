@@ -24,20 +24,12 @@ class EditBloggerCubit extends Cubit<EditBloggerState> {
       if (data == 400) {
         emit(InitState());
 
-        AppSnackBar.show(
-          context,
-          'Телефон или никнейм занято',
-          type: AppSnackType.error,
-        );
+        AppSnackBar.show(context, 'Телефон или никнейм занято', type: AppSnackType.error);
       }
       if (data == 500) {
         emit(InitState());
 
-        AppSnackBar.show(
-          context,
-          'Ошибка сервера',
-          type: AppSnackType.error,
-        );
+        AppSnackBar.show(context, 'Ошибка сервера', type: AppSnackType.error);
       }
     } catch (e) {
       log(e.toString());

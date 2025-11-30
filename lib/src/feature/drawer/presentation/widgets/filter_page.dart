@@ -31,8 +31,7 @@ class _FilterPageState extends State<FilterPage> {
   @override
   void initState() {
     super.initState();
-    final initCharCubit =
-        BlocProvider.of<charCubit.CharacteristicSellerCubit>(context);
+    final initCharCubit = BlocProvider.of<charCubit.CharacteristicSellerCubit>(context);
 
     if (charState.CharacteristicSellerState is! charState.LoadedState) {
       initCharCubit.characteristic();
@@ -62,15 +61,13 @@ class _FilterPageState extends State<FilterPage> {
           final decoded = raw is String ? json.decode(raw) : raw;
           final ab = (decoded as List).cast<int>().toList();
 
-          ab.forEach(
-            (element) {
-              print('charFilterId: $element');
+          ab.forEach((element) {
+            print('charFilterId: $element');
 
-              _selectListChar.contains(element)
-                  ? _selectListChar.remove(element)
-                  : _selectListChar.add(element);
-            },
-          );
+            _selectListChar.contains(element)
+                ? _selectListChar.remove(element)
+                : _selectListChar.add(element);
+          });
 
           // _selectListChar.addAll(ab);
         } catch (e) {
@@ -81,8 +78,7 @@ class _FilterPageState extends State<FilterPage> {
   }
 
   Future<void> subChars() async {
-    final initCharCubit =
-        BlocProvider.of<charCubit.CharacteristicSellerCubit>(context);
+    final initCharCubit = BlocProvider.of<charCubit.CharacteristicSellerCubit>(context);
 
     final subCharList = await initCharCubit.subListCharacteristic();
 
@@ -112,10 +108,7 @@ class _FilterPageState extends State<FilterPage> {
       backgroundColor: AppColors.kBackgroundColor,
       extendBody: true,
       appBar: AppBar(
-        title: Text(
-          'Фильтр',
-          style: AppTextStyles.size18Weight600,
-        ),
+        title: Text('Фильтр', style: AppTextStyles.size18Weight600),
         iconTheme: const IconThemeData(color: AppColors.kPrimaryColor),
         backgroundColor: AppColors.kBackgroundColor,
         surfaceTintColor: AppColors.kBackgroundColor,
@@ -130,9 +123,7 @@ class _FilterPageState extends State<FilterPage> {
             padding: EdgeInsets.only(top: 20.0, left: 16),
             child: Text(
               'Отмена',
-              style: AppTextStyles.size18Weight600.copyWith(
-                color: AppColors.mainPurpleColor,
-              ),
+              style: AppTextStyles.size18Weight600.copyWith(color: AppColors.mainPurpleColor),
             ),
           ),
         ),
@@ -160,9 +151,7 @@ class _FilterPageState extends State<FilterPage> {
               alignment: Alignment.center,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(12),
-                color: _selectListChar.isEmpty
-                    ? const Color(0xffEAECED)
-                    : AppColors.kAlpha12,
+                color: _selectListChar.isEmpty ? const Color(0xffEAECED) : AppColors.kAlpha12,
               ),
               child: Text(
                 'Сбросить',
@@ -178,107 +167,99 @@ class _FilterPageState extends State<FilterPage> {
       ),
       body: ListView(
         children: [
-          const SizedBox(
-            height: 10,
-          ),
-          BlocConsumer<charCubit.CharacteristicSellerCubit,
-              charState.CharacteristicSellerState>(listener: (context, state) {
-            if (state is charState.LoadedState) {
-              //   _subCharMap.clear();
-              //   final characteristics = state.characteristics.take(3);
-              //   for (final item in characteristics) {
-              //     subChars(item.id ?? 0);
-              //   }
-              // }
-            }
-          }, builder: (context, state) {
-            if (state is charState.ErrorState) {
-              return Center(
-                child: Text(
-                  state.message,
-                  style: const TextStyle(fontSize: 20.0, color: Colors.grey),
-                ),
-              );
-            }
-            if (state is charState.LoadedState) {
-              return ListView.builder(
+          const SizedBox(height: 10),
+          BlocConsumer<charCubit.CharacteristicSellerCubit, charState.CharacteristicSellerState>(
+            listener: (context, state) {
+              if (state is charState.LoadedState) {
+                //   _subCharMap.clear();
+                //   final characteristics = state.characteristics.take(3);
+                //   for (final item in characteristics) {
+                //     subChars(item.id ?? 0);
+                //   }
+                // }
+              }
+            },
+            builder: (context, state) {
+              if (state is charState.ErrorState) {
+                return Center(
+                  child: Text(
+                    state.message,
+                    style: const TextStyle(fontSize: 20.0, color: Colors.grey),
+                  ),
+                );
+              }
+              if (state is charState.LoadedState) {
+                return ListView.builder(
                   scrollDirection: Axis.vertical,
                   physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
                   itemCount: state.characteristics.length,
                   itemBuilder: (BuildContext ctx, index) {
-                    final subList =
-                        _subCharMap[state.characteristics[index].id] ?? [];
+                    final subList = _subCharMap[state.characteristics[index].id] ?? [];
 
                     // print(
                     //     "subList for ${state.characteristics[index].id} : ${subList.length}");
                     return Container(
-                        margin: EdgeInsets.only(right: 16, left: 16, top: 12),
-                        padding: const EdgeInsets.only(
-                            left: 16, right: 16, bottom: 16, top: 16),
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(12)),
-                        child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                '${state.characteristics[index].key}',
-                                style: AppTextStyles.size14Weight600,
-                              ),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              Wrap(
-                                spacing: 8.0,
-                                runSpacing: 8.0,
-                                children: List.generate(
-                                  subList.length >= 9 ? 9 : subList.length,
-                                  (index) => chipBrand(
-                                    subList[index].value ?? '',
-                                    subList[index].id ?? 0,
-                                  ),
-                                ),
-                              ),
-                              subList.length >= 6
-                                  ? const Divider(
-                                      color: AppColors.kGray2,
-                                    )
-                                  : SizedBox(),
-                              subList.length >= 6
-                                  ? GestureDetector(
-                                      onTap: (() {
-                                        Get.to(() => const BrandsPage());
-                                      }),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                            'Показать еще (${subList.length - 9})',
-                                            style: TextStyle(
-                                                color:
-                                                    AppColors.mainPurpleColor,
-                                                letterSpacing: 0,
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w500),
-                                          ),
-                                          Icon(
-                                            Icons.arrow_forward_ios,
-                                            color: AppColors.mainPurpleColor,
-                                            size: 13,
-                                          )
-                                        ],
+                      margin: EdgeInsets.only(right: 16, left: 16, top: 12),
+                      padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16, top: 16),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            '${state.characteristics[index].key}',
+                            style: AppTextStyles.size14Weight600,
+                          ),
+                          const SizedBox(height: 10),
+                          Wrap(
+                            spacing: 8.0,
+                            runSpacing: 8.0,
+                            children: List.generate(
+                              subList.length >= 9 ? 9 : subList.length,
+                              (index) =>
+                                  chipBrand(subList[index].value ?? '', subList[index].id ?? 0),
+                            ),
+                          ),
+                          subList.length >= 6 ? const Divider(color: AppColors.kGray2) : SizedBox(),
+                          subList.length >= 6
+                              ? GestureDetector(
+                                  onTap: (() {
+                                    Get.to(() => const BrandsPage());
+                                  }),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        'Показать еще (${subList.length - 9})',
+                                        style: TextStyle(
+                                          color: AppColors.mainPurpleColor,
+                                          letterSpacing: 0,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500,
+                                        ),
                                       ),
-                                    )
-                                  : SizedBox.shrink(),
-                            ]));
-                  });
-            } else {
-              return const Center(
-                  child: CircularProgressIndicator(color: Colors.indigoAccent));
-            }
-          }),
+                                      Icon(
+                                        Icons.arrow_forward_ios,
+                                        color: AppColors.mainPurpleColor,
+                                        size: 13,
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              : SizedBox.shrink(),
+                        ],
+                      ),
+                    );
+                  },
+                );
+              } else {
+                return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
+              }
+            },
+          ),
         ],
       ),
       bottomNavigationBar: SafeArea(
@@ -289,8 +270,7 @@ class _FilterPageState extends State<FilterPage> {
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColors.mainPurpleColor,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(16)),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
             ),
             onPressed: () async {
               final filters = context.read<FilterProvider>();
@@ -305,8 +285,7 @@ class _FilterPageState extends State<FilterPage> {
             },
             child: Text(
               'Применить',
-              style: AppTextStyles.size18Weight600
-                  .copyWith(color: AppColors.kWhite),
+              style: AppTextStyles.size18Weight600.copyWith(color: AppColors.kWhite),
             ),
           ),
         ),
@@ -335,12 +314,11 @@ class _FilterPageState extends State<FilterPage> {
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: AppTextStyles.size14Weight500.copyWith(
-                color: _selectListChar.contains(index)
-                    ? AppColors.mainPurpleColor
-                    : Color(0xff636366),
-                fontWeight: _selectListChar.contains(index)
-                    ? FontWeight.w700
-                    : FontWeight.w500),
+              color: _selectListChar.contains(index)
+                  ? AppColors.mainPurpleColor
+                  : Color(0xff636366),
+              fontWeight: _selectListChar.contains(index) ? FontWeight.w700 : FontWeight.w500,
+            ),
           ),
           shape: RoundedRectangleBorder(
             side: BorderSide(

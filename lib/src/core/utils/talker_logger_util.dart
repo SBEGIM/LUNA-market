@@ -12,13 +12,8 @@ class TalkerLoggerUtil {
 
   static final Talker talker = TalkerFlutter.init(
     settings: TalkerSettings(
-      useConsoleLogs: !(const bool.fromEnvironment(
-        'dart.vm.product',
-        defaultValue: true,
-      )),
-      colors: {
-        TalkerLogType.verbose.key: AnsiPen()..yellow(),
-      },
+      useConsoleLogs: !(const bool.fromEnvironment('dart.vm.product', defaultValue: true)),
+      colors: {TalkerKey.verbose: AnsiPen()..yellow()},
     ),
   );
 }
@@ -29,19 +24,18 @@ extension TalkerFlutter on Talker {
     TalkerObserver? observer,
     TalkerSettings? settings,
     TalkerFilter? filter,
-  }) =>
-      Talker(
-        logger: (logger ?? TalkerLogger()).copyWith(
-          output: _defaultFlutterOutput,
-          settings: TalkerLoggerSettings(
-            maxLineWidth: 120,
-            // enableColors: false,
-          ),
-        ),
-        settings: settings,
-        observer: observer,
-        filter: filter,
-      );
+  }) => Talker(
+    logger: (logger ?? TalkerLogger()).copyWith(
+      output: _defaultFlutterOutput,
+      settings: TalkerLoggerSettings(
+        maxLineWidth: 120,
+        // enableColors: false,
+      ),
+    ),
+    settings: settings,
+    observer: observer,
+    filter: filter,
+  );
 
   static dynamic _defaultFlutterOutput(String message) {
     if (kIsWeb) {

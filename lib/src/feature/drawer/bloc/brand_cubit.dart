@@ -10,14 +10,10 @@ class BrandCubit extends Cubit<BrandState> {
   BrandCubit({required this.brandRepository}) : super(InitState());
   List<CatsModel> _brands = [];
 
-  Future<void> brands({
-    int? subCatId,
-    bool hasNotSpecified = false,
-  }) async {
+  Future<void> brands({int? subCatId, bool hasNotSpecified = false}) async {
     try {
       emit(LoadingState());
-      final List<CatsModel> data =
-          await brandRepository.brandApi(subCatId: subCatId);
+      final List<CatsModel> data = await brandRepository.brandApi(subCatId: subCatId);
       _brands = data;
       if (hasNotSpecified) {
         _brands.insert(0, CatsModel(name: 'Не определен'));
@@ -68,8 +64,7 @@ class BrandCubit extends Cubit<BrandState> {
     }
     List<CatsModel> temp = [];
     for (int i = 0; i < _brands.length; i++) {
-      if (_brands[i].name != null &&
-          _brands[i].name!.toLowerCase().contains(name.toLowerCase())) {
+      if (_brands[i].name != null && _brands[i].name!.toLowerCase().contains(name.toLowerCase())) {
         temp.add(_brands[i]);
       }
     }

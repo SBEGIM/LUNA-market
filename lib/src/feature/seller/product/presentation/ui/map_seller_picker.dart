@@ -4,7 +4,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:yandex_mapkit/yandex_mapkit.dart';
-
 import 'package:haji_market/src/core/common/constants.dart';
 
 @RoutePage()
@@ -12,11 +11,7 @@ class MapSellerPickerPage extends StatefulWidget {
   final double lat;
   final double long;
 
-  const MapSellerPickerPage({
-    Key? key,
-    required this.lat,
-    required this.long,
-  }) : super(key: key);
+  const MapSellerPickerPage({super.key, required this.lat, required this.long});
 
   @override
   State<MapSellerPickerPage> createState() => _MapSellerPickerPageState();
@@ -44,13 +39,10 @@ class _MapSellerPickerPageState extends State<MapSellerPickerPage> {
   CircleMapObject _createCircle() {
     return CircleMapObject(
       mapId: const MapObjectId('radius_circle'),
-      strokeColor: AppColors.mainPurpleColor.withOpacity(0.5),
-      fillColor: AppColors.mainPurpleColor.withOpacity(0.2),
+      strokeColor: AppColors.mainPurpleColor.withValues(alpha: .5),
+      fillColor: AppColors.mainPurpleColor.withValues(alpha: 0.2),
       strokeWidth: 2,
-      circle: Circle(
-        center: _centerPoint,
-        radius: _radius,
-      ),
+      circle: Circle(center: _centerPoint, radius: _radius),
     );
   }
 
@@ -91,17 +83,14 @@ class _MapSellerPickerPageState extends State<MapSellerPickerPage> {
         iconTheme: const IconThemeData(color: AppColors.kLightBlackColor),
         title: const Text(
           'Радиус продажи продукта',
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w500,
-            color: Colors.black,
-          ),
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500, color: Colors.black),
         ),
         leading: IconButton(
-            onPressed: () {
-              Get.back();
-            },
-            icon: Icon(Icons.arrow_back)),
+          onPressed: () {
+            Get.back();
+          },
+          icon: Icon(Icons.arrow_back),
+        ),
         backgroundColor: Colors.white,
       ),
       body: Stack(
@@ -110,16 +99,11 @@ class _MapSellerPickerPageState extends State<MapSellerPickerPage> {
             onMapCreated: (YandexMapController yandexMapController) async {
               controller = yandexMapController;
               controller!.moveCamera(
-                CameraUpdate.newCameraPosition(
-                  CameraPosition(target: _centerPoint, zoom: 14),
-                ),
+                CameraUpdate.newCameraPosition(CameraPosition(target: _centerPoint, zoom: 14)),
                 animation: const MapAnimation(duration: 2.0),
               );
             },
-            mapObjects: [
-              _createCircle(),
-              _createCenterPlacemark(),
-            ],
+            mapObjects: [_createCircle(), _createCenterPlacemark()],
           ),
           Positioned(
             bottom: 100,
@@ -132,10 +116,7 @@ class _MapSellerPickerPageState extends State<MapSellerPickerPage> {
               children: [
                 Text(
                   '${_radius.round()} метров',
-                  style: const TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                  ),
+                  style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
                   textAlign: TextAlign.start,
                 ),
                 Slider(
@@ -172,13 +153,10 @@ class _MapSellerPickerPageState extends State<MapSellerPickerPage> {
               onTap: () async {
                 try {
                   final loc = await Geolocator.getCurrentPosition();
-                  final myPoint =
-                      Point(latitude: loc.latitude, longitude: loc.longitude);
+                  final myPoint = Point(latitude: loc.latitude, longitude: loc.longitude);
 
                   controller!.moveCamera(
-                    CameraUpdate.newCameraPosition(
-                      CameraPosition(target: myPoint, zoom: 14),
-                    ),
+                    CameraUpdate.newCameraPosition(CameraPosition(target: myPoint, zoom: 14)),
                     animation: const MapAnimation(duration: 2.0),
                   );
                 } catch (exception) {
@@ -195,16 +173,12 @@ class _MapSellerPickerPageState extends State<MapSellerPickerPage> {
                   color: Color(0xe5fefefe),
                   borderRadius: BorderRadius.all(Radius.circular(50)),
                   boxShadow: [
-                    BoxShadow(
-                      color: Color(0x33000000),
-                      offset: Offset(0, 1),
-                      blurRadius: 4,
-                    )
+                    BoxShadow(color: Color(0x33000000), offset: Offset(0, 1), blurRadius: 4),
                   ],
                 ),
                 child: SvgPicture.asset(
                   'assets/icons/icon-tab-navigation.svg',
-                  color: AppColors.kPrimaryColor,
+                  colorFilter: ColorFilter.mode(AppColors.kPrimaryColor, BlendMode.srcIn),
                 ),
               ),
             ),
@@ -213,20 +187,18 @@ class _MapSellerPickerPageState extends State<MapSellerPickerPage> {
       ),
       bottomSheet: TextButton(
         onPressed: () {
-          Get.back(result: {
-            'lat': _centerPoint.latitude,
-            'long': _centerPoint.longitude,
-            'radius': _radius,
-          });
+          Get.back(
+            result: {
+              'lat': _centerPoint.latitude,
+              'long': _centerPoint.longitude,
+              'radius': _radius,
+            },
+          );
         },
-        style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all(Colors.white),
-        ),
+        style: ButtonStyle(backgroundColor: WidgetStateProperty.all(Colors.white)),
         child: Container(
           height: 48,
-          margin: EdgeInsets.only(
-            bottom: MediaQuery.of(context).size.height / 40,
-          ),
+          margin: EdgeInsets.only(bottom: MediaQuery.of(context).size.height / 40),
           decoration: BoxDecoration(
             color: AppColors.mainPurpleColor,
             border: Border.all(color: Colors.grey),
@@ -235,11 +207,7 @@ class _MapSellerPickerPageState extends State<MapSellerPickerPage> {
           child: const Center(
             child: Text(
               'Подтвердить',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 15,
-                fontWeight: FontWeight.w600,
-              ),
+              style: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.w600),
             ),
           ),
         ),

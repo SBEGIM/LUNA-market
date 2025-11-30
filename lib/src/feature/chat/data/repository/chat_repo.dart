@@ -20,8 +20,10 @@ class Chat {
     try {
       final String? token = _box.read('token');
 
-      final response = await http.get(Uri.parse("$baseUrl/chat?page=$page"),
-          headers: {"Authorization": "Bearer $token"});
+      final response = await http.get(
+        Uri.parse("$baseUrl/chat?page=$page"),
+        headers: {"Authorization": "Bearer $token"},
+      );
 
       final data = jsonDecode(response.body) as Map<String, dynamic>;
 

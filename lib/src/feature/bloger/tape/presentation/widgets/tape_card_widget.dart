@@ -16,11 +16,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 class BloggerTapeCardPage extends StatefulWidget {
   final TapeBloggerModel tape;
   final int index;
-  const BloggerTapeCardPage({
-    required this.tape,
-    required this.index,
-    super.key,
-  });
+  const BloggerTapeCardPage({required this.tape, required this.index, super.key});
 
   @override
   State<BloggerTapeCardPage> createState() => _BloggerTapeCardPageState();
@@ -32,12 +28,12 @@ class _BloggerTapeCardPageState extends State<BloggerTapeCardPage> {
 
   @override
   void initState() {
-    _controller = VideoPlayerController.network(
-        'https://lunamarket.ru/storage/${widget.tape.video}')
-      ..initialize().then((_) {
-        _controller!.pause();
-        setState(() {});
-      });
+    _controller =
+        VideoPlayerController.network('https://lunamarket.ru/storage/${widget.tape.video}')
+          ..initialize().then((_) {
+            _controller!.pause();
+            setState(() {});
+          });
     super.initState();
   }
 
@@ -66,18 +62,20 @@ class _BloggerTapeCardPageState extends State<BloggerTapeCardPage> {
           Positioned.fill(
             child: SizedBox.expand(
               child: FittedBox(
-                  alignment: Alignment.center,
-                  fit: BoxFit.fitHeight,
-                  child: SizedBox(
-                    height: _controller!.value.size.height,
-                    width: _controller!.value.size.width,
-                    child: AspectRatio(
-                      aspectRatio: _controller!.value.aspectRatio,
-                      child: Opacity(
-                          opacity: widget.tape.isDelete == true ? 0.4 : 1,
-                          child: VideoPlayer(_controller!)),
+                alignment: Alignment.center,
+                fit: BoxFit.fitHeight,
+                child: SizedBox(
+                  height: _controller!.value.size.height,
+                  width: _controller!.value.size.width,
+                  child: AspectRatio(
+                    aspectRatio: _controller!.value.aspectRatio,
+                    child: Opacity(
+                      opacity: widget.tape.isDelete == true ? 0.4 : 1,
+                      child: VideoPlayer(_controller!),
                     ),
-                  )),
+                  ),
+                ),
+              ),
             ),
           ),
           widget.tape.isDelete == true
@@ -86,56 +84,58 @@ class _BloggerTapeCardPageState extends State<BloggerTapeCardPage> {
                     'Товар \nнедоступен',
                     maxLines: 2,
                     textAlign: TextAlign.center,
-                    style: AppTextStyles.size14Weight600
-                        .copyWith(color: AppColors.kWhite),
+                    style: AppTextStyles.size14Weight600.copyWith(color: AppColors.kWhite),
                   ),
                 )
               : const SizedBox.shrink(),
+
           // Padding(
           //   padding: const EdgeInsets.only(right: 8.0, top: 8),
           //   child: Align(
           //       alignment: Alignment.topRight,
           //       child: SvgPicture.asset('assets/icons/play.svg')),
           // ),
-
           Positioned(
-              top: 4,
-              left: 4,
-              child: Material(
+            top: 4,
+            left: 4,
+            child: Material(
+              borderRadius: BorderRadius.circular(15),
+              color: Colors.transparent,
+              child: InkWell(
                 borderRadius: BorderRadius.circular(15),
-                color: Colors.transparent,
-                child: InkWell(
-                  borderRadius: BorderRadius.circular(15),
-                  child: Padding(
-                    padding: EdgeInsets.all(6.0),
-                    child: Text(
-                      '${widget.tape.shop!.name}',
-                      style: AppTextStyles.aboutTextStyle.copyWith(
-                        color: widget.tape.isDelete != true
-                            ? AppColors.kWhite
-                            : AppColors.kWhite.withOpacity(0.5),
-                        height: 20 / 14,
-                        fontWeight: FontWeight.w500,
-                        letterSpacing: 0.0,
-                      ),
+                child: Padding(
+                  padding: EdgeInsets.all(6.0),
+                  child: Text(
+                    '${widget.tape.shop!.name}',
+                    style: AppTextStyles.aboutTextStyle.copyWith(
+                      color: widget.tape.isDelete != true
+                          ? AppColors.kWhite
+                          : AppColors.kWhite.withOpacity(0.5),
+                      height: 20 / 14,
+                      fontWeight: FontWeight.w500,
+                      letterSpacing: 0.0,
                     ),
                   ),
                 ),
-              )),
+              ),
+            ),
+          ),
 
           Padding(
             padding: const EdgeInsets.only(left: 8.0, bottom: 8),
             child: Align(
-                alignment: Alignment.bottomLeft,
-                child: Row(children: [
+              alignment: Alignment.bottomLeft,
+              child: Row(
+                children: [
                   Image.asset(Assets.icons.viewTapeIcon.path, scale: 1.9),
                   SizedBox(width: 8),
                   Text(
                     '${formatViews(widget.tape.viewCount ?? 0)}',
-                    style: AppTextStyles.size14Weight600
-                        .copyWith(color: AppColors.kWhite),
-                  )
-                ])),
+                    style: AppTextStyles.size14Weight600.copyWith(color: AppColors.kWhite),
+                  ),
+                ],
+              ),
+            ),
           ),
 
           // BlocListener<UploadVideoBLoggerCubit, UploadVideoBloggerCubitState>(

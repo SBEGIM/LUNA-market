@@ -10,8 +10,7 @@ import 'package:haji_market/src/feature/app/router/app_router.dart';
 enum UserRole { buyer, seller, blogger }
 
 void showRolePicker(BuildContext context, String type) {
-  UserRole? selectedRole =
-      type == 'change_cabinet' ? UserRole.seller : UserRole.buyer;
+  UserRole? selectedRole = type == 'change_cabinet' ? UserRole.seller : UserRole.buyer;
   final _box = GetStorage();
 
   showDialog(
@@ -46,9 +45,7 @@ void showRolePicker(BuildContext context, String type) {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      type != 'change_cabinet'
-                          ? 'чтобы зарегистрироваться:'
-                          : 'для входа в:',
+                      type != 'change_cabinet' ? 'чтобы зарегистрироваться:' : 'для входа в:',
                       style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w400,
@@ -63,8 +60,7 @@ void showRolePicker(BuildContext context, String type) {
                         selected: selectedRole,
                         onChanged: (val) => setState(() => selectedRole = val),
                         selectedIconAsset: Assets.icons.defaultCheckIcon.path,
-                        unselectedIconAsset:
-                            Assets.icons.defaultUncheckIcon.path,
+                        unselectedIconAsset: Assets.icons.defaultUncheckIcon.path,
                       ),
                     _buildRoleOption(
                       title: 'Продавец',
@@ -89,9 +85,7 @@ void showRolePicker(BuildContext context, String type) {
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppColors.mainPurpleColor,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16),
-                          ),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                         ),
                         onPressed: () {
                           Navigator.of(dialogContext).pop(selectedRole);
@@ -99,16 +93,16 @@ void showRolePicker(BuildContext context, String type) {
                           if (UserRole.blogger == selectedRole) {
                             _box.read('blogger_token') != null
                                 ? BlocProvider.of<AppBloc>(context).add(
-                                    const AppEvent.chageState(
-                                        state: AppState.inAppBlogerState()))
+                                    const AppEvent.chageState(state: AppState.inAppBlogerState()),
+                                  )
                                 : context.router.push(BlogAuthRegisterRoute());
                           }
 
                           if (UserRole.seller == selectedRole) {
                             _box.read('seller_token') != null
                                 ? BlocProvider.of<AppBloc>(context).add(
-                                    const AppEvent.chageState(
-                                        state: AppState.inAppAdminState()))
+                                    const AppEvent.chageState(state: AppState.inAppAdminState()),
+                                  )
                                 : context.router.push(AuthSellerRoute());
                           }
 
@@ -118,9 +112,10 @@ void showRolePicker(BuildContext context, String type) {
                             //     .add(const AppEvent.exiting());
 
                             BlocProvider.of<AppBloc>(context).add(
-                                const AppEvent.chageState(
-                                    state: AppState.notAuthorizedState(
-                                        button: true)));
+                              const AppEvent.chageState(
+                                state: AppState.notAuthorizedState(button: true),
+                              ),
+                            );
                           }
                         },
                         child: const Text(
@@ -230,16 +225,14 @@ class _RoleTrailingIcon extends StatelessWidget {
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         color: isSelected ? Colors.black : Colors.white,
-        border: Border.all(
-          color: isSelected ? Colors.black : const Color(0xFFCDCED1),
-          width: 1.2,
-        ),
+        border: Border.all(color: isSelected ? Colors.black : const Color(0xFFCDCED1), width: 1.2),
         boxShadow: isSelected
             ? [
                 BoxShadow(
-                    color: Colors.black.withOpacity(0.10),
-                    blurRadius: 8,
-                    offset: const Offset(0, 2))
+                  color: Colors.black.withOpacity(0.10),
+                  blurRadius: 8,
+                  offset: const Offset(0, 2),
+                ),
               ]
             : null,
       ),

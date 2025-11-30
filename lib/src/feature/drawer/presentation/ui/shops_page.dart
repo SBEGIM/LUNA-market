@@ -29,9 +29,11 @@ class _ShopsPageState extends State<ShopsPage> {
         elevation: 0,
         leading: Padding(
           padding: const EdgeInsets.only(left: 16.0),
-          child: CustomBackButton(onTap: () {
-            context.router.pop();
-          }),
+          child: CustomBackButton(
+            onTap: () {
+              context.router.pop();
+            },
+          ),
         ),
 
         // leadingWidth: 1,
@@ -39,124 +41,116 @@ class _ShopsPageState extends State<ShopsPage> {
           height: 34,
           width: 279,
           decoration: BoxDecoration(
-              color: const Color(0xFFF8F8F8),
-              borderRadius: BorderRadius.circular(10)),
+            color: const Color(0xFFF8F8F8),
+            borderRadius: BorderRadius.circular(10),
+          ),
           child: TextField(
-              controller: searchController,
-              textAlign: TextAlign.left,
-              onChanged: (value) {
-                BlocProvider.of<PopularShopsCubit>(context).searchShops(value);
+            controller: searchController,
+            textAlign: TextAlign.left,
+            onChanged: (value) {
+              BlocProvider.of<PopularShopsCubit>(context).searchShops(value);
 
-                // if (searchController.text.isEmpty)
-                //   BlocProvider.of<CityCubit>(context)
-                //       .cities(value);
-              },
-              decoration: const InputDecoration(
-                prefixIcon: Icon(
-                  Icons.search,
-                  color: AppColors.kGray300,
-                ),
-                contentPadding: EdgeInsets.only(bottom: 10),
-                hintText: 'Поиск',
-                hintStyle: TextStyle(
-                  color: AppColors.kGray300,
-                  fontSize: 18,
-                ),
-                hintMaxLines: 1,
-                border: InputBorder.none,
-              ),
-              style: const TextStyle(
-                color: Colors.black,
-              )),
+              // if (searchController.text.isEmpty)
+              //   BlocProvider.of<CityCubit>(context)
+              //       .cities(value);
+            },
+            decoration: const InputDecoration(
+              prefixIcon: Icon(Icons.search, color: AppColors.kGray300),
+              contentPadding: EdgeInsets.only(bottom: 10),
+              hintText: 'Поиск',
+              hintStyle: TextStyle(color: AppColors.kGray300, fontSize: 18),
+              hintMaxLines: 1,
+              border: InputBorder.none,
+            ),
+            style: const TextStyle(color: Colors.black),
+          ),
         ),
       ),
       body: BlocConsumer<PopularShopsCubit, PopularShopsState>(
-          listener: (context, state) {},
-          builder: (context, state) {
-            if (state is ErrorState) {
-              return Center(
-                child: Text(
-                  state.message,
-                  style: const TextStyle(fontSize: 20.0, color: Colors.grey),
-                ),
-              );
-            }
-            if (state is LoadingState) {
-              return const Center(
-                  child: CircularProgressIndicator(color: Colors.indigoAccent));
-            }
+        listener: (context, state) {},
+        builder: (context, state) {
+          if (state is ErrorState) {
+            return Center(
+              child: Text(
+                state.message,
+                style: const TextStyle(fontSize: 20.0, color: Colors.grey),
+              ),
+            );
+          }
+          if (state is LoadingState) {
+            return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
+          }
 
-            if (state is LoadedState) {
-              return Container(
-                margin: const EdgeInsets.only(top: 12, left: 15, right: 15),
-                child: GridView.builder(
-                    // physics: const NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 3,
-                            childAspectRatio: 0.65,
-                            crossAxisSpacing: 10,
-                            mainAxisSpacing: 10),
-                    itemCount: state.popularShops.length,
-                    itemBuilder: (context, index) {
-                      return InkWell(
-                        onTap: () {
-                          GetStorage().remove('CatId');
-                          GetStorage().remove('subCatFilterId');
-                          GetStorage().remove('shopFilterId');
-                          GetStorage().remove('search');
-                          GetStorage().write('shopFilter',
-                              state.popularShops[index].name ?? '');
-                          // GetStorage().write('shopFilterId', state.popularShops[index].id);
-                          List<int> selectedListSort = [];
-                          selectedListSort
-                              .add(state.popularShops[index].id as int);
-                          GetStorage().write(
-                              'shopFilterId', selectedListSort.toString());
-                          // GetStorage().write('shopSelectedIndexSort', index);
-                          context.router.push(ProductsRoute(
-                            cats: CatsModel(id: 0, name: ''),
-                            shopId: state.popularShops[index].id.toString(),
-                          ));
-                        },
-                        child: ShopsListTile(
-                          title: '${state.popularShops[index].name}',
-                          credit: state.popularShops[index].credit ?? false,
-                          bonus: '${state.popularShops[index].bonus}',
-                          url:
-                              "https://lunamarket.ru/storage/${state.popularShops[index].image ?? ''}",
+          if (state is LoadedState) {
+            return Container(
+              margin: const EdgeInsets.only(top: 12, left: 15, right: 15),
+              child: GridView.builder(
+                // physics: const NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 3,
+                  childAspectRatio: 0.65,
+                  crossAxisSpacing: 10,
+                  mainAxisSpacing: 10,
+                ),
+                itemCount: state.popularShops.length,
+                itemBuilder: (context, index) {
+                  return InkWell(
+                    onTap: () {
+                      GetStorage().remove('CatId');
+                      GetStorage().remove('subCatFilterId');
+                      GetStorage().remove('shopFilterId');
+                      GetStorage().remove('search');
+                      GetStorage().write('shopFilter', state.popularShops[index].name ?? '');
+                      // GetStorage().write('shopFilterId', state.popularShops[index].id);
+                      List<int> selectedListSort = [];
+                      selectedListSort.add(state.popularShops[index].id as int);
+                      GetStorage().write('shopFilterId', selectedListSort.toString());
+                      // GetStorage().write('shopSelectedIndexSort', index);
+                      context.router.push(
+                        ProductsRoute(
+                          cats: CatsModel(id: 0, name: ''),
+                          shopId: state.popularShops[index].id.toString(),
                         ),
                       );
-                    }),
-              );
-              // return ListView.builder(
-              //   itemCount: state.popularShops.length,
-              //   itemBuilder: (context, index) {
-              //     return Column(
-              //       children: [
-              //         InkWell(
-              //           onTap: () {
+                    },
+                    child: ShopsListTile(
+                      title: '${state.popularShops[index].name}',
+                      credit: state.popularShops[index].credit ?? false,
+                      bonus: '${state.popularShops[index].bonus}',
+                      url: "https://lunamarket.ru/storage/${state.popularShops[index].image ?? ''}",
+                    ),
+                  );
+                },
+              ),
+            );
+            // return ListView.builder(
+            //   itemCount: state.popularShops.length,
+            //   itemBuilder: (context, index) {
+            //     return Column(
+            //       children: [
+            //         InkWell(
+            //           onTap: () {
 
-              //           },
-              //           child: (
-              //             title: '${state.popularShops[index].name}',
-              //             url:
-              //                 "http://80.87.202.73:8001/storage/${state.popularShops[index].image!}",
-              //           ),
-              //         ),
-              //         const Divider(
-              //           color: AppColors.kGray400,
-              //         ),
-              //       ],
-              //     );
-              //   },
-              // );
-            } else {
-              return const Center(
-                  child: CircularProgressIndicator(color: Colors.indigoAccent));
-            }
-          }),
+            //           },
+            //           child: (
+            //             title: '${state.popularShops[index].name}',
+            //             url:
+            //                 "http://80.87.202.73:8001/storage/${state.popularShops[index].image!}",
+            //           ),
+            //         ),
+            //         const Divider(
+            //           color: AppColors.kGray400,
+            //         ),
+            //       ],
+            //     );
+            //   },
+            // );
+          } else {
+            return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
+          }
+        },
+      ),
     );
   }
 }
@@ -193,13 +187,10 @@ class ShopsListTile extends StatelessWidget {
                 height: 90,
                 width: 90,
                 decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(50),
-                    image: DecorationImage(
-                        image: NetworkImage(
-                          url,
-                        ),
-                        fit: BoxFit.contain),
-                    color: const Color(0xFFF0F5F5)),
+                  borderRadius: BorderRadius.circular(50),
+                  image: DecorationImage(image: NetworkImage(url), fit: BoxFit.contain),
+                  color: const Color(0xFFF0F5F5),
+                ),
                 // child: Image.network(
                 //   "http://80.87.202.73:8001/storage/${state.popularShops[index].image!}",
                 //   width: 70,

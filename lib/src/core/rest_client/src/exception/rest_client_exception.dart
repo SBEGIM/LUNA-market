@@ -54,7 +54,8 @@ final class ClientException extends RestClientException {
   });
 
   @override
-  String toString() => 'ClientException('
+  String toString() =>
+      'ClientException('
       'message: $message, '
       'statusCode: $statusCode, '
       'cause: $cause'
@@ -97,7 +98,8 @@ final class CustomBackendException extends RestClientException {
   });
 
   @override
-  String toString() => 'CustomBackendException('
+  String toString() =>
+      'CustomBackendException('
       'message: $message, '
       'cause: $cause, '
       'statusCode: $statusCode, '
@@ -119,7 +121,8 @@ final class WrongResponseTypeException extends RestClientException {
   });
 
   @override
-  String toString() => 'WrongResponseTypeException('
+  String toString() =>
+      'WrongResponseTypeException('
       'message: $message, '
       'statusCode: $statusCode, '
       'reset: $reset'
@@ -128,11 +131,7 @@ final class WrongResponseTypeException extends RestClientException {
   @override
   List<Object?> get props => [message, statusCode, reset];
 
-  WrongResponseTypeException copyWith({
-    int? statusCode,
-    String? message,
-    bool? reset,
-  }) =>
+  WrongResponseTypeException copyWith({int? statusCode, String? message, bool? reset}) =>
       WrongResponseTypeException(
         message: message ?? this.message,
         statusCode: statusCode ?? this.statusCode,
@@ -143,14 +142,11 @@ final class WrongResponseTypeException extends RestClientException {
 /// [ConnectionException] is thrown if there are problems with the connection
 final class ConnectionException extends RestClientExceptionWithCause {
   /// {@macro connection_exception}
-  const ConnectionException({
-    required super.message,
-    super.statusCode,
-    super.cause,
-  });
+  const ConnectionException({required super.message, super.statusCode, super.cause});
 
   @override
-  String toString() => 'ConnectionException('
+  String toString() =>
+      'ConnectionException('
       'message: $message, '
       'statusCode: $statusCode, '
       'cause: $cause, '
@@ -163,14 +159,11 @@ final class ConnectionException extends RestClientExceptionWithCause {
 
 /// If something went wrong on the server side
 final class InternalServerException extends RestClientExceptionWithCause {
-  const InternalServerException({
-    required super.message,
-    super.statusCode,
-    super.cause,
-  });
+  const InternalServerException({required super.message, super.statusCode, super.cause});
 
   @override
-  String toString() => 'InternalServerException('
+  String toString() =>
+      'InternalServerException('
       'message: $message, '
       'statusCode: $statusCode, '
       'cause: $cause, '
@@ -180,4 +173,5 @@ final class InternalServerException extends RestClientExceptionWithCause {
   @override
   List<Object?> get props => [message, statusCode, cause, reset];
 }
+
 // coverage:ignore-end

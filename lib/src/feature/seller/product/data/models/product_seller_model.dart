@@ -96,9 +96,7 @@ class ProductSellerModel {
         ? (json['bloc'] as List).map((e) => BlocDTO.fromJson(e)).toList()
         : [];
     _characteristics = json['characteristics'] != null
-        ? (json['characteristics'] as List)
-            .map((e) => Characteristic.fromJson(e))
-            .toList()
+        ? (json['characteristics'] as List).map((e) => Characteristic.fromJson(e)).toList()
         : [];
 
     _pointBlogger = json['point_blogger'];
@@ -201,9 +199,7 @@ class ProductSellerModel {
 }
 
 class Path {
-  Path({
-    String? path,
-  }) {
+  Path({String? path}) {
     _path = path;
   }
 
@@ -222,10 +218,7 @@ class Path {
 }
 
 class SizeDTO {
-  SizeDTO({
-    String? name,
-    int? count,
-  }) {
+  SizeDTO({String? name, int? count}) {
     _name = name;
     _count = count;
   }
@@ -280,11 +273,7 @@ class BlocDTO {
 }
 
 class Characteristic {
-  Characteristic({
-    int? id,
-    String? name,
-    String? value,
-  }) {
+  Characteristic({int? id, String? name, String? value}) {
     _id = id;
     _name = name;
     _value = value;

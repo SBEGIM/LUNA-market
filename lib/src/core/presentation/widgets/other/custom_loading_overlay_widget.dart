@@ -12,14 +12,9 @@ class CustomLoadingOverlayWidget extends StatelessWidget {
       child: Container(
         height: 96,
         width: 96,
-        decoration: const BoxDecoration(
-          color: Colors.white,
-          shape: BoxShape.circle,
-        ),
+        decoration: const BoxDecoration(color: Colors.white, shape: BoxShape.circle),
         alignment: Alignment.center,
-        child: const RepaintBoundary(
-          child: SpinningProgressIndicator(),
-        ),
+        child: const RepaintBoundary(child: SpinningProgressIndicator()),
       ),
     );
   }
@@ -31,8 +26,7 @@ class SpinningProgressIndicator extends StatefulWidget {
   const SpinningProgressIndicator({super.key, this.size = 48});
 
   @override
-  State<SpinningProgressIndicator> createState() =>
-      _SpinningProgressIndicatorState();
+  State<SpinningProgressIndicator> createState() => _SpinningProgressIndicatorState();
 }
 
 class _SpinningProgressIndicatorState extends State<SpinningProgressIndicator>
@@ -42,10 +36,8 @@ class _SpinningProgressIndicatorState extends State<SpinningProgressIndicator>
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(
-      duration: const Duration(milliseconds: 1500),
-      vsync: this,
-    )..repeat();
+    _controller = AnimationController(duration: const Duration(milliseconds: 1500), vsync: this)
+      ..repeat();
   }
 
   @override
@@ -59,17 +51,12 @@ class _SpinningProgressIndicatorState extends State<SpinningProgressIndicator>
     return AnimatedBuilder(
       animation: _controller,
       builder: (_, child) {
-        return Transform.rotate(
-          angle: _controller.value * 2 * math.pi,
-          child: child,
-        );
+        return Transform.rotate(angle: _controller.value * 2 * math.pi, child: child);
       },
       child: SizedBox(
         width: widget.size,
         height: widget.size,
-        child: CustomPaint(
-          painter: _CircularProgressPainter(),
-        ),
+        child: CustomPaint(painter: _CircularProgressPainter()),
       ),
     );
   }
@@ -82,10 +69,8 @@ class _CircularProgressPainter extends CustomPainter {
   //   final Paint paint = Paint()
   //     ..style = PaintingStyle.stroke
   //     ..strokeWidth = strokeWidth;
-
   //   Rect rect = Offset.zero & size;
   //   rect = rect.deflate(strokeWidth / 2);
-
   //   paint.shader = SweepGradient(
   //     colors: [
   //       const Color(0xFF7CC836).withOpacity(0),
@@ -95,11 +80,9 @@ class _CircularProgressPainter extends CustomPainter {
   //     stops: const [0.1, 1.0],
   //     transform: const GradientRotation(math.pi / 4 + math.pi / 2), // Adjust rotation to match from 189.25deg
   //   ).createShader(rect);
-
   //   // Draw the gradient arc
   //   canvas.drawArc(rect, 1, 2 * math.pi, false, paint);
   // }
-
   void paint(Canvas canvas, Size size) {
     final double centerPoint = size.height / 2;
 
@@ -114,18 +97,13 @@ class _CircularProgressPainter extends CustomPainter {
       ..strokeWidth = strokeWidth;
 
     paint.shader = SweepGradient(
-      colors: [
-        AppColors.green1.withValues(alpha: 0),
-        AppColors.green1,
-      ],
+      colors: [AppColors.green1.withValues(alpha: 0), AppColors.green1],
       tileMode: TileMode.repeated,
       startAngle: _degreeToRad(270),
       endAngle: _degreeToRad(270 + 360.0),
-    ).createShader(
-        Rect.fromCircle(center: Offset(centerPoint, centerPoint), radius: 0));
+    ).createShader(Rect.fromCircle(center: Offset(centerPoint, centerPoint), radius: 0));
 
-    final Rect rect = Rect.fromCircle(
-        center: Offset(centerPoint, centerPoint), radius: radius);
+    final Rect rect = Rect.fromCircle(center: Offset(centerPoint, centerPoint), radius: radius);
 
     const scapSize = strokeWidth / 2;
     final double scapToDegree = scapSize / radius;

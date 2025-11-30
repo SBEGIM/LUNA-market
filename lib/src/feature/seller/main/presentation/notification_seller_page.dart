@@ -57,16 +57,11 @@ class _NotificationSellerPageState extends State<NotificationSellerPage> {
 
     for (final n in notifications) {
       final date = DateTime.parse(n.created_at!);
-      final isToday = date.year == now.year &&
-          date.month == now.month &&
-          date.day == now.day;
-      final isYesterday = date.year == now.year &&
-          date.month == now.month &&
-          date.day == now.day - 1;
+      final isToday = date.year == now.year && date.month == now.month && date.day == now.day;
+      final isYesterday =
+          date.year == now.year && date.month == now.month && date.day == now.day - 1;
 
-      final notification = n.copyWith(
-        icon: getIconByType(n.type!),
-      );
+      final notification = n.copyWith(icon: getIconByType(n.type!));
 
       if (isToday) {
         todayNotifications.add(notification);
@@ -84,8 +79,9 @@ class _NotificationSellerPageState extends State<NotificationSellerPage> {
       appBar: AppBar(
         title: Text('Уведомления', style: AppTextStyles.appBarTextStyle),
         leading: InkWell(
-            onTap: () => Navigator.of(context).pop(),
-            child: const Icon(Icons.arrow_back)),
+          onTap: () => Navigator.of(context).pop(),
+          child: const Icon(Icons.arrow_back),
+        ),
       ),
       body: BlocConsumer<SellerNotificationCubit, SellerNotificationState>(
         listener: (context, state) {
@@ -97,38 +93,41 @@ class _NotificationSellerPageState extends State<NotificationSellerPage> {
             for (final n in state.notifications) {
               final date = DateTime.parse(n.created_at!);
 
-              isToday = date.year == now.year &&
-                  date.month == now.month &&
-                  date.day == now.day;
+              isToday = date.year == now.year && date.month == now.month && date.day == now.day;
 
-              isYesterday = date.year == now.year &&
-                  date.month == now.month &&
-                  date.day == now.day - 1;
+              isYesterday =
+                  date.year == now.year && date.month == now.month && date.day == now.day - 1;
 
               if (isToday) {
-                today.add(NotificationSellerModel(
-                  id: n.id!,
-                  icon: getIconByType(n.type!),
-                  title: n.title!,
-                  description: n.description!,
-                  isRead: n.isRead,
-                ));
+                today.add(
+                  NotificationSellerModel(
+                    id: n.id!,
+                    icon: getIconByType(n.type!),
+                    title: n.title!,
+                    description: n.description!,
+                    isRead: n.isRead,
+                  ),
+                );
               } else if (isYesterday) {
-                yesterday.add(NotificationSellerModel(
-                  id: n.id!,
-                  icon: getIconByType(n.type!),
-                  title: n.title!,
-                  description: n.description!,
-                  isRead: n.isRead,
-                ));
+                yesterday.add(
+                  NotificationSellerModel(
+                    id: n.id!,
+                    icon: getIconByType(n.type!),
+                    title: n.title!,
+                    description: n.description!,
+                    isRead: n.isRead,
+                  ),
+                );
               } else {
-                other.add(NotificationSellerModel(
-                  id: n.id!,
-                  icon: getIconByType(n.type!),
-                  title: n.title!,
-                  description: n.description!,
-                  isRead: n.isRead,
-                ));
+                other.add(
+                  NotificationSellerModel(
+                    id: n.id!,
+                    icon: getIconByType(n.type!),
+                    title: n.title!,
+                    description: n.description!,
+                    isRead: n.isRead,
+                  ),
+                );
               }
             }
 
@@ -142,52 +141,55 @@ class _NotificationSellerPageState extends State<NotificationSellerPage> {
               padding: const EdgeInsets.all(16),
               children: [
                 if (today.isNotEmpty) ...[
-                  const Text('Сегодня',
-                      style: TextStyle(fontWeight: FontWeight.bold)),
+                  const Text('Сегодня', style: TextStyle(fontWeight: FontWeight.bold)),
                   const SizedBox(height: 8),
                   NotificationGroup(
                     notifications: today
-                        .map((n) => NotificationSellerModel(
-                              id: n.id,
-                              icon: n.icon,
-                              title: n.title,
-                              description: n.description,
-                              isRead: n.isRead,
-                            ))
+                        .map(
+                          (n) => NotificationSellerModel(
+                            id: n.id,
+                            icon: n.icon,
+                            title: n.title,
+                            description: n.description,
+                            isRead: n.isRead,
+                          ),
+                        )
                         .toList(),
                   ),
                   const SizedBox(height: 24),
                 ],
                 if (yesterday.isNotEmpty) ...[
-                  const Text('Вчера',
-                      style: TextStyle(fontWeight: FontWeight.bold)),
+                  const Text('Вчера', style: TextStyle(fontWeight: FontWeight.bold)),
                   const SizedBox(height: 8),
                   NotificationGroup(
                     notifications: yesterday
-                        .map((n) => NotificationSellerModel(
-                              id: n.id,
-                              icon: n.icon,
-                              title: n.title,
-                              description: n.description,
-                              isRead: n.isRead,
-                            ))
+                        .map(
+                          (n) => NotificationSellerModel(
+                            id: n.id,
+                            icon: n.icon,
+                            title: n.title,
+                            description: n.description,
+                            isRead: n.isRead,
+                          ),
+                        )
                         .toList(),
                   ),
                   const SizedBox(height: 24),
                 ],
                 if (other.isNotEmpty) ...[
-                  const Text('Ранее',
-                      style: TextStyle(fontWeight: FontWeight.bold)),
+                  const Text('Ранее', style: TextStyle(fontWeight: FontWeight.bold)),
                   const SizedBox(height: 8),
                   NotificationGroup(
                     notifications: other
-                        .map((n) => NotificationSellerModel(
-                              id: n.id,
-                              icon: n.icon,
-                              title: n.title,
-                              description: n.description,
-                              isRead: n.isRead,
-                            ))
+                        .map(
+                          (n) => NotificationSellerModel(
+                            id: n.id,
+                            icon: n.icon,
+                            title: n.title,
+                            description: n.description,
+                            isRead: n.isRead,
+                          ),
+                        )
                         .toList(),
                   ),
                 ],
@@ -215,13 +217,15 @@ class NotificationGroup extends StatelessWidget {
         return GestureDetector(
           onTap: () {
             showNotificationSellerOptions(
-                context,
-                NotificationUiModel(
-                    id: n.id!,
-                    icon: n.icon!,
-                    title: n.title!,
-                    message: n.description!,
-                    isRead: n.isRead));
+              context,
+              NotificationUiModel(
+                id: n.id!,
+                icon: n.icon!,
+                title: n.title!,
+                message: n.description!,
+                isRead: n.isRead,
+              ),
+            );
 
             context.read<SellerNotificationCubit>().read(n.id!);
           },

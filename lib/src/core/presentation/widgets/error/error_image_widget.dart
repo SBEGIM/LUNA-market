@@ -5,12 +5,7 @@ import 'package:haji_market/src/core/theme/resources.dart';
 import 'package:haji_market/src/core/utils/image_util.dart';
 
 class ErrorImageWidget extends StatelessWidget {
-  const ErrorImageWidget({
-    super.key,
-    this.height,
-    this.width,
-    this.showLocalImage = false,
-  });
+  const ErrorImageWidget({super.key, this.height, this.width, this.showLocalImage = false});
   final double? height;
   final double? width;
   final bool showLocalImage;
@@ -25,11 +20,7 @@ class ErrorImageWidget extends StatelessWidget {
         ),
         child: Padding(
           padding: const EdgeInsets.all(10.0),
-          child: SvgPicture.asset(
-            Assets.icons.sellerBack.path,
-            width: width,
-            height: height,
-          ),
+          child: SvgPicture.asset(Assets.icons.sellerBack.path, width: width, height: height),
         ),
       );
     } else {
@@ -39,12 +30,7 @@ class ErrorImageWidget extends StatelessWidget {
         height: height,
         width: width ?? double.infinity,
         loadingBuilder: ImageUtil.loadingBuilder,
-        errorBuilder: (
-          context,
-          exception,
-          stackTrace,
-        ) =>
-            SizedBox(
+        errorBuilder: (context, exception, stackTrace) => SizedBox(
           height: height,
           width: width ?? double.infinity,
           child: const Center(child: Text('Image Error')),

@@ -11,13 +11,10 @@ import 'package:haji_market/src/feature/drawer/presentation/widgets/show_basket_
 import 'package:haji_market/src/feature/home/bloc/cats_cubit.dart';
 import 'package:haji_market/src/feature/home/presentation/widgets/product_buy_with_card.dart';
 import 'package:haji_market/src/feature/product/cubit/product_cubit.dart';
-import 'package:haji_market/src/feature/drawer/bloc/profit_cubit.dart' as profitCubit;
-import 'package:haji_market/src/feature/drawer/bloc/profit_state.dart' as profitState;
 import 'package:haji_market/src/feature/drawer/presentation/widgets/pre_order_dialog.dart';
 import 'package:haji_market/src/feature/product/provider/filter_provider.dart';
 import 'package:intl/intl.dart';
 import 'package:video_player/video_player.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -25,21 +22,21 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/route_manager.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/feature/basket/bloc/basket_cubit.dart';
-import 'package:haji_market/src/feature/drawer/bloc/review_cubit.dart' as reviewProductCubit;
-import 'package:haji_market/src/feature/drawer/bloc/review_state.dart' as reviewProductState;
+import 'package:haji_market/src/feature/drawer/bloc/review_cubit.dart' as review_product_cubit;
+import 'package:haji_market/src/feature/drawer/bloc/review_state.dart' as review_product_state;
 import 'package:haji_market/src/feature/product/data/model/product_model.dart';
 import 'package:haji_market/src/feature/drawer/presentation/widgets/product_imags_page.dart';
 import 'package:haji_market/src/feature/drawer/presentation/widgets/specifications_page.dart';
 import 'package:haji_market/src/feature/home/data/model/cat_model.dart';
 import 'package:share_plus/share_plus.dart';
-import '../../../home/presentation/widgets/product_watching_card.dart';
-import '../../../favorite/bloc/favorite_cubit.dart';
-import '../../../product/cubit/product_state.dart';
+import 'package:haji_market/src/feature/home/presentation/widgets/product_watching_card.dart';
+import 'package:haji_market/src/feature/favorite/bloc/favorite_cubit.dart';
+import 'package:haji_market/src/feature/product/cubit/product_state.dart';
 
 @RoutePage()
 class DetailCardProductPage extends StatefulWidget {
   final ProductModel product;
-  const DetailCardProductPage({required this.product, Key? key}) : super(key: key);
+  const DetailCardProductPage({required this.product, super.key});
 
   @override
   State<DetailCardProductPage> createState() => _DetailCardProductPageState();
@@ -124,7 +121,9 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
 
     compoundPrice = (widget.product.price!.toInt() - widget.product.compound!.toInt());
 
-    BlocProvider.of<reviewProductCubit.ReviewCubit>(context).reviews(widget.product.id.toString());
+    BlocProvider.of<review_product_cubit.ReviewCubit>(
+      context,
+    ).reviews(widget.product.id.toString());
     // BlocProvider.of<profitCubit.ProfitCubit>(context)
     //     .profit(widget.product.id.toString());
 
@@ -1712,10 +1711,10 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                   ),
 
                   // список отзывов из блока
-                  BlocConsumer<reviewProductCubit.ReviewCubit, reviewProductState.ReviewState>(
+                  BlocConsumer<review_product_cubit.ReviewCubit, review_product_state.ReviewState>(
                     listener: (_, __) {},
                     builder: (context, state) {
-                      if (state is reviewProductState.ErrorState) {
+                      if (state is review_product_state.ErrorState) {
                         return Padding(
                           padding: const EdgeInsets.only(top: 16),
                           child: Center(
@@ -1726,7 +1725,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                           ),
                         );
                       }
-                      if (state is reviewProductState.LoadingState) {
+                      if (state is review_product_state.LoadingState) {
                         return const Padding(
                           padding: EdgeInsets.only(top: 16),
                           child: Center(
@@ -1734,7 +1733,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                           ),
                         );
                       }
-                      if (state is reviewProductState.LoadedState) {
+                      if (state is review_product_state.LoadedState) {
                         final reviews = state.reviewModel;
                         return ListView.separated(
                           shrinkWrap: true,

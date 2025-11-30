@@ -11,11 +11,12 @@ class ProductCardSellerPage extends StatefulWidget {
   ProductSellerCubit cubit;
   BuildContext context;
 
-  ProductCardSellerPage(
-      {required this.product,
-      required this.context,
-      required this.cubit,
-      super.key});
+  ProductCardSellerPage({
+    required this.product,
+    required this.context,
+    required this.cubit,
+    super.key,
+  });
 
   @override
   State<ProductCardSellerPage> createState() => _ProductCardSellerPageState();
@@ -40,9 +41,9 @@ class _ProductCardSellerPageState extends State<ProductCardSellerPage> {
     //   isvisible = true;
     // }
     // inFavorite = widget.product.inFavorite ?? false;
-    compoundPrice = widget.product.price! -
-        ((widget.product.price! / 100) * (widget.product.compound ?? 1))
-            .toInt();
+    compoundPrice =
+        widget.product.price! -
+        ((widget.product.price! / 100) * (widget.product.compound ?? 1)).toInt();
 
     widget.product.bloc?.forEach((element) {
       optomCount += element.count ?? 0;
@@ -56,10 +57,7 @@ class _ProductCardSellerPageState extends State<ProductCardSellerPage> {
     return Container(
       height: 172,
       margin: const EdgeInsets.only(left: 16, bottom: 16, right: 16),
-      decoration: BoxDecoration(
-        color: Color(0xffF7F7F7),
-        borderRadius: BorderRadius.circular(16),
-      ),
+      decoration: BoxDecoration(color: Color(0xffF7F7F7), borderRadius: BorderRadius.circular(16)),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
@@ -78,8 +76,7 @@ class _ProductCardSellerPageState extends State<ProductCardSellerPage> {
                   child: Padding(
                     padding: const EdgeInsets.all(1.0),
                     child: ClipRRect(
-                      borderRadius: BorderRadius.circular(
-                          12), // Slightly smaller than container
+                      borderRadius: BorderRadius.circular(12), // Slightly smaller than container
                       child: Image.network(
                         widget.product.path != null
                             ? "https://lunamarket.ru/storage/${widget.product.path!.path}"
@@ -91,10 +88,9 @@ class _ProductCardSellerPageState extends State<ProductCardSellerPage> {
                             color: Colors.grey[100],
                             child: Center(
                               child: CircularProgressIndicator(
-                                value: loadingProgress.expectedTotalBytes !=
-                                        null
+                                value: loadingProgress.expectedTotalBytes != null
                                     ? loadingProgress.cumulativeBytesLoaded /
-                                        loadingProgress.expectedTotalBytes!
+                                          loadingProgress.expectedTotalBytes!
                                     : null,
                                 strokeWidth: 2,
                               ),
@@ -103,16 +99,14 @@ class _ProductCardSellerPageState extends State<ProductCardSellerPage> {
                         },
                         errorBuilder: (context, error, stackTrace) => Container(
                           color: Colors.grey[100],
-                          child: const Icon(Icons.broken_image,
-                              color: Colors.grey),
+                          child: const Icon(Icons.broken_image, color: Colors.grey),
                         ),
                       ),
                     ),
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(
-                      left: 4, right: 4, bottom: 8, top: 8),
+                  padding: const EdgeInsets.only(left: 4, right: 4, bottom: 8, top: 8),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -120,46 +114,40 @@ class _ProductCardSellerPageState extends State<ProductCardSellerPage> {
                         width: 52,
                         height: 22,
                         decoration: BoxDecoration(
-                            color: AppColors.kYellowDark,
-                            borderRadius: BorderRadius.circular(4)),
-                        child: Text(widget.product.fulfillment ?? 'Доставка',
-                            textAlign: TextAlign.center,
-                            style: AppTextStyles.statisticsTextStyle),
+                          color: AppColors.kYellowDark,
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                        child: Text(
+                          widget.product.fulfillment ?? 'Доставка',
+                          textAlign: TextAlign.center,
+                          style: AppTextStyles.statisticsTextStyle,
+                        ),
                       ),
-                      const SizedBox(
-                        height: 4,
-                      ),
+                      const SizedBox(height: 4),
                       widget.product.point != 0
                           ? Container(
                               width: 52,
                               height: 22,
                               alignment: Alignment.center,
                               decoration: BoxDecoration(
-                                  gradient: LinearGradient(
-                                    begin: Alignment(-0.6,
-                                        -1), // приблизительное направление 128.49°
-                                    end: Alignment(1, 1),
-                                    colors: [
-                                      Color(0xFF7D2DFF),
-                                      Color(0xFF41DDFF),
-                                    ],
-                                    stops: [
-                                      0.2685,
-                                      1.0
-                                    ], // соответствуют 26.85% и 100%
-                                  ),
-                                  borderRadius: BorderRadius.circular(4)),
+                                gradient: LinearGradient(
+                                  begin: Alignment(-0.6, -1), // приблизительное направление 128.49°
+                                  end: Alignment(1, 1),
+                                  colors: [Color(0xFF7D2DFF), Color(0xFF41DDFF)],
+                                  stops: [0.2685, 1.0], // соответствуют 26.85% и 100%
+                                ),
+                                borderRadius: BorderRadius.circular(4),
+                              ),
                               child: Text(
                                 '${widget.product.point ?? 0}% Б',
                                 textAlign: TextAlign.center,
-                                style: AppTextStyles.statisticsTextStyle
-                                    .copyWith(color: AppColors.kWhite),
+                                style: AppTextStyles.statisticsTextStyle.copyWith(
+                                  color: AppColors.kWhite,
+                                ),
                               ),
                             )
                           : const SizedBox(),
-                      SizedBox(
-                        height: widget.product.point != 0 ? 22 : 0,
-                      ),
+                      SizedBox(height: widget.product.point != 0 ? 22 : 0),
                     ],
                   ),
                 ),
@@ -178,20 +166,14 @@ class _ProductCardSellerPageState extends State<ProductCardSellerPage> {
                     children: [
                       Text(
                         '${widget.product.catName}',
-                        style: AppTextStyles.size13Weight400
-                            .copyWith(color: Color(0xff8E8E93)),
+                        style: AppTextStyles.size13Weight400.copyWith(color: Color(0xff8E8E93)),
                       ),
                       InkWell(
                         onTap: () {
-                          showProductOptions(
-                              widget.context, widget.product, widget.cubit);
+                          showProductOptions(widget.context, widget.product, widget.cubit);
                         },
-                        child: Icon(
-                          Icons.more_vert,
-                          color: Color(0xff8E8E93),
-                          size: 20,
-                        ),
-                      )
+                        child: Icon(Icons.more_vert, color: Color(0xff8E8E93), size: 20),
+                      ),
                     ],
                   ),
                 ),
@@ -209,9 +191,7 @@ class _ProductCardSellerPageState extends State<ProductCardSellerPage> {
                     maxLines: 2,
                   ),
                 ),
-                const SizedBox(
-                  height: 8,
-                ),
+                const SizedBox(height: 8),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -220,12 +200,14 @@ class _ProductCardSellerPageState extends State<ProductCardSellerPage> {
                       height: 26,
                       padding: EdgeInsets.all(4),
                       decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(4),
-                          color: AppColors.mainPurpleColor.withOpacity(0.20)),
+                        borderRadius: BorderRadius.circular(4),
+                        color: AppColors.mainPurpleColor.withOpacity(0.20),
+                      ),
                       child: Text(
                         'Осталось: ${widget.product.count} шт',
-                        style: AppTextStyles.size13Weight400
-                            .copyWith(color: AppColors.mainPurpleColor),
+                        style: AppTextStyles.size13Weight400.copyWith(
+                          color: AppColors.mainPurpleColor,
+                        ),
                       ),
                     ),
                     const SizedBox(height: 6),
@@ -233,19 +215,19 @@ class _ProductCardSellerPageState extends State<ProductCardSellerPage> {
                       height: 26,
                       padding: EdgeInsets.all(4),
                       decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(4),
-                          color: AppColors.mainPurpleColor.withOpacity(0.20)),
+                        borderRadius: BorderRadius.circular(4),
+                        color: AppColors.mainPurpleColor.withOpacity(0.20),
+                      ),
                       child: Text(
                         'Вознаграждение блогера: ${widget.product.pointBlogger} %',
-                        style: AppTextStyles.size13Weight400
-                            .copyWith(color: AppColors.mainPurpleColor),
+                        style: AppTextStyles.size13Weight400.copyWith(
+                          color: AppColors.mainPurpleColor,
+                        ),
                       ),
                     ),
                   ],
                 ),
-                const SizedBox(
-                  height: 8,
-                ),
+                const SizedBox(height: 8),
                 compoundPrice != 0
                     ? Row(
                         mainAxisAlignment: MainAxisAlignment.start,
@@ -270,7 +252,7 @@ class _ProductCardSellerPageState extends State<ProductCardSellerPage> {
                       ),
               ],
             ),
-          )
+          ),
         ],
       ),
     );

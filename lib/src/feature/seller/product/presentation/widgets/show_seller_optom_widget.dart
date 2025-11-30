@@ -5,8 +5,7 @@ import 'package:haji_market/src/feature/home/data/model/cat_model.dart';
 import 'package:haji_market/src/feature/seller/product/data/DTO/optom_price_seller_dto.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
-void showSellerOptomOptions(
-    BuildContext context, String title, Function callback) {
+void showSellerOptomOptions(BuildContext context, String title, Function callback) {
   int selectedCategory = -1;
   int price = 0;
 
@@ -37,13 +36,7 @@ void showSellerOptomOptions(
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        title,
-                        style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 16,
-                        ),
-                      ),
+                      Text(title, style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16)),
                       InkWell(
                         onTap: () => Navigator.of(context).pop(),
                         child: const Icon(Icons.close),
@@ -65,9 +58,7 @@ void showSellerOptomOptions(
 
                       if (value.isEmpty) {
                         price = 0;
-                        setState(
-                          () {},
-                        );
+                        setState(() {});
                         return;
                       }
                       int priceCurrent = price;
@@ -76,9 +67,7 @@ void showSellerOptomOptions(
                       }
 
                       price = int.parse(value) * priceCurrent;
-                      setState(
-                        () {},
-                      );
+                      setState(() {});
                       print(price);
                     },
                   ),
@@ -94,9 +83,7 @@ void showSellerOptomOptions(
 
                       if (value.isEmpty) {
                         price = 0;
-                        setState(
-                          () {},
-                        );
+                        setState(() {});
                         return;
                       }
                       int priceCurrent = price;
@@ -105,9 +92,7 @@ void showSellerOptomOptions(
                       }
 
                       price = int.parse(value) * priceCurrent;
-                      setState(
-                        () {},
-                      );
+                      setState(() {});
                       print(price);
                     },
                   ),
@@ -131,32 +116,31 @@ void showSellerOptomOptions(
 
                   // Кнопка "Выбрать"
                   Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 16, vertical: 16),
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
                     child: SizedBox(
                       width: double.infinity,
                       height: 48,
                       child: ElevatedButton(
                         onPressed: () {
                           final data = OptomPriceSellerDto(
-                              price: optomPriceController.text,
-                              count: optomCountController.text,
-                              total: optomTotalController.text);
+                            price: optomPriceController.text,
+                            count: optomCountController.text,
+                            total: optomTotalController.text,
+                          );
                           callback.call(data);
                           Navigator.pop(context, selectedCategory);
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppColors.mainPurpleColor,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                         ),
                         child: const Text(
                           "Сохранить",
                           style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w600,
-                              fontSize: 16),
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 16,
+                          ),
                         ),
                       ),
                     ),
@@ -218,61 +202,60 @@ class _FieldsProductRequestState extends State<FieldsProductRequest> {
               Text(
                 widget.titleText,
                 style: const TextStyle(
-                    fontWeight: FontWeight.w400,
-                    fontSize: 12,
-                    color: AppColors.kGray900),
+                  fontWeight: FontWeight.w400,
+                  fontSize: 12,
+                  color: AppColors.kGray900,
+                ),
               ),
               widget.star == true
                   ? const Text(
                       '*',
                       style: TextStyle(
-                          fontWeight: FontWeight.w400,
-                          fontSize: 12,
-                          color: Colors.red),
+                        fontWeight: FontWeight.w400,
+                        fontSize: 12,
+                        color: Colors.red,
+                      ),
                     )
-                  : Container()
+                  : Container(),
             ],
           ),
           const SizedBox(height: 4),
           Container(
             decoration: BoxDecoration(
-                color: AppColors.kGray2,
-                borderRadius: BorderRadius.circular(10)),
+              color: AppColors.kGray2,
+              borderRadius: BorderRadius.circular(10),
+            ),
             child: Padding(
               padding: const EdgeInsets.only(left: 14.0),
               child: TextField(
                 controller: widget.controller,
-                readOnly:
-                    (widget.hintColor == false || widget.hintColor == null)
-                        ? widget.readOnly
-                        : true,
+                readOnly: (widget.hintColor == false || widget.hintColor == null)
+                    ? widget.readOnly
+                    : true,
                 keyboardType: (widget.maxLines != null && widget.maxLines! > 1)
                     ? TextInputType.multiline
-                    : ((widget.textInputNumber == false ||
-                            widget.textInputNumber == null)
-                        ? TextInputType.text
-                        : const TextInputType.numberWithOptions(
-                            signed: true, decimal: true)),
+                    : ((widget.textInputNumber == false || widget.textInputNumber == null)
+                          ? TextInputType.text
+                          : const TextInputType.numberWithOptions(signed: true, decimal: true)),
                 maxLines: widget.maxLines ?? 1,
                 onChanged: widget.onChanged, // добавили
                 decoration: InputDecoration(
                   border: InputBorder.none,
                   hintText: widget.hintText,
                   hintStyle: TextStyle(
-                      color:
-                          (widget.hintColor == null || widget.hintColor != true)
-                              ? const Color.fromRGBO(194, 197, 200, 1)
-                              : Colors.black,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w400),
+                    color: (widget.hintColor == null || widget.hintColor != true)
+                        ? const Color.fromRGBO(194, 197, 200, 1)
+                        : Colors.black,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w400,
+                  ),
                   enabledBorder: const UnderlineInputBorder(
                     borderSide: BorderSide(color: Colors.white),
                   ),
                   suffixIcon: widget.arrow == true
                       ? IconButton(
                           onPressed: widget.onPressed,
-                          icon: SvgPicture.asset('assets/icons/back_menu.svg',
-                              color: Colors.grey),
+                          icon: SvgPicture.asset('assets/icons/back_menu.svg', color: Colors.grey),
                         )
                       : const SizedBox(),
                 ),

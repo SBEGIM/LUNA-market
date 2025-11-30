@@ -8,8 +8,7 @@ const baseUrl = 'https://lunamarket.ru/api';
 class CdekOfficeRepository {
   final CdekOfficeApi _cdekOfficeApi = CdekOfficeApi();
 
-  Future<List<CdekOfficeOldModel>> cdekOffice(int cc) =>
-      _cdekOfficeApi.cdekOffice(cc);
+  Future<List<CdekOfficeOldModel>> cdekOffice(int cc) => _cdekOfficeApi.cdekOffice(cc);
 }
 
 class CdekOfficeApi {
@@ -19,13 +18,12 @@ class CdekOfficeApi {
     final String? token = _box.read('token');
 
     final response = await http.get(
-        Uri.parse('$baseUrl/basket/cdek/office?cc=$cc'),
-        headers: {"Authorization": "Bearer $token"});
+      Uri.parse('$baseUrl/basket/cdek/office?cc=$cc'),
+      headers: {"Authorization": "Bearer $token"},
+    );
 
     final data = jsonDecode(response.body);
 
-    return (data['data'] as List)
-        .map((e) => CdekOfficeOldModel.fromJson(e))
-        .toList();
+    return (data['data'] as List).map((e) => CdekOfficeOldModel.fromJson(e)).toList();
   }
 }

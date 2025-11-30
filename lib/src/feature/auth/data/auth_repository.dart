@@ -3,7 +3,6 @@ import 'package:haji_market/src/core/utils/talker_logger_util.dart';
 // import 'package:haji_market/src/features/app/service/notification_service.dart';
 import 'package:haji_market/src/feature/auth/data/auth_remote_ds.dart';
 import 'package:haji_market/src/feature/auth/database/auth_dao.dart';
-import 'package:haji_market/src/feature/auth/data/models/app_version_dto.dart';
 import 'package:haji_market/src/feature/auth/data/models/common_lists_dto.dart';
 import 'package:haji_market/src/feature/auth/data/models/request/user_payload.dart';
 import 'package:haji_market/src/feature/auth/data/models/user_dto.dart';
@@ -13,21 +12,14 @@ abstract interface class IAuthRepository {
 
   UserDTO? get user;
 
-  Future<AppVersionDTO> getForceUpdateVersion();
-
   Future<List<String>?> sendDeviceToken();
 
   Future<void> clearUser();
 
   // Forgot password API's
-  Future<int> forgotPasswordSmsSend({
-    required String phone,
-  });
+  Future<int> forgotPasswordSmsSend({required String phone});
 
-  Future<String> forgotPasswordSmsCheck({
-    required String phone,
-    required String code,
-  });
+  Future<String> forgotPasswordSmsCheck({required String phone, required String code});
 
   Future forgotPasswordChangePassword({
     required String passwordToken,
@@ -36,31 +28,21 @@ abstract interface class IAuthRepository {
   });
 
   /// Auth
-  Future<UserDTO> login({
-    required String phone,
-    required String password,
-  });
+  Future<UserDTO> login({required String phone, required String password});
 
   Future<CommonListsDTO> getRegisterFormOptions();
 
-  Future<int> registerSmsSend({
-    required UserPayload payload,
-  });
+  Future<int> registerSmsSend({required UserPayload payload});
 
-  Future<UserDTO> registerSmsCheck({
-    required String phone,
-    required String code,
-  });
+  Future<UserDTO> registerSmsCheck({required String phone, required String code});
 
   Future<String> generateCentrifugoToken();
 }
 
 class AuthRepositoryImpl implements IAuthRepository {
-  const AuthRepositoryImpl({
-    required IAuthRemoteDS remoteDS,
-    required IAuthDao authDao,
-  })  : _remoteDS = remoteDS,
-        _authDao = authDao;
+  const AuthRepositoryImpl({required IAuthRemoteDS remoteDS, required IAuthDao authDao})
+    : _remoteDS = remoteDS,
+      _authDao = authDao;
   final IAuthRemoteDS _remoteDS;
   final IAuthDao _authDao;
 
@@ -72,9 +54,7 @@ class AuthRepositoryImpl implements IAuthRepository {
     try {
       final userStr = _authDao.user.value;
       if (userStr != null) {
-        return UserDTO.fromJson(
-          jsonDecode(userStr) as Map<String, dynamic>,
-        );
+        return UserDTO.fromJson(jsonDecode(userStr) as Map<String, dynamic>);
       } else {
         return null;
       }
@@ -87,15 +67,6 @@ class AuthRepositoryImpl implements IAuthRepository {
   Future<void> clearUser() async {
     try {
       await _authDao.user.remove();
-    } catch (e) {
-      rethrow;
-    }
-  }
-
-  @override
-  Future<AppVersionDTO> getForceUpdateVersion() async {
-    try {
-      return await _remoteDS.getForceUpdateVersion();
     } catch (e) {
       rethrow;
     }
@@ -119,10 +90,8 @@ class AuthRepositoryImpl implements IAuthRepository {
       final Set<String> localSet = (_authDao.pushTopics.value ?? []).toSet();
 
       // Определяем темы для отписки и подписки
-      final List<String> topicsToUnsubscribe =
-          localSet.difference(remoteSet).toList();
-      final List<String> topicsToSubscribe =
-          remoteSet.difference(localSet).toList();
+      final List<String> topicsToUnsubscribe = localSet.difference(remoteSet).toList();
+      final List<String> topicsToSubscribe = remoteSet.difference(localSet).toList();
       TalkerLoggerUtil.talker.info('topicsToUnsubscribe $topicsToUnsubscribe');
       TalkerLoggerUtil.talker.info('topicsToSubscribe $topicsToSubscribe');
 
@@ -146,15 +115,9 @@ class AuthRepositoryImpl implements IAuthRepository {
   }
 
   @override
-  Future<UserDTO> login({
-    required String phone,
-    required String password,
-  }) async {
+  Future<UserDTO> login({required String phone, required String password}) async {
     try {
-      final user = await _remoteDS.login(
-        phone: phone,
-        password: password,
-      );
+      final user = await _remoteDS.login(phone: phone, password: password);
 
       await _authDao.user.setValue(jsonEncode(user.toJson()));
 
@@ -165,9 +128,7 @@ class AuthRepositoryImpl implements IAuthRepository {
   }
 
   @override
-  Future<int> forgotPasswordSmsSend({
-    required String phone,
-  }) async {
+  Future<int> forgotPasswordSmsSend({required String phone}) async {
     try {
       return await _remoteDS.forgotPasswordSmsSend(phone: phone);
     } catch (e) {
@@ -176,15 +137,9 @@ class AuthRepositoryImpl implements IAuthRepository {
   }
 
   @override
-  Future<String> forgotPasswordSmsCheck({
-    required String phone,
-    required String code,
-  }) async {
+  Future<String> forgotPasswordSmsCheck({required String phone, required String code}) async {
     try {
-      return await _remoteDS.forgotPasswordSmsCheck(
-        phone: phone,
-        code: code,
-      );
+      return await _remoteDS.forgotPasswordSmsCheck(phone: phone, code: code);
     } catch (e) {
       rethrow;
     }
@@ -217,9 +172,7 @@ class AuthRepositoryImpl implements IAuthRepository {
   }
 
   @override
-  Future<int> registerSmsSend({
-    required UserPayload payload,
-  }) async {
+  Future<int> registerSmsSend({required UserPayload payload}) async {
     try {
       return await _remoteDS.registerSmsSend(payload: payload);
     } catch (e) {
@@ -228,15 +181,9 @@ class AuthRepositoryImpl implements IAuthRepository {
   }
 
   @override
-  Future<UserDTO> registerSmsCheck({
-    required String phone,
-    required String code,
-  }) async {
+  Future<UserDTO> registerSmsCheck({required String phone, required String code}) async {
     try {
-      final user = await _remoteDS.registerSmsCheck(
-        phone: phone,
-        code: code,
-      );
+      final user = await _remoteDS.registerSmsCheck(phone: phone, code: code);
 
       await _authDao.user.setValue(jsonEncode(user.toJson()));
 

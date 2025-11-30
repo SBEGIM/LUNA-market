@@ -17,27 +17,19 @@ class ForceUpdatePage extends StatelessWidget {
     this.stackTrace,
   });
 
-  factory ForceUpdatePage.forceUpdate({
-    required Future<void> Function() onTap,
-  }) =>
-      ForceUpdatePage(
-        title: Localization.currentLocalizations.updateTheApplication,
-        subtitle: Localization
-            .currentLocalizations.theCurrentVersionTheApplicationInvalid,
-        icon: Assets.images.aboutImage.path,
-        onTap: onTap,
-      );
+  factory ForceUpdatePage.forceUpdate({required Future<void> Function() onTap}) => ForceUpdatePage(
+    title: Localization.currentLocalizations.updateTheApplication,
+    subtitle: Localization.currentLocalizations.theCurrentVersionTheApplicationInvalid,
+    icon: Assets.images.aboutImage.path,
+    onTap: onTap,
+  );
 
-  factory ForceUpdatePage.noInternet({
-    required Future<void> Function() onTap,
-  }) =>
-      ForceUpdatePage(
-        title: Localization.currentLocalizations.noInternetConnection,
-        subtitle: Localization
-            .currentLocalizations.checkConnectionYourWiFSonyaPhoneTryAgain,
-        icon: Assets.images.aboutImage.path,
-        onTap: onTap,
-      );
+  factory ForceUpdatePage.noInternet({required Future<void> Function() onTap}) => ForceUpdatePage(
+    title: Localization.currentLocalizations.noInternetConnection,
+    subtitle: Localization.currentLocalizations.checkConnectionYourWiFSonyaPhoneTryAgain,
+    icon: Assets.images.aboutImage.path,
+    onTap: onTap,
+  );
 
   factory ForceUpdatePage.noAvailable({
     required Future<void> Function() onTap,
@@ -45,26 +37,19 @@ class ForceUpdatePage extends StatelessWidget {
     StackTrace? stackTrace,
     String? title,
     String? subtitle,
-  }) =>
-      ForceUpdatePage(
-        title: title ??
-            Localization
-                .currentLocalizations.theServiceIsTemporarilyUnavailable,
-        subtitle: subtitle ??
-            Localization.currentLocalizations.thisProcessWorksPleaseAgainLater,
-        icon: Assets.images.aboutImage.path,
-        onTap: onTap,
-        error: error,
-        stackTrace: stackTrace,
-      );
+  }) => ForceUpdatePage(
+    title: title ?? Localization.currentLocalizations.theServiceIsTemporarilyUnavailable,
+    subtitle: subtitle ?? Localization.currentLocalizations.thisProcessWorksPleaseAgainLater,
+    icon: Assets.images.aboutImage.path,
+    onTap: onTap,
+    error: error,
+    stackTrace: stackTrace,
+  );
 
-  factory ForceUpdatePage.lowInternetConnection({
-    required Future<void> Function() onTap,
-  }) =>
+  factory ForceUpdatePage.lowInternetConnection({required Future<void> Function() onTap}) =>
       ForceUpdatePage(
         title: Localization.currentLocalizations.weakInternetConnection,
-        subtitle: Localization
-            .currentLocalizations.checkYourInternetConnectionTryAgainLater,
+        subtitle: Localization.currentLocalizations.checkYourInternetConnectionTryAgainLater,
         icon: Assets.images.aboutImage.path,
         onTap: onTap,
       );
@@ -101,16 +86,13 @@ class ForceUpdatePage extends StatelessWidget {
                     Text(
                       title,
                       textAlign: TextAlign.center,
-                      style: AppTextStyles.title24Semibold.copyWith(
-                        color: Colors.white,
-                      ),
+                      style: AppTextStyles.title24Semibold.copyWith(color: Colors.white),
                     ),
                     const Gap(16),
                     Text(
                       subtitle,
                       textAlign: TextAlign.center,
-                      style: AppTextStyles.title18w500
-                          .copyWith(color: Colors.white),
+                      style: AppTextStyles.title18w500.copyWith(color: Colors.white),
                     ),
                   ],
                 ),
@@ -122,14 +104,12 @@ class ForceUpdatePage extends StatelessWidget {
             Text('$error'),
             Text('$stackTrace'),
           ] else
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 70),
-              child: Image.asset(icon),
-            ),
+            Padding(padding: const EdgeInsets.symmetric(horizontal: 70), child: Image.asset(icon)),
           const Spacer(),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16).copyWith(
-                bottom: MediaQuery.viewPaddingOf(context).bottom + 20),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 16,
+            ).copyWith(bottom: MediaQuery.viewPaddingOf(context).bottom + 20),
             child: CustomButton(
               onPressed: onTap,
               style: null,

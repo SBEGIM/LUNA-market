@@ -17,20 +17,17 @@ class SmsSellerCubit extends Cubit<SmsSellerState> {
       emit(LoadingState());
       final data = await registerRepository.smsSend(phone);
       if (data == 200) {
-        Get.snackbar('Успешно!', 'Код отправлен на ваш номер!',
-            backgroundColor: Colors.blueAccent);
+        Get.snackbar('Успешно!', 'Код отправлен на ваш номер!', backgroundColor: Colors.blueAccent);
         emit(LoadedState());
       }
       if (data == 400) {
         emit(InitState());
-        Get.snackbar('Ошибка запроса!', 'Номер занят',
-            backgroundColor: Colors.redAccent);
+        Get.snackbar('Ошибка запроса!', 'Номер занят', backgroundColor: Colors.redAccent);
       }
 
       if (data == 500) {
         emit(InitState());
-        Get.snackbar('500', 'Ошибка сервера',
-            backgroundColor: Colors.redAccent);
+        Get.snackbar('500', 'Ошибка сервера', backgroundColor: Colors.redAccent);
       }
     } catch (e) {
       log(e.toString());
@@ -43,20 +40,17 @@ class SmsSellerCubit extends Cubit<SmsSellerState> {
       emit(LoadingState());
       final data = await registerRepository.smsSend(phone);
       if (data == 200) {
-        Get.snackbar('Успешно!', 'Код отправлен на ваш номер!',
-            backgroundColor: Colors.blueAccent);
+        Get.snackbar('Успешно!', 'Код отправлен на ваш номер!', backgroundColor: Colors.blueAccent);
         emit(InitState());
       }
       if (data == 400) {
         emit(InitState());
-        Get.snackbar('Ошибка запроса!', 'Номер занят',
-            backgroundColor: Colors.redAccent);
+        Get.snackbar('Ошибка запроса!', 'Номер занят', backgroundColor: Colors.redAccent);
       }
 
       if (data == 500) {
         emit(InitState());
-        Get.snackbar('500', 'Ошибка сервера',
-            backgroundColor: Colors.redAccent);
+        Get.snackbar('500', 'Ошибка сервера', backgroundColor: Colors.redAccent);
       }
     } catch (e) {
       log(e.toString());
@@ -74,14 +68,12 @@ class SmsSellerCubit extends Cubit<SmsSellerState> {
       }
       if (data == 400) {
         emit(InitState());
-        Get.snackbar('Ошибка запроса!', 'Неверный код',
-            backgroundColor: Colors.redAccent);
+        Get.snackbar('Ошибка запроса!', 'Неверный код', backgroundColor: Colors.redAccent);
       }
 
       if (data == 500) {
         emit(InitState());
-        Get.snackbar('500', 'Ошибка сервера',
-            backgroundColor: Colors.redAccent);
+        Get.snackbar('500', 'Ошибка сервера', backgroundColor: Colors.redAccent);
       }
     } catch (e) {
       log(e.toString());
@@ -89,19 +81,12 @@ class SmsSellerCubit extends Cubit<SmsSellerState> {
     }
   }
 
-  Future<void> resetSend(
-    BuildContext context,
-    String phone,
-  ) async {
+  Future<void> resetSend(BuildContext context, String phone) async {
     try {
       emit(LoadingState());
       final data = await registerRepository.resetSend(phone);
       if (data == 200) {
-        AppSnackBar.show(
-          context,
-          'Код отправлен на ваш номер!',
-          type: AppSnackType.success,
-        );
+        AppSnackBar.show(context, 'Код отправлен на ваш номер!', type: AppSnackType.success);
         emit(LoadedState());
         // Get.to(PasswordResetPage(phone: phone));
       }
@@ -117,8 +102,7 @@ class SmsSellerCubit extends Cubit<SmsSellerState> {
 
       if (data == 500) {
         emit(InitState());
-        Get.snackbar('500', 'Ошибка сервера',
-            backgroundColor: Colors.redAccent);
+        Get.snackbar('500', 'Ошибка сервера', backgroundColor: Colors.redAccent);
       }
     } catch (e) {
       log(e.toString());
@@ -136,14 +120,12 @@ class SmsSellerCubit extends Cubit<SmsSellerState> {
       }
       if (data == 400) {
         emit(InitState());
-        Get.snackbar('Ошибка запроса!', 'Неверный код',
-            backgroundColor: Colors.redAccent);
+        Get.snackbar('Ошибка запроса!', 'Неверный код', backgroundColor: Colors.redAccent);
       }
 
       if (data == 500) {
         emit(InitState());
-        Get.snackbar('500', 'Ошибка сервера',
-            backgroundColor: Colors.redAccent);
+        Get.snackbar('500', 'Ошибка сервера', backgroundColor: Colors.redAccent);
       }
     } catch (e) {
       log(e.toString());
@@ -161,14 +143,12 @@ class SmsSellerCubit extends Cubit<SmsSellerState> {
       }
       if (data == 400) {
         emit(InitState());
-        Get.snackbar('Ошибка запроса!', 'Неверный код',
-            backgroundColor: Colors.redAccent);
+        Get.snackbar('Ошибка запроса!', 'Неверный код', backgroundColor: Colors.redAccent);
       }
 
       if (data == 500) {
         emit(InitState());
-        Get.snackbar('500', 'Ошибка сервера',
-            backgroundColor: Colors.redAccent);
+        Get.snackbar('500', 'Ошибка сервера', backgroundColor: Colors.redAccent);
       }
     } catch (e) {
       log(e.toString());

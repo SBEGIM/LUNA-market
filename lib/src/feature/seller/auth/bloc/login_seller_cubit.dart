@@ -11,8 +11,7 @@ class LoginSellerCubit extends Cubit<LoginSellerState> {
 
   LoginSellerCubit({required this.loginAdminRepository}) : super(InitState());
 
-  Future<void> login(
-      BuildContext context, String phone, String password) async {
+  Future<void> login(BuildContext context, String phone, String password) async {
     try {
       emit(LoadingState());
       final data = await loginAdminRepository.login(phone, password);
@@ -24,8 +23,7 @@ class LoginSellerCubit extends Cubit<LoginSellerState> {
       if (data == 400) {
         emit(InitState());
 
-        AppSnackBar.show(context, 'Неверный телефон или пароль',
-            type: AppSnackType.error);
+        AppSnackBar.show(context, 'Неверный телефон или пароль', type: AppSnackType.error);
       }
       if (data == 500) {
         emit(InitState());

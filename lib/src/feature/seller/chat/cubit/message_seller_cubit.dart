@@ -19,8 +19,11 @@ class MessageSellerCubit extends Cubit<MessageSellerState> {
     try {
       _page = 1;
       emit(LoadingState());
-      final List<MessageSellerDTO> data =
-          await messageRepository.messageList(_page, chatId, userId);
+      final List<MessageSellerDTO> data = await messageRepository.messageList(
+        _page,
+        chatId,
+        userId,
+      );
       _message = data;
       emit(LoadedState(data));
     } catch (e) {
@@ -35,8 +38,11 @@ class MessageSellerCubit extends Cubit<MessageSellerState> {
       //  print(_page++);
       // emit(LoadingState());
 
-      final List<MessageSellerDTO> data =
-          await messageRepository.messageList(_page, chatId, userId);
+      final List<MessageSellerDTO> data = await messageRepository.messageList(
+        _page,
+        chatId,
+        userId,
+      );
       if (data.isEmpty) {
         _page--;
       }

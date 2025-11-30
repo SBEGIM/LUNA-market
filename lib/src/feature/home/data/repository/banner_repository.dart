@@ -7,9 +7,7 @@ abstract interface class IBannersRepository {
 }
 
 class BannersRepositoryImpl implements IBannersRepository {
-  const BannersRepositoryImpl({
-    required IBannersRemoteDS remoteDS,
-  }) : _remoteDS = remoteDS;
+  const BannersRepositoryImpl({required IBannersRemoteDS remoteDS}) : _remoteDS = remoteDS;
 
   final IBannersRemoteDS _remoteDS;
 

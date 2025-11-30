@@ -17,11 +17,11 @@ class SubApi {
   sub(bloggerID) async {
     final String? token = _box.read('token');
 
-    final response = await http.post(Uri.parse('$baseUrl/user/subs'), headers: {
-      "Authorization": "Bearer $token"
-    }, body: {
-      "blogger_id": bloggerID.toString(),
-    });
+    final response = await http.post(
+      Uri.parse('$baseUrl/user/subs'),
+      headers: {"Authorization": "Bearer $token"},
+      body: {"blogger_id": bloggerID.toString()},
+    );
 
     return response.statusCode;
   }
@@ -29,11 +29,11 @@ class SubApi {
   subSeller(shopId) async {
     final String? token = _box.read('token');
 
-    final response = await http.post(Uri.parse('$baseUrl/user/subs'), headers: {
-      "Authorization": "Bearer $token"
-    }, body: {
-      "seller_id": shopId.toString(),
-    });
+    final response = await http.post(
+      Uri.parse('$baseUrl/user/subs'),
+      headers: {"Authorization": "Bearer $token"},
+      body: {"seller_id": shopId.toString()},
+    );
 
     return response.statusCode;
   }

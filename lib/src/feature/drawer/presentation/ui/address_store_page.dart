@@ -25,8 +25,7 @@ class _AddressStorePageState extends State<AddressStorePage> {
   TextEditingController apartmentController = TextEditingController();
   TextEditingController intercomController = TextEditingController();
   TextEditingController commentsCourierController = TextEditingController();
-  TextEditingController phoneController =
-      MaskedTextController(mask: '+7(000)-000-00-00');
+  TextEditingController phoneController = MaskedTextController(mask: '+7(000)-000-00-00');
 
   @override
   void initState() {
@@ -87,18 +86,13 @@ class _AddressStorePageState extends State<AddressStorePage> {
     final comments = commentsCourierController.text;
 
     setState(() {
-      fieldErrors['phone'] =
-          phone.length != 11 ? 'Введите корректный номер телефона' : null;
+      fieldErrors['phone'] = phone.length != 11 ? 'Введите корректный номер телефона' : null;
       fieldErrors['street'] = street.isEmpty ? 'Укажите улицу' : null;
-      fieldErrors['entrance'] =
-          entrance.isEmpty ? 'Укажите номер подъезда' : null;
+      fieldErrors['entrance'] = entrance.isEmpty ? 'Укажите номер подъезда' : null;
       fieldErrors['floor'] = floor.isEmpty ? 'Укажите на каком этаже' : null;
-      fieldErrors['apartment'] =
-          apartment.isEmpty ? 'Укажите номер квартиры' : null;
-      fieldErrors['intercom'] =
-          intercom.isEmpty ? 'Укажите номер домофона' : null;
-      fieldErrors['comments'] =
-          comments.isEmpty ? 'Напишите комментарии курьеру' : null;
+      fieldErrors['apartment'] = apartment.isEmpty ? 'Укажите номер квартиры' : null;
+      fieldErrors['intercom'] = intercom.isEmpty ? 'Укажите номер домофона' : null;
+      fieldErrors['comments'] = comments.isEmpty ? 'Напишите комментарии курьеру' : null;
     });
   }
 
@@ -121,10 +115,7 @@ class _AddressStorePageState extends State<AddressStorePage> {
         appBar: AppBar(
           backgroundColor: AppColors.kWhite,
           surfaceTintColor: AppColors.kWhite,
-          title: Text(
-            'Добавить новый адрес',
-            style: AppTextStyles.size18Weight600,
-          ),
+          title: Text('Добавить новый адрес', style: AppTextStyles.size18Weight600),
         ),
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16),
@@ -136,25 +127,30 @@ class _AddressStorePageState extends State<AddressStorePage> {
                 label: 'Укажите улица',
                 errorText: fieldErrors['street'],
               ),
-              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                Flexible(
-                  child: _buildFormField(
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Flexible(
+                    child: _buildFormField(
                       controller: entranceController,
                       text: 'Подъезд',
                       label: 'Номер подъезда',
                       errorText: fieldErrors['entrance'],
-                      keyboardType: TextInputType.number),
-                ),
-                SizedBox(width: 12),
-                Flexible(
-                  child: _buildFormField(
+                      keyboardType: TextInputType.number,
+                    ),
+                  ),
+                  SizedBox(width: 12),
+                  Flexible(
+                    child: _buildFormField(
                       controller: floorController,
                       text: 'Этаж',
                       label: 'На каком этаже',
                       errorText: fieldErrors['floor'],
-                      keyboardType: TextInputType.number),
-                ),
-              ]),
+                      keyboardType: TextInputType.number,
+                    ),
+                  ),
+                ],
+              ),
               Row(
                 children: [
                   Flexible(
@@ -200,60 +196,62 @@ class _AddressStorePageState extends State<AddressStorePage> {
         bottomNavigationBar: Container(
           color: Colors.transparent,
           child: SafeArea(
-              bottom: true,
-              child: InkWell(
-                onTap: () async {
-                  _validateFields();
-                  if (!_ensureValid()) return;
-                  final statusCode =
-                      await BlocProvider.of<AddressCubit>(context).store(
-                          context,
-                          GetStorage().read('country'),
-                          GetStorage().read('city'),
-                          streetController.text,
-                          entranceController.text,
-                          floorController.text,
-                          apartmentController.text,
-                          intercomController.text,
-                          commentsCourierController.text,
-                          phoneController.text);
+            bottom: true,
+            child: InkWell(
+              onTap: () async {
+                _validateFields();
+                if (!_ensureValid()) return;
+                final statusCode = await BlocProvider.of<AddressCubit>(context).store(
+                  context,
+                  GetStorage().read('country'),
+                  GetStorage().read('city'),
+                  streetController.text,
+                  entranceController.text,
+                  floorController.text,
+                  apartmentController.text,
+                  intercomController.text,
+                  commentsCourierController.text,
+                  phoneController.text,
+                );
 
-                  if (statusCode == 200) {
-                    context.router.pop();
-                  }
-                },
-                child: Container(
-                  margin: EdgeInsets.only(left: 16, right: 16, bottom: 10),
-                  height: 52,
-                  width: double.infinity,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                      color: AppColors.mainPurpleColor,
-                      borderRadius: BorderRadius.circular(16)),
-                  child: Text(
-                    'Сохранить',
-                    style: AppTextStyles.size18Weight600
-                        .copyWith(color: AppColors.kWhite),
-                  ),
+                if (statusCode == 200) {
+                  context.router.pop();
+                }
+              },
+              child: Container(
+                margin: EdgeInsets.only(left: 16, right: 16, bottom: 10),
+                height: 52,
+                width: double.infinity,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  color: AppColors.mainPurpleColor,
+                  borderRadius: BorderRadius.circular(16),
                 ),
-              )),
+                child: Text(
+                  'Сохранить',
+                  style: AppTextStyles.size18Weight600.copyWith(color: AppColors.kWhite),
+                ),
+              ),
+            ),
+          ),
         ),
       ),
     );
   }
 }
 
-Widget _buildFormField(
-    {required TextEditingController controller,
-    required String label,
-    required String text,
-    TextInputType? keyboardType,
-    List<TextInputFormatter>? inputFormatters,
-    bool readOnly = false,
-    VoidCallback? onTap,
-    bool showArrow = false,
-    final int? maxLines,
-    final String? errorText}) {
+Widget _buildFormField({
+  required TextEditingController controller,
+  required String label,
+  required String text,
+  TextInputType? keyboardType,
+  List<TextInputFormatter>? inputFormatters,
+  bool readOnly = false,
+  VoidCallback? onTap,
+  bool showArrow = false,
+  final int? maxLines,
+  final String? errorText,
+}) {
   final hasError = errorText != null;
 
   return Padding(
@@ -261,9 +259,12 @@ Widget _buildFormField(
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(hasError ? errorText : text,
-            style: AppTextStyles.size13Weight500.copyWith(
-                color: hasError ? AppColors.mainRedColor : Color(0xFF636366))),
+        Text(
+          hasError ? errorText : text,
+          style: AppTextStyles.size13Weight500.copyWith(
+            color: hasError ? AppColors.mainRedColor : Color(0xFF636366),
+          ),
+        ),
         const SizedBox(height: 8),
         GestureDetector(
           onTap: readOnly ? onTap : null,
@@ -273,9 +274,7 @@ Widget _buildFormField(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             decoration: BoxDecoration(
               color: Color(0xffEAECED),
-              border: hasError
-                  ? Border.all(color: AppColors.mainRedColor, width: 1.0)
-                  : null,
+              border: hasError ? Border.all(color: AppColors.mainRedColor, width: 1.0) : null,
               borderRadius: BorderRadius.circular(16),
             ),
             child: Row(
@@ -285,23 +284,19 @@ Widget _buildFormField(
                     absorbing: readOnly,
                     child: TextField(
                       controller: controller,
-                      keyboardType: (maxLines ?? 0) > 1
-                          ? TextInputType.multiline
-                          : keyboardType,
+                      keyboardType: (maxLines ?? 0) > 1 ? TextInputType.multiline : keyboardType,
                       inputFormatters: inputFormatters,
                       readOnly: readOnly,
                       maxLines: maxLines,
                       decoration: InputDecoration.collapsed(
-                          hintText: '$label',
-                          hintStyle: AppTextStyles.size16Weight400
-                              .copyWith(color: Color(0xff8E8E93))),
+                        hintText: '$label',
+                        hintStyle: AppTextStyles.size16Weight400.copyWith(color: Color(0xff8E8E93)),
+                      ),
                       style: AppTextStyles.size16Weight400,
                     ),
                   ),
                 ),
-                if (showArrow)
-                  const Icon(Icons.arrow_forward_ios,
-                      size: 16, color: Colors.grey),
+                if (showArrow) const Icon(Icons.arrow_forward_ios, size: 16, color: Colors.grey),
               ],
             ),
           ),
@@ -356,46 +351,40 @@ class _FieldsProductRequestState extends State<FieldsProductRequest> {
           Row(
             children: [
               Text(
-                  widget.errorText != null
-                      ? widget.errorText!
-                      : widget.titleText,
-                  style: AppTextStyles.size13Weight500.copyWith(
-                      color: widget.errorText != null
-                          ? AppColors.mainRedColor
-                          : Color(0xFF636366))),
+                widget.errorText != null ? widget.errorText! : widget.titleText,
+                style: AppTextStyles.size13Weight500.copyWith(
+                  color: widget.errorText != null ? AppColors.mainRedColor : Color(0xFF636366),
+                ),
+              ),
             ],
           ),
           const SizedBox(height: 4),
           Container(
             decoration: BoxDecoration(
-                color: Color(0xffEAECED),
-                border: widget.errorText != null
-                    ? Border.all(color: AppColors.mainRedColor, width: 1.0)
-                    : null,
-                borderRadius: BorderRadius.circular(16)),
+              color: Color(0xffEAECED),
+              border: widget.errorText != null
+                  ? Border.all(color: AppColors.mainRedColor, width: 1.0)
+                  : null,
+              borderRadius: BorderRadius.circular(16),
+            ),
             child: Padding(
               padding: const EdgeInsets.only(left: 14.0),
               child: TextField(
                 controller: widget.controller,
-                readOnly:
-                    (widget.hintColor == false || widget.hintColor == null)
-                        ? widget.readOnly
-                        : true,
+                readOnly: (widget.hintColor == false || widget.hintColor == null)
+                    ? widget.readOnly
+                    : true,
                 keyboardType: (widget.maxLines != null && widget.maxLines! > 1)
                     ? TextInputType.multiline
-                    : ((widget.textInputNumber == false ||
-                            widget.textInputNumber == null)
-                        ? TextInputType.text
-                        : const TextInputType.numberWithOptions(
-                            signed: true, decimal: true)),
+                    : ((widget.textInputNumber == false || widget.textInputNumber == null)
+                          ? TextInputType.text
+                          : const TextInputType.numberWithOptions(signed: true, decimal: true)),
                 maxLines: widget.maxLines ?? 1,
                 decoration: InputDecoration(
-                  suffixIconConstraints:
-                      const BoxConstraints(minWidth: 18, minHeight: 9),
+                  suffixIconConstraints: const BoxConstraints(minWidth: 18, minHeight: 9),
                   border: InputBorder.none,
                   hintText: widget.hintText,
-                  hintStyle: AppTextStyles.size16Weight400
-                      .copyWith(color: Color(0xff8E8E93)),
+                  hintStyle: AppTextStyles.size16Weight400.copyWith(color: Color(0xff8E8E93)),
                   suffixIcon: widget.arrow
                       ? InkWell(
                           onTap: widget.onPressed,

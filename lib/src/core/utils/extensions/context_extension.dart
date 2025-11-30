@@ -16,9 +16,8 @@ extension ContextExtension on BuildContext {
   /// when that widget changes (or a new widget of that type is introduced,
   /// or the widget goes away), this build context is rebuilt so that it can
   /// obtain new values from that widget.
-  T? inhMaybeOf<T extends InheritedWidget>({bool listen = true}) => listen
-      ? dependOnInheritedWidgetOfExactType<T>()
-      : getInheritedWidgetOfExactType<T>();
+  T? inhMaybeOf<T extends InheritedWidget>({bool listen = true}) =>
+      listen ? dependOnInheritedWidgetOfExactType<T>() : getInheritedWidgetOfExactType<T>();
 
   /// Obtain the nearest widget of the given type T,
   /// which must be the type of a concrete [InheritedWidget] subclass,
@@ -35,9 +34,7 @@ extension ContextExtension on BuildContext {
       ));
 
   /// Maybe inherit specific aspect from [InheritedModel].
-  T? maybeInheritFrom<A extends Object, T extends InheritedModel<A>>({
-    A? aspect,
-  }) =>
+  T? maybeInheritFrom<A extends Object, T extends InheritedModel<A>>({A? aspect}) =>
       InheritedModel.inheritFrom<T>(this, aspect: aspect);
 
   /// Inherit specific aspect from [InheritedModel].
@@ -81,10 +78,7 @@ extension ContextExtension on BuildContext {
 }
 
 extension OrientationX on Orientation {
-  T whenByValue<T extends Object?>({
-    required T portrait,
-    required T landscape,
-  }) {
+  T whenByValue<T extends Object?>({required T portrait, required T landscape}) {
     switch (this) {
       case Orientation.portrait:
         return portrait;
@@ -93,13 +87,6 @@ extension OrientationX on Orientation {
     }
   }
 
-  T maybeWhenByValue<T extends Object?>({
-    required T orElse,
-    T? portrait,
-    T? landscape,
-  }) =>
-      whenByValue<T>(
-        portrait: portrait ?? orElse,
-        landscape: landscape ?? orElse,
-      );
+  T maybeWhenByValue<T extends Object?>({required T orElse, T? portrait, T? landscape}) =>
+      whenByValue<T>(portrait: portrait ?? orElse, landscape: landscape ?? orElse);
 }

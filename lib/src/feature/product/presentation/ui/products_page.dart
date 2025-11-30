@@ -5,18 +5,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/feature/app/router/app_router.dart';
-import 'package:haji_market/src/feature/product/cubit/product_cubit.dart'
-    as productCubit;
-import 'package:haji_market/src/feature/product/cubit/product_state.dart'
-    as productState;
-import 'package:haji_market/src/feature/drawer/bloc/shops_drawer_cubit.dart'
-    as shopsDrawerCubit;
-import 'package:haji_market/src/feature/drawer/bloc/shops_drawer_state.dart'
-    as shopsDrawerState;
-import 'package:haji_market/src/feature/drawer/bloc/sub_cats_cubit.dart'
-    as subCatCubit;
-import 'package:haji_market/src/feature/drawer/bloc/sub_cats_state.dart'
-    as subCatState;
+import 'package:haji_market/src/feature/product/cubit/product_cubit.dart' as productCubit;
+import 'package:haji_market/src/feature/product/cubit/product_state.dart' as productState;
+import 'package:haji_market/src/feature/drawer/bloc/shops_drawer_cubit.dart' as shopsDrawerCubit;
+import 'package:haji_market/src/feature/drawer/bloc/shops_drawer_state.dart' as shopsDrawerState;
+import 'package:haji_market/src/feature/drawer/bloc/sub_cats_cubit.dart' as subCatCubit;
+import 'package:haji_market/src/feature/drawer/bloc/sub_cats_state.dart' as subCatState;
 import 'package:haji_market/src/feature/drawer/presentation/widgets/filter_page.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/src/feature/product/presentation/widgets/product_widget.dart';
@@ -26,8 +20,7 @@ import 'package:haji_market/src/feature/product/provider/filter_provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../../../home/data/model/cat_model.dart';
 import '../../../drawer/bloc/brand_cubit.dart' as brandCubit;
-import 'package:haji_market/src/feature/drawer/bloc/brand_state.dart'
-    as brandState;
+import 'package:haji_market/src/feature/drawer/bloc/brand_state.dart' as brandState;
 import '../../cubit/product_ad_cubit.dart';
 
 @RoutePage()
@@ -38,9 +31,8 @@ class ProductsPage extends StatefulWidget {
   int? brandId;
   String? shopId;
 
-  ProductsPage(
-      {required this.cats, this.brandId, this.shopId, this.subCats, Key? key})
-      : super(key: key);
+  ProductsPage({required this.cats, this.brandId, this.shopId, this.subCats, Key? key})
+    : super(key: key);
 
   @override
   State<ProductsPage> createState() => _ProductsPageState();
@@ -95,14 +87,11 @@ class _ProductsPageState extends State<ProductsPage> {
       if (!mounted) return;
       filterCharIcon(value);
     });
-    BlocProvider.of<shopsDrawerCubit.ShopsDrawerCubit>(context)
-        .shopsDrawer(widget.cats.id);
-    BlocProvider.of<brandCubit.BrandCubit>(context)
-        .brands(subCatId: widget.cats.id);
+    BlocProvider.of<shopsDrawerCubit.ShopsDrawerCubit>(context).shopsDrawer(widget.cats.id);
+    BlocProvider.of<brandCubit.BrandCubit>(context).brands(subCatId: widget.cats.id);
     // BlocProvider.of<ProductAdCubit>(context)
     //     .adProducts(GetStorage().read('CatId'));
-    subCatCubit.SubCatsCubit subCatsCubit =
-        BlocProvider.of<subCatCubit.SubCatsCubit>(context);
+    subCatCubit.SubCatsCubit subCatsCubit = BlocProvider.of<subCatCubit.SubCatsCubit>(context);
     if (subCatsCubit.state is! subCatState.LoadedState) {
       subCatsCubit.subCats(widget.cats.id);
     }
@@ -114,16 +103,14 @@ class _ProductsPageState extends State<ProductsPage> {
   }
 
   subCatList() async {
-    subCatCubit.SubCatsCubit subCatsCubit =
-        BlocProvider.of<subCatCubit.SubCatsCubit>(context);
+    subCatCubit.SubCatsCubit subCatsCubit = BlocProvider.of<subCatCubit.SubCatsCubit>(context);
     final List<CatsModel> data = await subCatsCubit.subCatList(widget.cats.id);
     subCats.addAll(data);
     setState(() {});
   }
 
   brandList() async {
-    final List<CatsModel> data =
-        await BlocProvider.of<brandCubit.BrandCubit>(context).brandsList();
+    final List<CatsModel> data = await BlocProvider.of<brandCubit.BrandCubit>(context).brandsList();
     brands.addAll(data);
     setState(() {});
   }
@@ -157,8 +144,7 @@ class _ProductsPageState extends State<ProductsPage> {
   Future<void> onLoading() async {
     final filters = context.read<FilterProvider>();
 
-    await BlocProvider.of<productCubit.ProductCubit>(context)
-        .productsPagination(filters);
+    await BlocProvider.of<productCubit.ProductCubit>(context).productsPagination(filters);
     await Future.delayed(const Duration(milliseconds: 2000));
     _refreshController.loadComplete();
   }
@@ -181,10 +167,7 @@ class _ProductsPageState extends State<ProductsPage> {
       appBar: AppBar(
         surfaceTintColor: AppColors.kWhite,
 
-        title: Text(
-          '${widget.cats.name}',
-          style: AppTextStyles.size18Weight600,
-        ),
+        title: Text('${widget.cats.name}', style: AppTextStyles.size18Weight600),
 
         actionsPadding: EdgeInsets.only(right: 8),
         actions: [
@@ -249,16 +232,17 @@ class _ProductsPageState extends State<ProductsPage> {
         // ),
       ),
       body: SmartRefresher(
-          controller: _refreshController,
-          enablePullDown: true,
-          enablePullUp: true,
-          onLoading: () {
-            onLoading();
-          },
-          onRefresh: () {
-            onRefresh();
-          },
-          child: CustomScrollView(slivers: [
+        controller: _refreshController,
+        enablePullDown: true,
+        enablePullUp: true,
+        onLoading: () {
+          onLoading();
+        },
+        onRefresh: () {
+          onRefresh();
+        },
+        child: CustomScrollView(
+          slivers: [
             SliverAppBar(
               floating: true,
               snap: true,
@@ -271,8 +255,7 @@ class _ProductsPageState extends State<ProductsPage> {
               expandedHeight: 300,
               systemOverlayStyle: SystemUiOverlayStyle.dark,
               shape: const RoundedRectangleBorder(
-                borderRadius:
-                    BorderRadius.vertical(bottom: Radius.circular(16)),
+                borderRadius: BorderRadius.vertical(bottom: Radius.circular(16)),
               ),
               flexibleSpace: FlexibleSpaceBar(
                 collapseMode: CollapseMode.none,
@@ -281,8 +264,9 @@ class _ProductsPageState extends State<ProductsPage> {
                   child: Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.only(
-                          bottomLeft: Radius.circular(12),
-                          bottomRight: Radius.circular(12)),
+                        bottomLeft: Radius.circular(12),
+                        bottomRight: Radius.circular(12),
+                      ),
                       color: AppColors.kWhite,
                     ),
                     child: Column(
@@ -293,21 +277,20 @@ class _ProductsPageState extends State<ProductsPage> {
                           margin: EdgeInsets.symmetric(horizontal: 16),
                           height: 80,
                           decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                begin: Alignment.bottomRight,
-                                end: Alignment.topLeft,
-                                transform: const GradientRotation(128.49 *
-                                    3.1415926535 /
-                                    180), // 128.49° в радианы
-                                colors: [
-                                  const Color(0xFF7D2DFF).withOpacity(
-                                      0.2), // rgba(125, 45, 255, 0.2)
-                                  const Color(0xFF41DDFF).withOpacity(
-                                      0.2), // rgba(65, 221, 255, 0.2)
-                                ],
-                                stops: const [0.2685, 1.0], // 26.85% и 100%
-                              ),
-                              borderRadius: BorderRadius.circular(12)),
+                            gradient: LinearGradient(
+                              begin: Alignment.bottomRight,
+                              end: Alignment.topLeft,
+                              transform: const GradientRotation(
+                                128.49 * 3.1415926535 / 180,
+                              ), // 128.49° в радианы
+                              colors: [
+                                const Color(0xFF7D2DFF).withOpacity(0.2), // rgba(125, 45, 255, 0.2)
+                                const Color(0xFF41DDFF).withOpacity(0.2), // rgba(65, 221, 255, 0.2)
+                              ],
+                              stops: const [0.2685, 1.0], // 26.85% и 100%
+                            ),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             crossAxisAlignment: CrossAxisAlignment.center,
@@ -334,8 +317,7 @@ class _ProductsPageState extends State<ProductsPage> {
                                 child: Image.network(
                                   "https://lunamarket.ru/storage/${widget.cats.image}",
                                   fit: BoxFit.cover,
-                                  loadingBuilder:
-                                      (context, child, loadingProgress) {
+                                  loadingBuilder: (context, child, loadingProgress) {
                                     if (loadingProgress == null) return child;
                                     return Center(
                                       child: SizedBox(
@@ -343,20 +325,15 @@ class _ProductsPageState extends State<ProductsPage> {
                                         height: 24,
                                         child: CircularProgressIndicator(
                                           strokeWidth: 2,
-                                          value: loadingProgress
-                                                      .expectedTotalBytes !=
-                                                  null
-                                              ? loadingProgress
-                                                      .cumulativeBytesLoaded /
-                                                  loadingProgress
-                                                      .expectedTotalBytes!
+                                          value: loadingProgress.expectedTotalBytes != null
+                                              ? loadingProgress.cumulativeBytesLoaded /
+                                                    loadingProgress.expectedTotalBytes!
                                               : null,
                                         ),
                                       ),
                                     );
                                   },
-                                  errorBuilder: (context, error, stackTrace) =>
-                                      Container(
+                                  errorBuilder: (context, error, stackTrace) => Container(
                                     color: Colors.grey[200],
                                     alignment: Alignment.center,
                                     child: const Icon(
@@ -366,13 +343,11 @@ class _ProductsPageState extends State<ProductsPage> {
                                     ),
                                   ),
                                 ),
-                              )
+                              ),
                             ],
                           ),
                         ),
-                        const SizedBox(
-                          height: 16,
-                        ),
+                        const SizedBox(height: 16),
                         SizedBox(
                           height: 80,
                           child: ListView.builder(
@@ -382,15 +357,14 @@ class _ProductsPageState extends State<ProductsPage> {
                             itemBuilder: (context, index) {
                               return GestureDetector(
                                 onTap: () {
-                                  final filters =
-                                      context.read<FilterProvider>();
+                                  final filters = context.read<FilterProvider>();
 
                                   if (brand?.id == brands[index].id) {
                                     brand = null;
                                     GetStorage().remove('brandFilterId');
                                     BlocProvider.of<productCubit.ProductCubit>(
-                                            context)
-                                        .products(filters);
+                                      context,
+                                    ).products(filters);
                                     setState(() {});
 
                                     return;
@@ -400,58 +374,58 @@ class _ProductsPageState extends State<ProductsPage> {
 
                                   ids.add(brands[index].id!);
 
-                                  GetStorage()
-                                      .write('brandFilterId', ids.toString());
+                                  GetStorage().write('brandFilterId', ids.toString());
                                   BlocProvider.of<productCubit.ProductCubit>(
-                                          context)
-                                      .products(filters);
+                                    context,
+                                  ).products(filters);
                                   brand = brands[index];
                                   setState(() {});
                                 },
                                 child: Padding(
                                   padding: const EdgeInsets.only(
-                                      right: 8), // Отступ между элементами
-                                  child: Stack(children: [
-                                    Container(
-                                      height: 64,
-                                      width: 64,
-                                      alignment: Alignment.center,
-                                      decoration: BoxDecoration(
-                                        image: DecorationImage(
-                                          image: brands[index].icon != null
-                                              ? NetworkImage(
-                                                  "https://lunamarket.ru/storage/${brands[index].icon}")
-                                              : const AssetImage(
-                                                      'assets/icons/profile2.png')
-                                                  as ImageProvider,
-                                          fit: BoxFit.cover,
+                                    right: 8,
+                                  ), // Отступ между элементами
+                                  child: Stack(
+                                    children: [
+                                      Container(
+                                        height: 64,
+                                        width: 64,
+                                        alignment: Alignment.center,
+                                        decoration: BoxDecoration(
+                                          image: DecorationImage(
+                                            image: brands[index].icon != null
+                                                ? NetworkImage(
+                                                    "https://lunamarket.ru/storage/${brands[index].icon}",
+                                                  )
+                                                : const AssetImage('assets/icons/profile2.png')
+                                                      as ImageProvider,
+                                            fit: BoxFit.cover,
+                                          ),
+                                          color: AppColors.mainBackgroundPurpleColor,
+                                          border: Border.all(
+                                            // Добавляем границу
+                                            color: brand?.id == brands[index].id
+                                                ? AppColors.mainPurpleColor
+                                                : AppColors.purpleBorder, // Цвет границы
+                                            width: 1.0, // Толщина границы
+                                          ),
+                                          shape: BoxShape
+                                              .circle, // Используем shape вместо borderRadius для идеального круга
                                         ),
-                                        color:
-                                            AppColors.mainBackgroundPurpleColor,
-                                        border: Border.all(
-                                          // Добавляем границу
-                                          color: brand?.id == brands[index].id
-                                              ? AppColors.mainPurpleColor
-                                              : AppColors
-                                                  .purpleBorder, // Цвет границы
-                                          width: 1.0, // Толщина границы
-                                        ),
-                                        shape: BoxShape
-                                            .circle, // Используем shape вместо borderRadius для идеального круга
                                       ),
-                                    ),
-                                    brand?.id == brands[index].id
-                                        ? Positioned(
-                                            bottom: 16,
-                                            right: 2,
-                                            child: Image.asset(
-                                              Assets.icons.brandSelectIcon.path,
-                                              height: 18,
-                                              width: 18,
-                                            ),
-                                          )
-                                        : SizedBox.shrink(),
-                                  ]),
+                                      brand?.id == brands[index].id
+                                          ? Positioned(
+                                              bottom: 16,
+                                              right: 2,
+                                              child: Image.asset(
+                                                Assets.icons.brandSelectIcon.path,
+                                                height: 18,
+                                                width: 18,
+                                              ),
+                                            )
+                                          : SizedBox.shrink(),
+                                    ],
+                                  ),
                                 ),
                               );
                             },
@@ -462,48 +436,45 @@ class _ProductsPageState extends State<ProductsPage> {
                           onTap: () {
                             final filters = context.read<FilterProvider>();
                             showListBrandsOptions(
-                                context,
-                                'Подкатегории',
-                                'params',
-                                subCats,
-                                subCat?.id ?? -1, (CatsModel value) {
-                              if (subCat?.name == value.name || value.id == 0) {
-                                subCat = null;
-                                filters.resetSubCats();
-                              } else {
-                                filters.setSubCats([value.id!]);
-                                subCat = value;
-                              }
-                              setState(() {});
+                              context,
+                              'Подкатегории',
+                              'params',
+                              subCats,
+                              subCat?.id ?? -1,
+                              (CatsModel value) {
+                                if (subCat?.name == value.name || value.id == 0) {
+                                  subCat = null;
+                                  filters.resetSubCats();
+                                } else {
+                                  filters.setSubCats([value.id!]);
+                                  subCat = value;
+                                }
+                                setState(() {});
 
-                              BlocProvider.of<productCubit.ProductCubit>(
-                                      context)
-                                  .products(filters);
-                            });
+                                BlocProvider.of<productCubit.ProductCubit>(
+                                  context,
+                                ).products(filters);
+                              },
+                            );
                           },
                           child: Container(
                             margin: EdgeInsets.symmetric(horizontal: 16),
                             height: 40,
                             decoration: BoxDecoration(
-                                color: Color(0xffF7F7F7),
-                                borderRadius: BorderRadius.circular(12)),
+                              color: Color(0xffF7F7F7),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
-                                SizedBox(
-                                  width: 8,
+                                SizedBox(width: 8),
+                                Image.asset(Assets.icons.subListIcon.path, height: 20, width: 20),
+                                SizedBox(width: 8),
+                                Text(
+                                  subCat?.name ?? 'Подкатегории',
+                                  style: AppTextStyles.size16Weight500,
                                 ),
-                                Image.asset(
-                                  Assets.icons.subListIcon.path,
-                                  height: 20,
-                                  width: 20,
-                                ),
-                                SizedBox(
-                                  width: 8,
-                                ),
-                                Text(subCat?.name ?? 'Подкатегории',
-                                    style: AppTextStyles.size16Weight500),
                                 Spacer(),
                                 Padding(
                                   padding: const EdgeInsets.only(right: 10.0),
@@ -512,7 +483,7 @@ class _ProductsPageState extends State<ProductsPage> {
                                     size: 16,
                                     color: AppColors.kGray300,
                                   ),
-                                )
+                                ),
                               ],
                             ),
                           ),
@@ -523,16 +494,16 @@ class _ProductsPageState extends State<ProductsPage> {
                           alignment: Alignment.centerLeft,
                           padding: const EdgeInsets.only(left: 16),
                           decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(16)),
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(16),
+                          ),
                           child: ListView(
                             padding: EdgeInsets.zero,
                             scrollDirection: Axis.horizontal,
                             children: [
                               InkWell(
                                 onTap: () {
-                                  final filters =
-                                      context.read<FilterProvider>();
+                                  final filters = context.read<FilterProvider>();
 
                                   final List<CatsModel> sorts = [
                                     CatsModel(id: 1, name: 'Популярные'),
@@ -543,58 +514,61 @@ class _ProductsPageState extends State<ProductsPage> {
                                   ];
 
                                   showListBrandsOptions(
-                                      context,
-                                      'Сортировка',
-                                      'params',
-                                      sorts,
-                                      selectedSortIndex, (CatsModel value) {
-                                    if (value.id != 0) {
-                                      selectedSortIndex = value.id!;
-                                      String sortKey = '';
-                                      switch (value.name) {
-                                        case 'Популярные':
-                                          sortKey = 'orderByPopular';
+                                    context,
+                                    'Сортировка',
+                                    'params',
+                                    sorts,
+                                    selectedSortIndex,
+                                    (CatsModel value) {
+                                      if (value.id != 0) {
+                                        selectedSortIndex = value.id!;
+                                        String sortKey = '';
+                                        switch (value.name) {
+                                          case 'Популярные':
+                                            sortKey = 'orderByPopular';
 
-                                          break;
-                                        case 'Новинки':
-                                          sortKey = 'orderByNew';
-                                          break;
-                                        case 'Сначала дешевые':
-                                          sortKey = 'priceAsc';
-                                          break;
-                                        case 'Сначала дорогие':
-                                          sortKey = 'priceDesc';
-                                          break;
-                                        case 'Высокий рейтинг':
-                                          sortKey = 'rating';
-                                          break;
-                                        default:
-                                          print("число не равно 1, 2, 3");
+                                            break;
+                                          case 'Новинки':
+                                            sortKey = 'orderByNew';
+                                            break;
+                                          case 'Сначала дешевые':
+                                            sortKey = 'priceAsc';
+                                            break;
+                                          case 'Сначала дорогие':
+                                            sortKey = 'priceDesc';
+                                            break;
+                                          case 'Высокий рейтинг':
+                                            sortKey = 'rating';
+                                            break;
+                                          default:
+                                            print("число не равно 1, 2, 3");
+                                        }
+
+                                        filters.setSort(sortKey);
+                                        sortIcon = true;
+                                      } else {
+                                        sortIcon = false;
+                                        selectedSortIndex = -1;
                                       }
 
-                                      filters.setSort(sortKey);
-                                      sortIcon = true;
-                                    } else {
-                                      sortIcon = false;
-                                      selectedSortIndex = -1;
-                                    }
+                                      setState(() {});
 
-                                    setState(() {});
-
-                                    BlocProvider.of<productCubit.ProductCubit>(
-                                            context)
-                                        .products(filters);
-                                  });
+                                      BlocProvider.of<productCubit.ProductCubit>(
+                                        context,
+                                      ).products(filters);
+                                    },
+                                  );
                                 },
-                                child: Stack(children: [
-                                  Container(
+                                child: Stack(
+                                  children: [
+                                    Container(
                                       height: 36,
                                       width: 40,
                                       alignment: Alignment.center,
                                       decoration: BoxDecoration(
-                                          color: AppColors.kGray1,
-                                          borderRadius:
-                                              BorderRadius.circular(12)),
+                                        color: AppColors.kGray1,
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
                                       child: SizedBox(
                                         height: 10,
                                         width: 15,
@@ -603,43 +577,40 @@ class _ProductsPageState extends State<ProductsPage> {
                                           height: 10,
                                           width: 15,
                                         ),
-                                      )),
-                                  sortIcon == true
-                                      ? Positioned(
-                                          top: 10,
-                                          right: 10,
-                                          child: Icon(
-                                            Icons.circle,
-                                            size: 7,
-                                            color: Colors.red,
-                                          ),
-                                        )
-                                      : SizedBox.shrink()
-                                ]),
+                                      ),
+                                    ),
+                                    sortIcon == true
+                                        ? Positioned(
+                                            top: 10,
+                                            right: 10,
+                                            child: Icon(Icons.circle, size: 7, color: Colors.red),
+                                          )
+                                        : SizedBox.shrink(),
+                                  ],
+                                ),
                               ),
-                              const SizedBox(
-                                width: 6,
-                              ),
+                              const SizedBox(width: 6),
                               InkWell(
                                 onTap: () {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) =>
-                                            FilterPage(shopId: widget.shopId)),
+                                      builder: (context) => FilterPage(shopId: widget.shopId),
+                                    ),
                                   );
                                   filterIcon = true;
                                   setState(() {});
                                 },
-                                child: Stack(children: [
-                                  Container(
+                                child: Stack(
+                                  children: [
+                                    Container(
                                       height: 36,
                                       width: 40,
                                       alignment: Alignment.center,
                                       decoration: BoxDecoration(
-                                          color: AppColors.kGray1,
-                                          borderRadius:
-                                              BorderRadius.circular(12)),
+                                        color: AppColors.kGray1,
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
                                       child: SizedBox(
                                         height: 11.5,
                                         width: 15,
@@ -648,27 +619,22 @@ class _ProductsPageState extends State<ProductsPage> {
                                           color: Colors.black,
                                           fit: BoxFit.cover,
                                         ),
-                                      )),
-                                  filterIcon == true
-                                      ? Positioned(
-                                          top: 10,
-                                          right: 10,
-                                          child: Icon(
-                                            Icons.circle,
-                                            size: 7,
-                                            color: Colors.red,
-                                          ),
-                                        )
-                                      : SizedBox.shrink()
-                                ]),
+                                      ),
+                                    ),
+                                    filterIcon == true
+                                        ? Positioned(
+                                            top: 10,
+                                            right: 10,
+                                            child: Icon(Icons.circle, size: 7, color: Colors.red),
+                                          )
+                                        : SizedBox.shrink(),
+                                  ],
+                                ),
                               ),
-                              const SizedBox(
-                                width: 8,
-                              ),
+                              const SizedBox(width: 8),
                               InkWell(
                                 onTap: () {
-                                  final filters =
-                                      context.read<FilterProvider>();
+                                  final filters = context.read<FilterProvider>();
 
                                   final List<CatsModel> sorts = [
                                     CatsModel(id: 1, name: 'Сегодня,завтра'),
@@ -677,158 +643,145 @@ class _ProductsPageState extends State<ProductsPage> {
                                     CatsModel(id: 4, name: 'До 7 дней'),
                                   ];
 
-                                  showListBrandsOptions(context, 'Доставка',
-                                      'params', sorts, selectedDelliveryIndex,
-                                      (CatsModel value) {
-                                    selectedDelliveryIndex = value.id ?? -1;
+                                  showListBrandsOptions(
+                                    context,
+                                    'Доставка',
+                                    'params',
+                                    sorts,
+                                    selectedDelliveryIndex,
+                                    (CatsModel value) {
+                                      selectedDelliveryIndex = value.id ?? -1;
 
-                                    String delliveryKey = '';
+                                      String delliveryKey = '';
 
-                                    switch (value.name) {
-                                      case 'Сегодня,завтра':
-                                        delliveryKey = 'one_day';
-                                        selectedDelliveryText =
-                                            'Сегодня,завтра';
+                                      switch (value.name) {
+                                        case 'Сегодня,завтра':
+                                          delliveryKey = 'one_day';
+                                          selectedDelliveryText = 'Сегодня,завтра';
 
-                                        break;
-                                      case 'До 2 дней':
-                                        delliveryKey = 'two_day';
-                                        selectedDelliveryText = 'До 2 дней';
+                                          break;
+                                        case 'До 2 дней':
+                                          delliveryKey = 'two_day';
+                                          selectedDelliveryText = 'До 2 дней';
 
-                                        break;
-                                      case 'До 5 дней':
-                                        delliveryKey = 'three_day';
-                                        selectedDelliveryText = 'До 5 дней';
-                                        break;
-                                      case 'До 7 дней':
-                                        delliveryKey = 'seven_day';
-                                        selectedDelliveryText = 'До 7 дней';
-                                        break;
+                                          break;
+                                        case 'До 5 дней':
+                                          delliveryKey = 'three_day';
+                                          selectedDelliveryText = 'До 5 дней';
+                                          break;
+                                        case 'До 7 дней':
+                                          delliveryKey = 'seven_day';
+                                          selectedDelliveryText = 'До 7 дней';
+                                          break;
 
-                                      default:
-                                        delliveryKey = '';
-                                        selectedDelliveryText = null;
-                                    }
+                                        default:
+                                          delliveryKey = '';
+                                          selectedDelliveryText = null;
+                                      }
 
-                                    setState(() {});
-                                    filters.setDelivery(delliveryKey);
-                                    BlocProvider.of<productCubit.ProductCubit>(
-                                            context)
-                                        .products(filters);
-                                  });
+                                      setState(() {});
+                                      filters.setDelivery(delliveryKey);
+                                      BlocProvider.of<productCubit.ProductCubit>(
+                                        context,
+                                      ).products(filters);
+                                    },
+                                  );
                                 },
                                 child: Container(
-                                    height: 36,
-                                    alignment: Alignment.center,
-                                    decoration: BoxDecoration(
-                                        color: AppColors.kGray1,
-                                        borderRadius:
-                                            BorderRadius.circular(12)),
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 12.0),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                            selectedDelliveryText ?? 'Доставка',
-                                            style: AppTextStyles.size14Weight400
-                                                .copyWith(
-                                              color: selectedDelliveryText !=
-                                                      null
-                                                  ? AppColors.mainPurpleColor
-                                                  : null,
-                                              fontWeight:
-                                                  selectedDelliveryText != null
-                                                      ? FontWeight.w500
-                                                      : null,
-                                            ),
+                                  height: 36,
+                                  alignment: Alignment.center,
+                                  decoration: BoxDecoration(
+                                    color: AppColors.kGray1,
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          selectedDelliveryText ?? 'Доставка',
+                                          style: AppTextStyles.size14Weight400.copyWith(
+                                            color: selectedDelliveryText != null
+                                                ? AppColors.mainPurpleColor
+                                                : null,
+                                            fontWeight: selectedDelliveryText != null
+                                                ? FontWeight.w500
+                                                : null,
                                           ),
-                                          SizedBox(width: 8),
-                                          SizedBox(
-                                            height: 6,
-                                            width: 12,
-                                            child: Image.asset(
-                                              Assets.icons.dropDownIcon.path,
-                                              color: selectedDelliveryText !=
-                                                      null
-                                                  ? AppColors.mainPurpleColor
-                                                  : null,
-                                            ),
+                                        ),
+                                        SizedBox(width: 8),
+                                        SizedBox(
+                                          height: 6,
+                                          width: 12,
+                                          child: Image.asset(
+                                            Assets.icons.dropDownIcon.path,
+                                            color: selectedDelliveryText != null
+                                                ? AppColors.mainPurpleColor
+                                                : null,
                                           ),
-                                        ],
-                                      ),
-                                    )),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
                               ),
-                              const SizedBox(
-                                width: 8,
-                              ),
+                              const SizedBox(width: 8),
                               InkWell(
                                 onTap: () {
-                                  final filters =
-                                      context.read<FilterProvider>();
-                                  showFiltrPriceOptions(context, 'Цена,₸',
-                                      (value) {
+                                  final filters = context.read<FilterProvider>();
+                                  showFiltrPriceOptions(context, 'Цена,₸', (value) {
                                     setState(() {
                                       filterPriceLabel = value;
                                     });
                                     Navigator.pop(context);
 
                                     BlocProvider.of<productCubit.ProductCubit>(
-                                            context)
-                                        .products(filters);
+                                      context,
+                                    ).products(filters);
                                   });
                                 },
                                 child: Container(
-                                    height: 36,
-                                    // width: 80,
-                                    alignment: Alignment.center,
-                                    decoration: BoxDecoration(
-                                        color: AppColors.kGray1,
-                                        borderRadius:
-                                            BorderRadius.circular(12)),
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 12.0),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                            filterPriceLabel ?? 'Цена',
-                                            style: AppTextStyles.size14Weight500
-                                                .copyWith(
-                                                    color: (filterPriceLabel !=
-                                                            null)
-                                                        ? AppColors
-                                                            .mainPurpleColor
-                                                        : AppColors
-                                                            .kLightBlackColor,
-                                                    fontWeight:
-                                                        (filterPriceLabel !=
-                                                                null)
-                                                            ? FontWeight.w500
-                                                            : null),
+                                  height: 36,
+                                  // width: 80,
+                                  alignment: Alignment.center,
+                                  decoration: BoxDecoration(
+                                    color: AppColors.kGray1,
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          filterPriceLabel ?? 'Цена',
+                                          style: AppTextStyles.size14Weight500.copyWith(
+                                            color: (filterPriceLabel != null)
+                                                ? AppColors.mainPurpleColor
+                                                : AppColors.kLightBlackColor,
+                                            fontWeight: (filterPriceLabel != null)
+                                                ? FontWeight.w500
+                                                : null,
                                           ),
-                                          SizedBox(width: 8),
-                                          SizedBox(
-                                            height: 6,
-                                            width: 12,
-                                            child: Image.asset(
-                                                Assets.icons.dropDownIcon.path,
-                                                color: (filterPriceLabel !=
-                                                        null)
-                                                    ? AppColors.mainPurpleColor
-                                                    : null),
+                                        ),
+                                        SizedBox(width: 8),
+                                        SizedBox(
+                                          height: 6,
+                                          width: 12,
+                                          child: Image.asset(
+                                            Assets.icons.dropDownIcon.path,
+                                            color: (filterPriceLabel != null)
+                                                ? AppColors.mainPurpleColor
+                                                : null,
                                           ),
-                                        ],
-                                      ),
-                                    )),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
                               ),
-                              const SizedBox(
-                                width: 6,
-                              ),
+                              const SizedBox(width: 6),
                             ],
                           ),
                         ),
@@ -839,7 +792,9 @@ class _ProductsPageState extends State<ProductsPage> {
               ),
             ),
             const ProductWidget(),
-          ])),
+          ],
+        ),
+      ),
     );
   }
 }

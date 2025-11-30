@@ -86,8 +86,7 @@ class CdekOfficeModel {
     }
     _weightMin = json['weight_min'];
     _weightMax = json['weight_max'];
-    _location =
-        json['location'] != null ? Location.fromJson(json['location']) : null;
+    _location = json['location'] != null ? Location.fromJson(json['location']) : null;
     _fulfillment = json['fulfillment'];
   }
   String? _code;
@@ -160,8 +159,7 @@ class CdekOfficeModel {
     map['have_cash'] = _haveCash;
     map['allowed_cod'] = _allowedCod;
     if (_officeImageList != null) {
-      map['office_image_list'] =
-          _officeImageList?.map((v) => v.toJson()).toList();
+      map['office_image_list'] = _officeImageList?.map((v) => v.toJson()).toList();
     }
     if (_workTimeList != null) {
       map['work_time_list'] = _workTimeList?.map((v) => v.toJson()).toList();
@@ -252,10 +250,7 @@ class Location {
 }
 
 class WorkTimeList {
-  WorkTimeList({
-    int? day,
-    String? time,
-  }) {
+  WorkTimeList({int? day, String? time}) {
     _day = day;
     _time = time;
   }
@@ -279,9 +274,7 @@ class WorkTimeList {
 }
 
 class OfficeImageList {
-  OfficeImageList({
-    String? url,
-  }) {
+  OfficeImageList({String? url}) {
     _url = url;
   }
 
@@ -300,9 +293,7 @@ class OfficeImageList {
 }
 
 class Phones {
-  Phones({
-    String? number,
-  }) {
+  Phones({String? number}) {
     _number = number;
   }
 

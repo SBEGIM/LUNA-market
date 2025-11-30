@@ -39,8 +39,7 @@ void showModuleCities(
 
                 // Заголовок + крестик
                 Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -56,10 +55,7 @@ void showModuleCities(
                       ),
                       InkWell(
                         onTap: () => Navigator.of(ctx).pop(),
-                        child: Image.asset(
-                          Assets.icons.defaultCloseIcon.path,
-                          scale: 1.8,
-                        ),
+                        child: Image.asset(Assets.icons.defaultCloseIcon.path, scale: 1.8),
                       ),
                     ],
                   ),
@@ -67,8 +63,7 @@ void showModuleCities(
 
                 // Поиск
                 Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                   child: Container(
                     height: 44,
                     padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -79,12 +74,13 @@ void showModuleCities(
                     child: Row(
                       children: [
                         SizedBox(
-                            width: 18,
-                            height: 18,
-                            child: Image.asset(
-                              Assets.icons.defaultSearchIcon.path,
-                              fit: BoxFit.contain,
-                            )),
+                          width: 18,
+                          height: 18,
+                          child: Image.asset(
+                            Assets.icons.defaultSearchIcon.path,
+                            fit: BoxFit.contain,
+                          ),
+                        ),
                         const SizedBox(width: 8),
                         Expanded(
                           child: TextField(
@@ -93,15 +89,13 @@ void showModuleCities(
                               setState(() {
                                 final query = value.toLowerCase();
                                 filtered = options.where((CityModel city) {
-                                  final text = (city.city ?? city.name ?? '')
-                                      .toLowerCase();
+                                  final text = (city.city ?? city.name ?? '').toLowerCase();
                                   return text.contains(query);
                                 }).toList();
 
                                 // если выбранный город исчез из фильтра
                                 if (selectedCity != null &&
-                                    !filtered
-                                        .any((c) => c.id == selectedCity!.id)) {
+                                    !filtered.any((c) => c.id == selectedCity!.id)) {
                                   selectedCity = null;
                                 }
                               });
@@ -131,19 +125,13 @@ void showModuleCities(
                         borderRadius: BorderRadius.circular(16),
                       ),
                       child: ListView.separated(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 16,
-                          vertical: 8,
-                        ),
+                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                         itemCount: filtered.length,
-                        separatorBuilder: (_, __) => const Divider(
-                          height: 1,
-                          color: AppColors.kGray2,
-                        ),
+                        separatorBuilder: (_, __) =>
+                            const Divider(height: 1, color: AppColors.kGray2),
                         itemBuilder: (context, index) {
                           final city = filtered[index];
-                          final bool isSelected =
-                              selectedCity?.city == city.city;
+                          final bool isSelected = selectedCity?.city == city.city;
 
                           final String titleText = city.city ?? city.name ?? '';
 
@@ -157,8 +145,7 @@ void showModuleCities(
                             child: Container(
                               height: 52,
                               child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   Expanded(
                                     child: Text(
@@ -171,9 +158,7 @@ void showModuleCities(
                                         color: isSelected
                                             ? AppColors.mainPurpleColor
                                             : Colors.black,
-                                        fontWeight: isSelected
-                                            ? FontWeight.w600
-                                            : FontWeight.w400,
+                                        fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
                                       ),
                                     ),
                                   ),
@@ -203,31 +188,28 @@ void showModuleCities(
                     bottom: 16 + media.viewPadding.bottom,
                   ),
                   child: SizedBox(
-                      width: double.infinity,
-                      height: 52,
-                      child: ElevatedButton(
-                        onPressed: selectedCity != null
-                            ? () {
-                                callback(selectedCity!);
-                                Navigator.pop(ctx);
-                              }
-                            : null,
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColors.mainPurpleColor,
-                          disabledBackgroundColor:
-                              AppColors.boxDecorBackgroundPurpleColor,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                          padding: EdgeInsets.zero,
-                          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                        ),
-                        child: Text(
-                          'Выбрать',
-                          style: AppTextStyles.size18Weight600
-                              .copyWith(color: AppColors.kWhite),
-                        ),
-                      )),
+                    width: double.infinity,
+                    height: 52,
+                    child: ElevatedButton(
+                      onPressed: selectedCity != null
+                          ? () {
+                              callback(selectedCity!);
+                              Navigator.pop(ctx);
+                            }
+                          : null,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.mainPurpleColor,
+                        disabledBackgroundColor: AppColors.boxDecorBackgroundPurpleColor,
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                        padding: EdgeInsets.zero,
+                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      ),
+                      child: Text(
+                        'Выбрать',
+                        style: AppTextStyles.size18Weight600.copyWith(color: AppColors.kWhite),
+                      ),
+                    ),
+                  ),
                 ),
               ],
             ),

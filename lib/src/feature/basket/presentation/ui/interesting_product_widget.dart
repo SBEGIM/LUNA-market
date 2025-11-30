@@ -4,9 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 
 class InterestingProductWidget extends StatelessWidget {
-  const InterestingProductWidget({
-    Key? key,
-  }) : super(key: key);
+  const InterestingProductWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -14,8 +12,9 @@ class InterestingProductWidget extends StatelessWidget {
       padding: const EdgeInsets.only(right: 4.0),
       child: Container(
         decoration: BoxDecoration(
-            color: const Color(0xFFFAFAFA),
-            borderRadius: BorderRadius.circular(10)),
+          color: const Color(0xFFFAFAFA),
+          borderRadius: BorderRadius.circular(10),
+        ),
         child: Column(
           // crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -29,8 +28,7 @@ class InterestingProductWidget extends StatelessWidget {
                   cacheHeight: 11100,
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(
-                      left: 4, right: 4, bottom: 8, top: 8),
+                  padding: const EdgeInsets.only(left: 4, right: 4, bottom: 8, top: 8),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -39,44 +37,42 @@ class InterestingProductWidget extends StatelessWidget {
                         children: [
                           Container(
                             decoration: BoxDecoration(
-                                color: AppColors.kPrimaryColor,
-                                borderRadius: BorderRadius.circular(4)),
+                              color: AppColors.kPrimaryColor,
+                              borderRadius: BorderRadius.circular(4),
+                            ),
                             child: const Padding(
-                              padding: EdgeInsets.only(
-                                  left: 8.0, right: 8, top: 4, bottom: 4),
+                              padding: EdgeInsets.only(left: 8.0, right: 8, top: 4, bottom: 4),
                               child: Text(
                                 '0.0.12',
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w400),
+                                  color: Colors.white,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w400,
+                                ),
                               ),
                             ),
                           ),
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width * 0.20,
-                          ),
+                          SizedBox(width: MediaQuery.of(context).size.width * 0.20),
                           SvgPicture.asset('assets/icons/heart_fill.svg'),
                         ],
                       ),
-                      const SizedBox(
-                        height: 4,
-                      ),
+                      const SizedBox(height: 4),
                       Container(
                         decoration: BoxDecoration(
-                            color: Colors.black,
-                            borderRadius: BorderRadius.circular(4)),
+                          color: Colors.black,
+                          borderRadius: BorderRadius.circular(4),
+                        ),
                         child: const Padding(
-                          padding: EdgeInsets.only(
-                              left: 4.0, right: 4, top: 4, bottom: 4),
+                          padding: EdgeInsets.only(left: 4.0, right: 4, top: 4, bottom: 4),
                           child: Text(
                             '10% Б',
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 12,
-                                fontWeight: FontWeight.w400),
+                              color: Colors.white,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w400,
+                            ),
                           ),
                         ),
                       ),
@@ -94,24 +90,22 @@ class InterestingProductWidget extends StatelessWidget {
                     'Беспроводные наушн...',
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
-                        fontSize: 14,
-                        color: AppColors.kGray900,
-                        fontWeight: FontWeight.w400),
+                      fontSize: 14,
+                      color: AppColors.kGray900,
+                      fontWeight: FontWeight.w400,
+                    ),
                   ),
-                  const SizedBox(
-                    height: 8,
-                  ),
+                  const SizedBox(height: 8),
                   const Text(
                     'Подкатегория',
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
-                        fontSize: 14,
-                        color: AppColors.kGray300,
-                        fontWeight: FontWeight.w400),
+                      fontSize: 14,
+                      color: AppColors.kGray300,
+                      fontWeight: FontWeight.w400,
+                    ),
                   ),
-                  const SizedBox(
-                    height: 8,
-                  ),
+                  const SizedBox(height: 8),
                   Row(
                     children: [
                       RatingBar(
@@ -122,33 +116,23 @@ class InterestingProductWidget extends StatelessWidget {
                         // itemPadding:
                         // const EdgeInsets.symmetric(horizontal: 4.0),
                         ratingWidget: RatingWidget(
-                          full: const Icon(
-                            Icons.star,
-                            color: Colors.yellow,
-                          ),
-                          half: const Icon(
-                            Icons.star,
-                            color: Colors.yellow,
-                          ),
-                          empty: const Icon(
-                            Icons.star,
-                            color: Colors.yellow,
-                          ),
+                          full: const Icon(Icons.star, color: Colors.yellow),
+                          half: const Icon(Icons.star, color: Colors.yellow),
+                          empty: const Icon(Icons.star, color: Colors.yellow),
                         ),
                         onRatingUpdate: (double value) {},
                       ),
                       const Text(
                         '(98 отзывов)',
                         style: TextStyle(
-                            color: AppColors.kGray300,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400),
+                          color: AppColors.kGray300,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
+                        ),
                       ),
                     ],
                   ),
-                  const SizedBox(
-                    height: 8,
-                  ),
+                  const SizedBox(height: 8),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
@@ -156,55 +140,55 @@ class InterestingProductWidget extends StatelessWidget {
                         '330 900 ₸ ',
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
-                            fontSize: 12,
-                            color: Colors.red.shade600,
-                            fontWeight: FontWeight.w700),
+                          fontSize: 12,
+                          color: Colors.red.shade600,
+                          fontWeight: FontWeight.w700,
+                        ),
                       ),
                       const Text(
                         '330 900 ₸',
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
-                            decoration: TextDecoration.lineThrough,
-                            fontSize: 10,
-                            color: Color(0xFF19191A),
-                            fontWeight: FontWeight.w400),
+                          decoration: TextDecoration.lineThrough,
+                          fontSize: 10,
+                          color: Color(0xFF19191A),
+                          fontWeight: FontWeight.w400,
+                        ),
                       ),
                     ],
                   ),
-                  const SizedBox(
-                    height: 4,
-                  ),
+                  const SizedBox(height: 4),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 4),
                         decoration: const BoxDecoration(
-                            color: Colors.amber,
-                            borderRadius: BorderRadius.all(Radius.circular(4))),
+                          color: Colors.amber,
+                          borderRadius: BorderRadius.all(Radius.circular(4)),
+                        ),
                         child: const Padding(
-                          padding: EdgeInsets.only(
-                              left: 4, right: 4, top: 4, bottom: 4),
+                          padding: EdgeInsets.only(left: 4, right: 4, top: 4, bottom: 4),
                           child: Text(
                             '110 300',
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
-                                fontSize: 10,
-                                color: Color(0xFF19191A),
-                                fontWeight: FontWeight.w500),
+                              fontSize: 10,
+                              color: Color(0xFF19191A),
+                              fontWeight: FontWeight.w500,
+                            ),
                           ),
                         ),
                       ),
-                      const SizedBox(
-                        width: 4,
-                      ),
+                      const SizedBox(width: 4),
                       const Text(
                         'х3',
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
-                            fontSize: 14,
-                            color: AppColors.kGray300,
-                            fontWeight: FontWeight.w400),
+                          fontSize: 14,
+                          color: AppColors.kGray300,
+                          fontWeight: FontWeight.w400,
+                        ),
                       ),
                     ],
                   ),

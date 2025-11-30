@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:get/route_manager.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/feature/seller/profile/presentation/widgets/reqirect_profile_page.dart';
 import '../../../../../core/constant/generated/assets.gen.dart';
 
 class EditProfilePage extends StatefulWidget {
-  const EditProfilePage({Key? key}) : super(key: key);
+  const EditProfilePage({super.key});
 
   @override
   State<EditProfilePage> createState() => _EditProfilePageState();
@@ -27,38 +25,32 @@ class _EditProfilePageState extends State<EditProfilePage> {
         backgroundColor: AppColors.kWhite,
         elevation: 0,
         centerTitle: true,
-        title: const Text(
-          'Мои данные',
-          style: AppTextStyles.appBarTextStyle,
-        ),
+        title: const Text('Мои данные', style: AppTextStyles.appBarTextStyle),
       ),
       body: SingleChildScrollView(
         child: Column(
           children: [
             buildProfileItem(
-                iconPath: Assets.icons.jurIcon.path,
-                title: 'Юридические данные',
-                onTap: () {
-                  Get.to(ReqirectProfilePage(
-                    title: 'Юридические данные',
-                  ));
-                }),
+              iconPath: Assets.icons.jurIcon.path,
+              title: 'Юридические данные',
+              onTap: () {
+                Get.to(ReqirectProfilePage(title: 'Юридические данные'));
+              },
+            ),
             buildProfileItem(
-                iconPath: Assets.icons.propsIcon.path,
-                title: 'Реквизиты банка',
-                onTap: () {
-                  Get.to(ReqirectProfilePage(
-                    title: 'Реквизиты банка',
-                  ));
-                }),
+              iconPath: Assets.icons.propsIcon.path,
+              title: 'Реквизиты банка',
+              onTap: () {
+                Get.to(ReqirectProfilePage(title: 'Реквизиты банка'));
+              },
+            ),
             buildProfileItem(
-                iconPath: Assets.icons.phoneIcon.path,
-                title: 'Контактные данные',
-                onTap: () {
-                  Get.to(ReqirectProfilePage(
-                    title: 'Контактные данные',
-                  ));
-                }),
+              iconPath: Assets.icons.phoneIcon.path,
+              title: 'Контактные данные',
+              onTap: () {
+                Get.to(ReqirectProfilePage(title: 'Контактные данные'));
+              },
+            ),
           ],
         ),
       ),
@@ -91,12 +83,7 @@ Widget buildProfileItem({
                   borderRadius: BorderRadius.circular(12),
                 ),
                 alignment: Alignment.center,
-                child: Image.asset(
-                  iconPath,
-                  height: 20,
-                  width: 20,
-                  fit: BoxFit.contain,
-                ),
+                child: Image.asset(iconPath, height: 20, width: 20, fit: BoxFit.contain),
               ),
               const SizedBox(width: 12),
               Text(
@@ -117,14 +104,10 @@ Widget buildProfileItem({
                     onChanged: onSwitchChanged,
                     inactiveThumbColor: Colors.white,
                     activeTrackColor: AppColors.mainPurpleColor,
-                    trackOutlineWidth: MaterialStateProperty.all(0.01),
+                    trackOutlineWidth: WidgetStateProperty.all(0.01),
                   ),
                 )
-              : const Icon(
-                  Icons.arrow_forward_ios,
-                  size: 14,
-                  color: AppColors.arrowColor,
-                )
+              : const Icon(Icons.arrow_forward_ios, size: 14, color: AppColors.arrowColor),
         ],
       ),
     ),

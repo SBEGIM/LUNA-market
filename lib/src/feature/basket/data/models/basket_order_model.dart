@@ -118,8 +118,7 @@ class BasketOrderModel {
     map['expected_delivery_date'] = _expectedDeliveryDate;
     map['current_step'] = _currentStep;
     if (_basketStatusTimeline != null) {
-      map['basket_status_timeline'] =
-          _basketStatusTimeline?.map((v) => v.toJson()).toList();
+      map['basket_status_timeline'] = _basketStatusTimeline?.map((v) => v.toJson()).toList();
     }
 
     return map;
@@ -128,13 +127,7 @@ class BasketOrderModel {
 
 /// Шаг таймлайна заказа
 class BasketStatusStep {
-  BasketStatusStep({
-    String? key,
-    int? step,
-    String? title,
-    String? date,
-    bool? isDone,
-  }) {
+  BasketStatusStep({String? key, int? step, String? title, String? date, bool? isDone}) {
     _key = key;
     _step = step;
     _title = title;

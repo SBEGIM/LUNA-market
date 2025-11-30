@@ -32,9 +32,11 @@ class NewsApi {
   like(int id) async {
     final String? token = _box.read('seller_token');
 
-    final response = await http.post(Uri.parse('$baseUrl/seller/news/like'),
-        body: {'news_id': id.toString()},
-        headers: {"Authorization": "Bearer $token"});
+    final response = await http.post(
+      Uri.parse('$baseUrl/seller/news/like'),
+      body: {'news_id': id.toString()},
+      headers: {"Authorization": "Bearer $token"},
+    );
 
     return response.statusCode;
   }
@@ -42,9 +44,11 @@ class NewsApi {
   view(int id) async {
     final String? token = _box.read('seller_token');
 
-    final response = await http.post(Uri.parse('$baseUrl/seller/news/view'),
-        body: {'news_id': id.toString()},
-        headers: {"Authorization": "Bearer $token"});
+    final response = await http.post(
+      Uri.parse('$baseUrl/seller/news/view'),
+      body: {'news_id': id.toString()},
+      headers: {"Authorization": "Bearer $token"},
+    );
 
     return response.statusCode;
   }

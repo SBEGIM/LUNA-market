@@ -39,37 +39,37 @@ class ProfileEditAdminRepository {
     String? organization_fr,
     String? bank,
     String? company_name,
-  ) =>
-      _profileEditAdminToApi.edit(
-          name,
-          phone,
-          logo,
-          password_new,
-          password_old,
-          country,
-          city,
-          home,
-          street,
-          shopName,
-          iin,
-          check,
-          email,
-          card,
-          typeOrganization,
-          address,
-          kpp,
-          ogrn,
-          okved,
-          tax_authority,
-          date_register,
-          founder,
-          date_of_birth,
-          citizenship,
-          CEO,
-          organization_fr,
-          bank,
-          company_name,
-          legal_address);
+  ) => _profileEditAdminToApi.edit(
+    name,
+    phone,
+    logo,
+    password_new,
+    password_old,
+    country,
+    city,
+    home,
+    street,
+    shopName,
+    iin,
+    check,
+    email,
+    card,
+    typeOrganization,
+    address,
+    kpp,
+    ogrn,
+    okved,
+    tax_authority,
+    date_register,
+    founder,
+    date_of_birth,
+    citizenship,
+    CEO,
+    organization_fr,
+    bank,
+    company_name,
+    legal_address,
+  );
 
   Future<void> code(int? code) => _profileEditAdminToApi.code(code);
 }
@@ -78,35 +78,36 @@ class ProfileEditAdminToApi {
   final _box = GetStorage();
 
   Future<void> edit(
-      String? name,
-      String? phone,
-      String? logo,
-      String? password_new,
-      String? password_old,
-      String? country,
-      String? city,
-      String? home,
-      String? street,
-      String? shopName,
-      String? iin,
-      String? check,
-      String? email,
-      String? card,
-      bool? typeOrganization,
-      String? address,
-      String? kpp,
-      String? ogrn,
-      String? okved,
-      String? tax_authority,
-      String? date_register,
-      String? founder,
-      String? date_of_birth,
-      String? citizenship,
-      String? CEO,
-      String? organization_fr,
-      String? bank,
-      String? company_name,
-      String? legal_address) async {
+    String? name,
+    String? phone,
+    String? logo,
+    String? password_new,
+    String? password_old,
+    String? country,
+    String? city,
+    String? home,
+    String? street,
+    String? shopName,
+    String? iin,
+    String? check,
+    String? email,
+    String? card,
+    bool? typeOrganization,
+    String? address,
+    String? kpp,
+    String? ogrn,
+    String? okved,
+    String? tax_authority,
+    String? date_register,
+    String? founder,
+    String? date_of_birth,
+    String? citizenship,
+    String? CEO,
+    String? organization_fr,
+    String? bank,
+    String? company_name,
+    String? legal_address,
+  ) async {
     // seller_name = _box.read('seller_name').toString();
     final token = _box.read('seller_token').toString();
 
@@ -148,15 +149,10 @@ class ProfileEditAdminToApi {
 
     final header = {"Authorization": "Bearer $token"};
 
-    final request = http.MultipartRequest(
-      'POST',
-      Uri.parse('$baseUrl/seller/edit'),
-    );
+    final request = http.MultipartRequest('POST', Uri.parse('$baseUrl/seller/edit'));
 
     if (logo != '') {
-      request.files.add(
-        await http.MultipartFile.fromPath('image', logo!),
-      );
+      request.files.add(await http.MultipartFile.fromPath('image', logo!));
     }
     request.fields.addAll(body);
     request.headers.addAll(header);
@@ -164,8 +160,11 @@ class ProfileEditAdminToApi {
     final http.StreamedResponse response = await request.send();
     final respStr = await response.stream.bytesToString();
     if (response.statusCode == 400) {
-      Get.snackbar('Ошибка запроса!', 'Неверный телефон или пароль',
-          backgroundColor: Colors.redAccent);
+      Get.snackbar(
+        'Ошибка запроса!',
+        'Неверный телефон или пароль',
+        backgroundColor: Colors.redAccent,
+      );
       // Get.snackbar('title', 'message', backgroundColor: Colors.redAccent);
       return;
     }
@@ -186,8 +185,7 @@ class ProfileEditAdminToApi {
     _box.write('seller_check', data['check'].toString());
     _box.write('seller_card', data['card'].toString());
     _box.write('seller_userName', data['user_name'].toString());
-    _box.write(
-        'seller_type_organization', data['type_organization'].toString());
+    _box.write('seller_type_organization', data['type_organization'].toString());
 
     _box.write('seller_kpp', data['kpp'].toString());
     _box.write('seller_ogrn', data['ogrn'].toString());
@@ -207,9 +205,11 @@ class ProfileEditAdminToApi {
   Future<void> code(int? code) async {
     final token = _box.read('seller_token').toString();
 
-    final response = await http.post(Uri.parse('$baseUrl/seller/edit'),
-        headers: {"Authorization": "Bearer $token"},
-        body: {'code': code.toString()});
+    final response = await http.post(
+      Uri.parse('$baseUrl/seller/edit'),
+      headers: {"Authorization": "Bearer $token"},
+      body: {'code': code.toString()},
+    );
     if (response.statusCode == 200) {
       _box.write('shop_location_code', code.toString());
     }

@@ -18,8 +18,7 @@ class ProductCubit extends Cubit<ProductState> {
     try {
       page = 1;
       emit(LoadingState());
-      final List<ProductModel> data =
-          await productRepository.product(filter, page);
+      final List<ProductModel> data = await productRepository.product(filter, page);
       _products.clear();
       _products.addAll(data);
 
@@ -33,8 +32,7 @@ class ProductCubit extends Cubit<ProductState> {
     try {
       // emit(LoadingState());
       page++;
-      final List<ProductModel> data =
-          await productRepository.product(filter, page);
+      final List<ProductModel> data = await productRepository.product(filter, page);
 
       for (int i = 0; i < data.length; i++) {
         _products.add(data[i]);
@@ -49,8 +47,7 @@ class ProductCubit extends Cubit<ProductState> {
   Future<void> productsMbInteresting(FilterProvider filter) async {
     try {
       emit(LoadingState());
-      final List<ProductModel> data =
-          await productRepository.product(filter, page);
+      final List<ProductModel> data = await productRepository.product(filter, page);
       emit(LoadedState(data));
     } catch (e) {
       log(e.toString());
@@ -58,10 +55,7 @@ class ProductCubit extends Cubit<ProductState> {
     }
   }
 
-  void updateProductByIndex({
-    required int index,
-    required ProductModel updatedProduct,
-  }) {
+  void updateProductByIndex({required int index, required ProductModel updatedProduct}) {
     if (index < _products.length) {
       _products[index] = updatedProduct;
       emit(LoadedState(_products));

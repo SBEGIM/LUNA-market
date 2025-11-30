@@ -13,8 +13,7 @@ class ProductAdCubit extends Cubit<ProductAdState> {
   Future<void> adProducts(FilterProvider filters) async {
     try {
       emit(LoadingState());
-      final List<ProductModel> data =
-          await productAdRepository.product(filters);
+      final List<ProductModel> data = await productAdRepository.product(filters);
 
       if (data.isEmpty) {
         emit(NoDataState());

@@ -77,10 +77,10 @@ class DependenciesFactory extends AsyncFactory<DependenciesContainer> {
     // final errorTrackingManager =
     //     await ErrorTrackingManagerFactory(config, logger).create();
     final sharedPreferencesAsync = SharedPreferencesAsync();
-    final appSettingsDatasource =
-        AppSettingsDatasourceImpl(sharedPreferences: sharedPreferencesAsync);
-    final settingsBloc =
-        await SettingsBlocFactory(appSettingsDatasource).create();
+    final appSettingsDatasource = AppSettingsDatasourceImpl(
+      sharedPreferences: sharedPreferencesAsync,
+    );
+    final settingsBloc = await SettingsBlocFactory(appSettingsDatasource).create();
 
     return DependenciesContainer(
       appSettingsBloc: settingsBloc,
@@ -127,12 +127,9 @@ class SettingsBlocFactory extends AsyncFactory<AppSettingsBloc> {
 
   @override
   Future<AppSettingsBloc> create() async {
-    final appSettingsRepository = AppSettingsRepositoryImpl(
-      datasource: datasource,
-    );
+    final appSettingsRepository = AppSettingsRepositoryImpl(datasource: datasource);
 
-    final AppSettings appSettings =
-        await appSettingsRepository.getAppSettings();
+    final AppSettings appSettings = await appSettingsRepository.getAppSettings();
 
     Localization.load(appSettings.locale);
 
@@ -147,10 +144,7 @@ class SettingsBlocFactory extends AsyncFactory<AppSettingsBloc> {
 
 /// Result of composition
 final class CompositionResult {
-  const CompositionResult({
-    required this.dependencies,
-    required this.msSpent,
-  });
+  const CompositionResult({required this.dependencies, required this.msSpent});
 
   /// The dependencies container
   final DependenciesContainer dependencies;
@@ -159,7 +153,8 @@ final class CompositionResult {
   final int msSpent;
 
   @override
-  String toString() => '$CompositionResult('
+  String toString() =>
+      '$CompositionResult('
       'dependencies: $dependencies, '
       'msSpent: $msSpent'
       ')';

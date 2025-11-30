@@ -13,8 +13,7 @@ import 'package:haji_market/src/feature/home/data/model/characteristic_model.dar
 import 'package:haji_market/src/feature/tape/presentation/widgets/show_alert_report_widget.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
-void showClientSettingOptions(
-    BuildContext context, bool isAuth, String title, Function callback) {
+void showClientSettingOptions(BuildContext context, bool isAuth, String title, Function callback) {
   bool? switchValue;
   String lang = GetStorage().read('language') ?? 'Русскийй';
 
@@ -42,15 +41,11 @@ void showClientSettingOptions(
               children: [
                 // Заголовок и крестик
                 Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        title,
-                        style: AppTextStyles.size18Weight600,
-                      ),
+                      Text(title, style: AppTextStyles.size18Weight600),
                       InkWell(
                         onTap: () => Navigator.of(context).pop(),
                         child: Image.asset(
@@ -64,111 +59,110 @@ void showClientSettingOptions(
                 ),
 
                 Container(
-                    margin: EdgeInsets.symmetric(horizontal: 16),
-                    decoration: BoxDecoration(
-                        color: AppColors.kWhite,
-                        borderRadius: BorderRadius.circular(16)),
-                    child: Column(
-                      children: [
-                        buildSettingItem(
-                          onTap: () {},
-                          switchWidget: true,
-                          switchValue: switchValue,
-                          onSwitchChanged: (value) {
-                            switchValue = value;
+                  margin: EdgeInsets.symmetric(horizontal: 16),
+                  decoration: BoxDecoration(
+                    color: AppColors.kWhite,
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: Column(
+                    children: [
+                      buildSettingItem(
+                        onTap: () {},
+                        switchWidget: true,
+                        switchValue: switchValue,
+                        onSwitchChanged: (value) {
+                          switchValue = value;
+                          setState(() {});
+                        },
+                        title: 'Уведомления',
+                      ),
+                      buildSettingItem(
+                        onTap: () {
+                          final List<String> options = ['Русский', 'Казахский', 'Английский'];
+                          showModuleProfile(context, 'Язык', options, (value) {
+                            GetStorage().write('language', value);
+
+                            lang = value;
+
                             setState(() {});
-                          },
-                          title: 'Уведомления',
-                        ),
-                        buildSettingItem(
-                          onTap: () {
-                            final List<String> options = [
-                              'Русский',
-                              'Казахский',
-                              'Английский',
-                            ];
-                            showModuleProfile(context, 'Язык', options,
-                                (value) {
-                              GetStorage().write('language', value);
-
-                              lang = value;
-
-                              setState(() {});
-                            });
-                          },
-                          title: 'Язык',
-                          text: lang,
-                        ),
-                      ],
-                    )),
+                          });
+                        },
+                        title: 'Язык',
+                        text: lang,
+                      ),
+                    ],
+                  ),
+                ),
                 Container(
-                    margin: EdgeInsets.only(top: 12, left: 16, right: 16),
-                    decoration: BoxDecoration(
-                        color: AppColors.kWhite,
-                        borderRadius: BorderRadius.circular(16)),
-                    child: Column(
-                      children: [
-                        buildSettingItem(
-                          onTap: () async {
-                            if (!isAuth) {
-                              AppSnackBar.show(context, 'Войдите в аккаунт');
-                            }
+                  margin: EdgeInsets.only(top: 12, left: 16, right: 16),
+                  decoration: BoxDecoration(
+                    color: AppColors.kWhite,
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: Column(
+                    children: [
+                      buildSettingItem(
+                        onTap: () async {
+                          if (!isAuth) {
+                            AppSnackBar.show(context, 'Войдите в аккаунт');
+                          }
 
-                            final ok = await showAccountAlert(context,
-                                title: 'Выход из аккаунта',
-                                message:
-                                    'Вы уверены, что хотите выйти из аккаунта?',
-                                mode: AccountAlertMode.confirm,
-                                cancelText: 'Отмена',
-                                primaryText: 'Да',
-                                primaryColor: Colors.red);
+                          final ok = await showAccountAlert(
+                            context,
+                            title: 'Выход из аккаунта',
+                            message: 'Вы уверены, что хотите выйти из аккаунта?',
+                            mode: AccountAlertMode.confirm,
+                            cancelText: 'Отмена',
+                            primaryText: 'Да',
+                            primaryColor: Colors.red,
+                          );
 
-                            if (ok == true) {
-                              Navigator.of(context).pop();
-                              final deviceToken = _box.read('device_token');
-                              GetStorage().erase();
-                              _box.write('device_token', deviceToken);
-                              _box.write('name', 'Не авторизированный');
+                          if (ok == true) {
+                            Navigator.of(context).pop();
+                            final deviceToken = _box.read('device_token');
+                            GetStorage().erase();
+                            _box.write('device_token', deviceToken);
+                            _box.write('name', 'Не авторизированный');
 
-                              // Get.offAll(() => const ViewAuthRegisterPage(BackButton: true));
-                              BlocProvider.of<AppBloc>(context)
-                                  .add(const AppEvent.exiting());
-                            }
-                          },
-                          title: 'Выйти из аккаунта',
-                          iconPath: Assets.icons.exitIcon.path,
-                        ),
-                        buildSettingItem(
-                          onTap: () async {
-                            if (!isAuth) {
-                              AppSnackBar.show(context, 'Войдите в аккаунт');
-                            }
-                            final ok = await showAccountAlert(context,
-                                title: 'Удаление аккаунта',
-                                message:
-                                    'Вы уверены, что хотите удалить аккаунт?',
-                                mode: AccountAlertMode.confirm,
-                                cancelText: 'Отмена',
-                                primaryText: 'Да',
-                                primaryColor: Colors.red);
-                            if (ok == true) {
-                              Navigator.of(context).pop();
-                              GetStorage().remove('seller_token');
-                              final deviceToken = _box.read('device_token');
-                              GetStorage().erase();
-                              _box.write('device_token', deviceToken);
-                              _box.write('name', 'Не авторизированный');
+                            // Get.offAll(() => const ViewAuthRegisterPage(BackButton: true));
+                            BlocProvider.of<AppBloc>(context).add(const AppEvent.exiting());
+                          }
+                        },
+                        title: 'Выйти из аккаунта',
+                        iconPath: Assets.icons.exitIcon.path,
+                      ),
+                      buildSettingItem(
+                        onTap: () async {
+                          if (!isAuth) {
+                            AppSnackBar.show(context, 'Войдите в аккаунт');
+                          }
+                          final ok = await showAccountAlert(
+                            context,
+                            title: 'Удаление аккаунта',
+                            message: 'Вы уверены, что хотите удалить аккаунт?',
+                            mode: AccountAlertMode.confirm,
+                            cancelText: 'Отмена',
+                            primaryText: 'Да',
+                            primaryColor: Colors.red,
+                          );
+                          if (ok == true) {
+                            Navigator.of(context).pop();
+                            GetStorage().remove('seller_token');
+                            final deviceToken = _box.read('device_token');
+                            GetStorage().erase();
+                            _box.write('device_token', deviceToken);
+                            _box.write('name', 'Не авторизированный');
 
-                              // Get.offAll(() => const ViewAuthRegisterPage(BackButton: true));
-                              BlocProvider.of<AppBloc>(context)
-                                  .add(const AppEvent.exiting());
-                            }
-                          },
-                          widgetColor: Colors.red,
-                          title: 'Удалить аккаунт',
-                        ),
-                      ],
-                    )),
+                            // Get.offAll(() => const ViewAuthRegisterPage(BackButton: true));
+                            BlocProvider.of<AppBloc>(context).add(const AppEvent.exiting());
+                          }
+                        },
+                        widgetColor: Colors.red,
+                        title: 'Удалить аккаунт',
+                      ),
+                    ],
+                  ),
+                ),
               ],
             ),
           );
@@ -212,42 +206,35 @@ Widget buildSettingItem({
                       onChanged: onSwitchChanged,
                       inactiveThumbColor: Colors.white,
                       activeTrackColor: AppColors.mainPurpleColor,
-                      trackOutlineWidth: MaterialStateProperty.all(0.01),
+                      trackOutlineWidth: WidgetStateProperty.all(0.01),
                     ),
                   )
                 : (text == null
-                    ? (iconPath != null
-                        ? Image.asset(
-                            iconPath,
-                            height: 19,
-                            width: 19,
-                          )
-                        : Icon(
-                            Icons.arrow_forward_ios,
-                            size: 14,
-                            color: widgetColor ?? Color(0xff636366),
-                          ))
-                    : Row(
-                        children: [
-                          Text(
-                            '$text',
-                            style: AppTextStyles.size16Weight400.copyWith(
-                                color: widgetColor ?? Color(0xff636366)),
-                          ),
-                          SizedBox(width: 6),
-                          (iconPath != null
-                              ? Image.asset(
-                                  iconPath,
-                                  height: 19,
-                                  width: 19,
-                                )
-                              : Icon(
-                                  Icons.arrow_forward_ios,
-                                  size: 14,
-                                  color: widgetColor ?? AppColors.kGray300,
-                                ))
-                        ],
-                      ))
+                      ? (iconPath != null
+                            ? Image.asset(iconPath, height: 19, width: 19)
+                            : Icon(
+                                Icons.arrow_forward_ios,
+                                size: 14,
+                                color: widgetColor ?? Color(0xff636366),
+                              ))
+                      : Row(
+                          children: [
+                            Text(
+                              '$text',
+                              style: AppTextStyles.size16Weight400.copyWith(
+                                color: widgetColor ?? Color(0xff636366),
+                              ),
+                            ),
+                            SizedBox(width: 6),
+                            (iconPath != null
+                                ? Image.asset(iconPath, height: 19, width: 19)
+                                : Icon(
+                                    Icons.arrow_forward_ios,
+                                    size: 14,
+                                    color: widgetColor ?? AppColors.kGray300,
+                                  )),
+                          ],
+                        )),
           ],
         ),
       ),

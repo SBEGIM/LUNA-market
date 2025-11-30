@@ -26,10 +26,7 @@ abstract class ScreenUtil {
   static ScreenSize screenSizeOf(BuildContext context) {
     final size = MediaQuery.sizeOf(context);
     return _screenSizeFromSize(
-      orientation().whenByValue(
-        portrait: size,
-        landscape: Size(size.height, size.width),
-      ),
+      orientation().whenByValue(portrait: size, landscape: Size(size.height, size.width)),
     );
   }
 
@@ -58,20 +55,14 @@ abstract class ScreenUtil {
     // final size = ui.window.physicalSize;
     final size = ui.PlatformDispatcher.instance.views.first.physicalSize;
 
-    return size.height > size.width
-        ? Orientation.portrait
-        : Orientation.landscape;
+    return size.height > size.width ? Orientation.portrait : Orientation.landscape;
   }
 }
 
 @immutable
 class ScreenSize {
   @literal
-  const ScreenSize._(
-    this.representation,
-    this.min,
-    this.max,
-  );
+  const ScreenSize._(this.representation, this.min, this.max);
   final num min;
   final num max;
   final String representation;
@@ -118,13 +109,12 @@ class ScreenSize {
     ScreenSizeWhenResult Function()? phone,
     ScreenSizeWhenResult Function()? tablet,
     ScreenSizeWhenResult Function()? largeTablet,
-  }) =>
-      when<ScreenSizeWhenResult>(
-        smallPhone: smallPhone ?? phone ?? orElse,
-        phone: phone ?? orElse,
-        // tablet: tablet ?? orElse,
-        // largeTablet: largeTablet ?? orElse,
-      );
+  }) => when<ScreenSizeWhenResult>(
+    smallPhone: smallPhone ?? phone ?? orElse,
+    phone: phone ?? orElse,
+    // tablet: tablet ?? orElse,
+    // largeTablet: largeTablet ?? orElse,
+  );
 
   T whenByValue<T extends Object?>({
     required T phone,
@@ -152,19 +142,17 @@ class ScreenSize {
     T? phone,
     // T? tablet,
     // T? largeTablet,
-  }) =>
-      whenByValue<T>(
-        smallPhone: smallPhone ?? phone ?? orElse,
-        phone: phone ?? orElse,
-        // tablet: tablet ?? orElse,
-        // largeTablet: largeTablet ?? orElse,
-      );
+  }) => whenByValue<T>(
+    smallPhone: smallPhone ?? phone ?? orElse,
+    phone: phone ?? orElse,
+    // tablet: tablet ?? orElse,
+    // largeTablet: largeTablet ?? orElse,
+  );
 
   @override
   int get hashCode => representation.hashCode;
 
   @override
   bool operator ==(Object other) =>
-      identical(other, this) ||
-      (other is ScreenSize && representation == other.representation);
+      identical(other, this) || (other is ScreenSize && representation == other.representation);
 }

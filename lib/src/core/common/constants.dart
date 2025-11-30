@@ -19,18 +19,12 @@ mixin AppColors {
 
   static const Color mainIconPurpleColor = Color(0x106F32F8);
 
-  static const Color mainBackgroundPurpleColor = Color(
-    0x1A6F32F8,
-  );
+  static const Color mainBackgroundPurpleColor = Color(0x1A6F32F8);
 
-  static const Color boxDecorBackgroundPurpleColor = Color(
-    0x1A6F32F8,
-  );
+  static const Color boxDecorBackgroundPurpleColor = Color(0x1A6F32F8);
   static Color kMainPurpleMuted10b = const Color(0xFF6F32F8).withOpacity(0.10);
 
-  static const Color buttonBackgroundPurpleColor = Color(
-    0xFFC5ADFC,
-  );
+  static const Color buttonBackgroundPurpleColor = Color(0xFFC5ADFC);
 
   static const Color kPrimaryColor = Color(0xFF1DC4CF);
   static const Color kBlueColor = Color.fromRGBO(129, 222, 232, 1);
@@ -90,12 +84,7 @@ mixin AppColors {
 
   static const Color kAlpha12 = Color.fromRGBO(0, 0, 0, 0.12);
   static const Color kBlueAlpha = Color(0xffe5f1ff);
-  static const Color floatingActionButton = Color.fromRGBO(
-    5,
-    163,
-    87,
-    1.0,
-  );
+  static const Color floatingActionButton = Color.fromRGBO(5, 163, 87, 1.0);
   static const Color reviewStar = Color.fromRGBO(255, 195, 0, 1);
   static const Color kReviewBg = Color(0xffF7F7FC);
   static const Color arrowColor = Color.fromRGBO(8, 19, 41, 1);
@@ -187,25 +176,28 @@ mixin AppTextStyles {
   );
 
   static const defButtonTextStyle = TextStyle(
-      fontSize: 17,
-      letterSpacing: 0,
-      color: Colors.white,
-      fontWeight: FontWeight.w600,
-      fontFamily: 'SFProDisplay');
+    fontSize: 17,
+    letterSpacing: 0,
+    color: Colors.white,
+    fontWeight: FontWeight.w600,
+    fontFamily: 'SFProDisplay',
+  );
 
   static const defaultButtonTextStyle = TextStyle(
-      fontSize: 18,
-      color: Colors.black,
-      letterSpacing: 0,
-      fontWeight: FontWeight.w600,
-      fontFamily: 'SFProDisplay');
+    fontSize: 18,
+    color: Colors.black,
+    letterSpacing: 0,
+    fontWeight: FontWeight.w600,
+    fontFamily: 'SFProDisplay',
+  );
 
   static const defaultAppBarTextStyle = TextStyle(
-      fontSize: 22,
-      color: Colors.black,
-      letterSpacing: 0,
-      fontWeight: FontWeight.w700,
-      fontFamily: 'SFProDisplay');
+    fontSize: 22,
+    color: Colors.black,
+    letterSpacing: 0,
+    fontWeight: FontWeight.w700,
+    fontFamily: 'SFProDisplay',
+  );
   static const timerInReRegTextStyle = TextStyle(
     fontSize: 17,
     letterSpacing: 0,
@@ -441,52 +433,50 @@ mixin AppTextStyles {
   );
 
   static const size20Weight500 = TextStyle(
-      fontSize: 20,
-      color: Colors.black,
-      letterSpacing: 0,
-      fontWeight: FontWeight.w500,
-      fontFamily: 'Inter');
+    fontSize: 20,
+    color: Colors.black,
+    letterSpacing: 0,
+    fontWeight: FontWeight.w500,
+    fontFamily: 'Inter',
+  );
 
   static const size22Weight600 = TextStyle(
-      fontSize: 22,
-      color: Colors.black,
-      letterSpacing: 0,
-      fontWeight: FontWeight.w600,
-      fontFamily: 'SFProDisplay');
+    fontSize: 22,
+    color: Colors.black,
+    letterSpacing: 0,
+    fontWeight: FontWeight.w600,
+    fontFamily: 'SFProDisplay',
+  );
 
   static const size22Weight700 = TextStyle(
-      fontSize: 22,
-      color: Colors.black,
-      letterSpacing: 0,
-      fontWeight: FontWeight.w600,
-      fontFamily: 'SFProDisplay');
+    fontSize: 22,
+    color: Colors.black,
+    letterSpacing: 0,
+    fontWeight: FontWeight.w600,
+    fontFamily: 'SFProDisplay',
+  );
 
   static const size28Weight700 = TextStyle(
-      fontSize: 28,
-      color: Colors.black,
-      letterSpacing: 0,
-      fontWeight: FontWeight.w700,
-      fontFamily: 'SFProDisplay');
+    fontSize: 28,
+    color: Colors.black,
+    letterSpacing: 0,
+    fontWeight: FontWeight.w700,
+    fontFamily: 'SFProDisplay',
+  );
 
   static const size29Weight700 = TextStyle(
-      fontSize: 29,
-      color: Colors.black,
-      letterSpacing: 0,
-      fontWeight: FontWeight.w700,
-      fontFamily: 'SFProDisplay');
+    fontSize: 29,
+    color: Colors.black,
+    letterSpacing: 0,
+    fontWeight: FontWeight.w700,
+    fontFamily: 'SFProDisplay',
+  );
 }
 
 mixin AppDecorations {
   static const List<BoxShadow> basicShadows = [
-    BoxShadow(
-      offset: Offset(0, 2),
-      blurRadius: 24,
-      color: Color.fromRGBO(0, 0, 0, 0.08),
-    ),
-    BoxShadow(
-      blurRadius: 2,
-      color: Color.fromRGBO(0, 0, 0, 0.08),
-    ),
+    BoxShadow(offset: Offset(0, 2), blurRadius: 24, color: Color.fromRGBO(0, 0, 0, 0.08)),
+    BoxShadow(blurRadius: 2, color: Color.fromRGBO(0, 0, 0, 0.08)),
   ];
 }
 

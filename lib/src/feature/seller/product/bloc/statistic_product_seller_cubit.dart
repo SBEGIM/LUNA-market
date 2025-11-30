@@ -7,14 +7,16 @@ import '../data/repository/statistic_product_seller_repository.dart';
 class StatisticsProductSellerCubit extends Cubit<StatisticProductSellerState> {
   final StatisticsProductAdminRepository statisticsProductAdminRepo;
 
-  StatisticsProductSellerCubit({required this.statisticsProductAdminRepo})
-      : super(InitState());
+  StatisticsProductSellerCubit({required this.statisticsProductAdminRepo}) : super(InitState());
 
   Future statistics(product_id, year, month) async {
     try {
       emit(LoadingState());
-      final StatisticProductSellerModel data =
-          await statisticsProductAdminRepo.get(product_id, year, month);
+      final StatisticProductSellerModel data = await statisticsProductAdminRepo.get(
+        product_id,
+        year,
+        month,
+      );
       emit(LoadedState(data));
     } catch (e) {
       log(e.toString());

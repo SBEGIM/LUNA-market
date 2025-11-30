@@ -27,7 +27,7 @@ class _SellerServicePage extends State<SellerServicePage> {
       "buttonColor": Color(0xFFEDE6FF),
       "buttonTextColor": Colors.purple,
       "isLoading": false,
-      "type": 'push'
+      "type": 'push',
     },
     {
       "name": "CDEK",
@@ -37,7 +37,7 @@ class _SellerServicePage extends State<SellerServicePage> {
       "buttonColor": Colors.grey.shade200,
       "buttonTextColor": Colors.grey,
       "isLoading": true,
-      "type": 'delivery'
+      "type": 'delivery',
     },
     {
       "name": "Т-Банк",
@@ -47,14 +47,9 @@ class _SellerServicePage extends State<SellerServicePage> {
       "buttonColor": Colors.grey.shade200,
       "buttonTextColor": Colors.grey,
       "isLoading": false,
-      "type": 'payment'
+      "type": 'payment',
     },
-    {
-      "name": "Области продаж",
-      "status": "Не доступен",
-      "statusColor": Colors.red,
-      "type": 'zone'
-    },
+    {"name": "Области продаж", "status": "Не доступен", "statusColor": Colors.red, "type": 'zone'},
   ];
 
   final _box = GetStorage();
@@ -81,7 +76,7 @@ class _SellerServicePage extends State<SellerServicePage> {
         "buttonColor": Color.fromARGB(255, 242, 241, 246),
         "buttonTextColor": Colors.blueAccent,
         "isLoading": false,
-        "type": 'push'
+        "type": 'push',
       };
     }
 
@@ -94,7 +89,7 @@ class _SellerServicePage extends State<SellerServicePage> {
         "buttonColor": Color.fromARGB(255, 242, 241, 246),
         "buttonTextColor": Colors.blueAccent,
         "isLoading": false,
-        "type": 'payment'
+        "type": 'payment',
       };
     }
 
@@ -107,7 +102,7 @@ class _SellerServicePage extends State<SellerServicePage> {
         "buttonColor": Colors.grey.shade200,
         "buttonTextColor": Colors.green,
         "isLoading": false,
-        "type": 'delivery'
+        "type": 'delivery',
       };
     } else {
       services[1] = {
@@ -118,7 +113,7 @@ class _SellerServicePage extends State<SellerServicePage> {
         "buttonColor": Color.fromARGB(255, 242, 241, 246),
         "buttonTextColor": Colors.blueAccent,
         "isLoading": false,
-        "type": 'delivery'
+        "type": 'delivery',
       };
     }
 
@@ -137,21 +132,18 @@ class _SellerServicePage extends State<SellerServicePage> {
         services[0]['status'] = "Подключен";
         setState(() {});
 
-        Get.snackbar('Успешно', 'Пуш обновлен',
-            backgroundColor: Colors.blueAccent);
+        Get.snackbar('Успешно', 'Пуш обновлен', backgroundColor: Colors.blueAccent);
       }
     });
 
-    disposeOrganizationTypeToken =
-        _box.listenKey('seller_type_organization', (value) {
+    disposeOrganizationTypeToken = _box.listenKey('seller_type_organization', (value) {
       if (mounted) {
         print(value);
         services[2]['isLoading'] = false;
         services[2]['status'] = "Подключен";
         setState(() {});
 
-        Get.snackbar('Успешно', 'Бан обновлен на ООО',
-            backgroundColor: Colors.blueAccent);
+        Get.snackbar('Успешно', 'Бан обновлен на ООО', backgroundColor: Colors.blueAccent);
       }
     });
 
@@ -201,89 +193,96 @@ class _SellerServicePage extends State<SellerServicePage> {
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
-        child: Column(children: [
-          Flexible(
-            child: ListView.separated(
-              itemCount: services.length,
-              separatorBuilder: (context, index) => SizedBox(height: 12),
-              itemBuilder: (context, index) {
-                return Container(
-                  padding: EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    color: Color(0xFFF9F9F9),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(services[index]['name'].toString(),
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 16)),
-                      SizedBox(height: 4),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text("Статус", style: TextStyle(color: Colors.grey)),
-                          Text(services[index]['status'].toString(),
-                              style: TextStyle(
-                                  color:
-                                      services[index]['statusColor'] as Color,
-                                  fontWeight: FontWeight.w500)),
-                        ],
-                      ),
-                      if (services[index].containsKey("button")) ...[
-                        SizedBox(height: 12),
-                        GestureDetector(
-                          onTap: services[index]["isLoading"] == true
-                              ? null
-                              : () {
-                                  if (services[index]["type"] == 'delivery') {
-                                    _cdeKService();
-                                  }
-
-                                  if (services[index]["type"] == 'push') {
-                                    services[0]['isLoading'] = true;
-                                    services[0]['status'] = "В процессе";
-                                    setState(() {});
-                                    _pushService();
-                                  }
-
-                                  if (services[index]["type"] == 'payment') {
-                                    _bankService();
-                                  }
-                                },
-                          child: Container(
-                            width: double.infinity,
-                            padding: EdgeInsets.symmetric(vertical: 12),
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                              color: services[index]["buttonColor"] as Color,
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: services[index]["isLoading"] == true
-                                ? SizedBox(
-                                    height: 18,
-                                    width: 18,
-                                    child: CircularProgressIndicator(
-                                        strokeWidth: 2, color: Colors.grey),
-                                  )
-                                : Text(
-                                    services[index]["button"].toString(),
-                                    style: TextStyle(
-                                        color: services[index]
-                                            ["buttonTextColor"] as Color,
-                                        fontWeight: FontWeight.w600),
-                                  ),
-                          ),
+        child: Column(
+          children: [
+            Flexible(
+              child: ListView.separated(
+                itemCount: services.length,
+                separatorBuilder: (context, index) => SizedBox(height: 12),
+                itemBuilder: (context, index) {
+                  return Container(
+                    padding: EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: Color(0xFFF9F9F9),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          services[index]['name'].toString(),
+                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                         ),
+                        SizedBox(height: 4),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text("Статус", style: TextStyle(color: Colors.grey)),
+                            Text(
+                              services[index]['status'].toString(),
+                              style: TextStyle(
+                                color: services[index]['statusColor'] as Color,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ],
+                        ),
+                        if (services[index].containsKey("button")) ...[
+                          SizedBox(height: 12),
+                          GestureDetector(
+                            onTap: services[index]["isLoading"] == true
+                                ? null
+                                : () {
+                                    if (services[index]["type"] == 'delivery') {
+                                      _cdeKService();
+                                    }
+
+                                    if (services[index]["type"] == 'push') {
+                                      services[0]['isLoading'] = true;
+                                      services[0]['status'] = "В процессе";
+                                      setState(() {});
+                                      _pushService();
+                                    }
+
+                                    if (services[index]["type"] == 'payment') {
+                                      _bankService();
+                                    }
+                                  },
+                            child: Container(
+                              width: double.infinity,
+                              padding: EdgeInsets.symmetric(vertical: 12),
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                color: services[index]["buttonColor"] as Color,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: services[index]["isLoading"] == true
+                                  ? SizedBox(
+                                      height: 18,
+                                      width: 18,
+                                      child: CircularProgressIndicator(
+                                        strokeWidth: 2,
+                                        color: Colors.grey,
+                                      ),
+                                    )
+                                  : Text(
+                                      services[index]["button"].toString(),
+                                      style: TextStyle(
+                                        color: services[index]["buttonTextColor"] as Color,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                            ),
+                          ),
+                        ],
                       ],
-                    ],
-                  ),
-                );
-              },
+                    ),
+                  );
+                },
+              ),
             ),
-          ),
-        ]),
+          ],
+        ),
       ),
     );
   }

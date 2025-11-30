@@ -33,8 +33,6 @@ class _RegisterPageState extends State<RegisterPage> {
   bool _passwordVisible = false;
   bool _repeatPasswordVisible = false;
 
-  bool _visibleIconClear = false;
-  bool __visibleIconView = false;
   bool isButtonEnabled = false;
   RegisterDTO register = const RegisterDTO(
     surName: 'null',
@@ -122,16 +120,6 @@ class _RegisterPageState extends State<RegisterPage> {
   String title = "Основная информация";
 
   CountrySellerDto? countrySellerDto;
-
-  void _nextStep() {
-    if (filledSegments < 2) {
-      setState(() {
-        filledSegments++;
-      });
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Регистрация завершена')));
-    }
-  }
 
   List<String> metasBody = [];
 
@@ -643,9 +631,13 @@ class _RegisterPageState extends State<RegisterPage> {
                             children: [
                               InkWell(
                                 onTap: () {
-                                  setState(() {
-                                    isChecked = !isChecked;
-                                  });
+                                  showSellerLoginPhone(
+                                    context,
+                                    countryCall: (dto) {
+                                      countrySellerDto = dto;
+                                      setState(() {});
+                                    },
+                                  );
                                 },
                                 child: Image.asset(
                                   isChecked
@@ -662,7 +654,7 @@ class _RegisterPageState extends State<RegisterPage> {
                               //     visualDensity: const VisualDensity(
                               //         horizontal: 0, vertical: 0),
                               //     checkColor: Colors.white,
-                              //     // fillColor: MaterialStateProperty.resolveWith(Colors.),
+                              //     // fillColor: WidgetStateProperty.resolveWith(Colors.),
                               //     value: isChecked,
                               //     onChanged: (bool? value) {
                               //       setState(() {
@@ -738,9 +730,9 @@ class _RegisterPageState extends State<RegisterPage> {
             );
           },
         ),
-        floatingActionButton: Container(
-          margin: EdgeInsets.only(bottom: 0, left: 16, right: 16),
-          // padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+        bottomSheet: Container(
+          margin: EdgeInsets.only(bottom: 50, left: 16, right: 16),
+          padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
           child: DefaultButton(
             backgroundColor: _canProceed ? AppColors.mainPurpleColor : const Color(0xFFC5ADFC),
             text: filledCount == 1 ? 'Далее' : 'Зарегистрироваться',
@@ -780,8 +772,6 @@ class _RegisterPageState extends State<RegisterPage> {
             width: double.infinity,
           ),
         ),
-
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       ),
     );
   }

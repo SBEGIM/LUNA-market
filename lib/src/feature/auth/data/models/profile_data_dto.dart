@@ -6,11 +6,7 @@ part 'profile_data_dto.g.dart';
 
 @freezed
 sealed class ProfileDataDTO with _$ProfileDataDTO {
-  const factory ProfileDataDTO({
-    required UserDTO user,
-  }) = _ProfileDataDTO;
+  const factory ProfileDataDTO({required UserDTO user}) = _ProfileDataDTO;
 
-  factory ProfileDataDTO.fromJson(Map<String, dynamic> json) =>
-      _$ProfileDataDTOFromJson(json);
+  factory ProfileDataDTO.fromJson(Map<String, dynamic> json) => _$ProfileDataDTOFromJson(json);
 }
-

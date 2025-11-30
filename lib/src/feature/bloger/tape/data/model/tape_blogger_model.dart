@@ -1,24 +1,25 @@
 class TapeBloggerModel {
-  TapeBloggerModel(
-      {int? id,
-      int? tapeId,
-      String? name,
-      String? catName,
-      int? price,
-      String? description,
-      int? compound,
-      String? video,
-      String? image,
-      bool? inBasket,
-      bool? inReport,
-      bool? inFavorite,
-      bool? inSubscribe,
-      bool? isDelete,
-      int? viewCount,
-      int? basketCount,
-      int? shareCount,
-      Shop? shop,
-      Statistics? statistics}) {
+  TapeBloggerModel({
+    int? id,
+    int? tapeId,
+    String? name,
+    String? catName,
+    int? price,
+    String? description,
+    int? compound,
+    String? video,
+    String? image,
+    bool? inBasket,
+    bool? inReport,
+    bool? inFavorite,
+    bool? inSubscribe,
+    bool? isDelete,
+    int? viewCount,
+    int? basketCount,
+    int? shareCount,
+    Shop? shop,
+    Statistics? statistics,
+  }) {
     _id = id;
     _tapeId = tapeId;
     _name = name;
@@ -59,9 +60,7 @@ class TapeBloggerModel {
     _basketCount = json['basket_count'];
     _shareCount = json['share_count'];
     _shop = json['shop'] != null ? Shop.fromJson(json['shop']) : null;
-    _statistics = json['statistics'] != null
-        ? Statistics.fromJson(json['statistics'])
-        : null;
+    _statistics = json['statistics'] != null ? Statistics.fromJson(json['statistics']) : null;
   }
   int? _id;
   int? _tapeId;

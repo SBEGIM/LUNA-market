@@ -9,8 +9,7 @@ import '../../data/bloc/profile_edit_admin_cubit.dart';
 class AdminCardPage extends StatefulWidget {
   String? check;
   String? card;
-  AdminCardPage({required this.check, required this.card, Key? key})
-      : super(key: key);
+  AdminCardPage({required this.check, required this.card, Key? key}) : super(key: key);
 
   @override
   State<AdminCardPage> createState() => _AdminCardPageState();
@@ -20,8 +19,7 @@ class _AdminCardPageState extends State<AdminCardPage> {
   final _box = GetStorage();
 
   TextEditingController checkController = TextEditingController();
-  TextEditingController cardController =
-      MaskedTextController(mask: '****-0000-0000-0000');
+  TextEditingController cardController = MaskedTextController(mask: '****-0000-0000-0000');
 
   @override
   void initState() {
@@ -38,70 +36,69 @@ class _AdminCardPageState extends State<AdminCardPage> {
       appBar: AppBar(
         leading: Padding(
           padding: const EdgeInsets.only(left: 22.0),
-          child: CustomBackButton(onTap: () {
-            Navigator.pop(context);
-          }),
+          child: CustomBackButton(
+            onTap: () {
+              Navigator.pop(context);
+            },
+          ),
         ),
         backgroundColor: Colors.white,
         title: const Text(
           'Мои карты',
-          style: TextStyle(
-              color: AppColors.kGray900,
-              fontSize: 16,
-              fontWeight: FontWeight.w500),
+          style: TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w500),
         ),
         elevation: 0,
       ),
       body: Column(
         children: [
           Container(
-              margin: const EdgeInsets.only(top: 20, left: 16, right: 16),
-              height: 86,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(8),
-                boxShadow: const [
-                  BoxShadow(
-                    offset: Offset(0, 2),
-                    blurRadius: 12,
-                    color: Color.fromRGBO(0, 0, 0, 0.08),
-                  ),
-                ],
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Container(
-                    padding:
-                        const EdgeInsets.only(top: 16, left: 16, bottom: 2),
-                    alignment: Alignment.centerLeft,
-                    child: const Text(
-                      'Реквизит текущего счета',
-                      style: TextStyle(
-                          color: Color.fromRGBO(29, 196, 207, 1),
-                          fontSize: 12,
-                          fontWeight: FontWeight.w400),
+            margin: const EdgeInsets.only(top: 20, left: 16, right: 16),
+            height: 86,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(8),
+              boxShadow: const [
+                BoxShadow(
+                  offset: Offset(0, 2),
+                  blurRadius: 12,
+                  color: Color.fromRGBO(0, 0, 0, 0.08),
+                ),
+              ],
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Container(
+                  padding: const EdgeInsets.only(top: 16, left: 16, bottom: 2),
+                  alignment: Alignment.centerLeft,
+                  child: const Text(
+                    'Реквизит текущего счета',
+                    style: TextStyle(
+                      color: Color.fromRGBO(29, 196, 207, 1),
+                      fontSize: 12,
+                      fontWeight: FontWeight.w400,
                     ),
                   ),
-                  Container(
-                    padding: const EdgeInsets.only(left: 16),
-                    alignment: Alignment.centerLeft,
-                    child: TextField(
-                      controller: checkController,
-                      decoration: const InputDecoration(
-                        border: InputBorder.none,
-                        hintText: 'Укажите реквизиты',
-                        hintStyle: TextStyle(
-                            fontSize: 14, fontWeight: FontWeight.w400),
-                        enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.white),
-                          // borderRadius: BorderRadius.circular(3),
-                        ),
+                ),
+                Container(
+                  padding: const EdgeInsets.only(left: 16),
+                  alignment: Alignment.centerLeft,
+                  child: TextField(
+                    controller: checkController,
+                    decoration: const InputDecoration(
+                      border: InputBorder.none,
+                      hintText: 'Укажите реквизиты',
+                      hintStyle: TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.white),
+                        // borderRadius: BorderRadius.circular(3),
                       ),
                     ),
                   ),
-                ],
-              )),
+                ),
+              ],
+            ),
+          ),
           // Padding(
           //   padding: const EdgeInsets.all(16.0),
           //   child: Container(
@@ -156,40 +153,40 @@ class _AdminCardPageState extends State<AdminCardPage> {
       ),
       bottomSheet: Container(
         color: Colors.transparent,
-        padding:
-            const EdgeInsets.only(left: 16, right: 16, top: 26, bottom: 26),
+        padding: const EdgeInsets.only(left: 16, right: 16, top: 26, bottom: 26),
         child: InkWell(
           onTap: () async {
             await BlocProvider.of<ProfileEditAdminCubit>(context).edit(
-                '',
-                '',
-                '',
-                '',
-                '',
-                '',
-                '',
-                '',
-                '',
-                '',
-                '',
-                checkController.text,
-                '',
-                cardController.text,
-                null,
-                '',
-                '',
-                '',
-                '',
-                '',
-                '',
-                '',
-                '',
-                '',
-                '',
-                '',
-                '',
-                '',
-                '');
+              '',
+              '',
+              '',
+              '',
+              '',
+              '',
+              '',
+              '',
+              '',
+              '',
+              '',
+              checkController.text,
+              '',
+              cardController.text,
+              null,
+              '',
+              '',
+              '',
+              '',
+              '',
+              '',
+              '',
+              '',
+              '',
+              '',
+              '',
+              '',
+              '',
+              '',
+            );
             // print('object');
             //  final edit = BlocProvider.of<EditAdminCubit>(context);
             // await edit.edit('', '', '', '', checkController.text, '', null);
@@ -200,20 +197,18 @@ class _AdminCardPageState extends State<AdminCardPage> {
             Navigator.pop(context);
           },
           child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                color: AppColors.kPrimaryColor,
-              ),
-              width: MediaQuery.of(context).size.width,
-              padding: const EdgeInsets.all(16),
-              child: const Text(
-                'Сохранить',
-                style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w400,
-                    fontSize: 16),
-                textAlign: TextAlign.center,
-              )),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              color: AppColors.kPrimaryColor,
+            ),
+            width: MediaQuery.of(context).size.width,
+            padding: const EdgeInsets.all(16),
+            child: const Text(
+              'Сохранить',
+              style: TextStyle(color: Colors.white, fontWeight: FontWeight.w400, fontSize: 16),
+              textAlign: TextAlign.center,
+            ),
+          ),
         ),
       ),
     );

@@ -33,13 +33,12 @@ class TapeApi {
 
     final response = await http.get(
       Uri.parse(
-          '$baseUrl/blogger/tape?token=${token.toString()}&blogger_id=${sellerId.toString()}&search=$search'),
+        '$baseUrl/blogger/tape?token=${token.toString()}&blogger_id=${sellerId.toString()}&search=$search',
+      ),
     );
 
     final data = jsonDecode(response.body);
 
-    return (data['data'] as List)
-        .map((e) => TapeBloggerModel.fromJson(e))
-        .toList();
+    return (data['data'] as List).map((e) => TapeBloggerModel.fromJson(e)).toList();
   }
 }

@@ -481,10 +481,7 @@ class Shop {
 }
 
 class Bloc {
-  Bloc({
-    int? count,
-    int? price,
-  }) {
+  Bloc({int? count, int? price}) {
     _count = count;
     _price = price;
   }
@@ -509,11 +506,7 @@ class Bloc {
 }
 
 class ProductColors {
-  ProductColors({
-    int? id,
-    String? name,
-    String? value,
-  }) {
+  ProductColors({int? id, String? name, String? value}) {
     _id = id;
     _name = name;
     _value = value;
@@ -543,11 +536,7 @@ class ProductColors {
 }
 
 class Characteristic {
-  Characteristic({
-    int? id,
-    String? name,
-    String? value,
-  }) {
+  Characteristic({int? id, String? name, String? value}) {
     _id = id;
     _name = name;
     _value = value;

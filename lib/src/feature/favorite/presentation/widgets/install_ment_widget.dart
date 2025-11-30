@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 
 class InstallMentWidget extends StatelessWidget {
-  const InstallMentWidget({
-    Key? key,
-  }) : super(key: key);
+  const InstallMentWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -14,47 +12,35 @@ class InstallMentWidget extends StatelessWidget {
           padding: const EdgeInsets.all(4),
           decoration: const BoxDecoration(
             color: AppColors.kPrimaryColor,
-// borderRadius: BorderRadius.circular(4)
+            // borderRadius: BorderRadius.circular(4)
           ),
-          child: const Text(
-            '3 мес',
-            style: TextStyle(color: Colors.white),
-          ),
+          child: const Text('3 мес', style: TextStyle(color: Colors.white)),
         ),
         Container(
           padding: const EdgeInsets.all(4),
           decoration: BoxDecoration(
             border: Border.all(color: AppColors.kPrimaryColor),
-// borderRadius: BorderRadius.circular(4)
+            // borderRadius: BorderRadius.circular(4)
           ),
-          child: const Text(
-            '6 мес',
-            style: TextStyle(color: AppColors.kPrimaryColor),
-          ),
+          child: const Text('6 мес', style: TextStyle(color: AppColors.kPrimaryColor)),
         ),
         Container(
           padding: const EdgeInsets.all(4),
           decoration: BoxDecoration(
             border: Border.all(color: AppColors.kPrimaryColor),
             // color: Col,
-// borderRadius: BorderRadius.circular(4)
+            // borderRadius: BorderRadius.circular(4)
           ),
-          child: const Text(
-            '12 мес',
-            style: TextStyle(color: AppColors.kPrimaryColor),
-          ),
+          child: const Text('12 мес', style: TextStyle(color: AppColors.kPrimaryColor)),
         ),
         Container(
           padding: const EdgeInsets.all(4),
           decoration: BoxDecoration(
             border: Border.all(color: AppColors.kPrimaryColor),
             // color: AppColors.kPrimaryColor,
-// borderRadius: BorderRadius.circular(4)
+            // borderRadius: BorderRadius.circular(4)
           ),
-          child: const Text(
-            '24 мес',
-            style: TextStyle(color: AppColors.kPrimaryColor),
-          ),
+          child: const Text('24 мес', style: TextStyle(color: AppColors.kPrimaryColor)),
         ),
       ],
     );

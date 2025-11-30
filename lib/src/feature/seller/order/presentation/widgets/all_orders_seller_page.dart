@@ -80,9 +80,9 @@ class _AllOrdersSellerPageState extends State<AllOrdersSellerPage> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: const EdgeInsets.only(left: 0, right: 0, top: 8, bottom: 100),
-        child: BlocBuilder<BasketSellerCubit, BasketAdminState>(
-            builder: (context, state) {
+      padding: const EdgeInsets.only(left: 0, right: 0, top: 8, bottom: 100),
+      child: BlocBuilder<BasketSellerCubit, BasketAdminState>(
+        builder: (context, state) {
           if (state is ErrorState) {
             return Center(
               child: Text(
@@ -95,8 +95,7 @@ class _AllOrdersSellerPageState extends State<AllOrdersSellerPage> {
           if (state is LoadedState) {
             return SmartRefresher(
               onRefresh: () {
-                BlocProvider.of<BasketSellerCubit>(context)
-                    .basketOrderShow('fbs');
+                BlocProvider.of<BasketSellerCubit>(context).basketOrderShow('fbs');
                 _controller.refreshCompleted();
               },
               controller: _controller,
@@ -105,31 +104,27 @@ class _AllOrdersSellerPageState extends State<AllOrdersSellerPage> {
                 itemCount: state.basketOrderModel.length,
                 itemBuilder: (context, index) {
                   return Container(
-                      padding: const EdgeInsets.only(
-                          left: 16, right: 16, bottom: 16),
-                      child: SellerMyOrderCardWidget(
-                          basketOrder: state.basketOrderModel[index]));
+                    padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
+                    child: SellerMyOrderCardWidget(basketOrder: state.basketOrderModel[index]),
+                  );
                 },
               ),
             );
           } else {
             return SmartRefresher(
               onRefresh: () {
-                BlocProvider.of<BasketSellerCubit>(context)
-                    .basketOrderShow('fbs');
+                BlocProvider.of<BasketSellerCubit>(context).basketOrderShow('fbs');
                 _controller.refreshCompleted();
               },
               controller: _controller,
               child: const Column(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Center(
-                      child: CircularProgressIndicator(
-                          color: Colors.indigoAccent)),
-                ],
+                children: [Center(child: CircularProgressIndicator(color: Colors.indigoAccent))],
               ),
             );
           }
-        }));
+        },
+      ),
+    );
   }
 }

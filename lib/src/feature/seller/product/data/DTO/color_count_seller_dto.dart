@@ -4,9 +4,5 @@ class ColorCountSellerDto {
 
   final String count;
 
-  const ColorCountSellerDto({
-    required this.color_id,
-    required this.name,
-    required this.count,
-  });
+  const ColorCountSellerDto({required this.color_id, required this.name, required this.count});
 }

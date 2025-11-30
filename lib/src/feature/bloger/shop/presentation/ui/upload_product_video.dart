@@ -58,7 +58,8 @@ class _UploadProductVideoPageState extends State<UploadProductVideoPage> {
         ? await _picker.pickVideo(source: ImageSource.camera)
         : await _picker.pickVideo(
             source: ImageSource.gallery,
-            maxDuration: const Duration(minutes: 2));
+            maxDuration: const Duration(minutes: 2),
+          );
 
     setState(() {
       _video = video;
@@ -93,13 +94,9 @@ class _UploadProductVideoPageState extends State<UploadProductVideoPage> {
           onPressed: () {
             Navigator.pop(context);
           },
-          icon: Image.asset(
-            Assets.icons.defaultBackIcon.path,
-            scale: 1.9,
-          ),
+          icon: Image.asset(Assets.icons.defaultBackIcon.path, scale: 1.9),
         ),
-        title: const Text('Добавить видеообзор',
-            style: AppTextStyles.size18Weight600),
+        title: const Text('Добавить видеообзор', style: AppTextStyles.size18Weight600),
         elevation: 0,
       ),
       body: Container(
@@ -107,8 +104,7 @@ class _UploadProductVideoPageState extends State<UploadProductVideoPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Прикрепите видеообзор товара',
-                style: AppTextStyles.size16Weight600),
+            Text('Прикрепите видеообзор товара', style: AppTextStyles.size16Weight600),
             const SizedBox(height: 12),
             GestureDetector(
               onTap: () async {
@@ -117,17 +113,10 @@ class _UploadProductVideoPageState extends State<UploadProductVideoPage> {
                   return;
                 }
                 final List<Map<String, String>> options = [
-                  {
-                    'title': 'Выбрать из галереи',
-                    'iconPath': Assets.icons.galleryIcon.path,
-                  },
-                  {
-                    'title': 'Открыть камеру',
-                    'iconPath': Assets.icons.cameraIcon.path,
-                  },
+                  {'title': 'Выбрать из галереи', 'iconPath': Assets.icons.galleryIcon.path},
+                  {'title': 'Открыть камеру', 'iconPath': Assets.icons.cameraIcon.path},
                 ];
-                showUploadMediaPicker(context, 'Загрузить видео', options,
-                    (value) {
+                showUploadMediaPicker(context, 'Загрузить видео', options, (value) {
                   context.router.pop();
                   switch (value) {
                     case 'Выбрать из галереи':
@@ -174,17 +163,16 @@ class _UploadProductVideoPageState extends State<UploadProductVideoPage> {
                 width: 120,
                 height: 120,
                 decoration: BoxDecoration(
-                    color: AppColors.kGray1,
-                    borderRadius: BorderRadius.circular(16)),
+                  color: AppColors.kGray1,
+                  borderRadius: BorderRadius.circular(16),
+                ),
                 child: DottedBorder(
                   dashPattern: [4, 4],
                   strokeWidth: 1,
                   color: Color(0xff8E8E93),
                   radius: Radius.circular(16),
                   borderType: BorderType.RRect,
-                  child: (_video != null &&
-                          _controller != null &&
-                          _controller!.value.isInitialized)
+                  child: (_video != null && _controller != null && _controller!.value.isInitialized)
                       ? Stack(
                           children: [
                             Center(
@@ -233,14 +221,14 @@ class _UploadProductVideoPageState extends State<UploadProductVideoPage> {
               width: 358,
               padding: EdgeInsets.all(16),
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(16),
-                  color: Color(0xffF7F7F7)),
+                borderRadius: BorderRadius.circular(16),
+                color: Color(0xffF7F7F7),
+              ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Требования к видео',
-                      style: AppTextStyles.size16Weight600),
+                  Text('Требования к видео', style: AppTextStyles.size16Weight600),
                   const SizedBox(height: 16),
                   Row(
                     children: [
@@ -267,10 +255,7 @@ class _UploadProductVideoPageState extends State<UploadProductVideoPage> {
                         height: 20,
                       ),
                       SizedBox(width: 10),
-                      const Text(
-                        'Формат — mp4,mov',
-                        style: AppTextStyles.statisticsTextStyle,
-                      ),
+                      const Text('Формат — mp4,mov', style: AppTextStyles.statisticsTextStyle),
                     ],
                   ),
                   const SizedBox(height: 12),
@@ -283,10 +268,7 @@ class _UploadProductVideoPageState extends State<UploadProductVideoPage> {
                         height: 20,
                       ),
                       SizedBox(width: 10),
-                      const Text(
-                        'Размер — 4 ГБ',
-                        style: AppTextStyles.statisticsTextStyle,
-                      ),
+                      const Text('Размер — 4 ГБ', style: AppTextStyles.statisticsTextStyle),
                     ],
                   ),
                   const SizedBox(height: 12),
@@ -309,12 +291,10 @@ class _UploadProductVideoPageState extends State<UploadProductVideoPage> {
               ),
             ),
             Flexible(
-              child: ConstrainedBox(
-                  constraints: BoxConstraints(maxHeight: 170, minHeight: 170)),
+              child: ConstrainedBox(constraints: BoxConstraints(maxHeight: 170, minHeight: 170)),
             ),
             Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 7.5, vertical: 16),
+              padding: const EdgeInsets.symmetric(horizontal: 7.5, vertical: 16),
               child: SizedBox(
                 height: 60,
                 child: Row(
@@ -342,25 +322,25 @@ class _UploadProductVideoPageState extends State<UploadProductVideoPage> {
                         width: 311,
                         child: RichText(
                           text: TextSpan(
-                            style: AppTextStyles.size14Weight400
-                                .copyWith(color: Color(0xFF8E8E93)),
+                            style: AppTextStyles.size14Weight400.copyWith(color: Color(0xFF8E8E93)),
                             children: [
                               TextSpan(text: 'Размещая рекламные материалы, '),
                               TextSpan(
-                                  text: 'вы принимаете условия ',
-                                  style:
-                                      TextStyle(fontWeight: FontWeight.bold)),
+                                text: 'вы принимаете условия ',
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
                               TextSpan(
-                                  text:
-                                      'Типового договора на оказание рекламных услуг.',
-                                  style: TextStyle(
-                                      decoration: TextDecoration.underline,
-                                      color: AppColors.mainPurpleColor)),
+                                text: 'Типового договора на оказание рекламных услуг.',
+                                style: TextStyle(
+                                  decoration: TextDecoration.underline,
+                                  color: AppColors.mainPurpleColor,
+                                ),
+                              ),
                             ],
                           ),
                         ),
                       ),
-                    )
+                    ),
                   ],
                 ),
               ),
@@ -385,43 +365,41 @@ class _UploadProductVideoPageState extends State<UploadProductVideoPage> {
           return ColoredBox(
             color: AppColors.kWhite,
             child: InkWell(
-                onTap: () async {
-                  if (_video != null &&
-                      state is! LoadingState &&
-                      check == true) {
-                    button = true;
+              onTap: () async {
+                if (_video != null && state is! LoadingState && check == true) {
+                  button = true;
 
-                    await BlocProvider.of<BloggerTapeUploadCubit>(context)
-                        .uploadVideo(widget.id.toString(), _video!.path);
-                  }
-                },
-                child: Container(
-                    height: 52,
-                    padding: EdgeInsets.symmetric(horizontal: 16),
-                    margin: EdgeInsets.only(
-                        bottom: 42, top: 16, left: 16, right: 16),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(16),
-                      color: (_video != null && check == true)
-                          ? AppColors.mainPurpleColor
-                          : AppColors.mainPurpleColor.withOpacity(0.3),
-                    ),
-                    width: MediaQuery.of(context).size.width,
-                    alignment: Alignment.center,
-                    // padding: const EdgeInsets.only(left: 16, right: 16),
-                    child: state is LoadingState
-                        ? SizedBox(
-                            width: 20,
-                            height: 20,
-                            child: const CircularProgressIndicator(
-                              color: AppColors.kWhite,
-                            ))
-                        : Text(
-                            'Опубликовать',
-                            style: AppTextStyles.size18Weight600
-                                .copyWith(color: AppColors.kWhite),
-                            textAlign: TextAlign.center,
-                          ))),
+                  await BlocProvider.of<BloggerTapeUploadCubit>(
+                    context,
+                  ).uploadVideo(widget.id.toString(), _video!.path);
+                }
+              },
+              child: Container(
+                height: 52,
+                padding: EdgeInsets.symmetric(horizontal: 16),
+                margin: EdgeInsets.only(bottom: 42, top: 16, left: 16, right: 16),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(16),
+                  color: (_video != null && check == true)
+                      ? AppColors.mainPurpleColor
+                      : AppColors.mainPurpleColor.withOpacity(0.3),
+                ),
+                width: MediaQuery.of(context).size.width,
+                alignment: Alignment.center,
+                // padding: const EdgeInsets.only(left: 16, right: 16),
+                child: state is LoadingState
+                    ? SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: const CircularProgressIndicator(color: AppColors.kWhite),
+                      )
+                    : Text(
+                        'Опубликовать',
+                        style: AppTextStyles.size18Weight600.copyWith(color: AppColors.kWhite),
+                        textAlign: TextAlign.center,
+                      ),
+              ),
+            ),
           );
         },
       ),

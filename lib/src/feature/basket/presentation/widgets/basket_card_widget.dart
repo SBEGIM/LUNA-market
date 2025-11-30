@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_storage/get_storage.dart';
@@ -14,16 +13,17 @@ class BasketProductCardWidget extends StatefulWidget {
   final BasketShowModel basketProducts;
   final int count;
   final String fulfillment;
-  bool isChecked;
+  final bool isChecked;
   final void Function() onCheckedChanged;
-  BasketProductCardWidget({
+
+  const BasketProductCardWidget({
     required this.count,
     required this.basketProducts,
     required this.fulfillment,
     required this.isChecked,
     required this.onCheckedChanged,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   State<BasketProductCardWidget> createState() => _BasketProductCardWidgetState();
@@ -193,7 +193,7 @@ class _BasketProductCardWidgetState extends State<BasketProductCardWidget> {
                 SizedBox(
                   width: 234,
                   child: Text(
-                    '${widget.basketProducts.product?.name ?? ''}',
+                    '${widget.basketProducts.product?.name}',
                     style: AppTextStyles.size13Weight400.copyWith(color: Color(0xff636366)),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
@@ -242,7 +242,7 @@ class _BasketProductCardWidgetState extends State<BasketProductCardWidget> {
                                 );
 
                                 basketCount--;
-                                int bottomPrice = GetStorage().read('bottomPrice');
+                                GetStorage().read('bottomPrice');
                                 int bottomCount = GetStorage().read('bottomCount');
                                 bottomCount--;
 
@@ -255,13 +255,6 @@ class _BasketProductCardWidgetState extends State<BasketProductCardWidget> {
                                                 (widget.basketProducts.product!.compound!.toInt() /
                                                     100))
                                             .toInt())));
-
-                                bottomPrice -=
-                                    ((widget.basketProducts.product!.price!.toInt() -
-                                    (widget.basketProducts.product!.price!.toInt() *
-                                            (widget.basketProducts.product!.compound!.toInt() /
-                                                100))
-                                        .toInt()));
 
                                 if (basketCount == 0) {
                                   await BlocProvider.of<BasketCubit>(context).basketShow();

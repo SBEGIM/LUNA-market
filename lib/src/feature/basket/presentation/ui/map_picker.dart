@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -13,7 +12,6 @@ import 'package:haji_market/src/feature/basket/data/DTO/map_geo_dto.dart';
 import 'package:haji_market/src/feature/basket/bloc/cdek_office_cubit.dart';
 import 'package:haji_market/src/feature/basket/bloc/cdek_office_state.dart';
 import 'package:yandex_mapkit/yandex_mapkit.dart';
-import 'package:http/http.dart' as http;
 
 @RoutePage()
 class MapPickerPage extends StatefulWidget {
@@ -22,13 +20,7 @@ class MapPickerPage extends StatefulWidget {
   final double? lat;
   final double? long;
 
-  const MapPickerPage({
-    Key? key,
-    this.mapGeo,
-    this.cc,
-    this.lat,
-    this.long,
-  }) : super(key: key);
+  const MapPickerPage({super.key, this.mapGeo, this.cc, this.lat, this.long});
 
   @override
   State<MapPickerPage> createState() => _MapPickerPageState();
@@ -74,18 +66,12 @@ class _MapPickerPageState extends State<MapPickerPage> {
           ),
           icon: PlacemarkIcon.single(
             PlacemarkIconStyle(
-              image: BitmapDescriptor.fromAssetImage(
-                Assets.icons.mapLocation.path,
-              ),
+              image: BitmapDescriptor.fromAssetImage(Assets.icons.mapLocation.path),
               scale: 1,
             ),
           ),
           onTap: (mapObject, point) {
-            AppSnackBar.show(
-              context,
-              data[i].addressComment!,
-              type: AppSnackType.success,
-            );
+            AppSnackBar.show(context, data[i].addressComment!, type: AppSnackType.success);
             place = data[i].fullAddress;
           },
         ),
@@ -97,10 +83,7 @@ class _MapPickerPageState extends State<MapPickerPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Способ доставки',
-          style: AppTextStyles.size18Weight600,
-        ),
+        title: const Text('Способ доставки', style: AppTextStyles.size18Weight600),
         backgroundColor: Colors.white,
       ),
       body: BlocConsumer<CdekOfficeCubit, CdekOfficeState>(
@@ -108,10 +91,7 @@ class _MapPickerPageState extends State<MapPickerPage> {
         builder: (context, state) {
           if (state is ErrorState) {
             return Center(
-              child: Text(
-                state.message,
-                style: const TextStyle(color: Colors.red),
-              ),
+              child: Text(state.message, style: const TextStyle(color: Colors.red)),
             );
           }
 
@@ -121,13 +101,10 @@ class _MapPickerPageState extends State<MapPickerPage> {
             return Stack(
               children: <Widget>[
                 YandexMap(
-                  onMapCreated:
-                      (YandexMapController yandexMapController) async {
+                  onMapCreated: (YandexMapController yandexMapController) async {
                     controller = yandexMapController;
                     controller!.moveCamera(
-                      CameraUpdate.newCameraPosition(
-                        CameraPosition(target: _point!, zoom: 14),
-                      ),
+                      CameraUpdate.newCameraPosition(CameraPosition(target: _point!, zoom: 14)),
                       animation: const MapAnimation(duration: 3.0),
                     );
                   },
@@ -156,7 +133,7 @@ class _MapPickerPageState extends State<MapPickerPage> {
                                   color: Color(0x33000000),
                                   offset: Offset(0, 1),
                                   blurRadius: 4,
-                                )
+                                ),
                               ],
                               color: Color(0xe5fefefe),
                               borderRadius: BorderRadius.only(
@@ -164,10 +141,7 @@ class _MapPickerPageState extends State<MapPickerPage> {
                                 topRight: Radius.circular(24),
                               ),
                             ),
-                            child: Icon(
-                              Icons.add,
-                              color: AppColors.mainPurpleColor,
-                            ),
+                            child: Icon(Icons.add, color: AppColors.mainPurpleColor),
                           ),
                         ),
                         GestureDetector(
@@ -186,7 +160,7 @@ class _MapPickerPageState extends State<MapPickerPage> {
                                   color: Color(0x33000000),
                                   offset: Offset(0, 1),
                                   blurRadius: 4,
-                                )
+                                ),
                               ],
                               color: Color(0xe5fefefe),
                               borderRadius: BorderRadius.only(
@@ -194,10 +168,7 @@ class _MapPickerPageState extends State<MapPickerPage> {
                                 bottomRight: Radius.circular(24),
                               ),
                             ),
-                            child: Icon(
-                              Icons.remove,
-                              color: AppColors.mainPurpleColor,
-                            ),
+                            child: Icon(Icons.remove, color: AppColors.mainPurpleColor),
                           ),
                         ),
                       ],
@@ -216,10 +187,7 @@ class _MapPickerPageState extends State<MapPickerPage> {
 
                           if (!mounted || controller == null) return;
 
-                          final myPoint = Point(
-                            latitude: loc.latitude,
-                            longitude: loc.longitude,
-                          );
+                          final myPoint = Point(latitude: loc.latitude, longitude: loc.longitude);
 
                           controller!.moveCamera(
                             CameraUpdate.newCameraPosition(
@@ -238,11 +206,7 @@ class _MapPickerPageState extends State<MapPickerPage> {
                       child: SizedBox(
                         height: 104,
                         width: 104,
-                        child: Center(
-                          child: Image.asset(
-                            Assets.icons.userLocation.path,
-                          ),
-                        ),
+                        child: Center(child: Image.asset(Assets.icons.userLocation.path)),
                       ),
                     ),
                   ),
@@ -250,11 +214,7 @@ class _MapPickerPageState extends State<MapPickerPage> {
               ],
             );
           } else {
-            return const Center(
-              child: CircularProgressIndicator(
-                color: AppColors.mainPurpleColor,
-              ),
-            );
+            return const Center(child: CircularProgressIndicator(color: AppColors.mainPurpleColor));
           }
         },
       ),
@@ -265,14 +225,10 @@ class _MapPickerPageState extends State<MapPickerPage> {
           // возвращаем значение наверх
           context.router.pop<String>(place!);
         },
-        style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all(Colors.white),
-        ),
+        style: ButtonStyle(backgroundColor: WidgetStateProperty.all(Colors.white)),
         child: Container(
           height: 52,
-          margin: EdgeInsets.only(
-            bottom: MediaQuery.of(context).size.height / 40,
-          ),
+          margin: EdgeInsets.only(bottom: MediaQuery.of(context).size.height / 40),
           decoration: BoxDecoration(
             color: AppColors.mainPurpleColor,
             border: Border.all(color: Colors.grey),
@@ -281,11 +237,7 @@ class _MapPickerPageState extends State<MapPickerPage> {
           child: const Center(
             child: Text(
               'Заберу отсюда',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 15,
-                fontWeight: FontWeight.w600,
-              ),
+              style: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.w600),
             ),
           ),
         ),

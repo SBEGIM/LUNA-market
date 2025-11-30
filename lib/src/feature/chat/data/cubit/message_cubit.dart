@@ -19,8 +19,7 @@ class MessageCubit extends Cubit<MessageState> {
     try {
       _page = 1;
       emit(LoadingState());
-      final List<MessageDto> data =
-          await messageRepository.messageList(_page, chatId, userId);
+      final List<MessageDto> data = await messageRepository.messageList(_page, chatId, userId);
       _message = data;
       emit(LoadedState(data));
     } catch (e) {
@@ -35,8 +34,7 @@ class MessageCubit extends Cubit<MessageState> {
       //  print(_page++);
       // emit(LoadingState());
 
-      final List<MessageDto> data =
-          await messageRepository.messageList(_page, chatId, userId);
+      final List<MessageDto> data = await messageRepository.messageList(_page, chatId, userId);
       if (data.isNotEmpty) {
         _page--;
       }

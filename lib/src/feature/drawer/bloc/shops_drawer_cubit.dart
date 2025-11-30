@@ -13,8 +13,7 @@ class ShopsDrawerCubit extends Cubit<ShopsDrawerState> {
   Future<void> shopsDrawer(int? cat_id) async {
     try {
       emit(LoadingState());
-      final List<ShopsDrawerModel> data =
-          await shopsDrawerRepository.shopsDrawer(cat_id);
+      final List<ShopsDrawerModel> data = await shopsDrawerRepository.shopsDrawer(cat_id);
 
       emit(LoadedState(data));
     } catch (e) {
