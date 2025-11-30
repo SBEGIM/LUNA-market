@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/route_manager.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/feature/app/bloc/app_bloc.dart';
@@ -25,8 +24,6 @@ class _GuestUserPageState extends State<GuestUserPage> {
     {'icon': Assets.icons.arFlagIcon.path, 'name': 'Армения'},
     {'icon': Assets.icons.uzFlagIcon.path, 'name': 'Узбекстан'},
   ];
-
-  int _select = -1;
 
   @override
   Widget build(BuildContext context) {

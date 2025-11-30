@@ -16,7 +16,6 @@ class AppSnackBar {
     _removeCurrent();
 
     final overlay = Overlay.of(context, rootOverlay: true);
-    if (overlay == null) return;
 
     _entry = OverlayEntry(
       builder: (_) =>
@@ -103,7 +102,6 @@ class _SnackHostState extends State<_SnackHost> with SingleTickerProviderStateMi
         icon = Icons.info_rounded;
         break;
       case AppSnackType.error:
-      default:
         badge = const Color(0xFFFF3B30);
         icon = Icons.close_rounded;
     }
@@ -129,7 +127,7 @@ class _SnackHostState extends State<_SnackHost> with SingleTickerProviderStateMi
                       borderRadius: BorderRadius.circular(16),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withOpacity(0.06),
+                          color: Colors.black.withValues(alpha: .06),
                           blurRadius: 20,
                           offset: const Offset(0, 8),
                         ),

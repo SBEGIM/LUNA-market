@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/feature/app/router/app_router.dart';
-// import 'package:haji_market/src/feature/drawer/bloc/country_cubit.dart'
-//     as countryCubit;
 
 // ignore: unused_element
 const _tag = 'Base';
@@ -14,7 +12,7 @@ class Base extends StatefulWidget {
   const Base({super.key, this.index});
 
   @override
-  _BaseState createState() => _BaseState();
+  State<Base> createState() => _BaseState();
 }
 
 class _BaseState extends State<Base> with TickerProviderStateMixin {

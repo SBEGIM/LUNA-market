@@ -6,16 +6,15 @@ import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/feature/app/presentation/guest_user_page.dart';
 import 'package:haji_market/src/feature/app/widget/show_city_widget.dart';
 import 'package:haji_market/src/feature/auth/presentation/widgets/default_button.dart';
-import 'package:haji_market/src/feature/basket/presentation/widgets/show_alert_city_widget.dart';
 import 'package:haji_market/src/feature/drawer/bloc/city_cubit.dart';
 import 'package:haji_market/src/feature/home/data/model/city_model.dart';
 import '../../../core/constant/generated/assets.gen.dart';
 
 class GeoPositionPage extends StatefulWidget {
-  int contryId;
-  String countryCode;
+  final int contryId;
+  final String countryCode;
 
-  GeoPositionPage({required this.contryId, required this.countryCode, super.key});
+  const GeoPositionPage({required this.contryId, required this.countryCode, super.key});
 
   @override
   State<GeoPositionPage> createState() => _GeoPositionPageState();
@@ -30,10 +29,6 @@ class _GeoPositionPageState extends State<GeoPositionPage> {
     {'icon': Assets.icons.arFlagIcon.path, 'name': 'Армения'},
     {'icon': Assets.icons.uzFlagIcon.path, 'name': 'Узбекстан'},
   ];
-
-  int _select = -1;
-
-  List<CityModel> _cities = [];
 
   @override
   void initState() {
@@ -98,11 +93,13 @@ class _GeoPositionPageState extends State<GeoPositionPage> {
                 GetStorage().write('country', 'Казахстан');
                 GetStorage().write('user_country_id', widget.contryId.toString());
 
-                List<CityModel> _cities = await BlocProvider.of<CityCubit>(
+                List<CityModel> cities = await BlocProvider.of<CityCubit>(
                   context,
                 ).citiesList(widget.countryCode);
 
-                showCitiesOptions(context, 'Выберите город', _cities, (CityModel value) {
+                if (!context.mounted) return;
+
+                showCitiesOptions(context, 'Выберите город', cities, (CityModel value) {
                   GetStorage().write('city_shop', value.city);
                 });
               },
