@@ -126,6 +126,8 @@ class _CoopRequestPageState extends State<RegisterSellerPage> {
       resizeToAvoidBottomInset: true,
       backgroundColor: AppColors.kGray,
       appBar: AppBar(
+        surfaceTintColor: AppColors.kGray,
+        backgroundColor: AppColors.kGray,
         toolbarHeight: 22,
         leading: InkWell(
           onTap: () {
@@ -987,173 +989,162 @@ class _CoopRequestPageState extends State<RegisterSellerPage> {
           ),
         ],
       ),
-      bottomSheet: Container(
-        color: Colors.white,
-        padding: const EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 8),
-        child: InkWell(
-          onTap: () async {
-            if (filledSegments == 1) {
-              if (typeOrganization == 1) {
-                if (iinController.text.isEmpty ||
-                    // organizationController.text.isEmpty ||
-                    nameCompanyController.text.isEmpty ||
-                    legalAddressController.text.isEmpty ||
-                    registerDateController.text.isEmpty
-                //     taxAuthorityController.text.isEmpty ||
-                //    ogkvadController.text.isEmpty) {
-                ) {
-                  AppSnackBar.show(context, 'Заполните все данные ИП *', type: AppSnackType.error);
+      floatingActionButton: InkWell(
+        onTap: () async {
+          if (filledSegments == 1) {
+            if (typeOrganization == 1) {
+              if (iinController.text.isEmpty ||
+                  // organizationController.text.isEmpty ||
+                  nameCompanyController.text.isEmpty ||
+                  legalAddressController.text.isEmpty ||
+                  registerDateController.text.isEmpty
+              //     taxAuthorityController.text.isEmpty ||
+              //    ogkvadController.text.isEmpty) {
+              ) {
+                AppSnackBar.show(context, 'Заполните все данные ИП *', type: AppSnackType.error);
 
-                  return;
-                }
-                setState(() {
-                  filledSegments = 2;
-                  filledCount = 2;
-                  title = 'Реквизиты банка';
-                });
-
-                return;
-              } else if (typeOrganization == 2) {
-                if (iinController.text.isNotEmpty ||
-                    organizationController.text.isNotEmpty ||
-                    nameCompanyController.text.isNotEmpty ||
-                    legalAddressController.text.isNotEmpty ||
-                    registerDateController.text.isNotEmpty ||
-                    taxAuthorityController.text.isNotEmpty ||
-                    ogkvadController.text.isNotEmpty) {
-                  AppSnackBar.show(context, 'Заполните все данные ООО *', type: AppSnackType.error);
-
-                  return;
-                }
-
-                if (generalDirectorController.text.isEmpty ||
-                    addressController.text.isEmpty ||
-                    nationalityController.text.isEmpty ||
-                    birthdayController.text.isEmpty ||
-                    founderController.text.isEmpty ||
-                    ogvnController.text.isEmpty ||
-                    kppController.text.isEmpty) {
-                  AppSnackBar.show(context, 'Заполните все данные ООО *', type: AppSnackType.error);
-
-                  return;
-                }
-                setState(() {
-                  filledSegments = 2;
-                  filledCount = 2;
-                  title = 'Реквизиты банка';
-                });
-
-                return;
-              }
-            }
-
-            if (filledSegments == 2) {
-              if (bankController.text.isEmpty || checkController.text.isEmpty) {
-                AppSnackBar.show(
-                  context,
-                  'Заполните все данные о магазине *',
-                  type: AppSnackType.error,
-                );
                 return;
               }
               setState(() {
-                filledSegments = 3;
-                filledCount = 3;
-                title = 'Контактные данные';
+                filledSegments = 2;
+                filledCount = 2;
+                title = 'Реквизиты банка';
+              });
+
+              return;
+            } else if (typeOrganization == 2) {
+              if (iinController.text.isNotEmpty ||
+                  organizationController.text.isNotEmpty ||
+                  nameCompanyController.text.isNotEmpty ||
+                  legalAddressController.text.isNotEmpty ||
+                  registerDateController.text.isNotEmpty ||
+                  taxAuthorityController.text.isNotEmpty ||
+                  ogkvadController.text.isNotEmpty) {
+                AppSnackBar.show(context, 'Заполните все данные ООО *', type: AppSnackType.error);
+
+                return;
+              }
+
+              if (generalDirectorController.text.isEmpty ||
+                  addressController.text.isEmpty ||
+                  nationalityController.text.isEmpty ||
+                  birthdayController.text.isEmpty ||
+                  founderController.text.isEmpty ||
+                  ogvnController.text.isEmpty ||
+                  kppController.text.isEmpty) {
+                AppSnackBar.show(context, 'Заполните все данные ООО *', type: AppSnackType.error);
+
+                return;
+              }
+              setState(() {
+                filledSegments = 2;
+                filledCount = 2;
+                title = 'Реквизиты банка';
               });
 
               return;
             }
+          }
 
-            if (filledSegments == 3) {
-              if (contactController.text.isEmpty ||
-                  phoneController.text.isEmpty ||
-                  emailController.text.isEmpty ||
-                  passwordController.text.isEmpty ||
-                  isChecked == false) {
-                AppSnackBar.show(
-                  context,
-                  'Заполните все контактные данные *',
-                  type: AppSnackType.error,
-                );
-                return;
-              }
-
-              final RegisterSellerDTO registerDto = RegisterSellerDTO(
-                catName: catController.text,
-                name: nameController.text,
-                email: emailController.text,
-                phone: phoneController.text,
-                password: passwordController.text,
-                iin: iinController.text,
-                userName: nameCompanyController.text,
-                check: checkController.text,
-                typeOrganization: typeOrganization,
-                kpp: kppController.text,
-                ogrn: ogvnController.text,
-                okved: ogkvadController.text,
-                tax_authority: taxAuthorityController.text,
-                date_register: registerDateController.text,
-                founder: founderController.text,
-                date_of_birth: birthdayController.text,
-                citizenship: nationalityController.text,
-                CEO: generalDirectorController.text,
-                organization_fr: organizationController.text,
-                bank: bankController.text,
-                company_name: nameCompanyController.text,
-                legal_address: legalAddressController.text,
+          if (filledSegments == 2) {
+            if (bankController.text.isEmpty || checkController.text.isEmpty) {
+              AppSnackBar.show(
+                context,
+                'Заполните все данные о магазине *',
+                type: AppSnackType.error,
               );
-
-              await BlocProvider.of<RegisterSellerCubit>(context).register(registerDto);
-              if (!mounted) return;
-
-              context.router.push(SuccessSellerRegisterRoute());
-              // Get.to(SuccessSellerRegisterPage());
-
-              // context.router.push(AuthSellerRoute());
-              // Navigator.push(
-              //   context,
-              //   MaterialPageRoute(builder: (context) => AuthAdminPage()),
-              // );
-
-              // AppSnackBar.show(
-              //   context,
-              //   'Заявка отправлено',
-              //   type: AppSnackType.error,
-              // );
-
               return;
-            } else {
-              AppSnackBar.show(context, 'Ой что-то пошло не так', type: AppSnackType.error);
+            }
+            setState(() {
+              filledSegments = 3;
+              filledCount = 3;
+              title = 'Контактные данные';
+            });
+
+            return;
+          }
+
+          if (filledSegments == 3) {
+            if (contactController.text.isEmpty ||
+                phoneController.text.isEmpty ||
+                emailController.text.isEmpty ||
+                passwordController.text.isEmpty ||
+                isChecked == false) {
+              AppSnackBar.show(
+                context,
+                'Заполните все контактные данные *',
+                type: AppSnackType.error,
+              );
+              return;
             }
 
-            // Navigator.pop(context);
-          },
-          child: SizedBox(
-            height: 80,
-            child: Column(
-              children: [
-                Container(
-                  height: 52,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(16),
-                    color: AppColors.mainPurpleColor,
-                  ),
-                  width: MediaQuery.of(context).size.width,
-                  alignment: Alignment.center,
-                  // padding: const EdgeInsets.only(left: 16, right: 16),
-                  child: Text(
-                    filledSegments != 3 ? 'Далее' : 'Зарегистрироваться',
-                    style: AppTextStyles.size18Weight600.copyWith(color: AppColors.kWhite),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-                const SizedBox(height: 12),
-              ],
-            ),
+            final RegisterSellerDTO registerDto = RegisterSellerDTO(
+              catName: catController.text,
+              name: nameController.text,
+              email: emailController.text,
+              phone: phoneController.text,
+              password: passwordController.text,
+              iin: iinController.text,
+              userName: nameCompanyController.text,
+              check: checkController.text,
+              typeOrganization: typeOrganization,
+              kpp: kppController.text,
+              ogrn: ogvnController.text,
+              okved: ogkvadController.text,
+              tax_authority: taxAuthorityController.text,
+              date_register: registerDateController.text,
+              founder: founderController.text,
+              date_of_birth: birthdayController.text,
+              citizenship: nationalityController.text,
+              CEO: generalDirectorController.text,
+              organization_fr: organizationController.text,
+              bank: bankController.text,
+              company_name: nameCompanyController.text,
+              legal_address: legalAddressController.text,
+            );
+
+            await BlocProvider.of<RegisterSellerCubit>(context).register(registerDto);
+            if (!mounted) return;
+
+            context.router.push(SuccessSellerRegisterRoute());
+            // Get.to(SuccessSellerRegisterPage());
+
+            // context.router.push(AuthSellerRoute());
+            // Navigator.push(
+            //   context,
+            //   MaterialPageRoute(builder: (context) => AuthAdminPage()),
+            // );
+
+            // AppSnackBar.show(
+            //   context,
+            //   'Заявка отправлено',
+            //   type: AppSnackType.error,
+            // );
+
+            return;
+          } else {
+            AppSnackBar.show(context, 'Ой что-то пошло не так', type: AppSnackType.error);
+          }
+        },
+        child: Container(
+          height: 52,
+          margin: EdgeInsets.symmetric(horizontal: 16),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(16),
+            color: AppColors.mainPurpleColor,
+          ),
+          width: MediaQuery.of(context).size.width,
+          alignment: Alignment.center,
+          // padding: const EdgeInsets.only(left: 16, right: 16),
+          child: Text(
+            filledSegments != 3 ? 'Далее' : 'Зарегистрироваться',
+            style: AppTextStyles.size18Weight600.copyWith(color: AppColors.kWhite),
+            textAlign: TextAlign.center,
           ),
         ),
       ),
+
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
 
     //  bottomSheet: );
