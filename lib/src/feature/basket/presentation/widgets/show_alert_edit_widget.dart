@@ -326,16 +326,16 @@ class _AddressEditBottomSheetState extends State<AddressEditBottomSheet> {
             GestureDetector(
               onTap: () async {
                 await BlocProvider.of<AddressCubit>(context).update(
-                  widget.id,
-                  countryController.text,
-                  cityController.text,
-                  streetController.text,
-                  homeController.text,
-                  floorController.text,
-                  porchController.text,
-                  roomController.text,
-                  '',
-                  '',
+                  id: widget.id,
+                  country: countryController.text,
+                  city: cityController.text,
+                  street: streetController.text,
+                  entrance: homeController.text,
+                  floor: floorController.text,
+                  apartament: porchController.text,
+                  intercom: roomController.text,
+                  comment: '',
+                  phone: '',
                 );
 
                 Get.back();

@@ -9,17 +9,13 @@ void showSellerCatsOptions(
   List<CatsModel> categories,
   Function callback,
 ) {
-  List<CatsModel> _filteredCategories = [...categories];
-
+  List<CatsModel> filteredCategories = [...categories];
   int selectedCategory = -1;
-
   int selectIndex = -1;
   TextEditingController searchController = TextEditingController();
 
   showMaterialModalBottomSheet(
     context: context,
-
-    // isScrollControlled: true,
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
     ),
@@ -30,7 +26,7 @@ void showSellerCatsOptions(
           return ConstrainedBox(
             constraints: BoxConstraints(
               minHeight: 350.0,
-              maxHeight: (_filteredCategories.length * 90).clamp(350.0, 500.0).toDouble(),
+              maxHeight: (filteredCategories.length * 90).clamp(350.0, 500.0).toDouble(),
             ),
             child: Column(
               mainAxisSize: MainAxisSize.max,
@@ -69,7 +65,7 @@ void showSellerCatsOptions(
                           controller: searchController,
                           onChanged: (value) {
                             setState(() {
-                              _filteredCategories = categories.where((cat) {
+                              filteredCategories = categories.where((cat) {
                                 return (cat.name ?? '').toLowerCase().contains(value.toLowerCase());
                               }).toList();
                             });

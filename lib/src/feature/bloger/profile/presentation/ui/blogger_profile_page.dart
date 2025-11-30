@@ -16,16 +16,15 @@ import 'package:haji_market/src/feature/drawer/presentation/ui/about_us_page.dar
 import 'package:haji_market/src/feature/drawer/presentation/widgets/client_show_image_list_widget.dart';
 import 'package:haji_market/src/feature/drawer/presentation/widgets/show_alert_account_widget.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../../../../../core/constant/generated/assets.gen.dart';
-import '../../../shop/presentation/widgets/statistics_blogger_show_page.dart';
-import '../../bloc/profile_statics_blogger_cubit.dart';
-import '../../bloc/profile_statics_blogger_state.dart';
+import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
+import 'package:haji_market/src/feature/bloger/shop/presentation/widgets/statistics_blogger_show_page.dart';
+import 'package:haji_market/src/feature/bloger/profile/bloc/profile_statics_blogger_cubit.dart';
+import 'package:haji_market/src/feature/bloger/profile/bloc/profile_statics_blogger_state.dart';
 
 @RoutePage()
 class ProfileBloggerPage extends StatefulWidget {
-  const ProfileBloggerPage({Key? key}) : super(key: key);
+  const ProfileBloggerPage({super.key});
 
   @override
   State<ProfileBloggerPage> createState() => _ProfileBloggerPageState();
@@ -49,7 +48,6 @@ class _ProfileBloggerPageState extends State<ProfileBloggerPage> {
 
   final avatarPath = GetStorage().read('blogger_avatar');
   final avatarUrl = 'https://lunamarket.ru/storage/${GetStorage().read('blogger_avatar')}';
-  RefreshController _controller = RefreshController();
 
   @override
   void initState() {
@@ -242,68 +240,77 @@ class _ProfileBloggerPageState extends State<ProfileBloggerPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     // crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Container(
-                        height: 72,
-                        width: 130,
-                        decoration: BoxDecoration(
-                          color: AppColors.kWhite,
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              state.loadedProfile.videoReview.toString(),
-                              style: AppTextStyles.counterSellerProfileTextStyle,
-                            ),
-                            const Text(
-                              'Видео обзоры',
-                              style: AppTextStyles.counterSellerTitleTextStyle,
-                            ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(width: 5),
-                      Container(
-                        height: 72,
-                        width: 130,
-                        margin: EdgeInsets.zero,
-                        decoration: BoxDecoration(
-                          color: AppColors.kWhite,
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              state.loadedProfile.subscribers.toString(),
-                              style: AppTextStyles.counterSellerProfileTextStyle,
-                            ),
-                            const Text(
-                              'Подписчики',
-                              style: AppTextStyles.counterSellerTitleTextStyle,
-                            ),
-                          ],
+                      Expanded(
+                        child: Container(
+                          height: 72,
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            color: AppColors.kWhite,
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                state.loadedProfile.videoReview.toString(),
+                                style: AppTextStyles.counterSellerProfileTextStyle,
+                              ),
+                              const Text(
+                                'Видео обзоры',
+                                style: AppTextStyles.counterSellerTitleTextStyle,
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                       const SizedBox(width: 5),
-                      Container(
-                        height: 72,
-                        width: 130,
-                        margin: EdgeInsets.zero,
-                        decoration: BoxDecoration(
-                          color: AppColors.kWhite,
-                          borderRadius: BorderRadius.circular(16),
+                      Expanded(
+                        child: Container(
+                          height: 72,
+                          width: double.infinity,
+                          margin: EdgeInsets.zero,
+                          decoration: BoxDecoration(
+                            color: AppColors.kWhite,
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                state.loadedProfile.subscribers.toString(),
+                                style: AppTextStyles.counterSellerProfileTextStyle,
+                              ),
+                              const Text(
+                                'Подписчики',
+                                style: AppTextStyles.counterSellerTitleTextStyle,
+                              ),
+                            ],
+                          ),
                         ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              state.loadedProfile.sales.toString(),
-                              style: AppTextStyles.counterSellerProfileTextStyle,
-                            ),
-                            const Text('Продажи', style: AppTextStyles.counterSellerTitleTextStyle),
-                          ],
+                      ),
+                      const SizedBox(width: 5),
+                      Expanded(
+                        child: Container(
+                          height: 72,
+                          width: double.infinity,
+                          margin: EdgeInsets.zero,
+                          decoration: BoxDecoration(
+                            color: AppColors.kWhite,
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                state.loadedProfile.sales.toString(),
+                                style: AppTextStyles.counterSellerProfileTextStyle,
+                              ),
+                              const Text(
+                                'Продажи',
+                                style: AppTextStyles.counterSellerTitleTextStyle,
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ],

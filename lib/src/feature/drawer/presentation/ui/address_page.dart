@@ -12,9 +12,9 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 @RoutePage()
 class AddressPage extends StatefulWidget {
-  bool? select;
+  final bool? select;
 
-  AddressPage({super.key, this.select});
+  const AddressPage({super.key, this.select});
 
   @override
   State<AddressPage> createState() => _AddressPageState();

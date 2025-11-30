@@ -26,7 +26,6 @@ import 'package:haji_market/src/feature/seller/product/presentation/widgets/show
 import 'package:haji_market/src/feature/seller/product/presentation/widgets/show_seller_cats_widget.dart';
 import 'package:haji_market/src/feature/seller/product/presentation/widgets/show_seller_characteristics_widget.dart';
 import 'package:haji_market/src/feature/seller/product/presentation/widgets/show_seller_optom_widget.dart';
-import 'package:haji_market/src/feature/seller/product/presentation/widgets/sub_cats_seller_page.dart';
 import 'package:haji_market/src/feature/bloger/profile/presentation/ui/blogger_ad_page.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/feature/drawer/bloc/sub_cats_cubit.dart';
@@ -39,8 +38,6 @@ import '../../../../home/data/model/cat_model.dart';
 import '../../../../home/data/model/characteristic_model.dart';
 import '../../bloc/product_seller_cubit.dart';
 import '../../data/models/product_seller_model.dart';
-import '../widgets/brand_seller_page.dart';
-import '../widgets/cats_seller_page.dart';
 import '../widgets/colors_seller_page.dart';
 
 @RoutePage()
@@ -53,13 +50,6 @@ class EditProductSellerPage extends StatefulWidget implements AutoRouteWrapper {
 
   @override
   Widget wrappedRoute(BuildContext context) {
-    // return BlocProvider(
-    //   create: (context) =>
-    //       ProductSellerCubit(productAdminRepository: ProductSellerRepository())
-    //         ..products(''),
-    //   child: this,
-    // );
-
     return BlocProvider(
       create: (_) => ProductSellerCubit(productAdminRepository: ProductSellerRepository()),
       child: this,
@@ -189,9 +179,7 @@ class _EditProductSellerPageState extends State<EditProductSellerPage> {
       colors = await BlocProvider.of<ColorSellerCubit>(
         context,
       ).ColorById(widget.product.color!.first);
-    } else {
-      CatsModel colors = CatsModel(id: 0, name: 'Выберите цвет');
-    }
+    } else {}
 
     setState(() {
       cats;
@@ -298,7 +286,7 @@ class _EditProductSellerPageState extends State<EditProductSellerPage> {
     }
 
     if (BlocProvider.of<CityCubit>(context).state is! LoadedState) {
-      BlocProvider.of<CityCubit>(context).citiesCdek('RU' ?? 'KZ');
+      BlocProvider.of<CityCubit>(context).citiesCdek('RU');
     }
 
     // WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -384,17 +372,6 @@ class _EditProductSellerPageState extends State<EditProductSellerPage> {
       subCharacteristicsValue?.add(CharacteristicsModel(id: element.id, value: element.value));
     });
     setState(() {});
-
-    // if ((widget.product.sizeV1 ?? []).isNotEmpty) {
-    //   for (final SizeDTO e in widget.product.sizeV1 ?? []) {
-    //     sizeCount.add(sizeCountDto(
-    //         id: mockSizes!.where((element) => element.name == e.name).isNotEmpty
-    //             ? mockSizes!.where((element) => element.name == e.name).first.id.toString()
-    //             : '-1',
-    //         name: e.name ?? '',
-    //         count: (e.count ?? 0).toString()));
-    //   }
-    // }
   }
 
   int filledCount = 1;
@@ -410,7 +387,7 @@ class _EditProductSellerPageState extends State<EditProductSellerPage> {
   String _locationSelect = 'Выбор лакации';
   String _locationSeller = 'Не выбрано';
 
-  List<CatsModel> _regions = [];
+  final List<CatsModel> _regions = [];
 
   final List<CatsModel> _locations = [
     CatsModel(id: 0, name: 'Не выбрано'),
@@ -419,15 +396,6 @@ class _EditProductSellerPageState extends State<EditProductSellerPage> {
     CatsModel(id: 3, name: 'Регион'),
     CatsModel(id: 4, name: 'Город/населенный пункт'),
     CatsModel(id: 5, name: 'Моя локация'),
-  ];
-
-  final List<CatsModel> _locationsValues = [
-    CatsModel(id: 0, name: 'Пункт 1'),
-    CatsModel(id: 1, name: 'Пункт 2'),
-    CatsModel(id: 2, name: 'Пункт 3'),
-    CatsModel(id: 3, name: 'Пункт 4'),
-    CatsModel(id: 4, name: 'Пункт 5'),
-    CatsModel(id: 5, name: 'Пункт 6'),
   ];
 
   void _regionsArray() async {
@@ -1159,10 +1127,6 @@ class _EditProductSellerPageState extends State<EditProductSellerPage> {
                     if (optomPriceController.text.isNotEmpty) {
                       bool exists = false;
 
-                      OptomPriceSellerDto? optomCountLast;
-                      // if (optomCount.isNotEmpty) {
-
-                      optomCountLast = optomCount.isNotEmpty ? optomCount.last : null;
                       for (var element in optomCount) {
                         if (element.count == optomCountController.text) {
                           exists = true;
@@ -1170,7 +1134,6 @@ class _EditProductSellerPageState extends State<EditProductSellerPage> {
                         }
                         continue;
                       }
-                      //   }
 
                       if (!exists) {
                         optomCount.add(
@@ -1273,32 +1236,6 @@ class _EditProductSellerPageState extends State<EditProductSellerPage> {
                     String colorNames = values.map((e) => e.name ?? 'Пустое').join(', ');
                     colorCountController.text = colorNames;
                     setState(() {});
-
-                    // Очистим, если нужно полностью перезаписать
-                    // checkColors?.clear();
-                    // colorCount.clear();
-
-                    // for (var e in values) {
-                    //   final colorId = e.id.toString();
-                    //   final colorName = e.name ?? 'Пустое';
-
-                    //   // Проверка, что уже не добавлен
-                    //   final alreadyExists = checkColors!
-                    //       .any((element) => element.name == colorName);
-
-                    //   if (!alreadyExists) {
-                    //     checkColors!.add(CatsModel(name: colorName));
-
-                    //     colorCount.add(ColorCountSellerDto(
-                    //       color_id: colorId,
-                    //       name: colorName,
-                    //       count: '0',
-                    //     ));
-                    //   } else {
-                    //     Get.snackbar('Ошибка', '$colorName уже добавлен!',
-                    //         backgroundColor: Colors.redAccent);
-                    //   }
-                    // }
                   });
                 },
               ),
@@ -1341,69 +1278,6 @@ class _EditProductSellerPageState extends State<EditProductSellerPage> {
                                 subIndexCharacteristics!,
                                 (CharacteristicsModel value) {
                                   {
-                                    // characteristicsValuelast =
-                                    //     CharacteristicsModel(
-                                    //         id: item.id,
-                                    //         key: item.key,
-                                    //         value: item.value);
-
-                                    // subCharacteristicsValueLast =
-                                    //     CharacteristicsModel(
-                                    //         id: value.id,
-                                    //         mainId: item.id,
-                                    //         key: value.key,
-                                    //         value: value.value);
-                                    // if (subCharacteristicsValueLast != null &&
-                                    //     characteristicsValuelast != null) {
-                                    //   bool exists = false;
-
-                                    //   for (int index = 0;
-                                    //       index <
-                                    //           characteristicsValue!.length;
-                                    //       index++) {
-                                    //     if (characteristicsValue![index]
-                                    //             .key ==
-                                    //         characteristicsValuelast!.key) {
-                                    //       if (subCharacteristicsValue![index]
-                                    //               .value ==
-                                    //           subCharacteristicsValueLast!
-                                    //               .value) {
-                                    //         exists = true;
-                                    //         setState(() {});
-                                    //       }
-                                    //     }
-                                    //     continue;
-                                    //   }
-
-                                    //   if (!exists) {
-                                    //     characteristicsValue!.add(
-                                    //         CharacteristicsModel(
-                                    //             id: characteristicsValuelast!
-                                    //                 .id!,
-                                    //             key: characteristicsValuelast!
-                                    //                 .key));
-                                    //     subCharacteristicsValue!.add(
-                                    //         CharacteristicsModel(
-                                    //             id: subCharacteristicsValueLast!
-                                    //                 .id!,
-                                    //             mainId: item.id,
-                                    //             value:
-                                    //                 subCharacteristicsValueLast!
-                                    //                     .value));
-
-                                    //     setState(() {});
-                                    //   } else {
-                                    //     // Get.to(() => {})
-                                    //     Get.snackbar(
-                                    //         'Ошибка', 'Данные уже имеется!',
-                                    //         backgroundColor:
-                                    //             Colors.redAccent);
-                                    //   }
-                                    // } else {
-                                    //   Get.snackbar('Ошибка', 'Нет данных!',
-                                    //       backgroundColor: Colors.redAccent);
-                                    // }
-
                                     final newCharacteristic = CharacteristicsModel(
                                       id: item.id,
                                       key: item.key,

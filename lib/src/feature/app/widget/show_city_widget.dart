@@ -9,8 +9,7 @@ void showCitiesOptions(
   List<CityModel> categories,
   Function(CityModel) callback,
 ) {
-  List<CityModel> _filteredCategories = [...categories];
-
+  List<CityModel> filteredCategories = [...categories];
   int selectedCode = -1;
   int selectedIndex = -1;
   final TextEditingController searchController = TextEditingController();
@@ -73,7 +72,7 @@ void showCitiesOptions(
                               textInputAction: TextInputAction.search,
                               onChanged: (value) {
                                 setState(() {
-                                  _filteredCategories = categories
+                                  filteredCategories = categories
                                       .where(
                                         (c) => (c.city ?? '').toLowerCase().contains(
                                           value.toLowerCase(),
@@ -99,7 +98,7 @@ void showCitiesOptions(
 
                     // Список (всегда скролл внутри фиксированной высоты)
                     Expanded(
-                      child: _filteredCategories.isEmpty
+                      child: filteredCategories.isEmpty
                           ? const Center(
                               child: Text(
                                 'Ничего не найдено',
@@ -110,9 +109,9 @@ void showCitiesOptions(
                               // c ModalScrollController скролл взаимодействует с листом правильно
                               controller: ModalScrollController.of(ctx),
                               padding: const EdgeInsets.symmetric(horizontal: 16),
-                              itemCount: _filteredCategories.length,
+                              itemCount: filteredCategories.length,
                               itemBuilder: (context, index) {
-                                final category = _filteredCategories[index];
+                                final category = filteredCategories[index];
                                 final isSelected = category.code == selectedCode;
 
                                 return GestureDetector(
@@ -172,15 +171,17 @@ void showCitiesOptions(
                         height: 48,
                         child: ElevatedButton(
                           onPressed:
-                              (selectedIndex >= 0 && selectedIndex < _filteredCategories.length)
+                              (selectedIndex >= 0 && selectedIndex < filteredCategories.length)
                               ? () {
-                                  callback.call(_filteredCategories[selectedIndex]);
+                                  callback.call(filteredCategories[selectedIndex]);
                                   Navigator.pop(ctx);
                                 }
                               : null,
                           style: ElevatedButton.styleFrom(
                             backgroundColor: AppColors.mainPurpleColor,
-                            disabledBackgroundColor: AppColors.mainPurpleColor.withOpacity(0.4),
+                            disabledBackgroundColor: AppColors.mainPurpleColor.withValues(
+                              alpha: .4,
+                            ),
                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                           ),
                           child: const Text(
