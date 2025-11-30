@@ -96,7 +96,7 @@ class DioClient {
         settings: const TalkerDioLoggerSettings(
           printRequestHeaders: true,
           printResponseHeaders: true,
-          printResponseData: false,
+          printResponseData: true,
         ),
       ),
     );
