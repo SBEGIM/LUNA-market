@@ -63,7 +63,7 @@ class _DetailStorePageState extends State<DetailStorePage> {
         leadingWidth: 18,
         leading: IconButton(
           onPressed: () {
-            Navigator.pop(context);
+            context.router.pop();
           },
           icon: Icon(Icons.arrow_back, color: Colors.black),
         ),

@@ -59,6 +59,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
   int compoundPrice = 0;
 
   bool showText = false;
+  bool showSellersCard = false;
 
   //bool isvisible = false;
   bool inFavorite = false;
@@ -640,309 +641,11 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                       ),
                     ],
                   ),
-
                 const SizedBox(height: 24),
-                // Stack(children: [
-                //   Container(
-                //     transform: Matrix4.translationValues(-16.0, 0.0, 00.0),
-                //     height: 8,
-                //     color: const Color(0xFFf1f1f1),
-                //   ),
-                //   Container(
-                //     transform: Matrix4.translationValues(16.0, 0.0, 00.0),
-                //     height: 8,
-                //     color: const Color(0xFFf1f1f1),
-                //   ),
-                // ]),
-                // BlocBuilder<profitCubit.ProfitCubit, profitState.ProfitState>(
-                //     builder: (context, state) {
-                //   if (state is profitState.ErrorState) {
-                //     return Center(
-                //       child: Text(
-                //         state.message,
-                //         style:
-                //             const TextStyle(fontSize: 20.0, color: Colors.grey),
-                //       ),
-                //     );
-                //   }
-                //   if (state is profitState.LoadedState) {
-                //     return Container(
-                //         height: 150,
-                //         width: double.infinity,
-                //         padding: EdgeInsets.zero,
-                //         child: Image.network(
-                //           'https://lunamarket.ru/storage/${state.path}',
-                //           fit: BoxFit.cover,
-                //         ));
-                //   } else {
-                //     return const Center(
-                //         child: CircularProgressIndicator(
-                //             color: Colors.indigoAccent));
-                //   }
-                // }),
-
-                // Row(
-                //   children: [
-                // count < 1
-                //     ? SizedBox()
-                //:
-                // count >= 1
-                //     ? const SizedBox()
-                //     : GestureDetector(
-                //         onTap: () {
-                //           // BlocProvider.of<BasketCubit>(context)
-                //           //     .basketAdd(widget.product.id.toString(), '1');
-                //           setState(() {
-                //             count += 1;
-                //             if (count == 0) {
-                //               isvisible = false;
-                //             } else {
-                //               isvisible = true;
-                //             }
-                //           });
-                //         },
-                //         child: Container(
-                //           width: 99,
-                //           height: 32,
-                //           decoration: BoxDecoration(
-                //             color: const Color(0xFF1DC4CF),
-                //             borderRadius: BorderRadius.circular(10),
-                //           ),
-                //           alignment: Alignment.center,
-                //           child: const Text(
-                //             'В корзину',
-                //             // textAlign: TextAlign.center,
-                //             style: TextStyle(
-                //                 fontSize: 14,
-                //                 color: Colors.white,
-                //                 fontWeight: FontWeight.w600),
-                //           ),
-                //         ),
-                //       ),
-                //   ],
-                // ),
-                // Container(
-                //   //padding: const EdgeInsets.all(16),
-                //   // color: Colors.grey,
-                //   child: Column(
-                //     crossAxisAlignment: CrossAxisAlignment.start,
-                //     children: [
-                //       Row(
-                //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //         children: [
-                //           const Text(
-                //             'В рассрочку',
-                //             style: TextStyle(
-                //                 fontWeight: FontWeight.w600, fontSize: 14),
-                //           ),
-                //           SizedBox(
-                //             width: MediaQuery.of(context).size.width *
-                //                 0.585, // 229,
-                //             height: 32,
-                //             child: ListView.builder(
-                //               itemCount: textInst.length,
-                //               shrinkWrap: true,
-                //               physics: const NeverScrollableScrollPhysics(),
-                //               scrollDirection: Axis.horizontal,
-                //               itemBuilder: (context, index) {
-                //                 return InkWell(
-                //                   onTap: () {
-                //                     if (index == 0) {
-                //                       selectedIndexMonth = 3;
-                //                     } else if (index == 1) {
-                //                       selectedIndexMonth = 6;
-                //                     } else if (index == 2) {
-                //                       selectedIndexMonth = 12;
-                //                     } else if (index == 3) {
-                //                       selectedIndexMonth = 24;
-                //                     } else {
-                //                       selectedIndexMonth = 3;
-                //                     }
-
-                //                     setState(() {
-                //                       selectedIndex2 = index;
-                //                     });
-                //                   },
-                //                   child: Padding(
-                //                     padding: const EdgeInsets.only(right: 4.0),
-                //                     child: Container(
-                //                       width: 54,
-                //                       decoration: BoxDecoration(
-                //                         color: selectedIndex2 == index
-                //                             ? const Color(0xFFFFD54F)
-                //                             : Colors.white,
-                //                         borderRadius: BorderRadius.circular(8),
-                //                       ),
-                //                       padding: const EdgeInsets.only(
-                //                         top: 8,
-                //                         bottom: 8,
-                //                       ),
-                //                       child: Text(
-                //                         textInst[index],
-                //                         textAlign: TextAlign.center,
-                //                         style: const TextStyle(
-                //                             color: AppColors.kGray900,
-                //                             fontSize: 14,
-                //                             fontWeight: FontWeight.w400),
-                //                       ),
-                //                     ),
-                //                   ),
-                //                 );
-                //               },
-                //             ),
-                //           ),
-                //         ],
-                //       ),
-                //       Row(
-                //         children: [
-                //           Container(
-                //             width: 55,
-                //             padding: const EdgeInsets.all(8),
-                //             decoration: BoxDecoration(
-                //               color: const Color(0xFFFFD54F),
-                //               borderRadius: BorderRadius.circular(8),
-                //             ),
-                //             alignment: Alignment.center,
-                //             child: Text(
-                //               '${widget.product.price!.toInt() ~/ selectedIndexMonth!.toInt()}',
-                //               style: const TextStyle(
-                //                   color: AppColors.kGray900,
-                //                   fontSize: 14,
-                //                   fontWeight: FontWeight.w500),
-                //             ),
-                //           ),
-                //           Text(
-                //             ' x$selectedIndexMonth',
-                //             style: const TextStyle(
-                //                 fontSize: 14, fontWeight: FontWeight.w400),
-                //           ),
-                //         ],
-                //       ),
-                //     ],
-                //   ),
-                // ),
-                // const SizedBox(height: 8),
-                // const SizedBox(
-                //   height: 20,
-                // ),
               ],
             ),
           ),
 
-          // const SizedBox(height: 8),
-          // Container(
-          //   padding: const EdgeInsets.all(16),
-          //   color: Colors.white,
-          //   child: Column(
-          //     crossAxisAlignment: CrossAxisAlignment.start,
-          //     children: [
-          //       Row(
-          //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //         children: [
-          //           const Text(
-          //             'В рассрочку',
-          //             style:
-          //                 TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
-          //           ),
-          //           SizedBox(
-          //             width: MediaQuery.of(context).size.width * 0.585, // 229,
-          //             height: 32,
-          //             child: ListView.builder(
-          //               itemCount: textInst.length,
-          //               shrinkWrap: true,
-          //               physics: const NeverScrollableScrollPhysics(),
-          //               scrollDirection: Axis.horizontal,
-          //               itemBuilder: (context, index) {
-          //                 return InkWell(
-          //                   onTap: () {
-          //                     if (index == 0) {
-          //                       selectedIndexMonth = 3;
-          //                     } else if (index == 1) {
-          //                       selectedIndexMonth = 6;
-          //                     } else if (index == 2) {
-          //                       selectedIndexMonth = 12;
-          //                     } else if (index == 3) {
-          //                       selectedIndexMonth = 24;
-          //                     } else {
-          //                       selectedIndexMonth = 3;
-          //                     }
-
-          //                     setState(() {
-          //                       selectedIndex2 = index;
-          //                     });
-          //                   },
-          //                   child: Padding(
-          //                     padding: const EdgeInsets.only(right: 4.0),
-          //                     child: Container(
-          //                       width: 54,
-          //                       decoration: BoxDecoration(
-          //                         color: selectedIndex2 == index
-          //                             ? Color(0xFFFFD54F)
-          //                             : Colors.white,
-          //                         borderRadius: BorderRadius.circular(8),
-          //                       ),
-          //                       padding: const EdgeInsets.only(
-          //                         top: 8,
-          //                         bottom: 8,
-          //                       ),
-          //                       child: Text(
-          //                         textInst[index],
-          //                         textAlign: TextAlign.center,
-          //                         style: const TextStyle(
-          //                             color: AppColors.kGray900,
-          //                             fontSize: 14,
-          //                             fontWeight: FontWeight.w400),
-          //                       ),
-          //                     ),
-          //                   ),
-          //                 );
-          //               },
-          //             ),
-          //           ),
-          //         ],
-          //       ),
-          //       Row(
-          //         children: [
-          //           Container(
-          //             width: 55,
-          //             padding: const EdgeInsets.all(8),
-          //             decoration: BoxDecoration(
-          //               color: Color(0xFFFFD54F),
-          //               borderRadius: BorderRadius.circular(8),
-          //             ),
-          //             alignment: Alignment.center,
-          //             child: Text(
-          //               '${(widget.product.price!.toInt() / selectedIndexMonth!.toInt()).toInt()}',
-          //               style: const TextStyle(
-          //                   color: AppColors.kGray900,
-          //                   fontSize: 14,
-          //                   fontWeight: FontWeight.w500),
-          //             ),
-          //           ),
-          //           Text(
-          //             ' x$selectedIndexMonth',
-          //             style: const TextStyle(
-          //                 fontSize: 14, fontWeight: FontWeight.w400),
-          //           ),
-          //         ],
-          //       ),
-          //     ],
-          //   ),
-          // ),
-          //const SizedBox(height: 8),
-          // Container(
-          //   padding: const EdgeInsets.only(top: 16, left: 16),
-          //   color: Colors.white,
-          //   alignment: Alignment.centerLeft,
-          //   child: const Text(
-          //     'Продавцы',
-          //     style: TextStyle(
-          //       color: AppColors.kGray900,
-          //       fontWeight: FontWeight.w700,
-          //       fontSize: 16,
-          //     ),
-          //   ),
-          // ),
           Container(
             padding: EdgeInsets.symmetric(horizontal: 16),
             color: Colors.white,
@@ -955,476 +658,440 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                 ),
                 SizedBox(width: 23),
                 Flexible(child: SizedBox(width: 300, height: 28, child: MonthSelector())),
-                //   height: 28,
-                //   child: ListView.builder(
-                //     itemCount: textInst.length,
-                //     shrinkWrap: true,
-                //     physics: const NeverScrollableScrollPhysics(),
-                //     scrollDirection: Axis.horizontal,
-                //     itemBuilder: (context, index) {
-                //       BorderRadius radius = BorderRadius.zero;
-                //       if (index == 0) {
-                //         radius = const BorderRadius.only(
-                //           topLeft: Radius.circular(10),
-                //           bottomLeft: Radius.circular(10),
-                //         );
-                //       } else if (index == textInst.length - 1) {
-                //         radius = const BorderRadius.only(
-                //           topRight: Radius.circular(10),
-                //           bottomRight: Radius.circular(10),
-                //         );
-                //       }
-                //       return InkWell(
-                //         onTap: () {
-                //           if (index == 0) {
-                //             selectedIndexMonth = 3;
-                //           } else if (index == 1) {
-                //             selectedIndexMonth = 6;
-                //           } else if (index == 2) {
-                //             selectedIndexMonth = 9;
-                //           } else if (index == 3) {
-                //             selectedIndexMonth = 12;
-                //           } else {
-                //             selectedIndexMonth = 3;
-                //           }
-
-                //           setState(() {
-                //             selectedIndex2 = index;
-                //           });
-                //         },
-                //         child: Container(
-                //           width: 61,
-                //           alignment: Alignment.center,
-                //           decoration: BoxDecoration(
-                //             color: selectedIndex2 == index
-                //                 ? AppColors.kYellowDark
-                //                 : Colors.white,
-                //             borderRadius: radius,
-                //             border: Border(
-                //               top: BorderSide(color: AppColors.kYellowDark),
-                //               bottom: BorderSide(color: AppColors.kYellowDark),
-                //               left: index == 0
-                //                   ? BorderSide(color: AppColors.kYellowDark)
-                //                   : BorderSide.none,
-                //               right: BorderSide(color: AppColors.kYellowDark),
-                //             ),
-                //           ),
-                //           child: Text(
-                //             textInst[index],
-                //             style: AppTextStyles.size14w,
-                //           ),
-                //         ),
-                //       );
-                //     },
-                //   ),
-                // ),
               ],
             ),
           ),
-          Container(
-            padding: EdgeInsets.only(top: 4),
 
+          Container(
+            padding: const EdgeInsets.only(top: 4),
             decoration: BoxDecoration(
               color: AppColors.kWhite,
               borderRadius: BorderRadius.circular(12),
             ),
+            child: Builder(
+              builder: (context) {
+                final shops = widget.product.shops ?? [];
+                final total = shops.length;
 
-            child: ListView.separated(
-              separatorBuilder: (BuildContext context, int index) => const Divider(height: 1),
-              physics: const NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
-              itemCount: widget.product.shops!.length,
-              itemBuilder: (BuildContext context, int index) {
-                return InkWell(
-                  onTap: () {
-                    context.router.push(DetailStoreRoute(product: widget.product));
+                if (total == 0) {
+                  return const SizedBox.shrink();
+                }
+
+                final hasMoreThan4 = total > 3;
+                final visibleCount = hasMoreThan4 ? (showSellersCard ? total : 3) : total;
+
+                return ListView.separated(
+                  physics: const NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: visibleCount,
+                  separatorBuilder: (BuildContext context, int index) {
+                    return const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 16),
+                      child: Divider(height: 1, thickness: 0.33),
+                    );
                   },
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
+                  itemBuilder: (BuildContext context, int index) {
+                    final shopWrapper =
+                        shops[index]; // shops элемент (у тебя это widget.product.shops![index])
+                    final isLastVisible = index == visibleCount - 1;
+
+                    return Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          /// КАРТОЧКА МАГАЗИНА
+                          InkWell(
+                            onTap: () {
+                              context.router.push(DetailStoreRoute(product: widget.product));
+                            },
+                            child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
-                                  '${widget.product.shops![index].shop!.name}',
-                                  style: AppTextStyles.size18Weight600,
-                                ),
+                                /// Шапка: название магазина + кнопка "Выбрать"
                                 Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
-                                    SvgPicture.asset(
-                                      Assets.icons.sellerIcon.path,
-                                      color: Color(0xff34C759),
-                                      height: 12,
-                                      width: 12,
+                                    Column(
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          '${shopWrapper.shop!.name}',
+                                          style: AppTextStyles.size18Weight600,
+                                        ),
+                                        Row(
+                                          children: [
+                                            SvgPicture.asset(
+                                              Assets.icons.sellerIcon.path,
+                                              color: const Color(0xff34C759),
+                                              height: 12,
+                                              width: 12,
+                                            ),
+                                            const SizedBox(width: 4.5),
+                                            Text(
+                                              'Официальный партнер',
+                                              style: AppTextStyles.size11Weight500.copyWith(
+                                                color: const Color(0xff34C759),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
                                     ),
-                                    SizedBox(width: 4.5),
-                                    Text(
-                                      'Официальный партнер',
-                                      style: AppTextStyles.size11Weight500.copyWith(
-                                        color: Color(0xff34C759),
+                                    InkWell(
+                                      onTap: () {
+                                        if (shopWrapper.inBasket == false) {
+                                          showBasketBottomSheetOptions(
+                                            context,
+                                            '${shopWrapper.shop?.name ?? ''}',
+                                            optom,
+                                            widget.product,
+                                            (
+                                              int callBackCount,
+                                              int callBackPrice,
+                                              bool callBackOptom,
+                                            ) {
+                                              if (shopWrapper.product_count == 0 &&
+                                                  shopWrapper.pre_order == 1) {
+                                                if (isvisible == false &&
+                                                    shopWrapper.inBasket == false) {
+                                                  showCupertinoModalPopup<void>(
+                                                    context: context,
+                                                    builder: (context) => PreOrderDialog(
+                                                      onYesTap: () {
+                                                        final filters = context
+                                                            .read<FilterProvider>();
+
+                                                        Navigator.pop(context);
+                                                        if (isvisible == false &&
+                                                            shopWrapper.inBasket == false) {
+                                                          BlocProvider.of<BasketCubit>(
+                                                            context,
+                                                          ).basketAdd(
+                                                            shopWrapper.productId,
+                                                            callBackCount,
+                                                            callBackPrice,
+                                                            sizeValue,
+                                                            colorValue,
+                                                            isOptom: callBackOptom,
+                                                          );
+                                                          setState(() {
+                                                            isvisible = true;
+                                                          });
+                                                          BlocProvider.of<ProductCubit>(
+                                                            context,
+                                                          ).products(filters);
+                                                        } else {
+                                                          context.router.replaceAll([
+                                                            const LauncherRoute(
+                                                              children: [BasketRoute()],
+                                                            ),
+                                                          ]);
+                                                        }
+                                                      },
+                                                    ),
+                                                  );
+                                                } else {
+                                                  context.router.pushAndPopUntil(
+                                                    const LauncherRoute(children: [BasketRoute()]),
+                                                    predicate: (route) => false,
+                                                  );
+                                                }
+
+                                                return;
+                                              }
+
+                                              BlocProvider.of<BasketCubit>(context).basketAdd(
+                                                shopWrapper.productId,
+                                                callBackCount,
+                                                callBackPrice,
+                                                sizeValue,
+                                                colorValue,
+                                                isOptom: callBackOptom,
+                                              );
+                                              setState(() {
+                                                isvisible = true;
+                                              });
+                                              final filters = context.read<FilterProvider>();
+
+                                              BlocProvider.of<ProductCubit>(
+                                                context,
+                                              ).products(filters);
+                                            },
+                                          );
+                                        } else {
+                                          log('pushReplaceAll', name: 'Detail Card Product Page');
+                                          context.router.replaceAll([
+                                            const LauncherRoute(children: [BasketRoute()]),
+                                          ]);
+                                        }
+                                      },
+                                      child: Container(
+                                        height: 40,
+                                        width: 129,
+                                        alignment: Alignment.center,
+                                        decoration: BoxDecoration(
+                                          color: AppColors.mainBackgroundPurpleColor,
+                                          borderRadius: BorderRadius.circular(16),
+                                        ),
+                                        child: Text(
+                                          'Выбрать',
+                                          style: AppTextStyles.size16Weight600.copyWith(
+                                            color: AppColors.mainPurpleColor,
+                                          ),
+                                        ),
                                       ),
                                     ),
                                   ],
                                 ),
-                              ],
-                            ),
-                            InkWell(
-                              onTap: () {
-                                if (widget.product.shops![index].inBasket == false) {
-                                  showBasketBottomSheetOptions(
-                                    context,
-                                    '${widget.product.shops![index].shop?.name ?? ''}',
-                                    optom,
-                                    widget.product,
-                                    (int callBackCount, int callBackPrice, bool callBackOptom) {
-                                      if (widget.product.shops![index].product_count == 0 &&
-                                          widget.product.shops![index].pre_order == 1) {
-                                        if (isvisible == false &&
-                                            widget.product.shops![index].inBasket == false) {
-                                          showCupertinoModalPopup<void>(
-                                            context: context,
-                                            builder: (context) => PreOrderDialog(
-                                              onYesTap: () {
-                                                final filters = context.read<FilterProvider>();
 
-                                                Navigator.pop(context);
-                                                if (isvisible == false &&
-                                                    widget.product.shops![index].inBasket ==
-                                                        false) {
-                                                  BlocProvider.of<BasketCubit>(context).basketAdd(
-                                                    widget.product.shops![index].productId,
-                                                    callBackCount,
-                                                    callBackPrice,
-                                                    sizeValue,
-                                                    colorValue,
-                                                    isOptom: callBackOptom,
-                                                  );
-                                                  setState(() {
-                                                    isvisible = true;
-                                                  });
-                                                  BlocProvider.of<ProductCubit>(
-                                                    context,
-                                                  ).products(filters);
-                                                } else {
-                                                  context.router.replaceAll([
-                                                    const LauncherRoute(children: [BasketRoute()]),
-                                                  ]);
-                                                }
-                                              },
-                                            ),
-                                          );
-                                        } else {
-                                          context.router.pushAndPopUntil(
-                                            const LauncherRoute(children: [BasketRoute()]),
-                                            predicate: (route) => false,
-                                          );
-                                        }
+                                const SizedBox(height: 4.5),
 
-                                        return;
-                                      }
-
-                                      BlocProvider.of<BasketCubit>(context).basketAdd(
-                                        widget.product.shops![index].productId,
-                                        callBackCount,
-                                        callBackPrice,
-                                        sizeValue,
-                                        colorValue,
-                                        isOptom: callBackOptom,
-                                      );
-                                      setState(() {
-                                        isvisible = true;
-                                      });
-                                      final filters = context.read<FilterProvider>();
-
-                                      BlocProvider.of<ProductCubit>(context).products(filters);
-                                    },
-                                  );
-                                } else {
-                                  log('pushReplaceAll', name: 'Detail Card Product Page');
-                                  context.router.replaceAll([
-                                    const LauncherRoute(children: [BasketRoute()]),
-                                  ]);
-                                }
-
-                                // BlocProvider.of<BasketCubit>(context)
-                                //     .basketAdd(
-                                //         widget
-                                //             .product.shops![index].productId,
-                                //         '1',
-                                //         0,
-                                //         sizeValue,
-                                //         colorValue);
-                                // setState(() {
-                                //   isvisible = true;
-                                // });
-                              },
-                              child: Container(
-                                height: 40,
-                                width: 129,
-                                alignment: Alignment.center,
-                                decoration: BoxDecoration(
-                                  color: AppColors.mainBackgroundPurpleColor,
-                                  borderRadius: BorderRadius.circular(16),
-                                ),
-                                child: Text(
-                                  'Выбрать',
-                                  style: AppTextStyles.size16Weight600.copyWith(
-                                    color: AppColors.mainPurpleColor,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-
-                        SizedBox(height: 4.5),
-                        Row(
-                          children: [
-                            Text('3.0 ', style: AppTextStyles.size13Weight400),
-                            RatingBar(
-                              ignoreGestures: true,
-                              initialRating: 3,
-                              unratedColor: const Color(0x30F11712),
-                              itemSize: 14,
-                              itemPadding: const EdgeInsets.only(left: 3.2),
-                              ratingWidget: RatingWidget(
-                                full: SizedBox(
-                                  width: 12.8,
-                                  height: 12.8,
-                                  child: Image.asset(
-                                    Assets.icons.defaultStarIcon.path,
-                                    fit: BoxFit.contain,
-                                    color: Color(0xffFFC107),
-                                  ),
-                                ),
-                                half: SizedBox(
-                                  width: 12.8,
-                                  height: 12.8,
-                                  child: Image.asset(
-                                    Assets.icons.defaultStarIcon.path,
-                                    fit: BoxFit.contain,
-                                    color: Color(0xffAEAEB2),
-                                  ),
-                                ),
-                                empty: SizedBox(
-                                  width: 12.8,
-                                  height: 12.8,
-                                  child: Image.asset(
-                                    Assets.icons.defaultStarIcon.path,
-                                    fit: BoxFit.contain,
-                                    color: Color(0xffAEAEB2),
-                                  ),
-                                ),
-                              ),
-                              onRatingUpdate: (double value) {},
-                            ),
-                            SizedBox(width: 2.4),
-                            Text(
-                              ' ${widget.product.shop!.id} отзыва',
-                              style: AppTextStyles.size13Weight400.copyWith(
-                                color: Color(0xff8E8E93),
-                              ),
-                            ),
-                          ],
-                        ),
-
-                        const SizedBox(height: 10),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              '${formatPrice((widget.product.price! * (100 - (widget.product.compound ?? 0))) ~/ 100).toString()} ₽',
-                              style: const TextStyle(
-                                color: AppColors.kGray900,
-                                fontSize: 17,
-                                letterSpacing: -1,
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
-                            Row(
-                              children: [
-                                Container(
-                                  height: 22,
-                                  // width: 48,
-                                  padding: const EdgeInsets.symmetric(horizontal: 6),
-                                  alignment: Alignment.center,
-                                  decoration: BoxDecoration(
-                                    color: AppColors.kYellowDark,
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                  child: Text(
-                                    '${((widget.product.price! * (100 - (widget.product.compound ?? 0))) ~/ 100.toInt() / 3).round()} ₽',
-                                    style: const TextStyle(
-                                      color: AppColors.kLightBlackColor,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w500,
+                                /// Рейтинг + кол-во отзывов
+                                Row(
+                                  children: [
+                                    Text('3.0 ', style: AppTextStyles.size13Weight400),
+                                    RatingBar(
+                                      ignoreGestures: true,
+                                      initialRating: 3,
+                                      unratedColor: const Color(0x30F11712),
+                                      itemSize: 14,
+                                      itemPadding: const EdgeInsets.only(left: 3.2),
+                                      ratingWidget: RatingWidget(
+                                        full: SizedBox(
+                                          width: 12.8,
+                                          height: 12.8,
+                                          child: Image.asset(
+                                            Assets.icons.defaultStarIcon.path,
+                                            fit: BoxFit.contain,
+                                            color: const Color(0xffFFC107),
+                                          ),
+                                        ),
+                                        half: SizedBox(
+                                          width: 12.8,
+                                          height: 12.8,
+                                          child: Image.asset(
+                                            Assets.icons.defaultStarIcon.path,
+                                            fit: BoxFit.contain,
+                                            color: const Color(0xffAEAEB2),
+                                          ),
+                                        ),
+                                        empty: SizedBox(
+                                          width: 12.8,
+                                          height: 12.8,
+                                          child: Image.asset(
+                                            Assets.icons.defaultStarIcon.path,
+                                            fit: BoxFit.contain,
+                                            color: const Color(0xffAEAEB2),
+                                          ),
+                                        ),
+                                      ),
+                                      onRatingUpdate: (double value) {},
                                     ),
-                                  ),
+                                    const SizedBox(width: 2.4),
+                                    Text(
+                                      ' ${widget.product.shop!.id} отзыва',
+                                      style: AppTextStyles.size13Weight400.copyWith(
+                                        color: const Color(0xff8E8E93),
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                                const SizedBox(width: 4),
-                                Text('х3 мес', style: AppTextStyles.size13Weight400),
-                              ],
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 8),
-                        (widget.product.shops?[index].shop?.code != null ||
-                                widget.product.fulfillment == 'realFBS')
-                            ? SizedBox(
-                                height: 20,
-                                child: Row(
+
+                                const SizedBox(height: 10),
+
+                                /// Цена + рассрочка
+                                Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
+                                    Text(
+                                      '${formatPrice((widget.product.price! * (100 - (widget.product.compound ?? 0))) ~/ 100)} ₽',
+                                      style: const TextStyle(
+                                        color: AppColors.kGray900,
+                                        fontSize: 17,
+                                        letterSpacing: -1,
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                    ),
                                     Row(
                                       children: [
-                                        SizedBox(
-                                          height: 16,
-                                          width: 16,
-                                          child: Image.asset(
-                                            Assets.icons.busIcon.path,
-                                            fit: BoxFit.contain,
+                                        Container(
+                                          height: 22,
+                                          padding: const EdgeInsets.symmetric(horizontal: 6),
+                                          alignment: Alignment.center,
+                                          decoration: BoxDecoration(
+                                            color: AppColors.kYellowDark,
+                                            borderRadius: BorderRadius.circular(12),
+                                          ),
+                                          child: Text(
+                                            '${((widget.product.price! * (100 - (widget.product.compound ?? 0))) ~/ 100.toInt() / 3).round()} ₽',
+                                            style: const TextStyle(
+                                              color: AppColors.kLightBlackColor,
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w500,
+                                            ),
                                           ),
                                         ),
-                                        SizedBox(width: 5),
-                                        Text(
-                                          'Доставка:',
-                                          style: AppTextStyles.size14Weight400.copyWith(
-                                            color: Color(0xff8E8E93),
-                                          ),
-                                        ),
+                                        const SizedBox(width: 4),
+                                        Text('х3 мес', style: AppTextStyles.size13Weight400),
                                       ],
                                     ),
-                                    RichText(
-                                      text: TextSpan(
-                                        text:
-                                            '${widget.product.shops![index].deliveryDay ?? 'Неизвестно'} дня ,',
-                                        style: AppTextStyles.size14Weight400,
-                                        children: <TextSpan>[
-                                          TextSpan(
-                                            style: AppTextStyles.size14Weight400,
-                                            text:
-                                                '${widget.product.shops![index].deliveryPrice ?? 'Неизвестно'} руб',
+                                  ],
+                                ),
+
+                                const SizedBox(height: 8),
+
+                                /// Доставка
+                                (shopWrapper.shop?.code != null ||
+                                        widget.product.fulfillment == 'realFBS')
+                                    ? SizedBox(
+                                        height: 20,
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Row(
+                                              children: [
+                                                SizedBox(
+                                                  height: 16,
+                                                  width: 16,
+                                                  child: Image.asset(
+                                                    Assets.icons.busIcon.path,
+                                                    fit: BoxFit.contain,
+                                                  ),
+                                                ),
+                                                const SizedBox(width: 5),
+                                                Text(
+                                                  'Доставка:',
+                                                  style: AppTextStyles.size14Weight400.copyWith(
+                                                    color: const Color(0xff8E8E93),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            RichText(
+                                              text: TextSpan(
+                                                text:
+                                                    '${shopWrapper.deliveryDay ?? 'Неизвестно'} дня, ',
+                                                style: AppTextStyles.size14Weight400,
+                                                children: <TextSpan>[
+                                                  TextSpan(
+                                                    style: AppTextStyles.size14Weight400,
+                                                    text:
+                                                        '${shopWrapper.deliveryPrice ?? 'Неизвестно'} руб',
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      )
+                                    : SizedBox(
+                                        height: 20,
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Row(
+                                              children: [
+                                                SizedBox(
+                                                  height: 16,
+                                                  width: 16,
+                                                  child: Image.asset(
+                                                    Assets.icons.busIcon.path,
+                                                    fit: BoxFit.contain,
+                                                  ),
+                                                ),
+                                                const SizedBox(width: 5),
+                                                Text(
+                                                  'Доставка:',
+                                                  style: AppTextStyles.size14Weight400.copyWith(
+                                                    color: const Color(0xff8E8E93),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            const Text(
+                                              'Неизвестно',
+                                              style: TextStyle(
+                                                color: AppColors.kGray900,
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w400,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+
+                                const SizedBox(height: 5),
+
+                                /// Оптовая продажа
+                                SizedBox(
+                                  height: 20,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        children: [
+                                          SizedBox(
+                                            height: 16,
+                                            width: 16,
+                                            child: Image.asset(
+                                              Assets.icons.optomIcon.path,
+                                              fit: BoxFit.contain,
+                                            ),
+                                          ),
+                                          const SizedBox(width: 5),
+                                          Text(
+                                            'Оптовая продажа:',
+                                            style: AppTextStyles.size14Weight400.copyWith(
+                                              color: const Color(0xff8E8E93),
+                                            ),
                                           ),
                                         ],
                                       ),
-                                    ),
-                                  ],
-                                ),
-                              )
-                            : SizedBox(
-                                height: 20,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        SizedBox(
-                                          height: 16,
-                                          width: 16,
-                                          child: Image.asset(
-                                            Assets.icons.busIcon.path,
-                                            fit: BoxFit.contain,
-                                          ),
-                                        ),
-                                        SizedBox(width: 5),
-                                        Text(
-                                          'Доставка:',
-                                          style: AppTextStyles.size14Weight400.copyWith(
-                                            color: Color(0xff8E8E93),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    Text(
-                                      'Неивестно',
-                                      style: TextStyle(
-                                        color: AppColors.kGray900,
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w400,
+                                      Text(
+                                        (widget.product.bloc?.isNotEmpty ?? false)
+                                            ? 'Доступна'
+                                            : 'Не доступна',
+                                        style: AppTextStyles.size14Weight400,
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
-                              ),
-
-                        // Container(
-                        //   padding: const EdgeInsets.only(top: 12),
-                        //   width: 130,
-                        //   child: Row(
-                        //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        //     children: [
-                        //       const Text(
-                        //         'Безрпасная сделка',
-                        //         style: TextStyle(
-                        //             fontSize: 12,
-                        //             color: AppColors.kPrimaryColor,
-                        //             fontWeight: FontWeight.w400),
-                        //       ),
-                        //       SvgPicture.asset(
-                        //         'assets/icons/carbon_security.svg',
-                        //       )
-                        //     ],
-                        //   ),
-                        // )
-                        SizedBox(height: 5),
-                        SizedBox(
-                          height: 20,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  SizedBox(
-                                    height: 16,
-                                    width: 16,
-                                    child: Image.asset(
-                                      Assets.icons.optomIcon.path,
-                                      fit: BoxFit.contain,
-                                    ),
-                                  ),
-                                  SizedBox(width: 5),
-                                  Text(
-                                    'Оптовая продажа:',
-                                    style: AppTextStyles.size14Weight400.copyWith(
-                                      color: Color(0xff8E8E93),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              Text(
-                                widget.product.bloc?.length != 0 ? 'Доступна' : 'Не доступна',
-                                style: AppTextStyles.size14Weight400,
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                  ),
+
+                          /// Кнопка "Показать ещё / Скрыть" под последним видимым элементом
+                          if (hasMoreThan4 && isLastVisible) ...[
+                            const SizedBox(height: 8),
+                            InkWell(
+                              onTap: () {
+                                setState(() => showSellersCard = !showSellersCard);
+                              },
+                              child: Text(
+                                showSellersCard ? 'Скрыть' : 'Показать еще (${total - 3})',
+                                style: AppTextStyles.size16Weight500.copyWith(
+                                  color: AppColors.mainPurpleColor,
+                                ),
+                                textAlign: TextAlign.start,
+                              ),
+                            ),
+                          ],
+                        ],
+                      ),
+                    );
+                  },
                 );
               },
             ),
           ),
-          // const SizedBox(
-          //   height: 5,
-          // ),
 
-          // Вверху файла, если используешь рейтинг
-          // import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-
-          /// ... где-то внутри build:
-
-          // Хедер с вкладками
           Container(
             height: 62,
             margin: const EdgeInsets.only(top: 8, left: 0, right: 0),
@@ -1579,20 +1246,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 12),
-                  const Divider(height: 1, thickness: 0.33, color: Color(0xffEAECED)),
-                  TextButton(
-                    onPressed: () => setState(() => showText = !showText),
-                    style: TextButton.styleFrom(
-                      padding: EdgeInsets.zero,
-                      alignment: Alignment.centerLeft,
-                      foregroundColor: AppColors.mainPurpleColor,
-                    ),
-                    child: Text(
-                      showText ? 'Скрыть' : 'Читать полностью',
-                      style: const TextStyle(fontSize: 14),
-                    ),
-                  ),
+                  const SizedBox(height: 16),
                 ],
               ),
             )

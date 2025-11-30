@@ -21,6 +21,7 @@ import 'package:haji_market/src/feature/bloger/tape/presentation/widgets/tape_ca
 import 'package:haji_market/src/feature/drawer/presentation/ui/address_page.dart';
 import 'package:haji_market/src/feature/drawer/presentation/ui/address_store_page.dart';
 import 'package:haji_market/src/feature/my_order/presentation/widget/review_order_widget.dart';
+import 'package:haji_market/src/feature/my_order/presentation/widget/success_cancel_page.dart';
 import 'package:haji_market/src/feature/product/presentation/ui/products_recently_watched_page.dart';
 import 'package:haji_market/src/feature/product/presentation/ui/products_recommend_page.dart';
 import 'package:haji_market/src/feature/product/presentation/widgets/search_product_widget.dart';
@@ -159,6 +160,7 @@ class AppRouter extends RootStackRouter {
     AutoRoute(page: MapPickerRoute.page),
     AutoRoute(page: SearchProductRoute.page),
     AutoRoute(page: DetailCardProductRoute.page),
+    AutoRoute(page: SuccessCancelRoute.page),
 
     ///Auth Routes
     AutoRoute(page: AuthSellerRoute.page),

@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/route_manager.dart';
@@ -8,10 +9,15 @@ import 'package:haji_market/src/feature/app/router/app_router.dart';
 import 'package:haji_market/src/feature/app/widgets/app_snack_bar.dart';
 import 'package:haji_market/src/feature/app/widgets/error_image_widget.dart';
 import 'package:haji_market/src/feature/basket/data/models/basket_order_model.dart';
+import 'package:haji_market/src/feature/drawer/presentation/widgets/pre_order_dialog.dart';
+import 'package:haji_market/src/feature/drawer/presentation/widgets/show_basket_bottom_sheet_widget.dart';
 import 'package:haji_market/src/feature/home/presentation/widgets/product_watching_card.dart';
 import 'package:haji_market/src/feature/my_order/presentation/widget/cancel_order_widget.dart';
+import 'package:haji_market/src/feature/my_order/presentation/widget/show_order_cancel_widget.dart';
+import 'package:haji_market/src/feature/my_order/presentation/widget/show_order_uncancel_widget.dart';
 import 'package:haji_market/src/feature/product/cubit/product_cubit.dart' as product_cubit;
 import 'package:haji_market/src/feature/product/cubit/product_state.dart' as product_state;
+import 'package:haji_market/src/feature/product/data/model/product_model.dart';
 import 'package:haji_market/src/feature/product/provider/filter_provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:timeline_tile/timeline_tile.dart';
@@ -109,211 +115,335 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.only(left: 16.0, right: 16),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                          padding: const EdgeInsets.all(16),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              // ********* НОВАЯ ШАПКА ОЖИДАЕМОЙ ДОСТАВКИ *********
-                              Text(
-                                'Ожидаемая доставка: ${widget.basketOrder.expectedDeliveryDate ?? ''}',
-                                style: AppTextStyles.size18Weight700,
-                              ),
-                              const SizedBox(height: 20),
-                              // ********* ДИНАМИЧЕСКИЙ ТАЙМЛАЙН ИЗ basketStatusTimeline *********
-                              if (timelineSteps.isNotEmpty)
-                                Column(
-                                  children: [
-                                    for (int i = 0; i < timelineSteps.length; i++)
-                                      TimelineTile(
-                                        alignment: TimelineAlign.start,
-                                        isFirst: i == 0,
-                                        isLast: i == timelineSteps.length - 1,
-                                        indicatorStyle: (timelineSteps[i].isDone ?? false)
-                                            ? IndicatorStyle(
-                                                color: AppColors.mainGreenColor,
-                                                iconStyle: IconStyle(
-                                                  color: Colors.white,
-                                                  iconData: Icons.check,
-                                                ),
-                                              )
-                                            : IndicatorStyle(
-                                                color: const Color(0xffDDDDDD),
-                                                iconStyle: i == 0
-                                                    ? IconStyle(
-                                                        color: Colors.white,
-                                                        iconData: Icons.history_toggle_off,
-                                                      )
-                                                    : null,
-                                              ),
-                                        beforeLineStyle: const LineStyle(
-                                          thickness: 1.0,
-                                          color: Color(0xffDDDDDD),
-                                        ),
-                                        lineXY: 0.4,
-                                        endChild: Padding(
-                                          padding: const EdgeInsets.only(
-                                            left: 8.0,
-                                            top: 4,
-                                            bottom: 4,
-                                          ),
-                                          child: Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                timelineSteps[i].title ?? '',
-                                                style: AppTextStyles.size16Weight500,
-                                              ),
-                                              if ((timelineSteps[i].date ?? '').isNotEmpty == true)
-                                                Text(
-                                                  timelineSteps[i].date ?? '',
-                                                  style: AppTextStyles.size14Weight400.copyWith(
-                                                    color: Color(0xff979797),
-                                                  ),
-                                                ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                  ],
-                                )
-                              else
-                                // на всякий случай — если таймлайна нет, покажем старый вариант
-                                const Text(
-                                  'Информация о статусе заказа временно недоступна',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: 14,
-                                    color: AppColors.kGray300,
+                      if (widget.basketOrder.status != 'cancel')
+                        Padding(
+                          padding: const EdgeInsets.only(left: 16.0, right: 16),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                            padding: const EdgeInsets.all(16),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                // ********* НОВАЯ ШАПКА ОЖИДАЕМОЙ ДОСТАВКИ *********
+                                if (widget.basketOrder.status != 'cancel')
+                                  Text(
+                                    'Ожидаемая доставка: ${widget.basketOrder.expectedDeliveryDate ?? ''}',
+                                    style: AppTextStyles.size18Weight700,
                                   ),
-                                ),
-                              const SizedBox(height: 12),
-                              // ********* ДАЛЬШЕ ВАШ СТАРЫЙ БЛОК КНОПОК / СТАТУСОВ *********
-                              if (widget.basketOrder.status == 'cancel')
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      child: Container(
-                                        height: 38,
-                                        width: 136,
-                                        alignment: Alignment.center,
-                                        decoration: BoxDecoration(
-                                          color: AppColors.kPrimaryColor,
-                                          borderRadius: BorderRadius.circular(12),
-                                        ),
-                                        child: const Text(
-                                          'Заказ отменен',
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w500,
+                                const SizedBox(height: 20),
+                                // ********* ДИНАМИЧЕСКИЙ ТАЙМЛАЙН ИЗ basketStatusTimeline *********
+                                if (timelineSteps.isNotEmpty &&
+                                    widget.basketOrder.status != 'cancel')
+                                  Column(
+                                    children: [
+                                      for (int i = 0; i < timelineSteps.length; i++)
+                                        TimelineTile(
+                                          alignment: TimelineAlign.start,
+                                          isFirst: i == 0,
+                                          isLast: i == timelineSteps.length - 1,
+                                          indicatorStyle: (timelineSteps[i].isDone ?? false)
+                                              ? IndicatorStyle(
+                                                  color: AppColors.mainGreenColor,
+                                                  iconStyle: IconStyle(
+                                                    color: Colors.white,
+                                                    iconData: Icons.check,
+                                                  ),
+                                                )
+                                              : IndicatorStyle(
+                                                  color: const Color(0xffDDDDDD),
+                                                  iconStyle: i == 0
+                                                      ? IconStyle(
+                                                          color: Colors.white,
+                                                          iconData: Icons.history_toggle_off,
+                                                        )
+                                                      : null,
+                                                ),
+                                          beforeLineStyle: const LineStyle(
+                                            thickness: 1.0,
+                                            color: Color(0xffDDDDDD),
+                                          ),
+                                          lineXY: 0.4,
+                                          endChild: Padding(
+                                            padding: const EdgeInsets.only(
+                                              left: 8.0,
+                                              top: 4,
+                                              bottom: 4,
+                                            ),
+                                            child: Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  timelineSteps[i].title ?? '',
+                                                  style: AppTextStyles.size16Weight500,
+                                                ),
+                                                if ((timelineSteps[i].date ?? '').isNotEmpty ==
+                                                    true)
+                                                  Text(
+                                                    timelineSteps[i].date ?? '',
+                                                    style: AppTextStyles.size14Weight400.copyWith(
+                                                      color: Color(0xff979797),
+                                                    ),
+                                                  ),
+                                              ],
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                    ),
-                                  ],
-                                )
-                              else
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    const SizedBox(width: 30),
-                                    if (widget.basketOrder.status == 'end')
-                                      const SizedBox.shrink()
-                                    else
-                                      BlocConsumer<OrderStatusSellerCubit, OrderStatusSellerState>(
-                                        listener: (context, state) {
-                                          if (state is LoadedState) {
-                                            BlocProvider.of<BasketCubit>(
-                                              context,
-                                            ).basketOrderShow(status: 'end');
-                                            Navigator.pop(context);
-                                            Get.snackbar(
-                                              'Заказ',
-                                              'Вы совершили покупку',
-                                              backgroundColor: Colors.blueAccent,
-                                            );
-                                          }
-                                        },
-                                        builder: (context, state) {
-                                          return GestureDetector(
-                                            onTap: () async {
-                                              if (widget
-                                                      .basketOrder
-                                                      .basketStatusTimeline!
-                                                      .last
-                                                      .isDone ==
-                                                  true) {
-                                                BlocProvider.of<OrderStatusSellerCubit>(
-                                                  context,
-                                                ).basketStatus(
-                                                  'end',
-                                                  widget.basketOrder.id.toString(),
-                                                  widget.basketOrder.product!.first.id.toString(),
-                                                  'fbs',
-                                                );
-                                              } else {
-                                                AppSnackBar.show(
-                                                  context,
-                                                  '${widget.basketOrder.basketStatusTimeline![widget.basketOrder.currentStep! + 1].title}',
-                                                  type: AppSnackType.error,
-                                                );
-                                              }
-                                            },
-                                            child: Container(
-                                              height: 32,
-                                              width: 103,
-                                              alignment: Alignment.center,
-                                              decoration: BoxDecoration(
-                                                color:
-                                                    widget
+
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        children: [
+                                          const SizedBox(width: 30),
+                                          if (widget.basketOrder.status == 'end')
+                                            const SizedBox.shrink()
+                                          else
+                                            BlocConsumer<
+                                              OrderStatusSellerCubit,
+                                              OrderStatusSellerState
+                                            >(
+                                              listener: (context, state) {
+                                                if (state is LoadedState) {
+                                                  BlocProvider.of<BasketCubit>(
+                                                    context,
+                                                  ).basketOrderShow(status: 'end');
+                                                  Navigator.pop(context);
+                                                  Get.snackbar(
+                                                    'Заказ',
+                                                    'Вы совершили покупку',
+                                                    backgroundColor: Colors.blueAccent,
+                                                  );
+                                                }
+                                              },
+                                              builder: (context, state) {
+                                                return GestureDetector(
+                                                  onTap: () async {
+                                                    if (widget
                                                             .basketOrder
                                                             .basketStatusTimeline!
                                                             .last
                                                             .isDone ==
-                                                        false
-                                                    ? AppColors.mainPurpleColor.withValues(
-                                                        alpha: 0.5,
-                                                      )
-                                                    : AppColors.mainPurpleColor,
-                                                borderRadius: BorderRadius.circular(12),
-                                              ),
-                                              child: state is LoadingState
-                                                  ? const CircularProgressIndicator.adaptive(
-                                                      strokeWidth: 2,
-                                                    )
-                                                  : Text(
-                                                      'Подтвердить',
-                                                      textAlign: TextAlign.center,
-                                                      style: AppTextStyles.size13Weight500.copyWith(
-                                                        color: AppColors.kWhite,
-                                                      ),
+                                                        true) {
+                                                      BlocProvider.of<OrderStatusSellerCubit>(
+                                                        context,
+                                                      ).basketStatus(
+                                                        'end',
+                                                        widget.basketOrder.id.toString(),
+                                                        widget.basketOrder.product!.first.id
+                                                            .toString(),
+                                                        'fbs',
+                                                      );
+                                                    } else {
+                                                      AppSnackBar.show(
+                                                        context,
+                                                        '${widget.basketOrder.basketStatusTimeline![widget.basketOrder.currentStep! + 1].title}',
+                                                        type: AppSnackType.error,
+                                                      );
+                                                    }
+                                                  },
+                                                  child: Container(
+                                                    height: 32,
+                                                    width: 103,
+                                                    margin: EdgeInsets.only(top: 4),
+                                                    alignment: Alignment.center,
+                                                    decoration: BoxDecoration(
+                                                      color:
+                                                          widget
+                                                                  .basketOrder
+                                                                  .basketStatusTimeline!
+                                                                  .last
+                                                                  .isDone ==
+                                                              false
+                                                          ? AppColors.mainPurpleColor.withValues(
+                                                              alpha: 0.5,
+                                                            )
+                                                          : AppColors.mainPurpleColor,
+                                                      borderRadius: BorderRadius.circular(12),
                                                     ),
+                                                    child: state is LoadingState
+                                                        ? const CircularProgressIndicator.adaptive(
+                                                            strokeWidth: 2,
+                                                          )
+                                                        : Text(
+                                                            'Подтвердить',
+                                                            textAlign: TextAlign.center,
+                                                            style: AppTextStyles.size13Weight500
+                                                                .copyWith(color: AppColors.kWhite),
+                                                          ),
+                                                  ),
+                                                );
+                                              },
                                             ),
-                                          );
-                                        },
+                                        ],
                                       ),
-                                  ],
+                                    ],
+                                  )
+                                else
+                                  // на всякий случай — если таймлайна нет, покажем старый вариант
+                                  const Text(
+                                    'Информация о статусе заказа временно недоступна',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: 14,
+                                      color: AppColors.kGray300,
+                                    ),
+                                  ),
+                                const SizedBox(height: 12),
+                              ],
+                            ),
+                          ),
+                        ),
+
+                      if (widget.basketOrder.status == 'cancel')
+                        Container(
+                          height: 74,
+                          margin: EdgeInsets.symmetric(horizontal: 16),
+                          padding: EdgeInsets.only(left: 16),
+                          alignment: Alignment.centerLeft,
+                          decoration: BoxDecoration(
+                            color: AppColors.kWhite,
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Отменен',
+                                style: AppTextStyles.size18Weight700.copyWith(
+                                  color: AppColors.mainRedColor,
                                 ),
+                              ),
+
+                              Text('2 июня', style: AppTextStyles.size16Weight500),
                             ],
                           ),
                         ),
-                      ),
+
                       GestureDetector(
                         onTap: () {
-                          if (widget.basketOrder.status != 'courier') {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    CancelOrderWidget(id: widget.basketOrder.id.toString()),
+                          if (widget.basketOrder.status != 'courier' &&
+                              widget.basketOrder.status != 'cancel') {
+                            final List<String> cancelReasons = [
+                              'Передумал покупать',
+                              'Сроки доставки изменились',
+                              'У продавца нет товара в наличии',
+                              'У продавца нет цвета/размера/модели',
+                              'Продавец предлагал другую модель/\nтовар',
+                              'Товар не соответствует описанию/\nфото',
+                              'Другое',
+                            ];
+
+                            showOrderCancel(context, 'Причина возврата', cancelReasons, (
+                              String reason,
+                            ) {
+                              context.read<OrderStatusSellerCubit>().cancelOrder(
+                                widget.basketOrder.id.toString(),
+                                'cancel',
+                                reason,
+                              );
+
+                              context.router.push(SuccessCancelRoute());
+                            });
+                            // Navigator.push(
+                            //   context,
+                            //   MaterialPageRoute(
+                            //     builder: (context) =>
+                            //         CancelOrderWidget(id: widget.basketOrder.id.toString()),
+                            //   ),
+                            // );
+                          } else if (widget.basketOrder.status != 'courier' &&
+                              widget.basketOrder.status != 'cancel') {
+                            showOrderUncancel(context, 'Отменить заказ', [], (String reason) {});
+                          } else {
+                            ProductModel product = ProductModel(
+                              id: widget.basketOrder.product?.first.id,
+                              name: widget.basketOrder.product?.first.productName,
+                              price: widget.basketOrder.product?.first.price,
+                              count: widget.basketOrder.product?.first.count,
+                              compound: widget.basketOrder.product?.first.count,
+                              path: widget.basketOrder.product?.first.path,
+                              pre_order: 1,
+                              shop: Shop(
+                                id: widget.basketOrder.shopId,
+                                name: widget.basketOrder.product?.first.shopName,
                               ),
+                            );
+                            showBasketBottomSheetOptions(
+                              context,
+                              '${product.shop?.name}',
+                              0,
+                              product,
+                              (int callBackCount, int callBackPrice, bool callBackOptom) {
+                                if (product.product_count == 0 && product.pre_order == 1) {
+                                  if (product.inBasket == false) {
+                                    showCupertinoModalPopup<void>(
+                                      context: context,
+                                      builder: (context) => PreOrderDialog(
+                                        onYesTap: () {
+                                          Navigator.pop(context);
+                                          if (product.inBasket == false) {
+                                            BlocProvider.of<BasketCubit>(context).basketAdd(
+                                              product.id.toString(),
+                                              callBackCount,
+                                              callBackPrice,
+                                              '',
+                                              '',
+                                              isOptom: callBackOptom,
+                                            );
+
+                                            // BlocProvider.of<productCubit.ProductCubit>(
+                                            //   context,
+                                            // ).updateProductByIndex(
+                                            //   index: widget.index,
+                                            //   updatedProduct: widget.product.copyWith(
+                                            //     basketCount: basketCount + 1,
+                                            //     inBasket: true,
+                                            //   ),
+                                            // );
+                                          }
+                                        },
+                                      ),
+                                    );
+                                  } else {
+                                    context.router.pushAndPopUntil(
+                                      const LauncherRoute(children: [BasketRoute()]),
+                                      predicate: (route) => false,
+                                    );
+                                  }
+
+                                  return;
+                                }
+
+                                // if (widget.product.inBasket == false) {
+                                BlocProvider.of<BasketCubit>(context).basketAdd(
+                                  product.id.toString(),
+                                  callBackCount,
+                                  callBackPrice,
+                                  '',
+                                  '',
+                                  isOptom: callBackOptom,
+                                );
+
+                                // BlocProvider.of<productCubit.ProductCubit>(
+                                //   context,
+                                // ).updateProductByIndex(
+                                //   index: widget.index,
+                                //   updatedProduct: widget.product.copyWith(
+                                //     basketCount: basketCount + 1,
+                                //     inBasket: true,
+                                //   ),
+                                // );
+                                // setState(() {
+                                //   count += 1;
+                                //   // if (count == 0) {
+                                //   //   isvisible = false;
+                                //   // } else {
+                                //   //   isvisible = true;
+                                //   // }
+                                // });
+                              },
                             );
                           }
                         },
@@ -331,7 +461,10 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                'Отменить заказ',
+                                // widget.basketOrder.status != 'courier' &&
+                                widget.basketOrder.status == 'cancel'
+                                    ? 'Повторить заказ'
+                                    : 'Отменить заказ',
                                 style: AppTextStyles.size18Weight500.copyWith(
                                   color: AppColors.mainPurpleColor,
                                 ),
