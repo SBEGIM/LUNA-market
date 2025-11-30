@@ -1023,7 +1023,12 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
           ),
           Container(
             padding: EdgeInsets.only(top: 4),
-            color: Colors.white,
+
+            decoration: BoxDecoration(
+              color: AppColors.kWhite,
+              borderRadius: BorderRadius.circular(12),
+            ),
+
             child: ListView.separated(
               separatorBuilder: (BuildContext context, int index) => const Divider(height: 1),
               physics: const NeverScrollableScrollPhysics(),
