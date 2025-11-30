@@ -11,7 +11,6 @@ import 'package:haji_market/src/feature/bloger/auth/bloc/edit_blogger_cubit.dart
 import 'package:haji_market/src/feature/bloger/auth/bloc/edit_blogger_statet.dart';
 import 'package:haji_market/src/feature/bloger/auth/data/DTO/blogger_dto.dart';
 import 'package:haji_market/src/feature/bloger/profile/presentation/widgets/show_blogger__type_widget.dart';
-import 'package:haji_market/src/feature/profile/data/presentation/widgets/show_blogger_register_type_widget.dart';
 import 'package:haji_market/src/feature/seller/auth/data/DTO/contry_seller_dto.dart';
 import 'package:haji_market/src/feature/seller/auth/presentation/widget/show_seller_login_phone_widget.dart';
 import 'package:shimmer_animation/shimmer_animation.dart';

@@ -1,16 +1,12 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/route_manager.dart';
 import 'package:haji_market/src/feature/seller/order/bloc/order_status_seller_cubit.dart';
 import 'package:haji_market/src/feature/seller/order/data/models/basket_order_seller_model.dart';
 import 'package:haji_market/src/feature/seller/order/presentation/widgets/delivery_note_seller_widget.dart';
 import 'package:haji_market/src/core/common/constants.dart';
-import 'package:haji_market/src/feature/app/widgets/custom_switch_button.dart';
 import 'package:haji_market/src/feature/app/widgets/error_image_widget.dart';
-import '../../../../../core/constant/generated/assets.gen.dart';
-import '../../../../app/widgets/custom_back_button.dart';
 import '../../../chat/presentation/message_seller_page.dart';
 import '../../bloc/basket_seller_cubit.dart';
 

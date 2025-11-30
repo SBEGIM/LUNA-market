@@ -1,10 +1,8 @@
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:haji_market/src/feature/app/widgets/custom_back_button.dart';
 import 'package:haji_market/src/feature/bloger/auth/bloc/sms_blogger_cubit.dart';
 import 'package:haji_market/src/feature/bloger/auth/bloc/sms_blogger_state.dart';
@@ -13,8 +11,6 @@ import 'package:haji_market/src/feature/app/router/app_router.dart';
 import 'package:haji_market/src/feature/auth/presentation/widgets/default_button.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
-import 'change_blogger_password.dart';
-
 @RoutePage()
 class LoginForgotBloggerPasswordPage extends StatefulWidget {
   final String countryCode;
@@ -22,10 +18,10 @@ class LoginForgotBloggerPasswordPage extends StatefulWidget {
   final String textEditingController;
 
   const LoginForgotBloggerPasswordPage({
-    Key? key,
+    super.key,
     required this.textEditingController,
     required this.countryCode,
-  }) : super(key: key);
+  });
 
   @override
   State<LoginForgotBloggerPasswordPage> createState() => _LoginForgotBloggerPasswordModalBottom();
@@ -185,7 +181,7 @@ class _LoginForgotBloggerPasswordModalBottom extends State<LoginForgotBloggerPas
                     child: Text(
                       'Отправить повторно через $_start c',
                       style: AppTextStyles.timerInReRegTextStyle.copyWith(
-                        color: AppColors.mainPurpleColor.withOpacity(0.5),
+                        color: AppColors.mainPurpleColor.withValues(alpha: .5),
                       ),
                       textAlign: TextAlign.center,
                     ),

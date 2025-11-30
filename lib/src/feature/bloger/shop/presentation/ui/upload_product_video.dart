@@ -3,12 +3,9 @@ import 'package:auto_route/auto_route.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:get/get.dart';
 import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/feature/app/router/app_router.dart';
 import 'package:haji_market/src/feature/app/widget/show_upload_media_pricker_widget.dart';
-import 'package:haji_market/src/feature/drawer/presentation/widgets/show_alert_account_widget.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:video_player/video_player.dart';
 import '../../../../../core/common/constants.dart';
@@ -17,9 +14,9 @@ import '../../bloc/blogger_tape_upload_state.dart';
 
 @RoutePage()
 class UploadProductVideoPage extends StatefulWidget {
-  int id;
+  final int id;
 
-  UploadProductVideoPage({required this.id, super.key});
+  const UploadProductVideoPage({required this.id, super.key});
 
   @override
   State<UploadProductVideoPage> createState() => _UploadProductVideoPageState();
@@ -382,7 +379,7 @@ class _UploadProductVideoPageState extends State<UploadProductVideoPage> {
                   borderRadius: BorderRadius.circular(16),
                   color: (_video != null && check == true)
                       ? AppColors.mainPurpleColor
-                      : AppColors.mainPurpleColor.withOpacity(0.3),
+                      : AppColors.mainPurpleColor.withValues(alpha: 0.3),
                 ),
                 width: MediaQuery.of(context).size.width,
                 alignment: Alignment.center,

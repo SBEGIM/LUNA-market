@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
-import 'package:haji_market/src/feature/app/bloc/app_bloc.dart';
-import 'package:haji_market/src/feature/app/widgets/app_snack_bar.dart';
-import 'package:haji_market/src/feature/bloger/profile/presentation/widgets/show_module_profile_widget.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 void showClientImageOptions(BuildContext context, bool isAuth, String title, Function callback) {

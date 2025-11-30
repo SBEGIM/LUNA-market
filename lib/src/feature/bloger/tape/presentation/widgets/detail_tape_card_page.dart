@@ -8,7 +8,6 @@ import 'package:intl/intl.dart';
 import 'package:video_player/video_player.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/route_manager.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 import 'package:visibility_detector/visibility_detector.dart';
@@ -73,8 +72,9 @@ class _DetailBloggerTapeCardPageState extends State<DetailTapeBloggerCardPage> {
       controller = PageController(initialPage: widget.index!);
     }
     final tape = BlocProvider.of<TapeBloggerCubit>(context);
-    if (tape.state is TapeBloggerState) {
-      if ((tape.state as LoadedState).tapeModel[currentIndex].tapeId != null) {}
+    if (tape.state is LoadedState) {
+      final loadedState = tape.state as LoadedState;
+      if (loadedState.tapeModel[currentIndex].tapeId != null) {}
     }
 
     // if (BlocProvider.of<MetaCubit>(context).state is! LoadedState) {

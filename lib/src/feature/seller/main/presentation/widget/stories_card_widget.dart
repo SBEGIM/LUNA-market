@@ -2,11 +2,9 @@ import 'dart:async';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
-import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/feature/seller/main/data/model/stories_seller_model.dart';
 import 'package:shimmer/shimmer.dart';
-import 'dart:ui' as ui;
 
 class StoryScreen extends StatefulWidget {
   final List<SellerStoriesItemModel> stories;

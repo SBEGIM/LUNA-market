@@ -1,17 +1,16 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/route_manager.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
+import 'package:haji_market/src/core/utils/talker_logger_util.dart';
 import 'package:haji_market/src/feature/basket/presentation/widgets/show_module_cities_widget.dart';
-import 'package:haji_market/src/feature/drawer/bloc/city_cubit.dart' as cityCubit;
+import 'package:haji_market/src/feature/drawer/bloc/city_cubit.dart';
 import 'package:haji_market/src/feature/drawer/bloc/country_state.dart';
 import 'package:haji_market/src/feature/home/data/model/city_model.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
-
-import '../../../../core/common/constants.dart';
-import '../../../drawer/bloc/country_cubit.dart';
+import 'package:haji_market/src/core/common/constants.dart';
+import 'package:haji_market/src/feature/drawer/bloc/country_cubit.dart';
 
 Future<dynamic> showAlertCountryWidget(
   BuildContext context,
@@ -105,7 +104,7 @@ Future<dynamic> showAlertCountryWidget(
                             return ListView.separated(
                               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                               itemCount: list.length,
-                              separatorBuilder: (_, __) =>
+                              separatorBuilder: (_, _) =>
                                   const Divider(height: 1, color: AppColors.kGray2),
                               itemBuilder: (context, index) {
                                 final item = list[index];
@@ -121,7 +120,7 @@ Future<dynamic> showAlertCountryWidget(
                                       selectedCountryName = item.name?.toString();
                                     });
                                   },
-                                  child: Container(
+                                  child: SizedBox(
                                     height: 52,
                                     child: Row(
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -180,7 +179,7 @@ Future<dynamic> showAlertCountryWidget(
                       onPressed: selectedCountryId != null
                           ? () async {
                               // Берём кубит городов и стабильный контекст
-                              final citiesCubit = BlocProvider.of<cityCubit.CityCubit>(ctx);
+                              final citiesCubit = BlocProvider.of<CityCubit>(ctx);
                               final navigatorContext = Get.context ?? ctx;
 
                               // закрываем модалку стран
@@ -199,12 +198,13 @@ Future<dynamic> showAlertCountryWidget(
                                 selectedCountryCode ?? 'KZ',
                               );
 
+                              if (!navigatorContext.mounted) return;
+
                               // открываем модалку городов в новом контексте
                               showModuleCities(navigatorContext, 'Область/Район ОГД', data, (
                                 CityModel city,
                               ) {
-                                print(city.lat);
-                                print(city.long);
+                                TalkerLoggerUtil.talker.info('Selected city: $city');
                                 final box = GetStorage();
                                 box.write('city', city.toJson());
                                 callBack?.call();

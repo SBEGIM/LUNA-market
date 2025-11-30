@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/utils.dart';
 import 'package:haji_market/src/core/common/constants.dart';
-import 'package:haji_market/src/feature/my_order/presentation/widget/my_order_status_page.dart';
 import 'package:haji_market/src/feature/seller/order/data/models/basket_order_seller_model.dart';
 import 'package:haji_market/src/feature/seller/order/presentation/widgets/detail_order_seller_page.dart';
 

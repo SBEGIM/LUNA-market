@@ -8,7 +8,6 @@ import 'package:haji_market/src/feature/app/router/app_router.dart';
 import 'package:haji_market/src/feature/app/widgets/app_snack_bar.dart';
 import 'package:haji_market/src/feature/bloger/auth/bloc/sms_blogger_cubit.dart';
 import 'package:haji_market/src/feature/bloger/auth/bloc/sms_blogger_state.dart';
-import 'package:haji_market/src/feature/bloger/auth/presentation/ui/login_forget_password_modal_bottom.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/feature/app/widgets/custom_back_button.dart';
 
@@ -19,7 +18,7 @@ import 'package:shimmer_animation/shimmer_animation.dart';
 
 @RoutePage()
 class ForgotPasswordBloggerPage extends StatefulWidget {
-  const ForgotPasswordBloggerPage({Key? key}) : super(key: key);
+  const ForgotPasswordBloggerPage({super.key});
 
   @override
   State<ForgotPasswordBloggerPage> createState() => _ForgotPasswordBloggerPageState();
@@ -28,13 +27,10 @@ class ForgotPasswordBloggerPage extends StatefulWidget {
 class _ForgotPasswordBloggerPageState extends State<ForgotPasswordBloggerPage> {
   TextEditingController phoneControllerAuth = MaskedTextController(mask: '(000)-000-00-00');
 
-  bool _visibleIconView = false;
   CountrySellerDto? countrySellerDto;
 
   @override
   void initState() {
-    // TODO: implement initState
-
     countrySellerDto = CountrySellerDto(
       code: '+7',
       flagPath: Assets.icons.ruFlagIcon.path,
@@ -110,7 +106,7 @@ class _ForgotPasswordBloggerPageState extends State<ForgotPasswordBloggerPage> {
                                 Image.asset(countrySellerDto!.flagPath, width: 24, height: 24),
                                 SizedBox(width: 8),
                                 Text(
-                                  '${countrySellerDto!.code}',
+                                  '${countrySellerDto?.code}',
                                   style: AppTextStyles.size16Weight400,
                                 ),
                               ],
@@ -131,9 +127,6 @@ class _ForgotPasswordBloggerPageState extends State<ForgotPasswordBloggerPage> {
                           alignment: Alignment.center,
                           child: TextField(
                             onChanged: (value) {
-                              phoneControllerAuth.text.length.toInt() != 0
-                                  ? _visibleIconView = true
-                                  : _visibleIconView = false;
                               setState(() {});
                             },
                             controller: phoneControllerAuth,

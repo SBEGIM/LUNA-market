@@ -1,15 +1,9 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:get/route_manager.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/feature/app/router/app_router.dart';
-
-import '../../../basket/presentation/widgets/show_alert_country_widget.dart';
-import '../../../drawer/bloc/country_cubit.dart' as countryCubit;
 
 // ignore: unused_element
 const _tag = 'BaseNew';
@@ -18,7 +12,7 @@ class BaseShop extends StatefulWidget {
   const BaseShop({super.key});
 
   @override
-  _BaseShopState createState() => _BaseShopState();
+  State<BaseShop> createState() => _BaseShopState();
 }
 
 class _BaseShopState extends State<BaseShop> with TickerProviderStateMixin {
@@ -145,7 +139,10 @@ class _BaseShopState extends State<BaseShop> with TickerProviderStateMixin {
                   color: AppColors.kunSelectColor,
                 ),
                 label: 'Чат',
-                activeIcon: SvgPicture.asset('assets/icons/chat_2.svg', color: Colors.black),
+                activeIcon: SvgPicture.asset(
+                  'assets/icons/chat_2.svg',
+                  colorFilter: ColorFilter.mode(Colors.black, BlendMode.srcIn),
+                ),
               ),
               BottomNavigationBarItem(
                 icon: Image.asset(

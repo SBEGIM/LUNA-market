@@ -197,8 +197,6 @@ class ProductToApi {
       Map<String, dynamic> sizes = {};
       Map<String, dynamic> subCharacteristicIds = {};
 
-      List<Map<String, dynamic>> blocMapList = [];
-
       for (var i = 0; i < optom.length; i++) {
         blocc['bloc[$i][count]'] = optom[i].count;
         blocc['bloc[$i][price]'] = optom[i].price;
@@ -236,7 +234,7 @@ class ProductToApi {
       });
 
       final http.StreamedResponse response = await request.send();
-      final respStr = await response.stream.bytesToString();
+      await response.stream.bytesToString();
 
       return response.statusCode;
     } catch (e) {
@@ -342,7 +340,7 @@ class ProductToApi {
     request.fields.addAll(subCharacteristicIds);
 
     final http.StreamedResponse response = await request.send();
-    final respStr = await response.stream.bytesToString();
+    await response.stream.bytesToString();
     log('${response.statusCode}we');
     return response.statusCode;
   }
@@ -386,7 +384,7 @@ class ProductToApi {
 
   Future<String?> ad(int productId, int price) async {
     try {
-      final sellerId = _box.read('seller_id');
+      _box.read('seller_id');
       final String? token = _box.read('token');
       int view = 300;
 
