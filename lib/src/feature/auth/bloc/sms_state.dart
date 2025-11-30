@@ -1,15 +1,50 @@
-abstract class SmsState {}
+import 'package:equatable/equatable.dart';
 
-class InitState extends SmsState {}
+enum SmsAction {
+  registerSend,
+  registerResend,
+  registerVerify,
+  passwordSend,
+  passwordVerify,
+  passwordReset,
+}
 
-class LoadingState extends SmsState {}
+sealed class SmsState extends Equatable {
+  const SmsState();
 
-class LoadedState extends SmsState {}
+  @override
+  List<Object?> get props => [];
+}
 
-class ResetSuccessState extends SmsState {}
+final class SmsStateInitial extends SmsState {
+  const SmsStateInitial();
+}
 
-class ErrorState extends SmsState {
-  String message;
+final class SmsStateLoading extends SmsState {
+  const SmsStateLoading({required this.action});
 
-  ErrorState({required this.message});
+  final SmsAction action;
+
+  @override
+  List<Object?> get props => [action];
+}
+
+final class SmsStateSuccess extends SmsState {
+  const SmsStateSuccess({required this.action, this.message});
+
+  final SmsAction action;
+  final String? message;
+
+  @override
+  List<Object?> get props => [action, message];
+}
+
+final class SmsStateError extends SmsState {
+  const SmsStateError({required this.action, required this.message});
+
+  final SmsAction action;
+  final String message;
+
+  @override
+  List<Object?> get props => [action, message];
 }

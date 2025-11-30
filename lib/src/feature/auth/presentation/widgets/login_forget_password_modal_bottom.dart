@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/feature/app/router/app_router.dart';
+import 'package:haji_market/src/feature/app/widgets/app_snack_bar.dart';
 import 'package:haji_market/src/feature/app/widgets/custom_back_button.dart';
 import 'package:haji_market/src/feature/auth/presentation/widgets/default_button.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
@@ -17,10 +18,10 @@ class LoginForgotPasswordPage extends StatefulWidget {
   final String textEditingController;
 
   const LoginForgotPasswordPage({
-    Key? key,
+    super.key,
     required this.textEditingController,
     required this.countryCode,
-  }) : super(key: key);
+  });
 
   @override
   State<LoginForgotPasswordPage> createState() => _LoginForgotPasswordModalBottom();
@@ -77,16 +78,27 @@ class _LoginForgotPasswordModalBottom extends State<LoginForgotPasswordPage> {
       ),
       body: BlocConsumer<SmsCubit, SmsState>(
         listener: (context, state) {
-          if (state is ErrorState) {}
-          if (state is LoadedState) {
+          if (state is SmsStateSuccess && state.action == SmsAction.passwordVerify) {
             FocusScope.of(context).requestFocus(FocusNode());
             context.router.push(
               ChangePasswordRoute(textEditingController: widget.textEditingController),
             );
           }
+
+          if (state is SmsStateSuccess && state.message != null) {
+            AppSnackBar.show(context, state.message!, type: AppSnackType.success);
+          }
+
+          if (state is SmsStateError &&
+              (state.action == SmsAction.passwordVerify ||
+                  state.action == SmsAction.registerResend)) {
+            AppSnackBar.show(context, state.message, type: AppSnackType.error);
+          }
         },
         builder: (context, state) {
-          if (state is LoadingState) {
+          final bool isLoading = state is SmsStateLoading;
+
+          if (isLoading) {
             return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
           }
           return Padding(
@@ -180,7 +192,7 @@ class _LoginForgotPasswordModalBottom extends State<LoginForgotPasswordPage> {
                     child: Text(
                       'Отправить повторно через $_start c',
                       style: AppTextStyles.timerInReRegTextStyle.copyWith(
-                        color: AppColors.mainPurpleColor.withOpacity(0.5),
+                        color: AppColors.mainPurpleColor.withValues(alpha: .5),
                       ),
                       textAlign: TextAlign.center,
                     ),

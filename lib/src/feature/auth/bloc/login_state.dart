@@ -1,13 +1,42 @@
-abstract class LoginState {}
+import 'package:equatable/equatable.dart';
 
-class InitState extends LoginState {}
+enum LoginAction { login, lateAuth, editProfile, editPushSettings, updateCityCode, deleteAccount }
 
-class LoadingState extends LoginState {}
+sealed class LoginState extends Equatable {
+  const LoginState();
 
-class LoadedState extends LoginState {}
+  @override
+  List<Object?> get props => [];
+}
 
-class ErrorState extends LoginState {
-  String message;
+final class LoginStateInitial extends LoginState {
+  const LoginStateInitial();
+}
 
-  ErrorState({required this.message});
+final class LoginStateLoading extends LoginState {
+  const LoginStateLoading({required this.action});
+
+  final LoginAction action;
+
+  @override
+  List<Object?> get props => [action];
+}
+
+final class LoginStateSuccess extends LoginState {
+  const LoginStateSuccess({required this.action});
+
+  final LoginAction action;
+
+  @override
+  List<Object?> get props => [action];
+}
+
+final class LoginStateError extends LoginState {
+  const LoginStateError({required this.message, required this.action});
+
+  final String message;
+  final LoginAction action;
+
+  @override
+  List<Object?> get props => [message, action];
 }

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_masked_text2/flutter_masked_text2.dart';
-import 'package:get/get.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/feature/app/router/app_router.dart';
@@ -12,8 +11,8 @@ import 'package:haji_market/src/feature/auth/bloc/register_cubit.dart';
 import 'package:haji_market/src/feature/auth/bloc/register_state.dart';
 import 'package:haji_market/src/feature/auth/presentation/widgets/default_button.dart';
 import 'package:haji_market/src/feature/drawer/presentation/widgets/metas_webview.dart';
-import 'package:haji_market/src/feature/home/bloc/meta_cubit.dart' as metaCubit;
-import 'package:haji_market/src/feature/home/bloc/meta_state.dart' as metaState;
+import 'package:haji_market/src/feature/home/bloc/meta_cubit.dart' as meta_cubit;
+import 'package:haji_market/src/feature/home/bloc/meta_state.dart' as meta_state;
 import 'package:haji_market/src/feature/seller/auth/data/DTO/contry_seller_dto.dart';
 import 'package:haji_market/src/feature/seller/auth/presentation/widget/show_seller_login_phone_widget.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
@@ -22,7 +21,7 @@ import '../../data/DTO/register.dart';
 
 @RoutePage()
 class RegisterPage extends StatefulWidget {
-  const RegisterPage({Key? key}) : super(key: key);
+  const RegisterPage({super.key});
 
   @override
   State<RegisterPage> createState() => _RegisterPageState();
@@ -56,7 +55,7 @@ class _RegisterPageState extends State<RegisterPage> {
   TextEditingController passwordController = TextEditingController();
   TextEditingController repeatPasswordController = TextEditingController();
 
-  setIsButtonEnabled(bool value) {
+  void setIsButtonEnabled(bool value) {
     // log("is button state changed $value");
     isButtonEnabled = value;
     setState(() {});
@@ -79,8 +78,8 @@ class _RegisterPageState extends State<RegisterPage> {
       flagPath: Assets.icons.ruFlagIcon.path,
       name: 'Россия',
     );
-    if (BlocProvider.of<metaCubit.MetaCubit>(context).state is! metaState.LoadedState) {
-      BlocProvider.of<metaCubit.MetaCubit>(context).partners();
+    if (BlocProvider.of<meta_cubit.MetaCubit>(context).state is! meta_state.LoadedState) {
+      BlocProvider.of<meta_cubit.MetaCubit>(context).partners();
     }
 
     for (final c in [
@@ -248,11 +247,7 @@ class _RegisterPageState extends State<RegisterPage> {
       ),
       body: BlocConsumer<RegisterCubit, RegisterState>(
         listener: (context, state) {
-          if (state is InitState) {
-            FocusScope.of(context).requestFocus(FocusNode());
-            //   Navigator.pop(context);
-          }
-          if (state is LoadedState) {
+          if (state is RegisterStateSuccess) {
             context.router.push(SuccessRegisterRoute());
             // showModalBottomSheet(
             //     shape: const RoundedRectangleBorder(
@@ -270,444 +265,474 @@ class _RegisterPageState extends State<RegisterPage> {
             //               password: passwordControllerRegister.text));
             //     });
           }
+          if (state is RegisterStateError) {
+            AppSnackBar.show(context, state.message, type: AppSnackType.error);
+          }
         },
         builder: (context, state) {
-          if (state is LoadingState) {
-            return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
-          }
-          return Padding(
-            padding: const EdgeInsets.only(left: 16, right: 16, top: 20, bottom: 45),
-            child: ListView(
-              children: [
-                SizedBox(
-                  width: 320,
-                  child: Text(
-                    'Регистрация аккаунта пользователя',
-                    maxLines: 2,
-                    style: AppTextStyles.size29Weight700,
-                  ),
-                ),
-                SizedBox(height: 10),
-                Text(
-                  title,
-                  style: AppTextStyles.size16Weight400.copyWith(color: Color(0xFF808080)),
-                ),
-                SizedBox(height: 8),
-                SizedBox(
-                  height: segmentHeight,
-                  child: ListView.separated(
-                    scrollDirection: Axis.horizontal,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: totalSegments,
-                    separatorBuilder: (_, __) => SizedBox(width: segmentSpacing),
-                    itemBuilder: (context, index) {
-                      bool isFilled = index < filledCount;
-                      return Container(
-                        width:
-                            (MediaQuery.of(context).size.width -
-                                (totalSegments - 1) * segmentSpacing -
-                                32) /
-                            totalSegments,
-                        decoration: BoxDecoration(
-                          color: isFilled ? filledColor : emptyColor,
-                          borderRadius: BorderRadius.circular(4),
-                        ),
-                      );
-                    },
-                  ),
-                ),
-                SizedBox(height: 24),
-                Visibility(
-                  visible: filledSegments == 1 ? true : false,
-                  child: Column(
-                    children: [
-                      FieldsCoopRequest(
-                        titleText: 'Фамилия',
-                        hintText: 'Введите вашу фамилию',
-                        star: false,
-                        arrow: false,
-                        controller: userLastNameController,
-                        errorText: fieldErrors['lastName'],
-                      ),
-                      FieldsCoopRequest(
-                        titleText: 'Имя',
-                        hintText: 'Введите ваше имя',
-                        star: false,
-                        arrow: false,
-                        controller: userFirstNameController,
-                        errorText: fieldErrors['firstName'],
-                      ),
-                      FieldsCoopRequest(
-                        titleText: 'Отчество',
-                        hintText: 'Введите ваше отчество',
-                        star: false,
-                        arrow: false,
-                        controller: middleNameController,
-                        errorText: fieldErrors['middleName'],
-                      ),
-                    ],
-                  ),
-                ),
-                Visibility(
-                  visible: filledSegments == 2 ? true : false,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Номер телефона',
-                        textAlign: TextAlign.start,
-                        style: AppTextStyles.size13Weight500.copyWith(color: Color(0xFF636366)),
-                      ),
-                      SizedBox(height: 8),
-                      Row(
-                        children: [
-                          InkWell(
-                            onTap: () {
-                              showSellerLoginPhone(
-                                context,
-                                countryCall: (dto) {
-                                  countrySellerDto = dto;
-                                  setState(() {});
-                                },
-                              );
-                            },
-                            child: Shimmer(
-                              child: Container(
-                                height: 52,
-                                width: 83,
-                                padding: EdgeInsets.symmetric(horizontal: 15),
-                                decoration: BoxDecoration(
-                                  color: AppColors.kGray2,
-                                  borderRadius: BorderRadius.circular(16),
-                                ),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Image.asset(countrySellerDto!.flagPath, width: 24, height: 24),
-                                    SizedBox(width: 8),
-                                    Text(
-                                      '${countrySellerDto!.code}',
-                                      style: AppTextStyles.size16Weight400.copyWith(
-                                        color: Color(0xFF636366),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                          SizedBox(width: 4),
-                          // Поле ввода
-                          Flexible(
-                            child: Container(
-                              height: 52,
-                              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                              decoration: BoxDecoration(
-                                color: AppColors.kGray2,
-                                borderRadius: BorderRadius.circular(16),
-                                border: fieldErrors['phone'] != null
-                                    ? Border.all(color: Colors.red, width: 1.0)
-                                    : null,
-                              ),
-                              child: TextField(
-                                controller: phoneControllerRegister,
-                                textInputAction: TextInputAction.send,
-                                keyboardType: TextInputType.phone,
-                                style: AppTextStyles.size16Weight400.copyWith(
-                                  color: Color(0xFF636366),
-                                ),
-                                decoration: InputDecoration(
-                                  hintText: 'Введите номер телефона',
-                                  hintStyle: AppTextStyles.size16Weight400.copyWith(
-                                    color: Color(0xFF8E8E93),
-                                  ),
-                                  border: InputBorder.none,
-                                ),
-                                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                                onSubmitted: (_) {
-                                  FocusScope.of(context).unfocus(); // закрыть клавиатуру
-                                },
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      if (fieldErrors['phone'] != null)
-                        Padding(
-                          padding: const EdgeInsets.only(top: 4.0, left: 4),
-                          child: Text(
-                            fieldErrors['phone']!,
-                            style: const TextStyle(color: Colors.red, fontSize: 12),
-                          ),
-                        ),
-                      SizedBox(height: 12),
-                      // FieldsCoopRequest(
-                      //   titleText: 'Мобильный телефон ',
-                      //   hintText: 'Введите мобильный телефон ',
-                      //   star: false,
-                      //   arrow: false,
-                      //   number: true,
-                      //   controller: phoneController,
-                      // ),
-                      FieldsCoopRequest(
-                        titleText: 'Email ',
-                        hintText: 'Введите Email',
-                        star: false,
-                        arrow: false,
-                        controller: emailController,
-                        errorText: fieldErrors['email'],
-                      ),
+          final isLoading = state is RegisterStateLoading;
 
-                      Row(
+          return Stack(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 16, right: 16, top: 20, bottom: 45),
+                child: ListView(
+                  children: [
+                    SizedBox(
+                      width: 320,
+                      child: Text(
+                        'Регистрация аккаунта пользователя',
+                        maxLines: 2,
+                        style: AppTextStyles.size29Weight700,
+                      ),
+                    ),
+                    SizedBox(height: 10),
+                    Text(
+                      title,
+                      style: AppTextStyles.size16Weight400.copyWith(color: Color(0xFF808080)),
+                    ),
+                    SizedBox(height: 8),
+                    SizedBox(
+                      height: segmentHeight,
+                      child: ListView.separated(
+                        scrollDirection: Axis.horizontal,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: totalSegments,
+                        separatorBuilder: (_, _) => SizedBox(width: segmentSpacing),
+                        itemBuilder: (context, index) {
+                          bool isFilled = index < filledCount;
+                          return Container(
+                            width:
+                                (MediaQuery.of(context).size.width -
+                                    (totalSegments - 1) * segmentSpacing -
+                                    32) /
+                                totalSegments,
+                            decoration: BoxDecoration(
+                              color: isFilled ? filledColor : emptyColor,
+                              borderRadius: BorderRadius.circular(4),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                    SizedBox(height: 24),
+                    Visibility(
+                      visible: filledSegments == 1 ? true : false,
+                      child: Column(
                         children: [
-                          Text(
-                            'Пароль',
-                            style: AppTextStyles.size13Weight500.copyWith(color: Color(0xFF636366)),
+                          FieldsCoopRequest(
+                            titleText: 'Фамилия',
+                            hintText: 'Введите вашу фамилию',
+                            star: false,
+                            arrow: false,
+                            controller: userLastNameController,
+                            errorText: fieldErrors['lastName'],
                           ),
-                          const Text('*', style: TextStyle(fontSize: 12, color: Colors.red)),
+                          FieldsCoopRequest(
+                            titleText: 'Имя',
+                            hintText: 'Введите ваше имя',
+                            star: false,
+                            arrow: false,
+                            controller: userFirstNameController,
+                            errorText: fieldErrors['firstName'],
+                          ),
+                          FieldsCoopRequest(
+                            titleText: 'Отчество',
+                            hintText: 'Введите ваше отчество',
+                            star: false,
+                            arrow: false,
+                            controller: middleNameController,
+                            errorText: fieldErrors['middleName'],
+                          ),
                         ],
                       ),
-                      SizedBox(height: 4),
-                      Container(
-                        height: 52,
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 16,
-                        ), // Increased horizontal padding
-                        decoration: BoxDecoration(
-                          color: AppColors.kGray2,
-                          borderRadius: BorderRadius.circular(16),
-                          border: fieldErrors['password'] != null
-                              ? Border.all(color: Colors.red, width: 1.0)
-                              : null,
-                        ),
-                        alignment: Alignment.center,
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: TextField(
-                                controller: passwordController,
-                                textAlign: TextAlign.start,
-                                keyboardType: TextInputType.text,
-                                obscureText: !_passwordVisible,
-                                style: AppTextStyles.size16Weight400.copyWith(
-                                  color: Color(0xFF636366),
-                                ),
-                                decoration: InputDecoration(
-                                  border: InputBorder.none,
-                                  hintText: 'Введите пароль',
-                                  hintStyle: AppTextStyles.size16Weight400.copyWith(
-                                    color: Color(0xFF8E8E93),
-                                  ),
-                                  contentPadding: EdgeInsets.zero, // Better control over padding
-                                  isDense: true,
-                                ),
-                              ),
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  _passwordVisible = !_passwordVisible;
-                                });
-                              },
-                              child: Image.asset(
-                                _passwordVisible
-                                    ? Assets.icons.passwordViewHiddenIcon.path
-                                    : Assets.icons.passwordViewIcon.path,
-                                scale: 1.9,
-                                color: AppColors.kGray300,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      if (fieldErrors['password'] != null)
-                        Padding(
-                          padding: const EdgeInsets.only(top: 4.0, left: 4),
-                          child: Text(
-                            fieldErrors['password']!,
-                            style: const TextStyle(color: Colors.red, fontSize: 12),
-                          ),
-                        ),
-                      SizedBox(height: 12),
-                      Row(
+                    ),
+                    Visibility(
+                      visible: filledSegments == 2 ? true : false,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Повторить  пароль',
+                            'Номер телефона',
+                            textAlign: TextAlign.start,
                             style: AppTextStyles.size13Weight500.copyWith(color: Color(0xFF636366)),
                           ),
-                          const Text('*', style: TextStyle(fontSize: 12, color: Colors.red)),
-                        ],
-                      ),
-                      SizedBox(height: 4),
-                      Container(
-                        height: 52,
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 16,
-                        ), // Increased horizontal padding
-                        decoration: BoxDecoration(
-                          color: AppColors.kGray2,
-                          borderRadius: BorderRadius.circular(16),
-                          border: fieldErrors['repeatPassword'] != null
-                              ? Border.all(color: Colors.red, width: 1.0)
-                              : null,
-                        ),
-                        alignment: Alignment.center,
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: TextField(
-                                controller: repeatPasswordController,
-                                textAlign: TextAlign.start,
-                                keyboardType: TextInputType.text,
-                                obscureText: !_repeatPasswordVisible,
-                                style: AppTextStyles.size16Weight400.copyWith(
-                                  color: Color(0xFF636366),
-                                ),
-                                decoration: InputDecoration(
-                                  border: InputBorder.none,
-                                  hintText: 'Повторите пароль',
-                                  hintStyle: AppTextStyles.size16Weight400.copyWith(
-                                    color: Color(0xFF8E8E93),
-                                  ),
-                                  contentPadding: EdgeInsets.zero, // Better control over padding
-                                  isDense: true,
-                                ),
-                              ),
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  _repeatPasswordVisible = !_repeatPasswordVisible;
-                                });
-                              },
-                              child: Image.asset(
-                                _repeatPasswordVisible
-                                    ? Assets.icons.passwordViewHiddenIcon.path
-                                    : Assets.icons.passwordViewIcon.path,
-                                scale: 1.9,
-                                color: AppColors.kGray300,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      if (fieldErrors['repeatPassword'] != null)
-                        Padding(
-                          padding: const EdgeInsets.only(top: 4.0, left: 4),
-                          child: Text(
-                            fieldErrors['repeatPassword']!,
-                            style: const TextStyle(color: Colors.red, fontSize: 12),
-                          ),
-                        ),
-                    ],
-                  ),
-                ),
-                Visibility(
-                  visible: filledSegments == 2 ? true : false,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(height: 20),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 10.0),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            InkWell(
-                              onTap: () {
-                                setState(() {
-                                  isChecked = !isChecked;
-                                });
-                              },
-                              child: Image.asset(
-                                isChecked
-                                    ? Assets.icons.defaultCheckIcon.path
-                                    : Assets.icons.defaultUncheckIcon.path,
-                                scale: 1.9,
-                                color: isChecked ? AppColors.arrowColor : AppColors.kGray300,
-                              ),
-                            ),
-                            SizedBox(width: 10),
-                            // Container(
-                            //   alignment: Alignment.topLeft,
-                            //   child: Checkbox(
-                            //     visualDensity: const VisualDensity(
-                            //         horizontal: 0, vertical: 0),
-                            //     checkColor: Colors.white,
-                            //     // fillColor: WidgetStateProperty.resolveWith(Colors.),
-                            //     value: isChecked,
-                            //     onChanged: (bool? value) {
-                            //       setState(() {
-                            //         isChecked = value!;
-                            //       });
-                            //     },
-                            //   ),
-                            // ),
-                            SizedBox(
-                              width: 311,
-                              child: BlocBuilder<metaCubit.MetaCubit, metaState.MetaState>(
-                                builder: (context, state) {
-                                  if (state is metaState.LoadedState) {
-                                    metasBody.addAll([
-                                      state.metas.terms_of_use!,
-                                      state.metas.privacy_policy!,
-                                      state.metas.contract_offer!,
-                                      state.metas.shipping_payment!,
-                                      state.metas.TTN!,
-                                    ]);
-                                    return GestureDetector(
-                                      onTap: () {
-                                        Get.to(
-                                          () => MetasPage(title: metas[2], body: metasBody[2]),
-                                        );
-                                      },
-                                      child: Container(
-                                        alignment: Alignment.bottomLeft,
-                                        child: RichText(
-                                          textAlign: TextAlign.left,
-                                          text: TextSpan(
-                                            children: [
-                                              TextSpan(
-                                                text:
-                                                    "Нажимая «Зарегистрироваться», вы подтверждаете, что ознакомились и \nпринимаете ",
-                                                style: TextStyle(color: AppColors.kGray200),
-                                              ),
-                                              TextSpan(
-                                                text: "Пользовательское соглашение ",
-                                                style: TextStyle(color: AppColors.mainPurpleColor),
-                                              ),
-                                              TextSpan(
-                                                text:
-                                                    ", а также соглашаетесь с правилами использования платформы.",
-                                                style: TextStyle(color: AppColors.kGray200),
-                                              ),
-                                            ],
+                          SizedBox(height: 8),
+                          Row(
+                            children: [
+                              InkWell(
+                                onTap: () {
+                                  showSellerLoginPhone(
+                                    context,
+                                    countryCall: (dto) {
+                                      countrySellerDto = dto;
+                                      setState(() {});
+                                    },
+                                  );
+                                },
+                                child: Shimmer(
+                                  child: Container(
+                                    height: 52,
+                                    width: 83,
+                                    padding: EdgeInsets.symmetric(horizontal: 15),
+                                    decoration: BoxDecoration(
+                                      color: AppColors.kGray2,
+                                      borderRadius: BorderRadius.circular(16),
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      children: [
+                                        Image.asset(
+                                          countrySellerDto!.flagPath,
+                                          width: 24,
+                                          height: 24,
+                                        ),
+                                        SizedBox(width: 8),
+                                        Text(
+                                          '${countrySellerDto?.code}',
+                                          style: AppTextStyles.size16Weight400.copyWith(
+                                            color: Color(0xFF636366),
                                           ),
                                         ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(width: 4),
+                              // Поле ввода
+                              Flexible(
+                                child: Container(
+                                  height: 52,
+                                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                                  decoration: BoxDecoration(
+                                    color: AppColors.kGray2,
+                                    borderRadius: BorderRadius.circular(16),
+                                    border: fieldErrors['phone'] != null
+                                        ? Border.all(color: Colors.red, width: 1.0)
+                                        : null,
+                                  ),
+                                  child: TextField(
+                                    controller: phoneControllerRegister,
+                                    textInputAction: TextInputAction.send,
+                                    keyboardType: TextInputType.phone,
+                                    style: AppTextStyles.size16Weight400.copyWith(
+                                      color: Color(0xFF636366),
+                                    ),
+                                    decoration: InputDecoration(
+                                      hintText: 'Введите номер телефона',
+                                      hintStyle: AppTextStyles.size16Weight400.copyWith(
+                                        color: Color(0xFF8E8E93),
                                       ),
-                                    );
-                                  } else {
-                                    return const Center(
-                                      child: CircularProgressIndicator(color: Colors.indigoAccent),
-                                    );
-                                  }
-                                },
+                                      border: InputBorder.none,
+                                    ),
+                                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                                    onSubmitted: (_) {
+                                      FocusScope.of(context).unfocus(); // закрыть клавиатуру
+                                    },
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          if (fieldErrors['phone'] != null)
+                            Padding(
+                              padding: const EdgeInsets.only(top: 4.0, left: 4),
+                              child: Text(
+                                fieldErrors['phone']!,
+                                style: const TextStyle(color: Colors.red, fontSize: 12),
                               ),
                             ),
-                          ],
-                        ),
+                          SizedBox(height: 12),
+                          // FieldsCoopRequest(
+                          //   titleText: 'Мобильный телефон ',
+                          //   hintText: 'Введите мобильный телефон ',
+                          //   star: false,
+                          //   arrow: false,
+                          //   number: true,
+                          //   controller: phoneController,
+                          // ),
+                          FieldsCoopRequest(
+                            titleText: 'Email ',
+                            hintText: 'Введите Email',
+                            star: false,
+                            arrow: false,
+                            controller: emailController,
+                            errorText: fieldErrors['email'],
+                          ),
+
+                          Row(
+                            children: [
+                              Text(
+                                'Пароль',
+                                style: AppTextStyles.size13Weight500.copyWith(
+                                  color: Color(0xFF636366),
+                                ),
+                              ),
+                              const Text('*', style: TextStyle(fontSize: 12, color: Colors.red)),
+                            ],
+                          ),
+                          SizedBox(height: 4),
+                          Container(
+                            height: 52,
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 16,
+                            ), // Increased horizontal padding
+                            decoration: BoxDecoration(
+                              color: AppColors.kGray2,
+                              borderRadius: BorderRadius.circular(16),
+                              border: fieldErrors['password'] != null
+                                  ? Border.all(color: Colors.red, width: 1.0)
+                                  : null,
+                            ),
+                            alignment: Alignment.center,
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: TextField(
+                                    controller: passwordController,
+                                    textAlign: TextAlign.start,
+                                    keyboardType: TextInputType.text,
+                                    obscureText: !_passwordVisible,
+                                    style: AppTextStyles.size16Weight400.copyWith(
+                                      color: Color(0xFF636366),
+                                    ),
+                                    decoration: InputDecoration(
+                                      border: InputBorder.none,
+                                      hintText: 'Введите пароль',
+                                      hintStyle: AppTextStyles.size16Weight400.copyWith(
+                                        color: Color(0xFF8E8E93),
+                                      ),
+                                      contentPadding:
+                                          EdgeInsets.zero, // Better control over padding
+                                      isDense: true,
+                                    ),
+                                  ),
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      _passwordVisible = !_passwordVisible;
+                                    });
+                                  },
+                                  child: Image.asset(
+                                    _passwordVisible
+                                        ? Assets.icons.passwordViewHiddenIcon.path
+                                        : Assets.icons.passwordViewIcon.path,
+                                    scale: 1.9,
+                                    color: AppColors.kGray300,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          if (fieldErrors['password'] != null)
+                            Padding(
+                              padding: const EdgeInsets.only(top: 4.0, left: 4),
+                              child: Text(
+                                fieldErrors['password']!,
+                                style: const TextStyle(color: Colors.red, fontSize: 12),
+                              ),
+                            ),
+                          SizedBox(height: 12),
+                          Row(
+                            children: [
+                              Text(
+                                'Повторить  пароль',
+                                style: AppTextStyles.size13Weight500.copyWith(
+                                  color: Color(0xFF636366),
+                                ),
+                              ),
+                              const Text('*', style: TextStyle(fontSize: 12, color: Colors.red)),
+                            ],
+                          ),
+                          SizedBox(height: 4),
+                          Container(
+                            height: 52,
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 16,
+                            ), // Increased horizontal padding
+                            decoration: BoxDecoration(
+                              color: AppColors.kGray2,
+                              borderRadius: BorderRadius.circular(16),
+                              border: fieldErrors['repeatPassword'] != null
+                                  ? Border.all(color: Colors.red, width: 1.0)
+                                  : null,
+                            ),
+                            alignment: Alignment.center,
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: TextField(
+                                    controller: repeatPasswordController,
+                                    textAlign: TextAlign.start,
+                                    keyboardType: TextInputType.text,
+                                    obscureText: !_repeatPasswordVisible,
+                                    style: AppTextStyles.size16Weight400.copyWith(
+                                      color: Color(0xFF636366),
+                                    ),
+                                    decoration: InputDecoration(
+                                      border: InputBorder.none,
+                                      hintText: 'Повторите пароль',
+                                      hintStyle: AppTextStyles.size16Weight400.copyWith(
+                                        color: Color(0xFF8E8E93),
+                                      ),
+                                      contentPadding:
+                                          EdgeInsets.zero, // Better control over padding
+                                      isDense: true,
+                                    ),
+                                  ),
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      _repeatPasswordVisible = !_repeatPasswordVisible;
+                                    });
+                                  },
+                                  child: Image.asset(
+                                    _repeatPasswordVisible
+                                        ? Assets.icons.passwordViewHiddenIcon.path
+                                        : Assets.icons.passwordViewIcon.path,
+                                    scale: 1.9,
+                                    color: AppColors.kGray300,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          if (fieldErrors['repeatPassword'] != null)
+                            Padding(
+                              padding: const EdgeInsets.only(top: 4.0, left: 4),
+                              child: Text(
+                                fieldErrors['repeatPassword']!,
+                                style: const TextStyle(color: Colors.red, fontSize: 12),
+                              ),
+                            ),
+                        ],
                       ),
-                      SizedBox(height: 20),
-                    ],
+                    ),
+                    Visibility(
+                      visible: filledSegments == 2 ? true : false,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(height: 20),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 10.0),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                InkWell(
+                                  onTap: () {
+                                    setState(() {
+                                      isChecked = !isChecked;
+                                    });
+                                  },
+                                  child: Image.asset(
+                                    isChecked
+                                        ? Assets.icons.defaultCheckIcon.path
+                                        : Assets.icons.defaultUncheckIcon.path,
+                                    scale: 1.9,
+                                    color: isChecked ? AppColors.arrowColor : AppColors.kGray300,
+                                  ),
+                                ),
+                                SizedBox(width: 10),
+                                // Container(
+                                //   alignment: Alignment.topLeft,
+                                //   child: Checkbox(
+                                //     visualDensity: const VisualDensity(
+                                //         horizontal: 0, vertical: 0),
+                                //     checkColor: Colors.white,
+                                //     // fillColor: WidgetStateProperty.resolveWith(Colors.),
+                                //     value: isChecked,
+                                //     onChanged: (bool? value) {
+                                //       setState(() {
+                                //         isChecked = value!;
+                                //       });
+                                //     },
+                                //   ),
+                                // ),
+                                SizedBox(
+                                  width: 311,
+                                  child: BlocBuilder<meta_cubit.MetaCubit, meta_state.MetaState>(
+                                    builder: (context, state) {
+                                      if (state is meta_state.LoadedState) {
+                                        metasBody.addAll([
+                                          state.metas.terms_of_use!,
+                                          state.metas.privacy_policy!,
+                                          state.metas.contract_offer!,
+                                          state.metas.shipping_payment!,
+                                          state.metas.TTN!,
+                                        ]);
+                                        return GestureDetector(
+                                          onTap: () {
+                                            Navigator.of(context).push(
+                                              MaterialPageRoute(
+                                                builder: (_) =>
+                                                    MetasPage(title: metas[2], body: metasBody[2]),
+                                              ),
+                                            );
+                                          },
+                                          child: Container(
+                                            alignment: Alignment.bottomLeft,
+                                            child: RichText(
+                                              textAlign: TextAlign.left,
+                                              text: TextSpan(
+                                                children: [
+                                                  TextSpan(
+                                                    text:
+                                                        "Нажимая «Зарегистрироваться», вы подтверждаете, что ознакомились и \nпринимаете ",
+                                                    style: TextStyle(color: AppColors.kGray200),
+                                                  ),
+                                                  TextSpan(
+                                                    text: "Пользовательское соглашение ",
+                                                    style: TextStyle(
+                                                      color: AppColors.mainPurpleColor,
+                                                    ),
+                                                  ),
+                                                  TextSpan(
+                                                    text:
+                                                        ", а также соглашаетесь с правилами использования платформы.",
+                                                    style: TextStyle(color: AppColors.kGray200),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                      } else {
+                                        return const Center(
+                                          child: CircularProgressIndicator(
+                                            color: Colors.indigoAccent,
+                                          ),
+                                        );
+                                      }
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(height: 20),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              if (isLoading)
+                const Positioned.fill(
+                  child: ColoredBox(
+                    color: Colors.white70,
+                    child: Center(child: CircularProgressIndicator(color: Colors.indigoAccent)),
                   ),
                 ),
-              ],
-            ),
+            ],
           );
         },
       ),
@@ -718,6 +743,9 @@ class _RegisterPageState extends State<RegisterPage> {
           backgroundColor: _canProceed ? AppColors.mainPurpleColor : const Color(0xFFC5ADFC),
           text: filledCount == 1 ? 'Далее' : 'Зарегистрироваться',
           press: () {
+            if (BlocProvider.of<RegisterCubit>(context).state is RegisterStateLoading) {
+              return;
+            }
             _validateStep1Fields();
 
             if (!_ensureStep1Valid()) return;
@@ -747,7 +775,7 @@ class _RegisterPageState extends State<RegisterPage> {
               password: passwordController.text,
             );
             final register = BlocProvider.of<RegisterCubit>(context);
-            register.register(context, registerDTO);
+            register.register(registerDTO);
           },
           color: Colors.white,
           width: double.infinity,

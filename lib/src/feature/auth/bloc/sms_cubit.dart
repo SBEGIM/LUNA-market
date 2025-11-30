@@ -1,159 +1,68 @@
-import 'dart:developer';
-
-import 'package:bloc/bloc.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:haji_market/src/feature/app/widgets/app_snack_bar.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:haji_market/src/core/rest_client/src/exception/rest_client_exception.dart';
 import 'package:haji_market/src/feature/auth/bloc/sms_state.dart';
-
-import '../data/repository/register_repo.dart';
+import '../data/auth_repository.dart';
 
 class SmsCubit extends Cubit<SmsState> {
-  final RegisterRepository registerRepository;
+  SmsCubit({required IAuthRepository authRepository})
+    : _authRepository = authRepository,
+      super(const SmsStateInitial());
 
-  SmsCubit({required this.registerRepository}) : super(InitState());
+  final IAuthRepository _authRepository;
 
-  Future<void> smsSend(String phone) async {
+  Future<void> smsSend(String phone) async => _handleRequest(
+    action: SmsAction.registerSend,
+    request: () => _authRepository.sendRegisterCode(phone: phone),
+    successMessage: 'Код отправлен на ваш номер!',
+  );
+
+  Future<void> smsResend(String phone) async => _handleRequest(
+    action: SmsAction.registerResend,
+    request: () => _authRepository.sendRegisterCode(phone: phone),
+    successMessage: 'Код повторно отправлен на ваш номер',
+  );
+
+  Future<void> smsCheck(String phone, String code) async => _handleRequest(
+    action: SmsAction.registerVerify,
+    request: () => _authRepository.registerSmsCheck(phone: phone, code: code),
+    successMessage: 'Код подтверждён',
+  );
+
+  Future<void> resetSend(String phone) async => _handleRequest(
+    action: SmsAction.passwordSend,
+    request: () => _authRepository.forgotPasswordSmsSend(phone: phone),
+    successMessage: 'Код отправлен на ваш номер',
+  );
+
+  Future<void> resetCheck(String phone, String code) async => _handleRequest(
+    action: SmsAction.passwordVerify,
+    request: () => _authRepository.forgotPasswordSmsCheck(phone: phone, code: code),
+    successMessage: 'Код подтверждён',
+  );
+
+  Future<void> passwordReset(String phone, String password) async => _handleRequest(
+    action: SmsAction.passwordReset,
+    request: () => _authRepository.passwordResetByPhone(phone: phone, password: password),
+    successMessage: 'Пароль успешно обновлён',
+  );
+
+  Future<void> _handleRequest({
+    required SmsAction action,
+    required Future<dynamic> Function() request,
+    required String successMessage,
+  }) async {
     try {
-      emit(LoadingState());
-      final data = await registerRepository.smsSend(phone);
-      if (data == 200) {
-        Get.snackbar('Успешно!', 'Код отправлен на ваш номер!', backgroundColor: Colors.blueAccent);
-        emit(LoadedState());
-      }
-      if (data == 400) {
-        emit(InitState());
-        Get.snackbar('Ошибка запроса!', 'Номер занят', backgroundColor: Colors.redAccent);
-      }
+      emit(SmsStateLoading(action: action));
+      await request();
 
-      if (data == 500) {
-        emit(InitState());
-        Get.snackbar('500', 'Ошибка сервера', backgroundColor: Colors.redAccent);
-      }
+      if (isClosed) return;
+      emit(SmsStateSuccess(action: action, message: successMessage));
+    } on RestClientException catch (e) {
+      if (isClosed) return;
+      emit(SmsStateError(action: action, message: e.message));
     } catch (e) {
-      log(e.toString());
-      // emit(ErrorState(message: 'Ошибка'));
-    }
-  }
-
-  Future<void> smsResend(String phone) async {
-    try {
-      emit(LoadingState());
-      final data = await registerRepository.smsSend(phone);
-      if (data == 200) {
-        Get.snackbar('Успешно!', 'Код отправлен на ваш номер!', backgroundColor: Colors.blueAccent);
-        emit(InitState());
-      }
-      if (data == 400) {
-        emit(InitState());
-        Get.snackbar('Ошибка запроса!', 'Номер занят', backgroundColor: Colors.redAccent);
-      }
-
-      if (data == 500) {
-        emit(InitState());
-        Get.snackbar('500', 'Ошибка сервера', backgroundColor: Colors.redAccent);
-      }
-    } catch (e) {
-      log(e.toString());
-      // emit(ErrorState(message: 'Ошибка'));
-    }
-  }
-
-  Future<void> smsCheck(String phone, String code) async {
-    try {
-      emit(LoadingState());
-      final data = await registerRepository.smsCheck(phone, code);
-      if (data == 200) {
-        emit(LoadedState());
-        emit(InitState());
-      }
-      if (data == 400) {
-        emit(InitState());
-        Get.snackbar('Ошибка запроса!', 'Неверный код', backgroundColor: Colors.redAccent);
-      }
-
-      if (data == 500) {
-        emit(InitState());
-        Get.snackbar('500', 'Ошибка сервера', backgroundColor: Colors.redAccent);
-      }
-    } catch (e) {
-      log(e.toString());
-      // emit(ErrorState(message: 'Ошибка'));
-    }
-  }
-
-  Future<void> resetSend(BuildContext context, String phone) async {
-    try {
-      emit(LoadingState());
-      final data = await registerRepository.resetSend(phone);
-      if (data == 200) {
-        AppSnackBar.show(context, 'Код отправлен на ваш номер', type: AppSnackType.success);
-        emit(LoadedState());
-        // Get.to(PasswordResetPage(phone: phone));
-      }
-      if (data == 400) {
-        emit(InitState());
-
-        AppSnackBar.show(
-          context,
-          'Номер не существует или набран неправильно',
-          type: AppSnackType.error,
-        );
-      }
-
-      if (data == 500) {
-        emit(InitState());
-        Get.snackbar('500', 'Ошибка сервера', backgroundColor: Colors.redAccent);
-      }
-    } catch (e) {
-      log(e.toString());
-      // emit(ErrorState(message: 'Ошибка'));
-    }
-  }
-
-  Future<void> resetCheck(String phone, String code) async {
-    try {
-      emit(LoadingState());
-      final data = await registerRepository.resetCheck(phone, code);
-      if (data == 200) {
-        emit(LoadedState());
-        emit(InitState());
-      }
-      if (data == 400) {
-        emit(InitState());
-        Get.snackbar('Ошибка запроса!', 'Неверный код', backgroundColor: Colors.redAccent);
-      }
-
-      if (data == 500) {
-        emit(InitState());
-        Get.snackbar('500', 'Ошибка сервера', backgroundColor: Colors.redAccent);
-      }
-    } catch (e) {
-      log(e.toString());
-      // emit(ErrorState(message: 'Ошибка'));
-    }
-  }
-
-  Future<void> passwordReset(String phone, String password) async {
-    try {
-      emit(LoadingState());
-      final data = await registerRepository.passwordReset(phone, password);
-      if (data == 200) {
-        emit(ResetSuccessState());
-        emit(InitState());
-      }
-      if (data == 400) {
-        emit(InitState());
-        Get.snackbar('Ошибка запроса!', 'Неверный код', backgroundColor: Colors.redAccent);
-      }
-
-      if (data == 500) {
-        emit(InitState());
-        Get.snackbar('500', 'Ошибка сервера', backgroundColor: Colors.redAccent);
-      }
-    } catch (e) {
-      log(e.toString());
-      // emit(ErrorState(message: 'Ошибка'));
+      if (isClosed) return;
+      emit(SmsStateError(action: action, message: e.toString()));
     }
   }
 }
