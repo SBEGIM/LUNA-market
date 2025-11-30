@@ -191,17 +191,21 @@ Widget _buildOptionTile({
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20), // Скругляем угол
       ),
-      trailing: select!.name == title
-          ? Image.asset(
-              Assets.icons.defaultCheckIcon.path,
-              scale: 1.9,
-              color: AppColors.kLightBlackColor,
-            )
-          : Image.asset(
-              Assets.icons.defaultUncheckIcon.path,
-              scale: 1.9,
-              color: AppColors.kGray200,
-            ),
+      trailing: SizedBox(
+        height: 24,
+        width: 24,
+        child: select!.name == title
+            ? Image.asset(
+                Assets.icons.defaultCheckIcon.path,
+                scale: 1.9,
+                color: AppColors.kLightBlackColor,
+              )
+            : Image.asset(
+                Assets.icons.defaultUncheckIcon.path,
+                scale: 1.9,
+                color: AppColors.kGray200,
+              ),
+      ),
     ),
   );
 }

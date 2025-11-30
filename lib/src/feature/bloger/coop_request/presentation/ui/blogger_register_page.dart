@@ -315,8 +315,9 @@ class _BlogRegisterPageState extends State<BlogRegisterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
       backgroundColor: AppColors.kWhite,
+      resizeToAvoidBottomInset: true, // сами двигаем контент
+
       appBar: AppBar(
         toolbarHeight: 22,
         backgroundColor: AppColors.kWhite,
@@ -329,7 +330,6 @@ class _BlogRegisterPageState extends State<BlogRegisterPage> {
               } else {
                 title = 'Юридические данные';
               }
-
               setState(() {
                 filledSegments = filledCount;
               });
@@ -340,6 +340,7 @@ class _BlogRegisterPageState extends State<BlogRegisterPage> {
           child: Icon(Icons.arrow_back),
         ),
       ),
+
       // appBar: AppBar(
       //     iconTheme: const IconThemeData(color: AppColors.kPrimaryColor),
       //     backgroundColor: Colors.white,
@@ -353,696 +354,684 @@ class _BlogRegisterPageState extends State<BlogRegisterPage> {
       //         fontWeight: FontWeight.w500,
       //       ),
       //     )),
-      body: BlocConsumer<LoginBloggerCubit, LoginBloggerState>(
-        listener: (context, state) {
-          if (state is LoadedState) {}
-        },
-        builder: (context, state) {
-          if (state is LoadingState) {
-            return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
-          }
-          return Container(
-            padding: const EdgeInsets.only(left: 16, right: 16),
-            child: ListView(
-              shrinkWrap: true,
-              // crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(top: 22, right: 26),
-                  child: SizedBox(
-                    width: 300,
+      body: Container(
+        margin: EdgeInsets.only(bottom: MediaQuery.of(context).viewPadding.bottom + 52),
+        child: BlocConsumer<LoginBloggerCubit, LoginBloggerState>(
+          listener: (context, state) {
+            if (state is LoadedState) {}
+          },
+          builder: (context, state) {
+            if (state is LoadingState) {
+              return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
+            }
+            return Container(
+              padding: const EdgeInsets.only(left: 16, right: 16),
+              child: ListView(
+                shrinkWrap: true,
+                // crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(top: 22, right: 26),
+                    child: SizedBox(
+                      width: 300,
+                      child: Text(
+                        'Регистрация аккаунта\nблогера',
+                        maxLines: 2,
+                        style: AppTextStyles.size29Weight700,
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 0),
                     child: Text(
-                      'Регистрация аккаунта\nблогера',
-                      maxLines: 2,
-                      style: AppTextStyles.size29Weight700,
+                      title,
+                      style: AppTextStyles.size16Weight400.copyWith(color: Color(0xFF808080)),
                     ),
                   ),
-                ),
-                SizedBox(height: 10),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 0),
-                  child: Text(
-                    title,
-                    style: AppTextStyles.size16Weight400.copyWith(color: Color(0xFF808080)),
-                  ),
-                ),
-                SizedBox(height: 8),
-                // const SizedBox(height: 8),
-                // const Text(
-                //   'Укажите данные ип или физ.лица',
-                //   style: TextStyle(
-                //       fontWeight: FontWeight.w700,
-                //       fontSize: 16,
-                //       color: AppColors.kGray900),
-                // ),
+                  SizedBox(height: 8),
+                  // const SizedBox(height: 8),
+                  // const Text(
+                  //   'Укажите данные ип или физ.лица',
+                  //   style: TextStyle(
+                  //       fontWeight: FontWeight.w700,
+                  //       fontSize: 16,
+                  //       color: AppColors.kGray900),
+                  // ),
 
-                // Прогресс-бар с пробелами
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 0),
-                  child: SizedBox(
-                    height: segmentHeight,
-                    child: ListView.separated(
-                      scrollDirection: Axis.horizontal,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: totalSegments,
-                      separatorBuilder: (_, __) => SizedBox(width: segmentSpacing),
-                      itemBuilder: (context, index) {
-                        bool isFilled = index < filledCount;
-                        return Container(
-                          width:
-                              (MediaQuery.of(context).size.width -
-                                  (totalSegments - 1) * segmentSpacing -
-                                  32) /
-                              totalSegments,
-                          decoration: BoxDecoration(
-                            color: isFilled ? filledColor : emptyColor,
-                            borderRadius: BorderRadius.circular(4),
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                ),
-                SizedBox(height: 24),
-                Visibility(
-                  visible: filledSegments == 1 ? true : false,
-                  child: Column(
-                    children: [
-                      FieldsCoopRequest(
-                        titleText: 'Фамилия',
-                        hintText: 'Введите вашу фамилию',
-                        star: false,
-                        arrow: false,
-                        controller: userLastNameController,
-                        errorText: fieldStep1Errors['lastName'],
-                      ),
-                      FieldsCoopRequest(
-                        titleText: 'Имя',
-                        hintText: 'Введите ваше имя',
-                        star: false,
-                        arrow: false,
-                        controller: userFirstNameController,
-                        errorText: fieldStep1Errors['firstName'],
-                      ),
-                      FieldsCoopRequest(
-                        titleText: 'Отчество',
-                        hintText: 'Введите ваше отчество',
-                        star: false,
-                        arrow: false,
-                        controller: userSurNameController,
-                        errorText: fieldStep1Errors['surName'],
-                      ),
-                    ],
-                  ),
-                ),
-
-                Visibility(
-                  visible: filledSegments == 2 ? true : false,
-                  child: Column(
-                    children: [
-                      FieldsCoopRequest(
-                        titleText: 'Никнейм блогера (публичное имя)',
-                        hintText: 'Введите никнейм блогера',
-                        star: false,
-                        arrow: false,
-                        controller: nameController,
-                        errorText: fieldStep2Errors['nick'],
-                      ),
-                      FieldsCoopRequest(
-                        titleText: 'Ссылка на соцальную сеть',
-                        hintText: 'Укажите ссылку на ваш профиль в соц.cети',
-                        star: false,
-                        arrow: false,
-                        controller: socialNetworkController,
-                        errorText: fieldStep2Errors['link'],
-                      ),
-                    ],
-                  ),
-                ),
-
-                Visibility(
-                  visible: filledSegments == 3 ? true : false,
-                  child: Column(
-                    children: [
-                      FieldsCoopRequest(
-                        titleText: 'Юридический статус',
-                        hintText: type == 0
-                            ? 'Выберите из списка'
-                            : (type == 1 ? 'ИП' : 'Самозанятый'),
-                        star: false,
-                        arrow: true,
-                        readOnly: true,
-                        trueColor: type != 0 ? true : false,
-                        errorText: fieldStep3Errors['type'],
-                        onPressed: () async {
-                          print('ok');
-                          showBloggerRegisterType(
-                            context,
-                            type,
-                            typeCall: (value) {
-                              type = value;
-                              setState(() {});
-                            },
+                  // Прогресс-бар с пробелами
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 0),
+                    child: SizedBox(
+                      height: segmentHeight,
+                      child: ListView.separated(
+                        scrollDirection: Axis.horizontal,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: totalSegments,
+                        separatorBuilder: (_, __) => SizedBox(width: segmentSpacing),
+                        itemBuilder: (context, index) {
+                          bool isFilled = index < filledCount;
+                          return Container(
+                            width:
+                                (MediaQuery.of(context).size.width -
+                                    (totalSegments - 1) * segmentSpacing -
+                                    32) /
+                                totalSegments,
+                            decoration: BoxDecoration(
+                              color: isFilled ? filledColor : emptyColor,
+                              borderRadius: BorderRadius.circular(4),
+                            ),
                           );
                         },
                       ),
-                      FieldsCoopRequest(
-                        titleText: 'ИНН',
-                        hintText: 'Введите инн',
-                        star: false,
-                        arrow: false,
-                        number: true,
-                        controller: iinController,
-                        errorText: fieldStep3Errors['iin'],
-                      ),
-                    ],
+                    ),
                   ),
-                ),
-                filledSegments == 4
-                    ? FieldsCoopRequest(
-                        titleText: 'Счет',
-                        hintText: 'Введите счет',
-                        star: false,
-                        arrow: false,
-                        controller: checkController,
-                        errorText: fieldStep4Errors['check'],
-                      )
-                    : SizedBox.shrink(),
-
-                Visibility(
-                  visible: filledSegments == 5 ? true : false,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          Text(
-                            fieldStep5Errors['phone'] == null
-                                ? 'Номер телефона'
-                                : fieldStep5Errors['phone']!,
-                            textAlign: TextAlign.start,
-                            style: AppTextStyles.size13Weight500.copyWith(
-                              color: fieldStep5Errors['phone'] == null
-                                  ? Color(0xFF636366)
-                                  : AppColors.mainRedColor,
-                            ),
-                          ),
-                          Text(
-                            ' *',
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: fieldStep5Errors['phone'] == null
-                                  ? Color(0xFF636366)
-                                  : AppColors.mainRedColor,
-                            ),
-                          ),
-                        ],
-                      ),
-
-                      SizedBox(height: 8),
-                      Row(
-                        children: [
-                          InkWell(
-                            onTap: () {
-                              showSellerLoginPhone(
-                                context,
-                                countryCall: (dto) {
-                                  countrySellerDto = dto;
-                                  setState(() {});
-                                },
-                              );
-                            },
-                            child: Shimmer(
-                              child: Container(
-                                height: 52,
-                                width: 83,
-                                padding: EdgeInsets.symmetric(horizontal: 15),
-                                decoration: BoxDecoration(
-                                  color: AppColors.kGray2,
-                                  borderRadius: BorderRadius.circular(16),
-                                ),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Image.asset(countrySellerDto!.flagPath, width: 24, height: 24),
-                                    SizedBox(width: 8),
-                                    Text(
-                                      '${countrySellerDto!.code}',
-                                      style: AppTextStyles.size16Weight400.copyWith(
-                                        color: Color(0xFF636366),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                          SizedBox(width: 4),
-                          // Поле ввода
-                          Flexible(
-                            child: Container(
-                              height: 52,
-                              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                              decoration: BoxDecoration(
-                                color: AppColors.kGray2,
-                                border: fieldStep5Errors['phone'] != null
-                                    ? Border.all(color: AppColors.mainRedColor, width: 1.0)
-                                    : null,
-                                borderRadius: BorderRadius.circular(16),
-                              ),
-                              child: TextField(
-                                controller: phoneController,
-                                textInputAction: TextInputAction.send,
-                                keyboardType: TextInputType.phone,
-                                style: AppTextStyles.size16Weight400.copyWith(
-                                  color: Color(0xFF636366),
-                                ),
-                                decoration: InputDecoration(
-                                  hintText: 'Введите номер телефона',
-                                  hintStyle: AppTextStyles.size16Weight400.copyWith(
-                                    color: Color(0xFF8E8E93),
-                                  ),
-                                  border: InputBorder.none,
-                                ),
-                                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                                onSubmitted: (_) {
-                                  FocusScope.of(context).unfocus(); // закрыть клавиатуру
-                                },
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 12),
-                      // FieldsCoopRequest(
-                      //   titleText: 'Мобильный телефон ',
-                      //   hintText: 'Введите мобильный телефон ',
-                      //   star: false,
-                      //   arrow: false,
-                      //   number: true,
-                      //   controller: phoneController,
-                      // ),
-                      FieldsCoopRequest(
-                        titleText: 'Email ',
-                        hintText: 'Введите Email',
-                        star: false,
-                        arrow: false,
-                        controller: emailController,
-                        errorText: fieldStep5Errors['email'],
-                      ),
-
-                      Row(
-                        children: [
-                          Text(
-                            fieldStep5Errors['password'] == null
-                                ? 'Пароль'
-                                : fieldStep5Errors['password']!,
-                            style: AppTextStyles.size13Weight500.copyWith(
-                              color: fieldStep5Errors['password'] == null
-                                  ? Color(0xFF636366)
-                                  : AppColors.mainRedColor,
-                            ),
-                          ),
-                          const Text('*', style: TextStyle(fontSize: 12, color: Colors.red)),
-                        ],
-                      ),
-                      SizedBox(height: 4),
-                      Container(
-                        height: 52,
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 16,
-                        ), // Increased horizontal padding
-                        decoration: BoxDecoration(
-                          color: AppColors.kGray2,
-                          border: fieldStep5Errors['password'] != null
-                              ? Border.all(color: AppColors.mainRedColor, width: 1.0)
-                              : null,
-                          borderRadius: BorderRadius.circular(16),
+                  SizedBox(height: 24),
+                  Visibility(
+                    visible: filledSegments == 1 ? true : false,
+                    child: Column(
+                      children: [
+                        FieldsCoopRequest(
+                          titleText: 'Фамилия',
+                          hintText: 'Введите вашу фамилию',
+                          star: false,
+                          arrow: false,
+                          controller: userLastNameController,
+                          errorText: fieldStep1Errors['lastName'],
                         ),
-                        alignment: Alignment.center,
-                        child: Row(
+                        FieldsCoopRequest(
+                          titleText: 'Имя',
+                          hintText: 'Введите ваше имя',
+                          star: false,
+                          arrow: false,
+                          controller: userFirstNameController,
+                          errorText: fieldStep1Errors['firstName'],
+                        ),
+                        FieldsCoopRequest(
+                          titleText: 'Отчество',
+                          hintText: 'Введите ваше отчество',
+                          star: false,
+                          arrow: false,
+                          controller: userSurNameController,
+                          errorText: fieldStep1Errors['surName'],
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  Visibility(
+                    visible: filledSegments == 2 ? true : false,
+                    child: Column(
+                      children: [
+                        FieldsCoopRequest(
+                          titleText: 'Никнейм блогера (публичное имя)',
+                          hintText: 'Введите никнейм блогера',
+                          star: false,
+                          arrow: false,
+                          controller: nameController,
+                          errorText: fieldStep2Errors['nick'],
+                        ),
+                        FieldsCoopRequest(
+                          titleText: 'Ссылка на соцальную сеть',
+                          hintText: 'Укажите ссылку на ваш профиль в соц.cети',
+                          star: false,
+                          arrow: false,
+                          controller: socialNetworkController,
+                          errorText: fieldStep2Errors['link'],
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  Visibility(
+                    visible: filledSegments == 3 ? true : false,
+                    child: Column(
+                      children: [
+                        FieldsCoopRequest(
+                          titleText: 'Юридический статус',
+                          hintText: type == 0
+                              ? 'Выберите из списка'
+                              : (type == 1 ? 'ИП' : 'Самозанятый'),
+                          star: false,
+                          arrow: true,
+                          readOnly: true,
+                          trueColor: type != 0 ? true : false,
+                          errorText: fieldStep3Errors['type'],
+                          onPressed: () async {
+                            print('ok');
+                            showBloggerRegisterType(
+                              context,
+                              type,
+                              typeCall: (value) {
+                                type = value;
+                                setState(() {});
+                              },
+                            );
+                          },
+                        ),
+                        FieldsCoopRequest(
+                          titleText: 'ИНН',
+                          hintText: 'Введите инн',
+                          star: false,
+                          arrow: false,
+                          number: true,
+                          controller: iinController,
+                          errorText: fieldStep3Errors['iin'],
+                        ),
+                      ],
+                    ),
+                  ),
+                  filledSegments == 4
+                      ? FieldsCoopRequest(
+                          titleText: 'Счет',
+                          hintText: 'Введите счет',
+                          star: false,
+                          arrow: false,
+                          controller: checkController,
+                          errorText: fieldStep4Errors['check'],
+                        )
+                      : SizedBox.shrink(),
+
+                  Visibility(
+                    visible: filledSegments == 5 ? true : false,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
                           children: [
-                            Expanded(
-                              child: TextField(
-                                controller: passwordController,
-                                textAlign: TextAlign.start,
-                                keyboardType: TextInputType.text,
-                                obscureText: !_passwordVisible,
-                                style: AppTextStyles.size16Weight400.copyWith(
-                                  color: Color(0xFF636366),
-                                ),
-                                decoration: InputDecoration(
-                                  border: InputBorder.none,
-                                  hintText: 'Введите пароль',
-                                  hintStyle: AppTextStyles.size16Weight400.copyWith(
-                                    color: Color(0xFF8E8E93),
-                                  ),
-                                  contentPadding: EdgeInsets.zero, // Better control over padding
-                                  isDense: true,
-                                ),
+                            Text(
+                              fieldStep5Errors['phone'] == null
+                                  ? 'Номер телефона'
+                                  : fieldStep5Errors['phone']!,
+                              textAlign: TextAlign.start,
+                              style: AppTextStyles.size13Weight500.copyWith(
+                                color: fieldStep5Errors['phone'] == null
+                                    ? Color(0xFF636366)
+                                    : AppColors.mainRedColor,
                               ),
                             ),
-                            GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  _passwordVisible = !_passwordVisible;
-                                });
-                              },
-                              child: Image.asset(
-                                _passwordVisible
-                                    ? Assets.icons.passwordViewHiddenIcon.path
-                                    : Assets.icons.passwordViewIcon.path,
-                                scale: 1.9,
-                                color: AppColors.kGray300,
+                            Text(
+                              ' *',
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: fieldStep5Errors['phone'] == null
+                                    ? Color(0xFF636366)
+                                    : AppColors.mainRedColor,
                               ),
                             ),
                           ],
                         ),
-                      ),
-                      SizedBox(height: 12),
-                      Row(
-                        children: [
-                          Text(
-                            fieldStep5Errors['repPassword'] == null
-                                ? 'Повторите пароль'
-                                : fieldStep5Errors['repPassword']!,
-                            style: AppTextStyles.size13Weight500.copyWith(
-                              color: fieldStep5Errors['repPassword'] == null
-                                  ? Color(0xFF636366)
-                                  : AppColors.mainRedColor,
-                            ),
-                          ),
-                          const Text('*', style: TextStyle(fontSize: 12, color: Colors.red)),
-                        ],
-                      ),
-                      SizedBox(height: 4),
-                      Container(
-                        height: 52,
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 16,
-                        ), // Increased horizontal padding
-                        decoration: BoxDecoration(
-                          color: AppColors.kGray2,
-                          border: fieldStep5Errors['repPassword'] != null
-                              ? Border.all(color: AppColors.mainRedColor, width: 1.0)
-                              : null,
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        alignment: Alignment.center,
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: TextField(
-                                controller: repeatPasswordController,
-                                textAlign: TextAlign.start,
-                                keyboardType: TextInputType.text,
-                                obscureText: !_repeatPasswordVisible,
-                                style: AppTextStyles.size16Weight400.copyWith(
-                                  color: Color(0xFF636366),
-                                ),
-                                decoration: InputDecoration(
-                                  border: InputBorder.none,
-                                  hintText: 'Повторите пароль',
-                                  hintStyle: AppTextStyles.size16Weight400.copyWith(
-                                    color: Color(0xFF8E8E93),
-                                  ),
-                                  contentPadding: EdgeInsets.zero, // Better control over padding
-                                  isDense: true,
-                                ),
-                              ),
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  _repeatPasswordVisible = !_repeatPasswordVisible;
-                                });
-                              },
-                              child: Image.asset(
-                                _repeatPasswordVisible
-                                    ? Assets.icons.passwordViewHiddenIcon.path
-                                    : Assets.icons.passwordViewIcon.path,
-                                scale: 1.9,
-                                color: AppColors.kGray300,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(height: 40),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 10.0),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
+
+                        SizedBox(height: 8),
+                        Row(
                           children: [
                             InkWell(
                               onTap: () {
-                                setState(() {
-                                  isChecked = !isChecked;
-                                });
+                                showSellerLoginPhone(
+                                  context,
+                                  countryCall: (dto) {
+                                    countrySellerDto = dto;
+                                    setState(() {});
+                                  },
+                                );
                               },
-                              child: Image.asset(
-                                isChecked
-                                    ? Assets.icons.defaultCheckIcon.path
-                                    : Assets.icons.defaultUncheckIcon.path,
-                                scale: 1.9,
-                                color: isChecked ? AppColors.arrowColor : AppColors.kGray300,
-                              ),
-                            ),
-                            SizedBox(width: 10),
-                            // Container(
-                            //   alignment: Alignment.topLeft,
-                            //   child: Checkbox(
-                            //     visualDensity: const VisualDensity(
-                            //         horizontal: 0, vertical: 0),
-                            //     checkColor: Colors.white,
-                            //     // fillColor: WidgetStateProperty.resolveWith(Colors.),
-                            //     value: isChecked,
-                            //     onChanged: (bool? value) {
-                            //       setState(() {
-                            //         isChecked = value!;
-                            //       });
-                            //     },
-                            //   ),
-                            // ),
-                            SizedBox(
-                              width: 311,
-                              child: BlocBuilder<metaCubit.MetaCubit, metaState.MetaState>(
-                                builder: (context, state) {
-                                  if (state is metaState.LoadedState) {
-                                    metasBody.addAll([
-                                      state.metas.terms_of_use!,
-                                      state.metas.privacy_policy!,
-                                      state.metas.contract_offer!,
-                                      state.metas.shipping_payment!,
-                                      state.metas.TTN!,
-                                    ]);
-                                    return GestureDetector(
-                                      onTap: () {
-                                        Get.to(
-                                          () => MetasPage(title: metas[4], body: metasBody[4]),
-                                        );
-                                      },
-                                      child: Container(
-                                        alignment: Alignment.bottomLeft,
-                                        child: RichText(
-                                          textAlign: TextAlign.left,
-                                          text: TextSpan(
-                                            children: [
-                                              TextSpan(
-                                                text:
-                                                    "Нажимая «Зарегистрироваться», вы подтверждаете, что ознакомились и \nпринимаете ",
-                                                style: TextStyle(color: AppColors.kGray200),
-                                              ),
-                                              TextSpan(
-                                                text: "Оферту для блогеров",
-                                                style: TextStyle(color: AppColors.mainPurpleColor),
-                                              ),
-                                              TextSpan(
-                                                text:
-                                                    ", а также соглашаетесь с правилами использования платформы.",
-                                                style: TextStyle(color: AppColors.kGray200),
-                                              ),
-                                            ],
-                                          ),
+                              child: Shimmer(
+                                child: Container(
+                                  height: 52,
+                                  width: 83,
+                                  padding: EdgeInsets.symmetric(horizontal: 15),
+                                  decoration: BoxDecoration(
+                                    color: AppColors.kGray2,
+                                    borderRadius: BorderRadius.circular(16),
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      Image.asset(
+                                        countrySellerDto!.flagPath,
+                                        width: 24,
+                                        height: 24,
+                                      ),
+                                      SizedBox(width: 8),
+                                      Text(
+                                        '${countrySellerDto!.code}',
+                                        style: AppTextStyles.size16Weight400.copyWith(
+                                          color: Color(0xFF636366),
                                         ),
                                       ),
-                                    );
-                                  } else {
-                                    return const Center(
-                                      child: CircularProgressIndicator(color: Colors.indigoAccent),
-                                    );
-                                  }
-                                },
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                            SizedBox(width: 4),
+                            // Поле ввода
+                            Flexible(
+                              child: Container(
+                                height: 52,
+                                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                                decoration: BoxDecoration(
+                                  color: AppColors.kGray2,
+                                  border: fieldStep5Errors['phone'] != null
+                                      ? Border.all(color: AppColors.mainRedColor, width: 1.0)
+                                      : null,
+                                  borderRadius: BorderRadius.circular(16),
+                                ),
+                                child: TextField(
+                                  controller: phoneController,
+                                  textInputAction: TextInputAction.send,
+                                  keyboardType: TextInputType.phone,
+                                  style: AppTextStyles.size16Weight400.copyWith(
+                                    color: Color(0xFF636366),
+                                  ),
+                                  decoration: InputDecoration(
+                                    hintText: 'Введите номер телефона',
+                                    hintStyle: AppTextStyles.size16Weight400.copyWith(
+                                      color: Color(0xFF8E8E93),
+                                    ),
+                                    border: InputBorder.none,
+                                  ),
+                                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                                  onSubmitted: (_) {
+                                    FocusScope.of(context).unfocus(); // закрыть клавиатуру
+                                  },
+                                ),
                               ),
                             ),
                           ],
                         ),
-                      ),
-                      const SizedBox(height: 100),
-                    ],
+                        SizedBox(height: 12),
+                        // FieldsCoopRequest(
+                        //   titleText: 'Мобильный телефон ',
+                        //   hintText: 'Введите мобильный телефон ',
+                        //   star: false,
+                        //   arrow: false,
+                        //   number: true,
+                        //   controller: phoneController,
+                        // ),
+                        FieldsCoopRequest(
+                          titleText: 'Email ',
+                          hintText: 'Введите Email',
+                          star: false,
+                          arrow: false,
+                          controller: emailController,
+                          errorText: fieldStep5Errors['email'],
+                        ),
+
+                        Row(
+                          children: [
+                            Text(
+                              fieldStep5Errors['password'] == null
+                                  ? 'Пароль'
+                                  : fieldStep5Errors['password']!,
+                              style: AppTextStyles.size13Weight500.copyWith(
+                                color: fieldStep5Errors['password'] == null
+                                    ? Color(0xFF636366)
+                                    : AppColors.mainRedColor,
+                              ),
+                            ),
+                            const Text('*', style: TextStyle(fontSize: 12, color: Colors.red)),
+                          ],
+                        ),
+                        SizedBox(height: 4),
+                        Container(
+                          height: 52,
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 16,
+                          ), // Increased horizontal padding
+                          decoration: BoxDecoration(
+                            color: AppColors.kGray2,
+                            border: fieldStep5Errors['password'] != null
+                                ? Border.all(color: AppColors.mainRedColor, width: 1.0)
+                                : null,
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          alignment: Alignment.center,
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: TextField(
+                                  controller: passwordController,
+                                  textAlign: TextAlign.start,
+                                  keyboardType: TextInputType.text,
+                                  obscureText: !_passwordVisible,
+                                  style: AppTextStyles.size16Weight400.copyWith(
+                                    color: Color(0xFF636366),
+                                  ),
+                                  decoration: InputDecoration(
+                                    border: InputBorder.none,
+                                    hintText: 'Введите пароль',
+                                    hintStyle: AppTextStyles.size16Weight400.copyWith(
+                                      color: Color(0xFF8E8E93),
+                                    ),
+                                    contentPadding: EdgeInsets.zero, // Better control over padding
+                                    isDense: true,
+                                  ),
+                                ),
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    _passwordVisible = !_passwordVisible;
+                                  });
+                                },
+                                child: Image.asset(
+                                  _passwordVisible
+                                      ? Assets.icons.passwordViewHiddenIcon.path
+                                      : Assets.icons.passwordViewIcon.path,
+                                  scale: 1.9,
+                                  color: AppColors.kGray300,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(height: 12),
+                        Row(
+                          children: [
+                            Text(
+                              fieldStep5Errors['repPassword'] == null
+                                  ? 'Повторите пароль'
+                                  : fieldStep5Errors['repPassword']!,
+                              style: AppTextStyles.size13Weight500.copyWith(
+                                color: fieldStep5Errors['repPassword'] == null
+                                    ? Color(0xFF636366)
+                                    : AppColors.mainRedColor,
+                              ),
+                            ),
+                            const Text('*', style: TextStyle(fontSize: 12, color: Colors.red)),
+                          ],
+                        ),
+                        SizedBox(height: 4),
+                        Container(
+                          height: 52,
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 16,
+                          ), // Increased horizontal padding
+                          decoration: BoxDecoration(
+                            color: AppColors.kGray2,
+                            border: fieldStep5Errors['repPassword'] != null
+                                ? Border.all(color: AppColors.mainRedColor, width: 1.0)
+                                : null,
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          alignment: Alignment.center,
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: TextField(
+                                  controller: repeatPasswordController,
+                                  textAlign: TextAlign.start,
+                                  keyboardType: TextInputType.text,
+                                  obscureText: !_repeatPasswordVisible,
+                                  style: AppTextStyles.size16Weight400.copyWith(
+                                    color: Color(0xFF636366),
+                                  ),
+                                  decoration: InputDecoration(
+                                    border: InputBorder.none,
+                                    hintText: 'Повторите пароль',
+                                    hintStyle: AppTextStyles.size16Weight400.copyWith(
+                                      color: Color(0xFF8E8E93),
+                                    ),
+                                    contentPadding: EdgeInsets.zero, // Better control over padding
+                                    isDense: true,
+                                  ),
+                                ),
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    _repeatPasswordVisible = !_repeatPasswordVisible;
+                                  });
+                                },
+                                child: Image.asset(
+                                  _repeatPasswordVisible
+                                      ? Assets.icons.passwordViewHiddenIcon.path
+                                      : Assets.icons.passwordViewIcon.path,
+                                  scale: 1.9,
+                                  color: AppColors.kGray300,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(height: 40),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 10.0),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              InkWell(
+                                onTap: () {
+                                  setState(() {
+                                    isChecked = !isChecked;
+                                  });
+                                },
+                                child: Image.asset(
+                                  isChecked
+                                      ? Assets.icons.defaultCheckIcon.path
+                                      : Assets.icons.defaultUncheckIcon.path,
+                                  scale: 1.9,
+                                  color: isChecked ? AppColors.arrowColor : AppColors.kGray300,
+                                ),
+                              ),
+                              SizedBox(width: 10),
+                              // Container(
+                              //   alignment: Alignment.topLeft,
+                              //   child: Checkbox(
+                              //     visualDensity: const VisualDensity(
+                              //         horizontal: 0, vertical: 0),
+                              //     checkColor: Colors.white,
+                              //     // fillColor: MaterialStateProperty.resolveWith(Colors.),
+                              //     value: isChecked,
+                              //     onChanged: (bool? value) {
+                              //       setState(() {
+                              //         isChecked = value!;
+                              //       });
+                              //     },
+                              //   ),
+                              // ),
+                              SizedBox(
+                                width: 311,
+                                child: BlocBuilder<metaCubit.MetaCubit, metaState.MetaState>(
+                                  builder: (context, state) {
+                                    if (state is metaState.LoadedState) {
+                                      metasBody.addAll([
+                                        state.metas.terms_of_use!,
+                                        state.metas.privacy_policy!,
+                                        state.metas.contract_offer!,
+                                        state.metas.shipping_payment!,
+                                        state.metas.TTN!,
+                                      ]);
+                                      return GestureDetector(
+                                        onTap: () {
+                                          Get.to(
+                                            () => MetasPage(title: metas[4], body: metasBody[4]),
+                                          );
+                                        },
+                                        child: Container(
+                                          alignment: Alignment.bottomLeft,
+                                          child: RichText(
+                                            textAlign: TextAlign.left,
+                                            text: TextSpan(
+                                              children: [
+                                                TextSpan(
+                                                  text:
+                                                      "Нажимая «Зарегистрироваться», вы подтверждаете, что ознакомились и \nпринимаете ",
+                                                  style: TextStyle(color: AppColors.kGray200),
+                                                ),
+                                                TextSpan(
+                                                  text: "Оферту для блогеров",
+                                                  style: TextStyle(
+                                                    color: AppColors.mainPurpleColor,
+                                                  ),
+                                                ),
+                                                TextSpan(
+                                                  text:
+                                                      ", а также соглашаетесь с правилами использования платформы.",
+                                                  style: TextStyle(color: AppColors.kGray200),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                                    } else {
+                                      return const Center(
+                                        child: CircularProgressIndicator(
+                                          color: Colors.indigoAccent,
+                                        ),
+                                      );
+                                    }
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 100),
+                      ],
+                    ),
                   ),
-                ),
-              ],
-            ),
-          );
-        },
-      ),
-      bottomSheet: Container(
-        color: Colors.white,
-        padding: const EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 8),
-        child: InkWell(
-          onTap: () async {
-            userNameController.text =
-                '${userFirstNameController.text} '
-                '${userLastNameController.text} '
-                '${userSurNameController.text}';
-
-            if (filledSegments == 1) {
-              if (!_ensureStep1Valid() && filledCount == 1) return;
-
-              if (userFirstNameController.text.isNotEmpty &&
-                  userLastNameController.text.isNotEmpty &&
-                  userSurNameController.text.isNotEmpty) {
-                setState(() {
-                  filledSegments = 2;
-                  filledCount = 2;
-                  title = 'Социальные сети';
-                });
-                return;
-              } else {
-                AppSnackBar.show(
-                  context,
-                  'Заполните основную информацию *',
-                  type: AppSnackType.error,
-                );
-              }
-            }
-
-            if (filledSegments == 2) {
-              if (!_ensureStep2Valid() && filledCount == 2) return;
-
-              if (nameController.text.isNotEmpty && socialNetworkController.text.isNotEmpty) {
-                setState(() {
-                  filledSegments = 3;
-                  filledCount = 3;
-                  title = 'Юридический статус';
-                });
-                return;
-              } else {
-                AppSnackBar.show(
-                  context,
-                  'Заполните социальные данные *',
-                  type: AppSnackType.error,
-                );
-              }
-            }
-
-            if (filledSegments == 3) {
-              if (!_ensureStep3Valid() && filledCount == 3) return;
-              if (type != 0 && iinController.text.isNotEmpty) {
-                setState(() {
-                  filledSegments = 4;
-                  filledCount = 4;
-                  title = 'Реквизиты банка';
-                });
-                return;
-              } else {
-                AppSnackBar.show(
-                  context,
-                  'Заполните юридические данные *',
-                  type: AppSnackType.error,
-                );
-              }
-            }
-
-            if (filledSegments == 4) {
-              if (!_ensureStep4Valid() && filledCount == 4) return;
-
-              if (checkController.text.isNotEmpty) {
-                setState(() {
-                  filledSegments = 5;
-                  filledCount = 5;
-                  title = 'Контактные данные';
-                });
-                return;
-              } else {
-                AppSnackBar.show(context, 'Заполните реквизиты *', type: AppSnackType.error);
-              }
-            }
-
-            if (filledSegments == 5) {
-              if (!_ensureStep5Valid() && filledCount == 5) return;
-
-              if (phoneController.text.isNotEmpty &&
-                  emailController.text.isNotEmpty &&
-                  passwordController.text.isNotEmpty &&
-                  isChecked == true &&
-                  passwordController.text == repeatPasswordController.text) {
-                final data = BloggerDTO(
-                  firstName: userFirstNameController.text,
-                  lastName: userLastNameController.text,
-                  surName: userSurNameController.text,
-                  iin: iinController.text,
-                  socialNetwork: socialNetworkController.text,
-                  phone: phoneController.text,
-                  email: emailController.text,
-                  nick: nameController.text,
-                  password: passwordController.text,
-                  check: checkController.text,
-                  legalStatus: type == 0 ? 'individual-entrepreneur' : 'self-employed',
-                );
-
-                final register = BlocProvider.of<LoginBloggerCubit>(context);
-
-                final int? statusCode = await register.register(context, data);
-
-                print('status code ${statusCode}');
-
-                if (statusCode == 200) {
-                  context.router.push(SuccessBloggerRegisterRoute());
-                }
-              } else {
-                AppSnackBar.show(
-                  context,
-                  'Заполните контактные данные *',
-                  type: AppSnackType.error,
-                );
-              }
-            }
-
-            // Navigator.pop(context);
+                ],
+              ),
+            );
           },
-          child: SizedBox(
-            height: 100,
-            child: Column(
-              children: [
-                Container(
-                  height: 52,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(16),
-                    color: AppColors.mainPurpleColor,
-                  ),
-                  width: MediaQuery.of(context).size.width,
-                  alignment: Alignment.center,
-                  // padding: const EdgeInsets.only(left: 16, right: 16),
-                  child: Text(
-                    filledSegments != 5 ? 'Далее' : 'Зарегистрироваться',
-                    style: AppTextStyles.defaultButtonTextStyle.copyWith(color: AppColors.kWhite),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-                SizedBox(height: 12),
-              ],
-            ),
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: InkWell(
+        onTap: () async {
+          userNameController.text =
+              '${userFirstNameController.text} '
+              '${userLastNameController.text} '
+              '${userSurNameController.text}';
+
+          if (filledSegments == 1) {
+            if (!_ensureStep1Valid() && filledCount == 1) return;
+
+            if (userFirstNameController.text.isNotEmpty &&
+                userLastNameController.text.isNotEmpty &&
+                userSurNameController.text.isNotEmpty) {
+              setState(() {
+                filledSegments = 2;
+                filledCount = 2;
+                title = 'Социальные сети';
+              });
+              return;
+            } else {
+              AppSnackBar.show(
+                context,
+                'Заполните основную информацию *',
+                type: AppSnackType.error,
+              );
+            }
+          }
+
+          if (filledSegments == 2) {
+            if (!_ensureStep2Valid() && filledCount == 2) return;
+
+            if (nameController.text.isNotEmpty && socialNetworkController.text.isNotEmpty) {
+              setState(() {
+                filledSegments = 3;
+                filledCount = 3;
+                title = 'Юридический статус';
+              });
+              return;
+            } else {
+              AppSnackBar.show(context, 'Заполните социальные данные *', type: AppSnackType.error);
+            }
+          }
+
+          if (filledSegments == 3) {
+            if (!_ensureStep3Valid() && filledCount == 3) return;
+            if (type != 0 && iinController.text.isNotEmpty) {
+              setState(() {
+                filledSegments = 4;
+                filledCount = 4;
+                title = 'Реквизиты банка';
+              });
+              return;
+            } else {
+              AppSnackBar.show(context, 'Заполните юридические данные *', type: AppSnackType.error);
+            }
+          }
+
+          if (filledSegments == 4) {
+            if (!_ensureStep4Valid() && filledCount == 4) return;
+
+            if (checkController.text.isNotEmpty) {
+              setState(() {
+                filledSegments = 5;
+                filledCount = 5;
+                title = 'Контактные данные';
+              });
+              return;
+            } else {
+              AppSnackBar.show(context, 'Заполните реквизиты *', type: AppSnackType.error);
+            }
+          }
+
+          if (filledSegments == 5) {
+            if (!_ensureStep5Valid() && filledCount == 5) return;
+
+            if (phoneController.text.isNotEmpty &&
+                emailController.text.isNotEmpty &&
+                passwordController.text.isNotEmpty &&
+                isChecked == true &&
+                passwordController.text == repeatPasswordController.text) {
+              final data = BloggerDTO(
+                firstName: userFirstNameController.text,
+                lastName: userLastNameController.text,
+                surName: userSurNameController.text,
+                iin: iinController.text,
+                socialNetwork: socialNetworkController.text,
+                phone: phoneController.text,
+                email: emailController.text,
+                nick: nameController.text,
+                password: passwordController.text,
+                check: checkController.text,
+                legalStatus: type == 0 ? 'individual-entrepreneur' : 'self-employed',
+              );
+
+              final register = BlocProvider.of<LoginBloggerCubit>(context);
+
+              final int? statusCode = await register.register(context, data);
+
+              print('status code ${statusCode}');
+
+              if (statusCode == 200) {
+                context.router.push(SuccessBloggerRegisterRoute());
+              }
+            } else {
+              AppSnackBar.show(context, 'Заполните контактные данные *', type: AppSnackType.error);
+            }
+          }
+
+          // Navigator.pop(context);
+        },
+        child: Container(
+          height: 52,
+          // padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+          margin: EdgeInsets.symmetric(horizontal: 16),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(16),
+            color: AppColors.mainPurpleColor,
+          ),
+          width: MediaQuery.of(context).size.width,
+          alignment: Alignment.center,
+          // padding: const EdgeInsets.only(left: 16, right: 16),
+          child: Text(
+            filledSegments != 5 ? 'Далее' : 'Зарегистрироваться',
+            style: AppTextStyles.defaultButtonTextStyle.copyWith(color: AppColors.kWhite),
+            textAlign: TextAlign.center,
           ),
         ),
       ),
-
-      //bottomSheet:  );
     );
   }
 }

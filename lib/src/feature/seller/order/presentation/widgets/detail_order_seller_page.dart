@@ -56,7 +56,7 @@ class _DetailOrderSellerPageState extends State<DetailOrderSellerPage> {
           postSecondStatusFBS = 'cancel';
 
           buttonTextFBS = 'Принять';
-          buttonSecondTextFBS = 'Отменить заказ';
+          buttonSecondTextFBS = 'Отклонить';
         }
         break;
 
@@ -67,7 +67,7 @@ class _DetailOrderSellerPageState extends State<DetailOrderSellerPage> {
           postSecondStatusFBS = 'cancel';
 
           buttonTextFBS = 'Передать курьеру';
-          buttonSecondTextFBS = 'Отменить заказ';
+          buttonSecondTextFBS = 'Отклонить';
         }
         break;
 
@@ -264,12 +264,12 @@ class _DetailOrderSellerPageState extends State<DetailOrderSellerPage> {
               children: [
                 Padding(
                   padding: const EdgeInsets.all(16),
-                  child: ListView.builder(
+                  child: ListView.separated(
                     shrinkWrap: true,
-                    itemCount: widget.basket.product?.length,
+                    itemCount: widget.basket.product?.length ?? 0,
+                    separatorBuilder: (context, index) => SizedBox(height: 12),
                     itemBuilder: (BuildContext context, int index) {
                       return Container(
-                        height: 114,
                         padding: EdgeInsets.only(left: 16, right: 16, top: 18, bottom: 12),
                         decoration: BoxDecoration(
                           color: Colors.white,
@@ -302,6 +302,8 @@ class _DetailOrderSellerPageState extends State<DetailOrderSellerPage> {
                                   Text(
                                     '${widget.basket.product?[index].productName}',
                                     style: AppTextStyles.size14Weight500,
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
                                   ),
                                   const SizedBox(height: 4),
                                   Row(
@@ -483,21 +485,27 @@ class _DetailOrderSellerPageState extends State<DetailOrderSellerPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Адрес доставки',
-                          style: TextStyle(
-                            color: AppColors.kGray900,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w700,
-                          ),
+                          'Тип доставки',
+                          style: AppTextStyles.size14Weight500.copyWith(color: Color(0xffAEAEB2)),
                         ),
-                        SizedBox(height: 5),
+                        SizedBox(height: 2),
+                        Text('Курьер', style: AppTextStyles.size16Weight600),
+                        SizedBox(height: 12),
+                        Text(
+                          'Сервис доставки',
+                          style: AppTextStyles.size14Weight500.copyWith(color: Color(0xffAEAEB2)),
+                        ),
+                        SizedBox(height: 2),
+                        Text('CDEK ', style: AppTextStyles.size16Weight600),
+                        SizedBox(height: 12),
+                        Text(
+                          'Адрес доставки',
+                          style: AppTextStyles.size14Weight500.copyWith(color: Color(0xffAEAEB2)),
+                        ),
+                        SizedBox(height: 2),
                         Text(
                           '${widget.basket.product!.first.address}',
-                          style: const TextStyle(
-                            color: AppColors.kGray900,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400,
-                          ),
+                          style: AppTextStyles.size16Weight600,
                         ),
                       ],
                     ),
@@ -505,7 +513,11 @@ class _DetailOrderSellerPageState extends State<DetailOrderSellerPage> {
                 ),
                 Container(
                   padding: const EdgeInsets.all(16),
-                  color: Colors.white,
+                  margin: const EdgeInsets.symmetric(horizontal: 16),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(16),
+                  ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -648,22 +660,16 @@ class _DetailOrderSellerPageState extends State<DetailOrderSellerPage> {
                               }
                             },
                             child: Container(
-                              height: 46,
+                              height: 40,
+                              width: 173,
                               decoration: BoxDecoration(
-                                color: AppColors.mainPurpleColor,
+                                color: Color(0xffEAECED),
                                 borderRadius: BorderRadius.circular(10),
                               ),
-                              padding: const EdgeInsets.symmetric(vertical: 13, horizontal: 25),
+                              alignment: Alignment.center,
                               child: state is LoadingState
                                   ? const Center(child: CircularProgressIndicator.adaptive())
-                                  : Text(
-                                      buttonTextFBS,
-                                      style: const TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
+                                  : Text(buttonTextFBS, style: AppTextStyles.size16Weight600),
                             ),
                           ),
                           GestureDetector(
@@ -689,17 +695,17 @@ class _DetailOrderSellerPageState extends State<DetailOrderSellerPage> {
                               }
                             },
                             child: Container(
+                              height: 40,
+                              width: 173,
                               decoration: BoxDecoration(
-                                color: AppColors.kGray200,
+                                color: AppColors.mainPurpleColor,
                                 borderRadius: BorderRadius.circular(10),
                               ),
-                              padding: const EdgeInsets.all(13),
+                              alignment: Alignment.center,
                               child: Text(
                                 buttonSecondTextFBS,
-                                style: const TextStyle(
-                                  color: AppColors.kLightBlackColor,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w500,
+                                style: AppTextStyles.size16Weight600.copyWith(
+                                  color: AppColors.kWhite,
                                 ),
                               ),
                             ),
