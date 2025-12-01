@@ -1,7 +1,6 @@
 import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:haji_market/src/feature/app/widgets/app_snack_bar.dart';
 import 'package:haji_market/src/feature/bloger/auth/bloc/login_blogger_state.dart';
 import '../data/DTO/blogger_dto.dart';
@@ -65,5 +64,6 @@ class LoginBloggerCubit extends Cubit<LoginBloggerState> {
       log(e.toString());
       // emit(ErrorState(message: 'Ошибка'));
     }
+    return null;
   }
 }

@@ -1,34 +1,33 @@
-import 'dart:developer';
 import 'package:bloc/bloc.dart';
+import 'package:equatable/equatable.dart';
+import 'package:haji_market/src/core/utils/talker_logger_util.dart';
 import 'package:haji_market/src/feature/drawer/data/repository/city_repo.dart';
 import 'package:haji_market/src/feature/home/data/model/city_model.dart';
-
-import 'city_state.dart';
 
 class CityCubit extends Cubit<CityState> {
   final CityRepository cityRepository;
 
-  CityCubit({required this.cityRepository}) : super(InitState());
+  CityCubit({required this.cityRepository}) : super(CityStateInitial());
   List<CityModel> _cities = [];
 
   Future<void> cities() async {
     try {
-      emit(LoadingState());
+      emit(CityStateLoading());
       final List<CityModel> data = await cityRepository.cityApi();
       _cities = data;
 
-      if (_cities.length == 0) {
-        emit(NodataState());
+      if (_cities.isEmpty) {
+        emit(CityStateNoData());
       } else {
-        emit(LoadedState(data));
+        emit(CityStateLoaded(data));
       }
     } catch (e) {
-      log("---- ${e.toString()}");
-      emit(ErrorState(message: 'Ошибка сервера'));
+      TalkerLoggerUtil.talker.error('CityCubit.cities', e);
+      emit(CityStateError(message: 'Ошибка сервера'));
     }
   }
 
-  Future<List<CityModel>> citiesList(country) async {
+  Future<List<CityModel>> citiesList(String? country) async {
     if (_cities.isEmpty) {
       await citiesCdek(country ?? 'RU');
     }
@@ -37,19 +36,19 @@ class CityCubit extends Cubit<CityState> {
 
   Future<List<CityModel>> citiesCdek(String? countryCode) async {
     try {
-      emit(LoadingState());
+      emit(CityStateLoading());
       final List<CityModel> data = await cityRepository.cityCdekApi(countryCode);
       _cities = data;
 
-      if (_cities.length == 0) {
-        emit(NodataState());
+      if (_cities.isEmpty) {
+        emit(CityStateNoData());
       } else {
-        emit(LoadedState(data));
+        emit(CityStateLoaded(data));
       }
       return _cities;
     } catch (e) {
-      log("---!- ${e.toString()}");
-      emit(ErrorState(message: 'Ошибка сервера'));
+      TalkerLoggerUtil.talker.error('CityCubit.citiesCdek', e);
+      emit(CityStateError(message: 'Ошибка сервера'));
       return _cities;
     }
   }
@@ -63,11 +62,12 @@ class CityCubit extends Cubit<CityState> {
         temp.add(_cities[i]);
       }
     }
-    emit(LoadedState(temp));
+    emit(CityStateLoaded(temp));
   }
 
-  cityById(String id) async {
-    if (id.isEmpty) return;
+  Future<CityModel?> cityById(String id) async {
+    if (id.isEmpty) return null;
+
     if (_cities.isEmpty) {
       await cities();
     }
@@ -80,22 +80,34 @@ class CityCubit extends Cubit<CityState> {
 
     return city;
   }
+}
 
-  // Future<void> searchCity(String city) async {
-  //   if(city.isEmpty) return;
-  //   if(_cities.isEmpty) {
-  //     await cities();
-  //     // final List<City> data = await listRepository.cities();
-  //     // _cities = data;
-  //   }
-  //   List<City> temp = [];
-  //   Set<String> citiesSet = {};
-  //   for(int i = 0 ; i < _cities.length; i++) {
-  //     if(_cities[i].name != null && _cities[i].name!.contains(city)) {
-  //       temp.add(_cities[i]);
-  //       citiesSet.add(_cities[i].name.toString());
-  //     }
-  //   }
-  //   emit(LoadedState(temp, citiesSet, ''));
-  // }
+/// <--- State --->
+sealed class CityState extends Equatable {
+  const CityState();
+
+  @override
+  List<Object?> get props => [];
+}
+
+class CityStateInitial extends CityState {}
+
+class CityStateLoading extends CityState {}
+
+class CityStateNoData extends CityState {}
+
+class CityStateLoaded extends CityState {
+  final List<CityModel> city;
+  const CityStateLoaded(this.city);
+
+  @override
+  List<Object?> get props => [city];
+}
+
+class CityStateError extends CityState {
+  final String message;
+  const CityStateError({required this.message});
+
+  @override
+  List<Object?> get props => [message];
 }

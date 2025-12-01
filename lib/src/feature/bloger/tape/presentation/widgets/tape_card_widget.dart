@@ -1,16 +1,9 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
-import 'package:haji_market/src/feature/bloger/tape/bloc/tape_blogger_cubit.dart';
-import 'package:haji_market/src/feature/bloger/tape/bloc/upload_video_blogger_cubit.dart';
-import 'package:haji_market/src/feature/bloger/tape/bloc/upload_video_blogger_state.dart';
 import 'package:haji_market/src/feature/bloger/tape/data/model/tape_blogger_model.dart';
-import 'package:haji_market/src/feature/bloger/tape/presentation/widgets/delete_video_dialog.dart';
 import 'package:video_player/video_player.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 @RoutePage()
 class BloggerTapeCardPage extends StatefulWidget {

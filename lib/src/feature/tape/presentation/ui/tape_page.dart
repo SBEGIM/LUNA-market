@@ -9,13 +9,11 @@ import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/feature/tape/bloc/tape_cubit.dart';
 import 'package:haji_market/src/feature/tape/presentation/widgets/tape_card_widget.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:shimmer_animation/shimmer_animation.dart';
-
-import '../../bloc/tape_state.dart';
+import 'package:haji_market/src/feature/tape/bloc/tape_state.dart';
 
 @RoutePage()
 class TapePage extends StatefulWidget {
-  const TapePage({Key? key}) : super(key: key);
+  const TapePage({super.key});
 
   @override
   State<TapePage> createState() => _TapePageState();
@@ -496,9 +494,10 @@ class _TapeTabState extends State<TapeTab> with AutomaticKeepAliveClientMixin<Ta
   String _noDataByTab() {
     if (widget.isSubs) return 'Пока здесь пусто\nЗдесь будут обзоры от тех, на кого \nвы подписаны';
     if (widget.isFavs) return 'Пока здесь пусто\nВаши избранные видеообзоры \nпоявятся здесь';
-    if (widget.search != '')
+    if (widget.search != '') {
       return 'Мы ничего не нашли по вашему запросу';
-    else
+    } else {
       return 'Загляните позже — мы готовим подборку для вас';
+    }
   }
 }

@@ -1,5 +1,4 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/route_manager.dart';
@@ -11,19 +10,11 @@ import 'package:haji_market/src/feature/app/widgets/app_snack_bar.dart';
 import 'package:haji_market/src/feature/bloger/tape/bloc/upload_video_blogger_cubit.dart';
 import 'package:haji_market/src/feature/bloger/tape/data/model/tape_blogger_model.dart';
 import 'package:haji_market/src/feature/bloger/tape/presentation/ui/tape_statistics_page.dart';
-import 'package:haji_market/src/feature/bloger/tape/presentation/widgets/delete_video_dialog.dart';
-import 'package:haji_market/src/feature/bloger/tape/presentation/widgets/edit_tape_vidoe.dart';
 import 'package:haji_market/src/feature/drawer/presentation/widgets/show_alert_account_widget.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 void showBlogerTapeOptions(BuildContext context, int id, TapeBloggerModel tape) {
-  final List<String> categories = ["Редактировать", "Статистика", "Удалить"];
   final rootContext = context;
-
-  List<String> filteredCategories = [...categories];
-
-  String selectedCategory = "Все категории";
-  TextEditingController searchController = TextEditingController();
 
   showMaterialModalBottomSheet(
     context: rootContext,

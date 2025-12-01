@@ -13,8 +13,8 @@ import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/feature/bloger/auth/data/DTO/blogger_dto.dart';
 import 'package:haji_market/src/feature/bloger/coop_request/presentation/widget/show_blogger_register_type_widget.dart';
 import 'package:haji_market/src/feature/drawer/presentation/widgets/metas_webview.dart';
-import 'package:haji_market/src/feature/home/bloc/meta_cubit.dart' as metaCubit;
-import 'package:haji_market/src/feature/home/bloc/meta_state.dart' as metaState;
+import 'package:haji_market/src/feature/home/bloc/meta_cubit.dart' as meta_cubit;
+import 'package:haji_market/src/feature/home/bloc/meta_state.dart' as meta_state;
 import 'package:haji_market/src/feature/seller/auth/data/DTO/contry_seller_dto.dart';
 import 'package:haji_market/src/feature/seller/auth/presentation/widget/show_seller_login_phone_widget.dart';
 import 'package:shimmer_animation/shimmer_animation.dart';
@@ -22,7 +22,7 @@ import 'package:shimmer_animation/shimmer_animation.dart';
 @RoutePage()
 class BlogRegisterPage extends StatefulWidget {
   final Function(int status)? onTap;
-  const BlogRegisterPage({Key? key, this.onTap}) : super(key: key);
+  const BlogRegisterPage({super.key, this.onTap});
 
   @override
   State<BlogRegisterPage> createState() => _BlogRegisterPageState();
@@ -33,8 +33,6 @@ class _BlogRegisterPageState extends State<BlogRegisterPage> {
   bool _passwordVisible = false;
   bool _repeatPasswordVisible = false;
 
-  bool _visibleIconClear = false;
-  bool __visibleIconView = false;
   bool isButtonEnabled = false;
 
   TextEditingController userFirstNameController = TextEditingController();
@@ -62,8 +60,8 @@ class _BlogRegisterPageState extends State<BlogRegisterPage> {
       flagPath: Assets.icons.ruFlagIcon.path,
       name: 'Россия',
     );
-    if (BlocProvider.of<metaCubit.MetaCubit>(context).state is! metaState.LoadedState) {
-      BlocProvider.of<metaCubit.MetaCubit>(context).partners();
+    if (BlocProvider.of<meta_cubit.MetaCubit>(context).state is! meta_state.LoadedState) {
+      BlocProvider.of<meta_cubit.MetaCubit>(context).partners();
     }
     super.initState();
   }
@@ -168,7 +166,8 @@ class _BlogRegisterPageState extends State<BlogRegisterPage> {
       fieldStep5Errors['password'] = pass.length < 6 ? 'Пароль слишком короткий' : null;
       fieldStep5Errors['repPassword'] = rep != pass ? 'Пароли не совпадают' : null;
     });
-    return null;
+
+    return;
   }
 
   bool get isStep1Valid => fieldStep1Errors.values.every((e) => e == null);
@@ -408,7 +407,7 @@ class _BlogRegisterPageState extends State<BlogRegisterPage> {
                         scrollDirection: Axis.horizontal,
                         physics: const NeverScrollableScrollPhysics(),
                         itemCount: totalSegments,
-                        separatorBuilder: (_, __) => SizedBox(width: segmentSpacing),
+                        separatorBuilder: (_, _) => SizedBox(width: segmentSpacing),
                         itemBuilder: (context, index) {
                           bool isFilled = index < filledCount;
                           return Container(
@@ -498,7 +497,6 @@ class _BlogRegisterPageState extends State<BlogRegisterPage> {
                           trueColor: type != 0 ? true : false,
                           errorText: fieldStep3Errors['type'],
                           onPressed: () async {
-                            print('ok');
                             showBloggerRegisterType(
                               context,
                               type,
@@ -596,7 +594,7 @@ class _BlogRegisterPageState extends State<BlogRegisterPage> {
                                       ),
                                       SizedBox(width: 8),
                                       Text(
-                                        '${countrySellerDto!.code}',
+                                        '${countrySellerDto?.code}',
                                         style: AppTextStyles.size16Weight400.copyWith(
                                           color: Color(0xFF636366),
                                         ),
@@ -837,9 +835,9 @@ class _BlogRegisterPageState extends State<BlogRegisterPage> {
                               // ),
                               SizedBox(
                                 width: 311,
-                                child: BlocBuilder<metaCubit.MetaCubit, metaState.MetaState>(
+                                child: BlocBuilder<meta_cubit.MetaCubit, meta_state.MetaState>(
                                   builder: (context, state) {
-                                    if (state is metaState.LoadedState) {
+                                    if (state is meta_state.LoadedState) {
                                       metasBody.addAll([
                                         state.metas.terms_of_use!,
                                         state.metas.privacy_policy!,
@@ -1002,10 +1000,10 @@ class _BlogRegisterPageState extends State<BlogRegisterPage> {
 
               final int? statusCode = await register.register(context, data);
 
-              print('status code ${statusCode}');
+              debugPrint('status code $statusCode');
 
               if (statusCode == 200) {
-                context.router.push(SuccessBloggerRegisterRoute());
+                if (context.mounted) context.router.push(SuccessBloggerRegisterRoute());
               }
             } else {
               AppSnackBar.show(context, 'Заполните контактные данные *', type: AppSnackType.error);

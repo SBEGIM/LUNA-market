@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/feature/app/router/app_router.dart';
+import 'package:haji_market/src/feature/app/widgets/app_snack_bar.dart';
 import 'package:haji_market/src/feature/app/widgets/custom_back_button.dart';
 import 'package:haji_market/src/feature/auth/bloc/sms_state.dart';
 import 'package:haji_market/src/feature/auth/presentation/widgets/default_button.dart';
@@ -32,7 +33,6 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
 
   @override
   Widget build(BuildContext context) {
-    // final screenSize = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -48,116 +48,98 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
       ),
       body: BlocConsumer<SmsCubit, SmsState>(
         listener: (context, state) {
-          if (state is ResetSuccessState) {
-            // context.router.pushAndPopUntil(
-            //   ViewAuthRegisterRoute(backButton: true),
-            //   predicate: (route) => route.settings.name == LauncherRoute.name,
-            // );
-            // context.router.replace(ViewAuthRegisterRoute(backButton: true));
-            // context.router.replaceAll([
-            //   ViewAuthRegisterRoute(backButton: true),
-            // ]);
-
-            // BlocProvider.of<AppBloc>(context).add(
-            //   AppEvent.chageState(state: AppState.notAuthorizedState()),
-            // );
-
-            // final router = AutoRouter.of(context).root; // или context.router
-            // for (var i = 0; i < 3; i++) {
-            //   context.router.pop();
-            // }
-            // context.router.root.replaceAll([
-            //   ViewAuthRegisterRoute(backButton: true),
-            // ]);
-
-            // context.router.pop();
-            // BlocProvider.of<AppBloc>(context).add(const AppEvent.chageState(
-            //     state: AppState.notAuthorizedState(button: true)));
-
-            // context.router.push(ViewAuthRegisterRoute(backButton: true));
-
+          if (state is SmsStateSuccess && state.action == SmsAction.passwordReset) {
             AutoRouter.of(context).root.push(ViewAuthRegisterRoute(backButton: true));
+          }
 
-            // AutoRouter.of(context).root.replaceAll([
-            //   ViewAuthRegisterRoute(backButton: true),
-            // ]);
+          if (state is SmsStateError && state.action == SmsAction.passwordReset) {
+            AppSnackBar.show(context, state.message, type: AppSnackType.error);
           }
         },
         builder: (context, state) {
-          if (state is InitState) {
-            return Container(
-              color: AppColors.kWhite,
-              child: Padding(
-                padding: const EdgeInsets.only(left: 16.0, right: 16, top: 16, bottom: 45),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('Создайте новый пароль', style: AppTextStyles.size28Weight700),
-                    SizedBox(height: 16),
-                    FieldsCoopRequest(
-                      titleText: 'Новый пароль',
-                      hintText: 'Введите новый пароль',
-                      star: false,
-                      controller: passwordNew,
-                      arrow: _visibleIconView,
-                      onChanged: (value) {
-                        setState(() {});
-                      },
-                      onPressed: () {
-                        _visibleIconView = !_visibleIconView;
-                        setState(() {});
-                      },
-                    ),
-                    FieldsCoopRequest(
-                      titleText: 'Повторите пароль',
-                      hintText: 'Повторите новый пароль',
-                      star: false,
-                      arrow: _visibleIconViewRepeat,
-                      onChanged: (value) {
-                        setState(() {});
-                      },
-                      onPressed: () {
-                        _visibleIconViewRepeat = !_visibleIconViewRepeat;
-                        setState(() {});
-                      },
-                      controller: passwordRepeat,
-                    ),
-                    const Spacer(),
-                    Padding(
-                      padding: EdgeInsets.only(
-                        bottom: MediaQuery.of(context).viewInsets.bottom * 0.001,
-                      ),
-                      child: DefaultButton(
-                        backgroundColor: passwordNew.text == passwordRepeat.text
-                            ? AppColors.mainPurpleColor
-                            : AppColors.mainBackgroundPurpleColor,
-                        text: 'Готово',
-                        press: () {
-                          if (passwordNew.text == passwordRepeat.text) {
-                            final sms = BlocProvider.of<SmsCubit>(context);
-                            sms.passwordReset(widget.textEditingController, passwordRepeat.text);
-                          } else {
-                            // Get.snackbar('Ошибка', 'Пароли не совпадают',
-                            //     backgroundColor: Colors.blueAccent);
-                          }
+          final bool isLoading =
+              state is SmsStateLoading && state.action == SmsAction.passwordReset;
+
+          return Stack(
+            children: [
+              Container(
+                color: AppColors.kWhite,
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 16.0, right: 16, top: 16, bottom: 45),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('Создайте новый пароль', style: AppTextStyles.size28Weight700),
+                      SizedBox(height: 16),
+                      FieldsCoopRequest(
+                        titleText: 'Новый пароль',
+                        hintText: 'Введите новый пароль',
+                        star: false,
+                        controller: passwordNew,
+                        arrow: _visibleIconView,
+                        onChanged: (value) {
+                          setState(() {});
                         },
-                        color: Colors.white,
-                        width: double.infinity,
+                        onPressed: () {
+                          _visibleIconView = !_visibleIconView;
+                          setState(() {});
+                        },
                       ),
-                    ),
-                  ],
+                      FieldsCoopRequest(
+                        titleText: 'Повторите пароль',
+                        hintText: 'Повторите новый пароль',
+                        star: false,
+                        arrow: _visibleIconViewRepeat,
+                        onChanged: (value) {
+                          setState(() {});
+                        },
+                        onPressed: () {
+                          _visibleIconViewRepeat = !_visibleIconViewRepeat;
+                          setState(() {});
+                        },
+                        controller: passwordRepeat,
+                      ),
+                      const Spacer(),
+                      Padding(
+                        padding: EdgeInsets.only(
+                          bottom: MediaQuery.of(context).viewInsets.bottom * 0.001,
+                        ),
+                        child: DefaultButton(
+                          backgroundColor: passwordNew.text == passwordRepeat.text
+                              ? AppColors.mainPurpleColor
+                              : AppColors.mainBackgroundPurpleColor,
+                          text: 'Готово',
+                          press: () {
+                            if (isLoading) return;
+                            if (passwordNew.text == passwordRepeat.text) {
+                              final sms = BlocProvider.of<SmsCubit>(context);
+                              sms.passwordReset(widget.textEditingController, passwordRepeat.text);
+                            } else {
+                              AppSnackBar.show(
+                                context,
+                                'Пароли не совпадают',
+                                type: AppSnackType.error,
+                              );
+                            }
+                          },
+                          color: Colors.white,
+                          width: double.infinity,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            );
-          }
-          if (state is ErrorState) {
-            return Center(
-              child: Text(state.message, style: const TextStyle(color: Colors.redAccent)),
-            );
-          } else {
-            return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
-          }
+              if (isLoading)
+                const Positioned.fill(
+                  child: ColoredBox(
+                    color: Colors.white70,
+                    child: Center(child: CircularProgressIndicator(color: Colors.indigoAccent)),
+                  ),
+                ),
+            ],
+          );
         },
       ),
     );

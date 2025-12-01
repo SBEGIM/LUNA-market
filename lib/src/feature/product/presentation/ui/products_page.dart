@@ -4,13 +4,12 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
+import 'package:haji_market/src/core/utils/talker_logger_util.dart';
 import 'package:haji_market/src/feature/app/router/app_router.dart';
-import 'package:haji_market/src/feature/product/cubit/product_cubit.dart' as productCubit;
-import 'package:haji_market/src/feature/product/cubit/product_state.dart' as productState;
-import 'package:haji_market/src/feature/drawer/bloc/shops_drawer_cubit.dart' as shopsDrawerCubit;
-import 'package:haji_market/src/feature/drawer/bloc/shops_drawer_state.dart' as shopsDrawerState;
-import 'package:haji_market/src/feature/drawer/bloc/sub_cats_cubit.dart' as subCatCubit;
-import 'package:haji_market/src/feature/drawer/bloc/sub_cats_state.dart' as subCatState;
+import 'package:haji_market/src/feature/product/cubit/product_cubit.dart' as product_cubit;
+import 'package:haji_market/src/feature/drawer/bloc/shops_drawer_cubit.dart' as shops_drawer_cubit;
+import 'package:haji_market/src/feature/drawer/bloc/sub_cats_cubit.dart' as sub_cats_cubit;
+import 'package:haji_market/src/feature/drawer/bloc/sub_cats_state.dart' as sub_cat_state;
 import 'package:haji_market/src/feature/drawer/presentation/widgets/filter_page.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/src/feature/product/presentation/widgets/product_widget.dart';
@@ -18,21 +17,17 @@ import 'package:haji_market/src/feature/product/presentation/widgets/show_filtr_
 import 'package:haji_market/src/feature/product/presentation/widgets/show_list_brands_widget.dart';
 import 'package:haji_market/src/feature/product/provider/filter_provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import '../../../home/data/model/cat_model.dart';
-import '../../../drawer/bloc/brand_cubit.dart' as brandCubit;
-import 'package:haji_market/src/feature/drawer/bloc/brand_state.dart' as brandState;
-import '../../cubit/product_ad_cubit.dart';
+import 'package:haji_market/src/feature/home/data/model/cat_model.dart';
+import 'package:haji_market/src/feature/drawer/bloc/brand_cubit.dart' as brand_cubit;
 
 @RoutePage()
 class ProductsPage extends StatefulWidget {
   final CatsModel cats;
   final CatsModel? subCats;
+  final int? brandId;
+  final String? shopId;
 
-  int? brandId;
-  String? shopId;
-
-  ProductsPage({required this.cats, this.brandId, this.shopId, this.subCats, Key? key})
-    : super(key: key);
+  const ProductsPage({required this.cats, this.brandId, this.shopId, this.subCats, super.key});
 
   @override
   State<ProductsPage> createState() => _ProductsPageState();
@@ -40,13 +35,6 @@ class ProductsPage extends StatefulWidget {
 
 class _ProductsPageState extends State<ProductsPage> {
   final boxMain = GetStorage().write('rating', false);
-  final _box = GetStorage();
-
-  // late final dynamic
-  //     _scrollViewListener; // может быть StreamSubscription или VoidCallback
-
-  late final dynamic _charFilterListener;
-  // bool _hideProducts = false;
 
   List<CatsModel> subCats = [];
   List<CatsModel> brands = [];
@@ -83,16 +71,14 @@ class _ProductsPageState extends State<ProductsPage> {
     // }
     // });
 
-    _charFilterListener = _box.listenKey('charFilterId', (value) {
-      if (!mounted) return;
-      filterCharIcon(value);
-    });
-    BlocProvider.of<shopsDrawerCubit.ShopsDrawerCubit>(context).shopsDrawer(widget.cats.id);
-    BlocProvider.of<brandCubit.BrandCubit>(context).brands(subCatId: widget.cats.id);
+    BlocProvider.of<shops_drawer_cubit.ShopsDrawerCubit>(context).shopsDrawer(widget.cats.id);
+    BlocProvider.of<brand_cubit.BrandCubit>(context).brands(subCatId: widget.cats.id);
     // BlocProvider.of<ProductAdCubit>(context)
     //     .adProducts(GetStorage().read('CatId'));
-    subCatCubit.SubCatsCubit subCatsCubit = BlocProvider.of<subCatCubit.SubCatsCubit>(context);
-    if (subCatsCubit.state is! subCatState.LoadedState) {
+    sub_cats_cubit.SubCatsCubit subCatsCubit = BlocProvider.of<sub_cats_cubit.SubCatsCubit>(
+      context,
+    );
+    if (subCatsCubit.state is! sub_cat_state.LoadedState) {
       subCatsCubit.subCats(widget.cats.id);
     }
 
@@ -102,39 +88,26 @@ class _ProductsPageState extends State<ProductsPage> {
     super.initState();
   }
 
-  subCatList() async {
-    subCatCubit.SubCatsCubit subCatsCubit = BlocProvider.of<subCatCubit.SubCatsCubit>(context);
+  Future<void> subCatList() async {
+    sub_cats_cubit.SubCatsCubit subCatsCubit = BlocProvider.of<sub_cats_cubit.SubCatsCubit>(
+      context,
+    );
     final List<CatsModel> data = await subCatsCubit.subCatList(widget.cats.id);
     subCats.addAll(data);
     setState(() {});
   }
 
-  brandList() async {
-    final List<CatsModel> data = await BlocProvider.of<brandCubit.BrandCubit>(context).brandsList();
+  Future<void> brandList() async {
+    final List<CatsModel> data = await BlocProvider.of<brand_cubit.BrandCubit>(
+      context,
+    ).brandsList();
     brands.addAll(data);
     setState(() {});
-  }
-
-  void filterCharIcon(value) {
-    if (value != null) {
-      setState(() => filterIcon = true);
-    } else {
-      setState(() => filterIcon = false);
-    }
   }
 
   @override
   void dispose() {
     GetStorage().remove('scrollView');
-
-    // if (_scrollViewListener is Function) {
-    //   (_scrollViewListener as void Function()).call();
-    // } else {
-    //   try {
-    //     _scrollViewListener.cancel();
-    //   } catch (_) {}
-    // }
-    // _focus.dispose();
     super.dispose();
   }
 
@@ -144,7 +117,7 @@ class _ProductsPageState extends State<ProductsPage> {
   Future<void> onLoading() async {
     final filters = context.read<FilterProvider>();
 
-    await BlocProvider.of<productCubit.ProductCubit>(context).productsPagination(filters);
+    await BlocProvider.of<product_cubit.ProductCubit>(context).productsPagination(filters);
     await Future.delayed(const Duration(milliseconds: 2000));
     _refreshController.loadComplete();
   }
@@ -152,7 +125,7 @@ class _ProductsPageState extends State<ProductsPage> {
   Future<void> onRefresh() async {
     final filters = context.read<FilterProvider>();
 
-    await BlocProvider.of<productCubit.ProductCubit>(context).products(filters);
+    await BlocProvider.of<product_cubit.ProductCubit>(context).products(filters);
     await Future.delayed(const Duration(milliseconds: 1000));
     if (mounted) {
       setState(() {});
@@ -188,48 +161,6 @@ class _ProductsPageState extends State<ProductsPage> {
 
         backgroundColor: Colors.white,
         elevation: 0,
-        // Container(
-        //   width: 311,
-        //   height: 40,
-        //   alignment: Alignment.center,
-        //   margin: const EdgeInsets.only(right: 16),
-        //   decoration: BoxDecoration(
-        //       color: const Color(0xFFF8F8F8),
-        //       borderRadius: BorderRadius.circular(10)),
-        //   child: TextField(
-        //     controller: searchController,
-        //     onChanged: (value) {
-        //       GetStorage().write('search', value);
-
-        //       BlocProvider.of<productCubit.ProductCubit>(context).products();
-        //     },
-        //     decoration: InputDecoration(
-        //       contentPadding: EdgeInsets.all(4),
-        //       suffixIconConstraints:
-        //           BoxConstraints(maxHeight: 20, maxWidth: 20),
-        //       prefixIcon: SizedBox(
-        //         height: 20,
-        //         width: 20,
-        //         child: Image.asset(
-        //           Assets.icons.defaultSearchIcon.path,
-        //           scale: 3.1,
-        //           height: 20,
-        //           width: 20,
-        //         ),
-        //       ),
-        //       hintText: 'Поиск',
-        //       hintMaxLines: 1,
-        //       hintStyle: TextStyle(
-        //           color: AppColors.kGray300,
-        //           fontSize: 16,
-        //           fontWeight: FontWeight.w500),
-        //       border: InputBorder.none,
-        //     ),
-        //     style: const TextStyle(
-        //       color: Colors.black,
-        //     ),
-        //   ),
-        // ),
       ),
       body: SmartRefresher(
         controller: _refreshController,
@@ -284,8 +215,12 @@ class _ProductsPageState extends State<ProductsPage> {
                                 128.49 * 3.1415926535 / 180,
                               ), // 128.49° в радианы
                               colors: [
-                                const Color(0xFF7D2DFF).withOpacity(0.2), // rgba(125, 45, 255, 0.2)
-                                const Color(0xFF41DDFF).withOpacity(0.2), // rgba(65, 221, 255, 0.2)
+                                const Color(
+                                  0xFF7D2DFF,
+                                ).withValues(alpha: .2), // rgba(125, 45, 255, 0.2)
+                                const Color(
+                                  0xFF41DDFF,
+                                ).withValues(alpha: .2), // rgba(65, 221, 255, 0.2)
                               ],
                               stops: const [0.2685, 1.0], // 26.85% и 100%
                             ),
@@ -362,7 +297,7 @@ class _ProductsPageState extends State<ProductsPage> {
                                   if (brand?.id == brands[index].id) {
                                     brand = null;
                                     GetStorage().remove('brandFilterId');
-                                    BlocProvider.of<productCubit.ProductCubit>(
+                                    BlocProvider.of<product_cubit.ProductCubit>(
                                       context,
                                     ).products(filters);
                                     setState(() {});
@@ -375,7 +310,7 @@ class _ProductsPageState extends State<ProductsPage> {
                                   ids.add(brands[index].id!);
 
                                   GetStorage().write('brandFilterId', ids.toString());
-                                  BlocProvider.of<productCubit.ProductCubit>(
+                                  BlocProvider.of<product_cubit.ProductCubit>(
                                     context,
                                   ).products(filters);
                                   brand = brands[index];
@@ -451,7 +386,7 @@ class _ProductsPageState extends State<ProductsPage> {
                                 }
                                 setState(() {});
 
-                                BlocProvider.of<productCubit.ProductCubit>(
+                                BlocProvider.of<product_cubit.ProductCubit>(
                                   context,
                                 ).products(filters);
                               },
@@ -541,7 +476,7 @@ class _ProductsPageState extends State<ProductsPage> {
                                             sortKey = 'rating';
                                             break;
                                           default:
-                                            print("число не равно 1, 2, 3");
+                                            TalkerLoggerUtil.talker.error("число не равно 1, 2, 3");
                                         }
 
                                         filters.setSort(sortKey);
@@ -553,7 +488,7 @@ class _ProductsPageState extends State<ProductsPage> {
 
                                       setState(() {});
 
-                                      BlocProvider.of<productCubit.ProductCubit>(
+                                      BlocProvider.of<product_cubit.ProductCubit>(
                                         context,
                                       ).products(filters);
                                     },
@@ -681,7 +616,7 @@ class _ProductsPageState extends State<ProductsPage> {
 
                                       setState(() {});
                                       filters.setDelivery(delliveryKey);
-                                      BlocProvider.of<productCubit.ProductCubit>(
+                                      BlocProvider.of<product_cubit.ProductCubit>(
                                         context,
                                       ).products(filters);
                                     },
@@ -736,7 +671,7 @@ class _ProductsPageState extends State<ProductsPage> {
                                     });
                                     Navigator.pop(context);
 
-                                    BlocProvider.of<productCubit.ProductCubit>(
+                                    BlocProvider.of<product_cubit.ProductCubit>(
                                       context,
                                     ).products(filters);
                                   });

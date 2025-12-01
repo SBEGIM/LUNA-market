@@ -2,11 +2,9 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/route_manager.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/feature/app/widgets/shimmer_box.dart';
-import 'package:haji_market/src/feature/home/data/model/cat_model.dart';
 import 'package:haji_market/src/feature/seller/main/cubit/news_seller_cubit.dart';
 import 'package:haji_market/src/feature/seller/main/cubit/news_seller_state.dart';
 import 'package:haji_market/src/feature/seller/main/cubit/seller_notification_cubit.dart'

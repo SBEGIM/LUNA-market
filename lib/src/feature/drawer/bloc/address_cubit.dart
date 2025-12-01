@@ -61,30 +61,30 @@ class AddressCubit extends Cubit<AddressState> {
     }
   }
 
-  Future<void> update(
-    id,
-    country,
-    city,
-    street,
-    entrance,
-    floor,
-    apartament,
-    intercom,
-    comment,
-    phone,
-  ) async {
+    Future<void> update({
+    required int id,
+    required String country,
+    required String city,
+    required String street,
+    required String entrance,
+    required String floor,
+    required String apartament,
+    required String intercom,
+    required String comment,
+    required String phone,
+  }) async {
     try {
       await addressRepository.update(
-        id,
-        country,
-        city,
-        street,
-        entrance,
-        floor,
-        apartament,
-        intercom,
-        comment,
-        phone,
+        id: id,
+        country: country,
+        city: city,
+        street: street,
+        entrance: entrance,
+        floor: floor,
+        apartament: apartament,
+        intercom: intercom,
+        comment: comment,
+        phone: phone,
       );
     } catch (e) {
       emit(ErrorState(message: 'Ошибка сервера'));

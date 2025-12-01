@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
-import 'package:haji_market/src/feature/app/widgets/app_snack_bar.dart';
 import 'package:haji_market/src/feature/profile/data/presentation/widgets/show_blogger_register_type_widget.dart';
 import 'package:haji_market/src/feature/seller/auth/data/DTO/contry_seller_dto.dart';
 import 'package:haji_market/src/feature/seller/auth/presentation/widget/show_seller_login_phone_widget.dart';
@@ -31,8 +29,8 @@ class EditProfilePage extends StatefulWidget {
     required this.gender,
     required this.birthday,
     required this.email,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   State<EditProfilePage> createState() => _EditProfilePageState();
@@ -57,27 +55,12 @@ class _EditProfilePageState extends State<EditProfilePage> {
   TextEditingController genController = TextEditingController();
 
   XFile? _image;
-  final ImagePicker _picker = ImagePicker();
   bool change = false;
   bool woman = false;
   bool man = false;
   bool showGender = false;
   String gender = '';
 
-  final _box = GetStorage();
-
-  Future<void> _getImage() async {
-    final image = change == true
-        ? await _picker.pickImage(source: ImageSource.camera)
-        : await _picker.pickImage(source: ImageSource.gallery);
-
-    setState(() {
-      _image = image;
-    });
-  }
-
-  bool _obscureText = false;
-  bool _obscureTextRepeat = false;
   CountrySellerDto? countrySellerDto;
 
   Map<String, String?> fieldErrors = {'phone': null, 'password': null};
@@ -97,36 +80,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
     birthdayController.text = widget.birthday ?? '';
     emailController.text = widget.email ?? '';
     super.initState();
-  }
-
-  String? _validateError() {
-    final rawDigits = phoneController.text.replaceAll(RegExp(r'[^0-9]'), '');
-    if (rawDigits.length != 10) return 'Введите корректный номер телефона';
-
-    final pass = passwordController.text;
-    if (pass.isEmpty) return 'Введите пароль';
-
-    return null;
-  }
-
-  void _validateFields() {
-    final phone = phoneController.text.replaceAll(RegExp(r'[^0-9]'), '');
-    final pass = passwordController.text;
-
-    setState(() {
-      fieldErrors['phone'] = phone.length != 10 ? 'Введите корректный номер телефона' : null;
-
-      fieldErrors['password'] = pass.isEmpty ? 'Введите пароль' : null;
-    });
-  }
-
-  bool _ensureValid() {
-    final msg = _validateError();
-    if (msg != null) {
-      AppSnackBar.show(context, msg, type: AppSnackType.error);
-      return false;
-    }
-    return true;
   }
 
   final maskFormatter = MaskTextInputFormatter(mask: '+7(###)-###-##-##');
@@ -377,53 +330,6 @@ Widget _buildFormField({
                 if (showArrow) const Icon(Icons.arrow_forward_ios, size: 16, color: Colors.grey),
               ],
             ),
-          ),
-        ),
-      ],
-    ),
-  );
-}
-
-Widget _buildPasswordField({
-  required TextEditingController controller,
-  required String label,
-  required bool obscureText,
-  required VoidCallback onToggle,
-}) {
-  return Padding(
-    padding: const EdgeInsets.only(bottom: 16),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(label, style: AppTextStyles.size13Weight500.copyWith(color: Color(0xff636366))),
-        const SizedBox(height: 8),
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          decoration: BoxDecoration(
-            color: Color(0xffEAECED),
-            borderRadius: BorderRadius.circular(16),
-          ),
-          child: Row(
-            children: [
-              Expanded(
-                child: TextField(
-                  controller: controller,
-                  obscureText: obscureText,
-                  decoration: const InputDecoration(border: InputBorder.none),
-                  style: const TextStyle(fontSize: 16),
-                ),
-              ),
-              InkWell(
-                onTap: onToggle,
-                child: Image.asset(
-                  obscureText
-                      ? Assets.icons.passwordViewHiddenIcon.path
-                      : Assets.icons.passwordViewIcon.path,
-                  height: 24,
-                  width: 24,
-                ),
-              ),
-            ],
           ),
         ),
       ],

@@ -1,12 +1,23 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 
-class BloggerAd extends StatefulWidget {
-  const BloggerAd({Key? key}) : super(key: key);
+class BloggerAd extends StatelessWidget {
+  const BloggerAd({super.key});
 
   @override
-  _BloggerAd createState() => _BloggerAd();
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.black,
+        title: const Text(
+          'Типовой договор на оказание рекламных услуг рекламы',
+          style: TextStyle(color: Colors.white, fontSize: 15),
+        ),
+        centerTitle: true,
+      ),
+      body: SingleChildScrollView(child: Html(data: htmlData)),
+    );
+  }
 }
 
 const htmlData = r"""
@@ -159,20 +170,3 @@ const htmlData = r"""
 <p><br></p>
 <p><br></p>
 """;
-
-class _BloggerAd extends State<BloggerAd> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.black,
-        title: const Text(
-          'Типовой договор на оказание рекламных услуг рекламы',
-          style: TextStyle(color: Colors.white, fontSize: 15),
-        ),
-        centerTitle: true,
-      ),
-      body: SingleChildScrollView(child: Html(data: htmlData)),
-    );
-  }
-}

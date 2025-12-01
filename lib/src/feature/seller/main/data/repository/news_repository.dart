@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/src/feature/seller/main/data/model/news_seeler_model.dart';

@@ -4,10 +4,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
-import 'package:haji_market/src/feature/app/router/app_router.dart';
 
 import 'package:haji_market/src/feature/drawer/bloc/shops_drawer_cubit.dart' as shopsDrawerCubit;
-import 'package:haji_market/src/feature/drawer/bloc/shops_drawer_state.dart' as shopsDrawerState;
 import 'package:haji_market/src/feature/drawer/bloc/sub_cats_cubit.dart' as subCatCubit;
 import 'package:haji_market/src/feature/drawer/bloc/sub_cats_state.dart' as subCatState;
 import 'package:haji_market/src/feature/drawer/presentation/widgets/filter_page.dart';
@@ -20,7 +18,6 @@ import 'package:haji_market/src/feature/product/provider/filter_provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../../../home/data/model/cat_model.dart';
 import '../../../drawer/bloc/brand_cubit.dart' as brandCubit;
-import 'package:haji_market/src/feature/drawer/bloc/brand_state.dart' as brandState;
 
 @RoutePage()
 class ProductsRecentlyWatchedPage extends StatefulWidget {

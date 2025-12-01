@@ -22,31 +22,31 @@ class AddressRepository {
         phone,
       );
 
-  Future<int> update(
-    id,
-    country,
-    city,
-    street,
-    entrance,
-    floor,
-    apartament,
-    intercom,
-    comment,
-    phone,
-  ) => _addressApi.update(
-    id,
-    country,
-    city,
-    street,
-    entrance,
-    floor,
-    apartament,
-    intercom,
-    comment,
-    phone,
+  Future<int> update({
+    required int id,
+    required String country,
+    required String city,
+    required String street,
+    required String entrance,
+    required String floor,
+    required String apartament,
+    required String intercom,
+    required String comment,
+    required String phone,
+  }) => _addressApi.update(
+    id: id,
+    country: country,
+    city: city,
+    street: street,
+    entrance: entrance,
+    floor: floor,
+    apartament: apartament,
+    intercom: intercom,
+    comment: comment,
+    phone: phone,
   );
 
-  Future<int> delete(id) => _addressApi.delete(id);
+  Future<int> delete(int id) => _addressApi.delete(id);
 }
 
 class AddressApi {
@@ -99,18 +99,18 @@ class AddressApi {
     return response.statusCode;
   }
 
-  Future<int> update(
-    id,
-    country,
-    city,
-    street,
-    entrance,
-    floor,
-    apartament,
-    intercom,
-    comment,
-    phone,
-  ) async {
+  Future<int> update({
+    required int id,
+    required String country,
+    required String city,
+    required String street,
+    required String entrance,
+    required String floor,
+    required String apartament,
+    required String intercom,
+    required String comment,
+    required String phone,
+  }) async {
     final String? token = _box.read('token');
     final response = await http.post(
       Uri.parse("$baseUrl/user/address/update"),
@@ -132,7 +132,7 @@ class AddressApi {
     return response.statusCode;
   }
 
-  Future<int> delete(id) async {
+  Future<int> delete(int id) async {
     final String? token = _box.read('token');
     final response = await http.post(
       Uri.parse("$baseUrl/user/address/destroy"),

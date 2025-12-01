@@ -1,7 +1,4 @@
-import 'dart:developer';
 import 'package:bloc/bloc.dart';
-import 'package:flutter/material.dart';
-import 'package:get/route_manager.dart';
 import 'package:haji_market/src/feature/seller/product/data/repository/product_seller_repository.dart';
 part 'last_articul_seller_state.dart';
 

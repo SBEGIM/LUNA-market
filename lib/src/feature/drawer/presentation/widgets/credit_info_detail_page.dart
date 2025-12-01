@@ -7,9 +7,9 @@ import 'package:haji_market/src/feature/drawer/bloc/respublic_state.dart';
 import 'package:haji_market/src/feature/drawer/presentation/widgets/credit_info_detail_show_page.dart';
 
 class CreditInfoDetailPage extends StatefulWidget {
-  String title;
+  final String title;
 
-  CreditInfoDetailPage({required this.title, Key? key}) : super(key: key);
+  const CreditInfoDetailPage({required this.title, super.key});
 
   @override
   State<CreditInfoDetailPage> createState() => _CreditInfoDetailPageState();
@@ -19,7 +19,6 @@ class _CreditInfoDetailPageState extends State<CreditInfoDetailPage> {
   @override
   void initState() {
     BlocProvider.of<RespublicCubit>(context).respublics();
-    // TODO: implement initState
     super.initState();
   }
 
@@ -103,60 +102,6 @@ class _CreditInfoDetailPageState extends State<CreditInfoDetailPage> {
                 }
               },
             ),
-            // Container(
-            //   margin: const EdgeInsets.all(16),
-            //   padding: const EdgeInsets.all(16),
-            //   width: 343,
-            //   decoration: BoxDecoration(
-            //     color: Colors.white,
-            //     borderRadius: BorderRadius.circular(12),
-            //   ),
-            //   child: Column(
-            //     mainAxisAlignment: MainAxisAlignment.start,
-            //     crossAxisAlignment: CrossAxisAlignment.start,
-            //     children: [
-            //       InkWell(
-            //         onTap: () {
-            //           Navigator.push(
-            //             context,
-            //             MaterialPageRoute(
-            //                 builder: (context) =>
-            //                     CreditInfoDetailShowPage(title: widget.title)),
-            //           );
-            //         },
-            //         child: const DrawerListTile(
-            //           text: 'Чеченская Республика',
-            //         ),
-            //       ),
-            //       InkWell(
-            //         onTap: () {
-            //           Navigator.push(
-            //             context,
-            //             MaterialPageRoute(
-            //                 builder: (context) =>
-            //                     CreditInfoDetailShowPage(title: widget.title)),
-            //           );
-            //         },
-            //         child: const DrawerListTile(
-            //           text: 'Республика Ингушетия',
-            //         ),
-            //       ),
-            //       InkWell(
-            //         onTap: () {
-            //           Navigator.push(
-            //             context,
-            //             MaterialPageRoute(
-            //                 builder: (context) =>
-            //                     CreditInfoDetailShowPage(title: widget.title)),
-            //           );
-            //         },
-            //         child: const DrawerListTile(
-            //           text: 'Республика Дагестан',
-            //         ),
-            //       ),
-            //     ],
-            //   ),
-            // )
           ],
         ),
       ),
@@ -166,7 +111,7 @@ class _CreditInfoDetailPageState extends State<CreditInfoDetailPage> {
 
 class DrawerListTile extends StatelessWidget {
   final String text;
-  const DrawerListTile({Key? key, required this.text}) : super(key: key);
+  const DrawerListTile({super.key, required this.text});
 
   @override
   Widget build(BuildContext context) {

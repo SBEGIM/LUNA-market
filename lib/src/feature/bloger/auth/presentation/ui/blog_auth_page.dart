@@ -9,8 +9,6 @@ import 'package:haji_market/src/feature/app/bloc/app_bloc.dart';
 import 'package:haji_market/src/feature/app/router/app_router.dart';
 import 'package:haji_market/src/feature/app/widgets/app_snack_bar.dart';
 import 'package:haji_market/src/feature/auth/presentation/widgets/default_button.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:haji_market/src/feature/bloger/coop_request/presentation/ui/blogger_register_page.dart';
 import 'package:haji_market/src/feature/seller/auth/data/DTO/contry_seller_dto.dart';
 import 'package:shimmer_animation/shimmer_animation.dart';
 import '../../../../../core/constant/generated/assets.gen.dart';
@@ -19,7 +17,7 @@ import '../../bloc/login_blogger_cubit.dart';
 import '../../bloc/login_blogger_state.dart';
 
 class BlogAuthPage extends StatefulWidget {
-  const BlogAuthPage({Key? key}) : super(key: key);
+  const BlogAuthPage({super.key});
 
   @override
   State<BlogAuthPage> createState() => _BlogAuthPageState();
@@ -28,12 +26,10 @@ class BlogAuthPage extends StatefulWidget {
 class _BlogAuthPageState extends State<BlogAuthPage> {
   bool isButtonEnabled = false;
   bool _passwordVisible = false;
-  bool _visibleIconClear = false;
-  bool __visibleIconView = false;
 
   CountrySellerDto? countrySellerDto;
 
-  setIsButtonEnabled(bool value) {
+  void setIsButtonEnabled(bool value) {
     // log("is button state changed $value");
     isButtonEnabled = value;
 
@@ -170,7 +166,7 @@ class _BlogAuthPageState extends State<BlogAuthPage> {
                               Image.asset(countrySellerDto!.flagPath, width: 24, height: 24),
                               SizedBox(width: 8),
                               Text(
-                                '${countrySellerDto!.code}',
+                                '${countrySellerDto?.code}',
                                 style: AppTextStyles.size16Weight400,
                               ),
                             ],
@@ -252,7 +248,6 @@ class _BlogAuthPageState extends State<BlogAuthPage> {
                           ),
                           onChanged: (value) {
                             setState(() {
-                              __visibleIconView = value.isNotEmpty;
                               isButtonEnabled = value.isNotEmpty;
                             });
                           },

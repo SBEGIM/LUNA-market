@@ -1,16 +1,11 @@
-import 'dart:io';
-
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/route_manager.dart';
-import 'package:get/utils.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/feature/basket/presentation/widgets/show_alert_country_widget.dart';
 import 'package:haji_market/src/feature/drawer/bloc/country_cubit.dart';
 import 'package:haji_market/src/feature/seller/profile/presentation/widgets/bank_page.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class SellerServicePage extends StatefulWidget {
   @override

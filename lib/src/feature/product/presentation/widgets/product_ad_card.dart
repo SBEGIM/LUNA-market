@@ -4,7 +4,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/feature/app/router/app_router.dart';
@@ -13,7 +12,7 @@ import 'package:haji_market/src/feature/app/widgets/error_image_widget.dart';
 import 'package:haji_market/src/feature/basket/bloc/basket_cubit.dart';
 import 'package:haji_market/src/feature/drawer/presentation/widgets/pre_order_dialog.dart';
 import 'package:haji_market/src/feature/drawer/presentation/widgets/show_basket_bottom_sheet_widget.dart';
-import 'package:haji_market/src/feature/product/cubit/product_cubit.dart' as productCubit;
+import 'package:haji_market/src/feature/product/cubit/product_cubit.dart' as product_cubit;
 import 'package:haji_market/src/feature/product/data/model/product_model.dart';
 import 'package:haji_market/src/feature/product/provider/filter_provider.dart';
 import 'package:intl/intl.dart';
@@ -21,14 +20,14 @@ import '../../../favorite/bloc/favorite_cubit.dart';
 
 class ProductAdCard extends StatefulWidget {
   final ProductModel product;
-  const ProductAdCard({required this.product, Key? key}) : super(key: key);
+  const ProductAdCard({required this.product, super.key});
 
   @override
   State<ProductAdCard> createState() => _ProductAdCardState();
 }
 
 class _ProductAdCardState extends State<ProductAdCard> {
-  credit(int price) {
+  int credit(int price) {
     final creditPrice = (price / 3);
     return creditPrice.toInt();
   }
@@ -76,7 +75,7 @@ class _ProductAdCardState extends State<ProductAdCard> {
                 height: 144,
                 width: 173,
                 child: Image.network(
-                  widget.product.path?.length != 0
+                  widget.product.path?.isNotEmpty == true
                       ? "https://lunamarket.ru/storage/${widget.product.path?.first}"
                       : '',
                   height: 144,
@@ -134,26 +133,7 @@ class _ProductAdCardState extends State<ProductAdCard> {
                               height: 18,
                               width: 21,
                             ),
-
-                            // SvgPicture.asset(
-                            //   'assets/icons/heart_fill.svg',
-                            //   color: inFavorite == true
-                            //       ? const Color.fromRGBO(255, 50, 72, 1)
-                            //       : Colors.grey,
-                            // ),
                           ),
-                          // IconButton(
-                          //     padding: EdgeInsets.zero,
-                          //     onPressed: () async {
-                          //       final favorite =
-                          //           BlocProvider.of<FavoriteCubit>(context);
-                          //       await favorite
-                          //           .favorite(widget.product.id.toString());
-                          //       setState(() {
-                          //         inFavorite = !inFavorite;
-                          //       });
-                          //     },
-                          //     icon: )
                         ],
                       ),
                     ),
@@ -181,28 +161,6 @@ class _ProductAdCardState extends State<ProductAdCard> {
                             ),
                           )
                         : const SizedBox(),
-                    // widget.product.point != 0
-                    //     ? const SizedBox(height: 66)
-                    //     : const SizedBox(),
-                    // widget.product.compound != 0
-                    //     ? Container(
-                    //         decoration: BoxDecoration(
-                    //             color: Colors.red,
-                    //             borderRadius: BorderRadius.circular(6)),
-                    //         child: Padding(
-                    //           padding: const EdgeInsets.only(
-                    //               left: 4.0, right: 4, top: 4, bottom: 4),
-                    //           child: Text(
-                    //             '-${widget.product.compound}%',
-                    //             textAlign: TextAlign.center,
-                    //             style: const TextStyle(
-                    //                 color: Colors.white,
-                    //                 fontSize: 12,
-                    //                 fontWeight: FontWeight.w400),
-                    //           ),
-                    //         ),
-                    //       )
-                    //     : const SizedBox(),
                   ],
                 ),
               ),
@@ -322,7 +280,7 @@ class _ProductAdCardState extends State<ProductAdCard> {
                                     });
                                     final filters = context.read<FilterProvider>();
 
-                                    BlocProvider.of<productCubit.ProductCubit>(
+                                    BlocProvider.of<product_cubit.ProductCubit>(
                                       context,
                                     ).products(filters);
                                   } else {
@@ -353,7 +311,7 @@ class _ProductAdCardState extends State<ProductAdCard> {
                           isOptom: callBackOptom,
                         );
 
-                        BlocProvider.of<productCubit.ProductCubit>(context).updateProductByIndex(
+                        BlocProvider.of<product_cubit.ProductCubit>(context).updateProductByIndex(
                           index: widget.product.id!,
                           updatedProduct: widget.product.copyWith(
                             basketCount: widget.product.basketCount! + 1,

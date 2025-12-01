@@ -2,25 +2,22 @@ import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get_connect/http/src/utils/utils.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/feature/app/router/app_router.dart';
-import 'package:haji_market/src/feature/product/cubit/product_cubit.dart';
 import 'package:haji_market/src/feature/product/provider/filter_provider.dart';
 import 'package:shimmer/shimmer.dart';
-import '../../../home/data/model/cat_model.dart';
-import '../../bloc/sub_cats_cubit.dart';
-import '../../bloc/sub_cats_state.dart';
-import '../../../drawer/bloc/brand_cubit.dart' as brandCubit;
-import 'package:haji_market/src/feature/drawer/bloc/brand_state.dart' as brandState;
+import 'package:haji_market/src/feature/home/data/model/cat_model.dart';
+import 'package:haji_market/src/feature/drawer/bloc/sub_cats_cubit.dart';
+import 'package:haji_market/src/feature/drawer/bloc/sub_cats_state.dart';
+import 'package:haji_market/src/feature/drawer/bloc/brand_cubit.dart' as brand_cubit;
+import 'package:haji_market/src/feature/drawer/bloc/brand_state.dart' as brand_state;
 
 @RoutePage()
 class SubCatalogPage extends StatefulWidget {
   final CatsModel? cats;
   final List<CatSections>? catChapters;
 
-  const SubCatalogPage({Key? key, this.cats, required this.catChapters}) : super(key: key);
+  const SubCatalogPage({super.key, this.cats, required this.catChapters});
 
   @override
   State<SubCatalogPage> createState() => _SubCatalogPageState();
@@ -38,10 +35,10 @@ class _SubCatalogPageState extends State<SubCatalogPage> {
   void initState() {
     BlocProvider.of<SubCatsCubit>(context).subCats(widget.cats?.id ?? 0);
 
-    brandCubit.BrandCubit brandInitCubit = BlocProvider.of<brandCubit.BrandCubit>(context);
+    brand_cubit.BrandCubit brandInitCubit = BlocProvider.of<brand_cubit.BrandCubit>(context);
 
-    if (brandInitCubit.state is! brandState.LoadedState) {
-      BlocProvider.of<brandCubit.BrandCubit>(context).brands(subCatId: widget.cats!.id);
+    if (brandInitCubit.state is! brand_state.LoadedState) {
+      BlocProvider.of<brand_cubit.BrandCubit>(context).brands(subCatId: widget.cats!.id);
     }
 
     brandList();
@@ -49,8 +46,10 @@ class _SubCatalogPageState extends State<SubCatalogPage> {
     super.initState();
   }
 
-  brandList() async {
-    final List<CatsModel> data = await BlocProvider.of<brandCubit.BrandCubit>(context).brandsList();
+  Future<void> brandList() async {
+    final List<CatsModel> data = await BlocProvider.of<brand_cubit.BrandCubit>(
+      context,
+    ).brandsList();
     brands.addAll(data);
     setState(() {});
   }
@@ -73,43 +72,9 @@ class _SubCatalogPageState extends State<SubCatalogPage> {
           icon: Icon(Icons.arrow_back_ios_new),
         ),
         actions: [
-          // Padding(padding: const EdgeInsets.only(right: 22.0), child: SvgPicture.asset('assets/icons/share.svg'))
         ],
         titleSpacing: 0,
-        title: Text('${widget.cats?.name ?? ''}', style: AppTextStyles.size18Weight600),
-        // leadingWidth: 1,
-        // title: Container(
-        //   height: 34,
-        //   width: 279,
-        //   decoration: BoxDecoration(
-        //       color: const Color(0xFFF8F8F8),
-        //       borderRadius: BorderRadius.circular(10)),
-        //   child: TextField(
-        //       controller: searchController,
-        //       onChanged: (value) {
-        //         if (value.isEmpty) {
-        //           BlocProvider.of<SubCatsCubit>(context).subSave();
-        //         } else {
-        //           BlocProvider.of<SubCatsCubit>(context)
-        //               .searchSubCats(value, widget.cats?.id ?? 0);
-        //         }
-        //       },
-        //       decoration: const InputDecoration(
-        //         prefixIcon: Icon(
-        //           Icons.search,
-        //           color: AppColors.kGray300,
-        //         ),
-        //         hintText: 'Поиск',
-        //         hintStyle: TextStyle(
-        //           color: AppColors.kGray300,
-        //           fontSize: 16,
-        //         ),
-        //         border: InputBorder.none,
-        //       ),
-        //       style: const TextStyle(
-        //         color: Colors.black,
-        //       )),
-        // ),
+        title: Text(widget.cats?.name ?? '', style: AppTextStyles.size18Weight600),
       ),
       body: BlocConsumer<SubCatsCubit, SubCatsState>(
         listener: (context, state) {},
@@ -125,35 +90,6 @@ class _SubCatalogPageState extends State<SubCatalogPage> {
           if (state is LoadingState) {
             return const _SubCatalogShimmer();
           }
-          // if (state is NoDataState) {
-          //   return Container(
-          //     width: MediaQuery.of(context).size.height,
-          //     child: Column(
-          //       crossAxisAlignment: CrossAxisAlignment.center,
-          //       mainAxisSize: MainAxisSize.max,
-          //       children: [
-          //         Container(
-          //             margin: EdgeInsets.only(top: 146),
-          //             child: Image.asset('assets/icons/no_data.png')),
-          //         const Text(
-          //           'В ленте нет данных',
-          //           style:
-          //               TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
-          //           textAlign: TextAlign.center,
-          //         ),
-          //         const Text(
-          //           'По вашему запросу ничего не найдено',
-          //           style: TextStyle(
-          //               fontSize: 16,
-          //               fontWeight: FontWeight.w400,
-          //               color: Color(0xff717171)),
-          //           textAlign: TextAlign.center,
-          //         )
-          //       ],
-          //     ),
-          //   );
-          //   ;
-          // }
 
           if (state is LoadedState) {
             return ListView(
@@ -277,26 +213,6 @@ class _SubCatalogPageState extends State<SubCatalogPage> {
                                   ),
                                 );
 
-                                // if (brands[index] == brand) {
-                                //   brand = null;
-                                //   BlocProvider.of<SubCatsCubit>(context)
-                                //       .subCats(widget.cats!.id);
-                                // } else {
-                                //   brand = brands[index];
-                                //   BlocProvider.of<SubCatsCubit>(context)
-                                //       .subCatsBrandOptions(
-                                //           widget.cats!.id,
-                                //           brand?.id ?? 0,
-                                //           _selectedChapter != -1
-                                //               ? (widget
-                                //                       .catChapters?[
-                                //                           _selectedChapter]
-                                //                       .section
-                                //                       ?.id ??
-                                //                   0)
-                                //               : null);
-                                // }
-                                // setState(() {});
                               },
                               child: Container(
                                 width: 64,
@@ -410,8 +326,8 @@ class CatalogListTile extends StatelessWidget {
     required this.title,
     required this.bonus,
     required this.credit,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -442,7 +358,7 @@ class CatalogListTile extends StatelessWidget {
                     highlightColor: const Color(0xFFF7F7F7),
                     child: Container(color: Colors.white),
                   ),
-                  errorWidget: (context, _, __) => const Icon(Icons.image_not_supported_outlined),
+                  errorWidget: (context, _, _) => const Icon(Icons.image_not_supported_outlined),
                 ),
               ),
             ),
@@ -466,7 +382,7 @@ class CatalogListTile extends StatelessWidget {
 }
 
 class _SubCatalogShimmer extends StatelessWidget {
-  const _SubCatalogShimmer({Key? key}) : super(key: key);
+  const _SubCatalogShimmer();
 
   @override
   Widget build(BuildContext context) {
@@ -495,7 +411,7 @@ class _SubCatalogShimmer extends StatelessWidget {
                 child: ListView.separated(
                   scrollDirection: Axis.horizontal,
                   itemCount: 6,
-                  separatorBuilder: (_, __) => const SizedBox(width: 8),
+                  separatorBuilder: (_, _) => const SizedBox(width: 8),
                   itemBuilder: (context, index) => Shimmer.fromColors(
                     baseColor: base,
                     highlightColor: highlight,
@@ -532,7 +448,7 @@ class _SubCatalogShimmer extends StatelessWidget {
                 child: ListView.separated(
                   scrollDirection: Axis.horizontal,
                   itemCount: 8,
-                  separatorBuilder: (_, __) => const SizedBox(width: 4),
+                  separatorBuilder: (_, _) => const SizedBox(width: 4),
                   itemBuilder: (context, index) => Shimmer.fromColors(
                     baseColor: base,
                     highlightColor: highlight,
@@ -580,8 +496,7 @@ class _CatalogTileShimmer extends StatelessWidget {
   final Color baseColor;
   final Color highlightColor;
 
-  const _CatalogTileShimmer({Key? key, required this.baseColor, required this.highlightColor})
-    : super(key: key);
+  const _CatalogTileShimmer({required this.baseColor, required this.highlightColor});
 
   @override
   Widget build(BuildContext context) {

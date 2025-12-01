@@ -1,11 +1,9 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/route_manager.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/feature/app/router/app_router.dart';
-import 'package:haji_market/src/feature/bloger/tape/presentation/widgets/detail_tape_card_page.dart';
 import 'package:haji_market/src/feature/bloger/tape/presentation/widgets/tape_card_widget.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:shimmer_animation/shimmer_animation.dart';
@@ -27,8 +25,6 @@ class _TapeBloggerPageState extends State<TapeBloggerPage> {
   ).toList();
 
   TextEditingController searchController = TextEditingController();
-  final int _value = 1;
-
   @override
   void initState() {
     BlocProvider.of<TapeBloggerCubit>(context).tapes(false, false, '');

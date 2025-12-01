@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/route_manager.dart';
-import 'package:get/state_manager.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 import 'package:image_picker/image_picker.dart';
@@ -13,7 +12,7 @@ import '../../../../drawer/presentation/widgets/country_widget.dart';
 import '../../data/bloc/profile_edit_admin_cubit.dart';
 
 class BankPage extends StatefulWidget {
-  const BankPage({Key? key}) : super(key: key);
+  const BankPage({super.key});
 
   @override
   State<BankPage> createState() => _BankPageState();
@@ -22,7 +21,6 @@ class BankPage extends StatefulWidget {
 class _BankPageState extends State<BankPage> {
   final _box = GetStorage();
   XFile? _image;
-  final ImagePicker _picker = ImagePicker();
   bool change = false;
   bool typeOrganization = false;
 
@@ -55,8 +53,6 @@ class _BankPageState extends State<BankPage> {
   TextEditingController generalDirectorController = TextEditingController();
 
   final maskFormatter = MaskTextInputFormatter(mask: '+7(###)-###-##-##');
-  bool _obscureText = true;
-  bool _obscureTextRepeat = true;
 
   @override
   void initState() {
@@ -149,16 +145,6 @@ class _BankPageState extends State<BankPage> {
     }
   }
 
-  Future<void> _getImage() async {
-    final image = change == true
-        ? await _picker.pickImage(source: ImageSource.camera)
-        : await _picker.pickImage(source: ImageSource.gallery);
-
-    setState(() {
-      _image = image;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -174,7 +160,10 @@ class _BankPageState extends State<BankPage> {
         ),
         actions: [
           IconButton(
-            icon: SvgPicture.asset('assets/icons/bell.svg', color: AppColors.kPrimaryColor),
+            icon: SvgPicture.asset(
+              'assets/icons/bell.svg',
+              colorFilter: ColorFilter.mode(AppColors.kPrimaryColor, BlendMode.srcIn),
+            ),
             onPressed: () {},
           ),
         ],
@@ -538,40 +527,6 @@ class _BankPageState extends State<BankPage> {
     );
   }
 
-  Widget _buildPasswordField({
-    required TextEditingController controller,
-    required String hintText,
-    required bool obscureText,
-    required VoidCallback onToggle,
-  }) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 16),
-      child: TextField(
-        controller: controller,
-        obscureText: obscureText,
-        decoration: InputDecoration(
-          prefixIcon: const Icon(Icons.lock, color: AppColors.kPrimaryColor),
-          suffixIcon: IconButton(
-            icon: Icon(obscureText ? Icons.visibility_off : Icons.visibility, color: Colors.grey),
-            onPressed: onToggle,
-          ),
-          hintText: hintText,
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
-            borderSide: BorderSide(color: Colors.grey.shade300),
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
-            borderSide: BorderSide(color: Colors.grey.shade300),
-          ),
-          filled: true,
-          fillColor: Colors.white,
-          contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-        ),
-      ),
-    );
-  }
-
   Widget _buildSaveButton(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(16),
@@ -580,7 +535,7 @@ class _BankPageState extends State<BankPage> {
         color: Colors.white,
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.2),
+            color: Colors.grey.withValues(alpha: .2),
             spreadRadius: 2,
             blurRadius: 8,
             offset: const Offset(0, -2),

@@ -5,7 +5,6 @@ import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/feature/app/bloc/app_bloc.dart';
 import 'package:haji_market/src/feature/app/router/app_router.dart';
-import 'package:haji_market/src/feature/bloger/tape/bloc/tape_blogger_cubit.dart';
 
 @RoutePage()
 class SuccessBloggerTapeUploadVideoPage extends StatefulWidget {

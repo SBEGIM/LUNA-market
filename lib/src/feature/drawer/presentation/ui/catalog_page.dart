@@ -1,24 +1,20 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/feature/app/router/app_router.dart';
 import 'package:haji_market/src/feature/home/data/model/cat_model.dart';
 import 'package:haji_market/src/feature/product/provider/filter_provider.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
-import '../../../drawer/bloc/brand_cubit.dart' as brandCubit;
-import 'package:haji_market/src/feature/drawer/bloc/brand_state.dart' as brandState;
-
-import '../../../drawer/bloc/brand_cubit.dart';
+import 'package:haji_market/src/feature/drawer/bloc/brand_cubit.dart' as brand_cubit;
+import 'package:haji_market/src/feature/drawer/bloc/brand_state.dart' as brand_state;
 import 'package:shimmer_animation/shimmer_animation.dart';
-import '../../../home/bloc/cats_cubit.dart';
-import '../../../home/bloc/cats_state.dart';
+import 'package:haji_market/src/feature/home/bloc/cats_cubit.dart';
+import 'package:haji_market/src/feature/home/bloc/cats_state.dart';
 
 @RoutePage()
 class CatalogPage extends StatefulWidget {
-  const CatalogPage({Key? key}) : super(key: key);
+  const CatalogPage({super.key});
 
   @override
   State<CatalogPage> createState() => _CatalogPageState();
@@ -31,10 +27,10 @@ class _CatalogPageState extends State<CatalogPage> {
 
   @override
   void initState() {
-    brandCubit.BrandCubit brandInitCubit = BlocProvider.of<brandCubit.BrandCubit>(context);
+    brand_cubit.BrandCubit brandInitCubit = BlocProvider.of<brand_cubit.BrandCubit>(context);
 
-    if (brandInitCubit.state is! brandState.LoadedState) {
-      BlocProvider.of<brandCubit.BrandCubit>(context).brands();
+    if (brandInitCubit.state is! brand_state.LoadedState) {
+      BlocProvider.of<brand_cubit.BrandCubit>(context).brands();
     }
 
     brandList();
@@ -47,7 +43,9 @@ class _CatalogPageState extends State<CatalogPage> {
     //   print(cat.name ?? '');
     // });
 
-    final List<CatsModel> data = await BlocProvider.of<brandCubit.BrandCubit>(context).brandsList();
+    final List<CatsModel> data = await BlocProvider.of<brand_cubit.BrandCubit>(
+      context,
+    ).brandsList();
     brands.addAll(data);
     setState(() {});
   }

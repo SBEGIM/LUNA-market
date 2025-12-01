@@ -4,27 +4,26 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:get/route_manager.dart';
 import 'package:haji_market/src/core/common/constants.dart';
+import 'package:haji_market/src/feature/app/widgets/app_snack_bar.dart';
 import 'package:haji_market/src/feature/app/bloc/app_bloc.dart';
 import 'package:haji_market/src/feature/app/router/app_router.dart';
-import 'package:haji_market/src/feature/auth/bloc/register_state.dart' as regState;
+import 'package:haji_market/src/feature/auth/bloc/register_state.dart' as reg_state;
 import 'package:haji_market/src/feature/auth/presentation/widgets/default_button.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
-
-import '../../data/DTO/register.dart';
-import '../../bloc/register_cubit.dart';
-import '../../bloc/sms_cubit.dart';
-import '../../bloc/sms_state.dart';
+import 'package:haji_market/src/feature/auth/data/DTO/register.dart';
+import 'package:haji_market/src/feature/auth/bloc/register_cubit.dart';
+import 'package:haji_market/src/feature/auth/bloc/sms_cubit.dart';
+import 'package:haji_market/src/feature/auth/bloc/sms_state.dart';
 
 class RegisterSmsCheckModalBottom extends StatefulWidget {
   final String textEditingController;
   final RegisterDTO registerDTO;
   const RegisterSmsCheckModalBottom({
-    Key? key,
+    super.key,
     required this.textEditingController,
     required this.registerDTO,
-  }) : super(key: key);
+  });
 
   @override
   State<RegisterSmsCheckModalBottom> createState() => _RegisterSmsCheckModalBottom();
@@ -69,24 +68,27 @@ class _RegisterSmsCheckModalBottom extends State<RegisterSmsCheckModalBottom> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<RegisterCubit, regState.RegisterState>(
+    return BlocListener<RegisterCubit, reg_state.RegisterState>(
       listener: (context, regstate) {
-        if (regstate is regState.LoadedState) {
+        if (regstate is reg_state.RegisterStateSuccess) {
           BlocProvider.of<AppBloc>(context).add(const AppEvent.logining());
           context.router.popUntil((route) => route.settings.name == LauncherRoute.name);
         }
       },
       child: BlocConsumer<SmsCubit, SmsState>(
         listener: (context, state) {
-          if (state is LoadedState) {
-            // Get.to( () => ChangePasswordPage( textEditingController: widget.textEditingController));
+          if (state is SmsStateSuccess && state.action == SmsAction.registerVerify) {
             FocusScope.of(context).requestFocus(FocusNode());
             final register = BlocProvider.of<RegisterCubit>(context);
-            register.register(context, widget.registerDTO);
+            register.register(widget.registerDTO);
+          }
+
+          if (state is SmsStateError) {
+            AppSnackBar.show(context, state.message, type: AppSnackType.error);
           }
         },
         builder: (context, state) {
-          if (state is LoadingState) {
+          if (state is SmsStateLoading && state.action == SmsAction.registerVerify) {
             return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
           }
           return Padding(
@@ -102,7 +104,7 @@ class _RegisterSmsCheckModalBottom extends State<RegisterSmsCheckModalBottom> {
                       style: AppTextStyles.appBarTextStyle,
                     ),
                     GestureDetector(
-                      onTap: () => Get.back(),
+                      onTap: () => Navigator.of(context).pop(),
                       child: SvgPicture.asset('assets/icons/close.svg', height: 12, width: 12),
                     ),
                   ],
