@@ -150,7 +150,7 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
   String _locationSelect = 'Выбор лакации';
   String _locationSeller = 'Не выбрано';
 
-  List<CatsModel> _locations = [
+  final List<CatsModel> _locations = [
     CatsModel(id: 0, name: 'Не выбрано'),
     CatsModel(id: 1, name: 'Без ограничений'),
     CatsModel(id: 2, name: 'Вся Россия'),
@@ -159,16 +159,7 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
     CatsModel(id: 5, name: 'Моя локация'),
   ];
 
-  List<CatsModel> _locationsValues = [
-    CatsModel(id: 0, name: 'Пункт 1'),
-    CatsModel(id: 1, name: 'Пункт 2'),
-    CatsModel(id: 2, name: 'Пункт 3'),
-    CatsModel(id: 3, name: 'Пункт 4'),
-    CatsModel(id: 4, name: 'Пункт 5'),
-    CatsModel(id: 5, name: 'Пункт 6'),
-  ];
-
-  List<CatsModel> _regions = [];
+  final List<CatsModel> _regions = [];
 
   void _regionsArray() async {
     final List<CountryModel> data = await BlocProvider.of<CountryCubit>(context).countryList();
@@ -444,7 +435,7 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
     }
 
     if (BlocProvider.of<CityCubit>(context).state is! LoadedState) {
-      BlocProvider.of<CityCubit>(context).citiesCdek('RU' ?? 'KZ');
+      BlocProvider.of<CityCubit>(context).citiesCdek('RU');
     }
 
     _sizeArray();
@@ -1801,89 +1792,6 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
                       },
                     ),
 
-                  // if (filledCount == 3)
-                  //   SizedBox(
-                  //     child: Column(
-                  //       crossAxisAlignment: CrossAxisAlignment.start,
-                  //       children: [
-                  //         const Text(
-                  //           'Цвет',
-                  //           style: TextStyle(
-                  //               fontSize: 16, fontWeight: FontWeight.w700),
-                  //         ),
-                  //         const SizedBox(height: 10),
-                  //         GestureDetector(
-                  //           onTap: () {
-                  //             showSellerCatsOptions(
-                  //                 context, 'Добавить цвет', mockColors!, (value) {
-                  //               final CatsModel catsModel = value;
-
-                  //               print(catsModel.name);
-
-                  //               final colorId = catsModel.id.toString();
-                  //               final colorName = catsModel.name ?? 'Пустое';
-
-                  //               colorCountController.text = catsModel.name!;
-
-                  //               if (colorCountController.text.isNotEmpty) {
-                  //                 bool exists = false;
-
-                  //                 //  Cats? sizeCountLast;
-                  //                 // if (optomCount.isNotEmpty) {
-
-                  //                 // sizeCountLast = mockSizeAdds!.isEmpty ? mockSizeAdds!.last : null;
-                  //                 for (var element in checkColors!) {
-                  //                   if (element.name == colorName) {
-                  //                     exists = true;
-                  //                     setState(() {});
-                  //                   }
-                  //                   continue;
-                  //                 }
-                  //                 //   }
-
-                  //                 if (!exists) {
-                  //                   checkColors!.add(CatsModel(name: colorName));
-
-                  //                   colorCount.add(ColorCountSellerDto(
-                  //                       color_id: colorId,
-                  //                       name: colorName,
-                  //                       count: colorCountController.text));
-
-                  //                   setState(() {});
-
-                  //                   colorCountController.clear();
-                  //                 } else {
-                  //                   colorCountController.clear();
-                  //                   Get.snackbar('Ошибка', 'Данные уже имеется!',
-                  //                       backgroundColor: Colors.redAccent);
-                  //                 }
-                  //               } else {
-                  //                 Get.snackbar('Ошибка', 'Нет данных!',
-                  //                     backgroundColor: Colors.redAccent);
-                  //               }
-
-                  //               setState(() {});
-                  //             });
-                  //           },
-                  //           child: Container(
-                  //             decoration: BoxDecoration(
-                  //                 color: AppColors.mainBackgroundPurpleColor,
-                  //                 borderRadius: BorderRadius.circular(8)),
-                  //             alignment: Alignment.center,
-                  //             width: double.infinity,
-                  //             height: 38,
-                  //             child: const Text(
-                  //               '+ Добавить цвет',
-                  //               style: TextStyle(
-                  //                   fontSize: 14,
-                  //                   fontWeight: FontWeight.w700,
-                  //                   color: AppColors.mainPurpleColor),
-                  //             ),
-                  //           ),
-                  //         ),
-                  //       ],
-                  //     ),
-                  //   ),
                   if (filledCount == 3)
                     FieldsProductRequest(
                       titleText: 'Укажите цвета',

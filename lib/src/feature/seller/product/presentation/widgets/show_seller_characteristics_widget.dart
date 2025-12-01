@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/feature/home/data/model/cat_model.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
@@ -10,9 +9,8 @@ void showSellerCharacteristicsOptions(
   List<CatsModel>? subCharacteristics,
   Function(List<CatsModel>) callback,
 ) {
-  List<CatsModel> _filteredCategories = [...subCharacteristics!];
+  List<CatsModel> filteredCategories = [...subCharacteristics!];
   List<int> selectedCategoryIds = [];
-  TextEditingController searchController = TextEditingController();
 
   showMaterialModalBottomSheet(
     context: context,
@@ -25,7 +23,7 @@ void showSellerCharacteristicsOptions(
           return ConstrainedBox(
             constraints: BoxConstraints(
               minHeight: 200,
-              maxHeight: (_filteredCategories.length * 85 + 100).toDouble().clamp(250, 500),
+              maxHeight: (filteredCategories.length * 85 + 100).toDouble().clamp(250, 500),
             ),
             child: Column(
               children: [
@@ -58,29 +56,29 @@ void showSellerCharacteristicsOptions(
                     child: ListView.separated(
                       shrinkWrap: true,
                       padding: const EdgeInsets.symmetric(horizontal: 16),
-                      itemCount: _filteredCategories.length,
+                      itemCount: filteredCategories.length,
                       separatorBuilder: (context, index) =>
                           const Divider(height: 1, thickness: 0.5),
                       itemBuilder: (context, index) {
-                        final category = _filteredCategories[index];
+                        final category = filteredCategories[index];
                         final isSelected =
                             selectedCategoryIds.contains(category.id) || category.isSelect;
 
                         return InkWell(
                           onTap: () {
                             setState(() {
-                              _filteredCategories[index] = category.copyWith(
+                              filteredCategories[index] = category.copyWith(
                                 isSelect: !category.isSelect,
                               );
 
-                              if (selectedCategoryIds.contains(_filteredCategories[index].id) ||
-                                  _filteredCategories[index].isSelect) {
-                                selectedCategoryIds.remove(_filteredCategories[index].id);
+                              if (selectedCategoryIds.contains(filteredCategories[index].id) ||
+                                  filteredCategories[index].isSelect) {
+                                selectedCategoryIds.remove(filteredCategories[index].id);
                               } else {
-                                selectedCategoryIds.add(_filteredCategories[index].id!);
+                                selectedCategoryIds.add(filteredCategories[index].id!);
                               }
 
-                              if (isSelected || _filteredCategories[index].isSelect) {
+                              if (isSelected || filteredCategories[index].isSelect) {
                                 selectedCategoryIds.remove(category.id);
                               } else {
                                 selectedCategoryIds.add(category.id!);
@@ -126,7 +124,7 @@ void showSellerCharacteristicsOptions(
                             .where((e) => selectedCategoryIds.contains(e.id))
                             .toList();
 
-                        for (var e in _filteredCategories) {
+                        for (var e in filteredCategories) {
                           if (e.isSelect) {
                             selectedItems.add(CatsModel(id: e.id, name: e.name));
                           }
@@ -157,117 +155,4 @@ void showSellerCharacteristicsOptions(
       );
     },
   );
-}
-
-class FieldsProductRequest extends StatefulWidget {
-  final String titleText;
-  final String hintText;
-  final bool star;
-  final bool arrow;
-  final bool? hintColor;
-  final TextEditingController? controller;
-  final CatsModel? cats;
-  final bool? textInputNumber;
-  final bool readOnly;
-  final void Function()? onPressed;
-  final int? maxLines;
-  final void Function(String)? onChanged; // добавили
-
-  const FieldsProductRequest({
-    required this.hintText,
-    required this.titleText,
-    required this.star,
-    required this.arrow,
-    this.hintColor,
-    this.controller,
-    this.cats,
-    this.textInputNumber,
-    Key? key,
-    this.onPressed,
-    this.readOnly = false,
-    this.maxLines,
-    this.onChanged, // добавили
-  }) : super(key: key);
-
-  @override
-  State<FieldsProductRequest> createState() => _FieldsProductRequestState();
-}
-
-class _FieldsProductRequestState extends State<FieldsProductRequest> {
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 4.0, bottom: 10),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Text(
-                widget.titleText,
-                style: const TextStyle(
-                  fontWeight: FontWeight.w400,
-                  fontSize: 12,
-                  color: AppColors.kGray900,
-                ),
-              ),
-              widget.star == true
-                  ? const Text(
-                      '*',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w400,
-                        fontSize: 12,
-                        color: Colors.red,
-                      ),
-                    )
-                  : Container(),
-            ],
-          ),
-          const SizedBox(height: 4),
-          Container(
-            decoration: BoxDecoration(
-              color: AppColors.kGray2,
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.only(left: 14.0),
-              child: TextField(
-                controller: widget.controller,
-                readOnly: (widget.hintColor == false || widget.hintColor == null)
-                    ? widget.readOnly
-                    : true,
-                keyboardType: (widget.maxLines != null && widget.maxLines! > 1)
-                    ? TextInputType.multiline
-                    : ((widget.textInputNumber == false || widget.textInputNumber == null)
-                          ? TextInputType.text
-                          : const TextInputType.numberWithOptions(signed: true, decimal: true)),
-                maxLines: widget.maxLines ?? 1,
-                onChanged: widget.onChanged, // добавили
-                decoration: InputDecoration(
-                  border: InputBorder.none,
-                  hintText: widget.hintText,
-                  hintStyle: TextStyle(
-                    color: (widget.hintColor == null || widget.hintColor != true)
-                        ? const Color.fromRGBO(194, 197, 200, 1)
-                        : Colors.black,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w400,
-                  ),
-                  enabledBorder: const UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.white),
-                  ),
-                  suffixIcon: widget.arrow == true
-                      ? IconButton(
-                          onPressed: widget.onPressed,
-                          icon: SvgPicture.asset('assets/icons/back_menu.svg', color: Colors.grey),
-                        )
-                      : const SizedBox(),
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 }

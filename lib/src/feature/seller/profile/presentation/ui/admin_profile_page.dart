@@ -165,22 +165,6 @@ class _ProfileAdminPageState extends State<ProfileAdminPage> {
                                 change = false;
                                 _getImage(context);
                               }
-                              // Get.defaultDialog(
-                              //   title: "Изменить фото",
-                              //   middleText: '',
-                              //   textConfirm: 'Камера',
-                              //   textCancel: 'Галерея',
-                              //   titlePadding:
-                              //       const EdgeInsets.only(top: 40),
-                              //   onConfirm: () {
-                              //     change = true;
-                              //     _getImage(context);
-                              //   },
-                              //   onCancel: () {
-                              //     change = false;
-                              //     _getImage(context);
-                              //   },
-                              // );
                             } else {
                               Navigator.of(context).pop();
                             }
@@ -421,31 +405,6 @@ class _ProfileAdminPageState extends State<ProfileAdminPage> {
                       iconPath: Assets.icons.supportCenter.path,
                     ),
 
-                    // buildProfileItem(
-                    //   onTap: () {},
-                    //   switchWidget: true,
-                    //   switchValue: switchValue,
-                    //   onSwitchChanged: (value) {
-                    //     switchValue = value;
-                    //     print(value);
-                    //     setState(() {});
-                    //   },
-                    //   title: 'Уведомления',
-                    //   iconPath: Assets.icons.sellerNotification.path,
-                    // ),
-                    // buildProfileItem(
-                    //   onTap: () {
-                    //     BlocProvider.of<AppBloc>(context).add(
-                    //         const AppEvent.chageState(
-                    //             state: AppState.inAppUserState(index: 1)));
-                    //     // Navigator.push(
-                    //     //   context,
-                    //     //   MaterialPageRoute(builder: (context) => const Base(index: 1)),
-                    //     // );
-                    //   },
-                    //   title: 'Вернутся в маркет',
-                    //   iconPath: Assets.icons.sellerBack.path,
-                    // ),
                     buildProfileItem(
                       onTap: () => showSellerSettingOptions(context, 'Настройка', () {}),
                       title: 'Настройка',
@@ -453,22 +412,6 @@ class _ProfileAdminPageState extends State<ProfileAdminPage> {
                       iconPath: Assets.icons.settingIcon.path,
                     ),
                     SizedBox(height: 40),
-                    // DefaultButton(
-                    //     text: 'Выйти из аккаунта ',
-                    //     textStyle: AppTextStyles.defaultButtonTextStyle,
-                    //     press: () {
-                    //       GetStorage().remove('seller_token');
-                    //       GetStorage().remove('seller_id');
-                    //       GetStorage().remove('seller_name');
-                    //       GetStorage().remove('seller_image');
-
-                    //       BlocProvider.of<AppBloc>(context).add(
-                    //           const AppEvent.chageState(
-                    //               state: AppState.inAppUserState(index: 1)));
-                    //     },
-                    //     color: Colors.black,
-                    //     backgroundColor: AppColors.kButtonColor,
-                    //     width: 358),
                   ],
                 ),
               ),

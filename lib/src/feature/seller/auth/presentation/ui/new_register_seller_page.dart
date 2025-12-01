@@ -23,7 +23,7 @@ import '../../../product/presentation/widgets/cats_seller_page.dart';
 
 @RoutePage()
 class RegisterSellerPage extends StatefulWidget {
-  const RegisterSellerPage({Key? key}) : super(key: key);
+  const RegisterSellerPage({super.key});
 
   @override
   State<RegisterSellerPage> createState() => _CoopRequestPageState();
@@ -34,9 +34,6 @@ class _CoopRequestPageState extends State<RegisterSellerPage> {
 
   bool _passwordVisible = false;
   bool _repeatPasswordVisible = false;
-
-  bool _visibleIconClear = false;
-  bool __visibleIconView = false;
   bool isButtonEnabled = false;
   int typeOrganization = 1;
 
@@ -106,16 +103,6 @@ class _CoopRequestPageState extends State<RegisterSellerPage> {
     super.initState();
   }
 
-  void _nextStep() {
-    if (filledSegments < 2) {
-      setState(() {
-        filledSegments++;
-      });
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Регистрация завершена')));
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -145,18 +132,6 @@ class _CoopRequestPageState extends State<RegisterSellerPage> {
           child: Icon(Icons.arrow_back),
         ),
       ),
-      // iconTheme: const IconThemeData(color: AppColors.kPrimaryColor),
-      // backgroundColor: Colors.white,
-      // elevation: 0,
-      // centerTitle: true,
-      // title: const Text(
-      //   'Заявка на сотрудничество',
-      //   style: TextStyle(
-      //     color: Colors.black,
-      //     fontSize: 16,
-      //     fontWeight: FontWeight.w500,
-      //   ),
-      // )),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.max,
@@ -212,101 +187,6 @@ class _CoopRequestPageState extends State<RegisterSellerPage> {
           ),
 
           SizedBox(height: 24),
-
-          // EasyStepper(
-          //   enableStepTapping: false,
-          //   activeStep: filledSegments,
-          //   activeStepTextColor: Colors.white,
-          //   finishedStepTextColor: Colors.white,
-          //   internalPadding: 10,
-          //   stepRadius: 20,
-          //   showLoadingAnimation: true,
-          //   showStepBorder: false,
-          //   activeStepIconColor: AppColors.kPrimaryColor,
-          //   activeStepBorderColor: Colors.white,
-          //   finishedStepBackgroundColor: AppColors.kPrimaryColor,
-          //   activeStepBackgroundColor: AppColors.kGray400,
-          //   unreachedStepBackgroundColor: Colors.grey,
-          //   stepAnimationCurve: Curves.easeInQuart,
-          //   lineStyle: LineStyle(
-          //     lineLength: 80,
-          //     lineSpace: 5,
-          //     lineType: LineType.dashed,
-          //     defaultLineColor: AppColors.kPrimaryColor,
-          //     unreachedLineColor: Colors.grey,
-          //     activeLineColor: AppColors.kPrimaryColor,
-          //     finishedLineColor: AppColors.kPrimaryColor,
-          //     lineWidth: 0,
-          //     lineThickness: 1,
-          //     // progress: 1,
-          //     // //  lineSpace: 5,
-          //     // // unreachedLineType : ,
-          //     // progressColor: Colors.green,
-          //     // progress: ,
-          //   ),
-          //   steps: [
-          //     EasyStep(
-          //       customStep: ClipRRect(
-          //         borderRadius: BorderRadius.circular(15),
-          //         child: Opacity(
-          //           opacity: filledSegments >= 1 ? 1 : 0.3,
-          //           child: Icon(
-          //             Icons.business_sharp,
-          //             color: Colors.white,
-          //           ),
-          //         ),
-          //       ),
-          //       customTitle: const Text(
-          //         'Юридические данные',
-          //         style: TextStyle(
-          //             fontWeight: FontWeight.w500,
-          //             fontSize: 12,
-          //             color: AppColors.kGray900),
-          //         textAlign: TextAlign.center,
-          //       ),
-          //     ),
-          //     EasyStep(
-          //       customStep: ClipRRect(
-          //         borderRadius: BorderRadius.circular(15),
-          //         child: Opacity(
-          //           opacity: filledSegments >= 2 ? 1 : 0.3,
-          //           child: Icon(
-          //             Icons.shop_2,
-          //             color: Colors.white,
-          //           ),
-          //         ),
-          //       ),
-          //       customTitle: const Text(
-          //         'Реквизиты банка',
-          //         style: TextStyle(
-          //             fontWeight: FontWeight.w500,
-          //             fontSize: 12,
-          //             color: AppColors.kGray900),
-          //         textAlign: TextAlign.center,
-          //       ),
-          //     ),
-          //     EasyStep(
-          //         customStep: ClipRRect(
-          //           borderRadius: BorderRadius.circular(15),
-          //           child: Opacity(
-          //             opacity: filledSegments >= 3 ? 1 : 0.3,
-          //             child: Icon(
-          //               Icons.man,
-          //               color: Colors.white,
-          //             ),
-          //           ),
-          //         ),
-          //         customTitle: const Text(
-          //           'Контактные   данные',
-          //           style: TextStyle(
-          //               fontWeight: FontWeight.w500,
-          //               fontSize: 12,
-          //               color: AppColors.kGray900),
-          //           textAlign: TextAlign.center,
-          //         )),
-          //   ],
-          //   onStepReached: (index) => setState(() => filledSegments = index),
-          // ),
           Expanded(
             child: SingleChildScrollView(
               child: Padding(
@@ -319,129 +199,6 @@ class _CoopRequestPageState extends State<RegisterSellerPage> {
                         shrinkWrap: true,
                         physics: NeverScrollableScrollPhysics(),
                         children: [
-                          // const Row(
-                          //   children: [
-                          //     Text(
-                          //       'Выберите тип организаций ',
-                          //       style: TextStyle(
-                          //           fontWeight: FontWeight.w400,
-                          //           fontSize: 12,
-                          //           color: AppColors.kGray900),
-                          //     ),
-                          //     Text(
-                          //       '*',
-                          //       style: TextStyle(
-                          //           fontWeight: FontWeight.w400,
-                          //           fontSize: 12,
-                          //           color: Colors.red),
-                          //     )
-                          //   ],
-                          // ),
-                          // const SizedBox(
-                          //   height: 5,
-                          // ),
-                          // Row(
-                          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          //   children: [
-                          //     Container(
-                          //       padding:
-                          //           const EdgeInsets.symmetric(horizontal: 8),
-                          //       alignment: Alignment.centerLeft,
-                          //       decoration: BoxDecoration(
-                          //         color: Colors.white,
-                          //         borderRadius: BorderRadius.circular(8),
-                          //       ),
-                          //       width: 140,
-                          //       height: 47,
-                          //       child: Row(
-                          //           mainAxisAlignment:
-                          //               MainAxisAlignment.spaceBetween,
-                          //           children: [
-                          //             const Text(
-                          //               'ИП',
-                          //               textAlign: TextAlign.center,
-                          //             ),
-                          //             Checkbox(
-                          //               shape: const CircleBorder(),
-                          //               value: typeOrganization == 1,
-                          //               activeColor:
-                          //                   AppColors.mainPurpleColor,
-                          //               onChanged: ((value) {
-                          //                 typeOrganization = 1;
-                          //                 setState(() {});
-                          //               }),
-                          //             ),
-                          //           ]),
-                          //     ),
-                          //     const SizedBox(
-                          //       width: 20,
-                          //     ),
-                          //     Container(
-                          //       padding:
-                          //           const EdgeInsets.symmetric(horizontal: 8),
-                          //       alignment: Alignment.centerLeft,
-                          //       decoration: BoxDecoration(
-                          //         color: Colors.white,
-                          //         borderRadius: BorderRadius.circular(8),
-                          //       ),
-                          //       width: 140,
-                          //       height: 47,
-                          //       child: Row(
-                          //           mainAxisAlignment:
-                          //               MainAxisAlignment.spaceBetween,
-                          //           children: [
-                          //             const Text(
-                          //               'OОО',
-                          //               textAlign: TextAlign.center,
-                          //             ),
-                          //             Checkbox(
-                          //               value: typeOrganization == 2,
-                          //               shape: const CircleBorder(),
-                          //               activeColor:
-                          //                   AppColors.mainPurpleColor,
-                          //               onChanged: ((value) {
-                          //                 typeOrganization = 2;
-                          //                 setState(() {});
-                          //               }),
-                          //             ),
-                          //           ]),
-                          //     ),
-                          //     // const SizedBox(
-                          //     //   width: 20,
-                          //     // ),
-                          //     // Container(
-                          //     //   padding: const EdgeInsets.symmetric(horizontal: 8),
-                          //     //   alignment: Alignment.centerLeft,
-                          //     //   decoration: BoxDecoration(
-                          //     //     color: Colors.white,
-                          //     //     borderRadius: BorderRadius.circular(8),
-                          //     //   ),
-                          //     //   width: 100,
-                          //     //   height: 47,
-                          //     //   child: Row(
-                          //     //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          //     //       children: [
-                          //     //         const Text(
-                          //     //           'ОГРН',
-                          //     //           textAlign: TextAlign.center,
-                          //     //         ),
-                          //     //         Checkbox(
-                          //     //           shape: const CircleBorder(),
-                          //     //           value: typeOrganization == 3,
-                          //     //           activeColor: AppColors.kPrimaryColor,
-                          //     //           onChanged: ((value) {
-                          //     //             typeOrganization = 3;
-                          //     //             setState(() {});
-                          //     //           }),
-                          //     //         ),
-                          //     //       ]),
-                          //     // ),
-                          //   ],
-                          // ),
-
-                          // const SizedBox(
-                          //   height: 10,
-                          // ),
                           FieldsCoopRequest(
                             titleText: 'Название магазина',
                             hintText: 'Введите название магазина',
@@ -703,7 +460,7 @@ class _CoopRequestPageState extends State<RegisterSellerPage> {
                                         ),
                                         SizedBox(width: 8),
                                         Text(
-                                          '${countrySellerDto!.code}',
+                                          '${countrySellerDto?.code}',
                                           style: AppTextStyles.size16Weight400.copyWith(
                                             color: Color(0xFF636366),
                                           ),
@@ -1103,19 +860,6 @@ class _CoopRequestPageState extends State<RegisterSellerPage> {
             if (!mounted) return;
 
             context.router.push(SuccessSellerRegisterRoute());
-            // Get.to(SuccessSellerRegisterPage());
-
-            // context.router.push(AuthSellerRoute());
-            // Navigator.push(
-            //   context,
-            //   MaterialPageRoute(builder: (context) => AuthAdminPage()),
-            // );
-
-            // AppSnackBar.show(
-            //   context,
-            //   'Заявка отправлено',
-            //   type: AppSnackType.error,
-            // );
 
             return;
           } else {

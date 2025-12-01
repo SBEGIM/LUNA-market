@@ -11,7 +11,7 @@ import '../../data/models/product_seller_model.dart';
 class StatisticsSellerPage extends StatefulWidget {
   final ProductSellerModel product;
 
-  const StatisticsSellerPage({required this.product, Key? key}) : super(key: key);
+  const StatisticsSellerPage({required this.product, super.key});
 
   @override
   State<StatisticsSellerPage> createState() => _StatisticsSellerPageState();
@@ -267,11 +267,8 @@ class _StatisticsSellerPageState extends State<StatisticsSellerPage> {
     int initialSelectedMonth,
     Function(int) onMonthSelected,
   ) {
-    // Текущий месяц (индекс с 0)
-    final int currentMonthIndex = DateTime.now().month - 1;
-
     final FixedExtentScrollController scrollController = FixedExtentScrollController(
-      initialItem: initialSelectedMonth ?? currentMonthIndex,
+      initialItem: initialSelectedMonth,
     );
 
     showModalBottomSheet(
@@ -341,7 +338,7 @@ class _StatisticsSellerPageState extends State<StatisticsSellerPage> {
                                 borderRadius: BorderRadius.circular(8),
                               ),
                               child: Text(
-                                '$month',
+                                month,
                                 style: AppTextStyles.size20Weight500.copyWith(
                                   color: isSelected ? AppColors.kGray900 : Color(0xff8E8E93),
                                 ),
@@ -495,12 +492,13 @@ class StatisticWidgetContainer extends StatelessWidget {
   final String text;
   final String subText;
   final String url;
+  
   const StatisticWidgetContainer({
     required this.text,
     required this.subText,
     required this.url,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -510,7 +508,7 @@ class StatisticWidgetContainer extends StatelessWidget {
       height: 92,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16),
-        color: AppColors.mainPurpleColor.withOpacity(0.1),
+        color: AppColors.mainPurpleColor.withValues(alpha: .1),
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,

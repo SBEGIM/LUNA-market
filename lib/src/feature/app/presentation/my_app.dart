@@ -54,7 +54,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:get/route_manager.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:haji_market/src/feature/seller/app/bloc/admin_navigation_cubit/admin_navigation_cubit.dart';
 import 'package:haji_market/src/feature/seller/auth/bloc/login_seller_cubit.dart';
 import 'package:haji_market/src/feature/seller/auth/data/repository/login_seller_repository.dart';
 import 'package:haji_market/src/feature/seller/order/bloc/basket_seller_cubit.dart';
@@ -203,7 +202,6 @@ class MultiBlocWrapper extends StatelessWidget {
       providers: [
         BlocProvider(create: (_) => AppBloc()),
         BlocProvider(create: (_) => NavigationCubit()),
-        BlocProvider(create: (_) => AdminNavigationCubit()),
         BlocProvider(
           create: (context) => LoginCubit(authRepository: context.repository.authRepository),
         ),
