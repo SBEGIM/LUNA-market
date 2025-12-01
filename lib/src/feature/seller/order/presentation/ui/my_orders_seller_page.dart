@@ -4,12 +4,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/feature/seller/order/bloc/basket_seller_cubit.dart';
 import 'package:haji_market/src/feature/seller/order/bloc/basket_seller_state.dart';
-import 'package:haji_market/src/feature/seller/order/presentation/widgets/all_orders_seller_page.dart';
-import 'package:haji_market/src/feature/seller/order/presentation/widgets/done_order_seller_page.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/feature/seller/order/presentation/widgets/my_order_card_widget.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import '../../../../app/widgets/custom_switch_button.dart';
 
 @RoutePage()
 class MyOrdersSellerPage extends StatefulWidget {
@@ -85,7 +82,7 @@ class _MyOrdersSellerPageState extends State<MyOrdersSellerPage> {
                   color: Color(0xffF7F7F7),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.05),
+                      color: Colors.black.withValues(alpha: .05),
                       blurRadius: 8,
                       offset: const Offset(0, -2),
                     ),

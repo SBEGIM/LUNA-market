@@ -2,12 +2,10 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:get/route_manager.dart';
 import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/feature/app/router/app_router.dart';
 import 'package:haji_market/src/feature/app/widgets/app_snack_bar.dart';
 import 'package:haji_market/src/feature/bloger/shop/bloc/blogger_shop_products_state.dart';
-import 'package:haji_market/src/feature/bloger/shop/presentation/ui/upload_product_video.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../../../../../core/common/constants.dart';
 import '../../bloc/blogger_shop_products_cubit.dart';
@@ -15,9 +13,9 @@ import 'blogger_products_card_widget.dart';
 
 @RoutePage()
 class ShopProductsBloggerPage extends StatefulWidget {
-  String title;
-  int id;
-  ShopProductsBloggerPage({required this.title, required this.id, Key? key}) : super(key: key);
+  final String title;
+  final int id;
+  const ShopProductsBloggerPage({required this.title, required this.id, Key? key}) : super(key: key);
 
   @override
   State<ShopProductsBloggerPage> createState() => _ShopProductsBloggerPageState();
@@ -37,9 +35,7 @@ class _ShopProductsBloggerPageState extends State<ShopProductsBloggerPage> {
 
   @override
   Widget build(BuildContext context) {
-    String? title;
     final TextEditingController searchController = TextEditingController();
-    bool visible = true;
 
     RefreshController refreshController = RefreshController();
 
@@ -50,8 +46,6 @@ class _ShopProductsBloggerPageState extends State<ShopProductsBloggerPage> {
       await Future.delayed(const Duration(milliseconds: 2000));
       refreshController.loadComplete();
     }
-
-    final TextEditingController nameController = TextEditingController();
 
     return Scaffold(
       backgroundColor: AppColors.kWhite,

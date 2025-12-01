@@ -6,10 +6,10 @@ import '../../../../../core/common/constants.dart';
 import '../../../auth/bloc/edit_blogger_cubit.dart';
 
 class BloggerCardPage extends StatefulWidget {
-  String check;
-  String card;
+  final String check;
+  final String card;
 
-  BloggerCardPage({required this.check, required this.card, Key? key}) : super(key: key);
+  const BloggerCardPage({required this.check, required this.card, super.key});
 
   @override
   State<BloggerCardPage> createState() => _BloggerCardPageState();
@@ -103,9 +103,7 @@ class _BloggerCardPageState extends State<BloggerCardPage> {
             );
             await edit.edit(context, dto);
 
-            //Get.to(const BloggerNewCardPage());
-            // GetStorage().write('blogger_invoice', checkController.text);
-
+            if (!context.mounted) return;
             Navigator.pop(context);
           },
           child: Container(

@@ -1,8 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/route_manager.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/feature/app/bloc/app_bloc.dart';
 import 'package:haji_market/src/feature/app/router/app_router.dart';
@@ -25,7 +23,6 @@ class _PaymentWebviewPageState extends State<PaymentWebviewPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _webViewController = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
@@ -46,7 +43,7 @@ class _PaymentWebviewPageState extends State<PaymentWebviewPage> {
           },
         ),
       )
-      ..loadRequest(Uri.parse('${widget.url}'));
+      ..loadRequest(Uri.parse(widget.url));
     super.initState();
   }
 

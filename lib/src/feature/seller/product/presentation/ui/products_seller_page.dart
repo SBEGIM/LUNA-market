@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -30,9 +28,8 @@ class MyProductsAdminPage extends StatefulWidget implements AutoRouteWrapper {
 }
 
 class _MyProductsAdminPageState extends State<MyProductsAdminPage> {
-  @override
-  RefreshController refreshController = RefreshController();
-  TextEditingController nameController = TextEditingController();
+  final RefreshController refreshController = RefreshController();
+  final TextEditingController nameController = TextEditingController();
 
   Future<void> onLoading() async {
     await BlocProvider.of<ProductSellerCubit>(context).productsPaginate('');
@@ -166,8 +163,8 @@ class _MyProductsAdminPageState extends State<MyProductsAdminPage> {
                     ),
                   );
                 },
-                splashColor: AppColors.mainPurpleColor.withOpacity(0.2),
-                highlightColor: AppColors.mainPurpleColor.withOpacity(0.1),
+                splashColor: AppColors.mainPurpleColor.withValues(alpha: .2),
+                highlightColor: AppColors.mainPurpleColor.withValues(alpha: .1),
                 child: Container(
                   height: 52,
                   alignment: Alignment.center,
@@ -176,7 +173,7 @@ class _MyProductsAdminPageState extends State<MyProductsAdminPage> {
                     color: AppColors.mainPurpleColor,
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.1),
+                        color: Colors.black.withValues(alpha: .1),
                         blurRadius: 6,
                         offset: const Offset(0, 2),
                       ),

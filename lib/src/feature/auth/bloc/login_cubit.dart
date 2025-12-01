@@ -1,65 +1,44 @@
-import 'dart:developer';
-
-import 'package:bloc/bloc.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:haji_market/src/feature/app/widgets/app_snack_bar.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:haji_market/src/core/rest_client/src/exception/rest_client_exception.dart';
 import 'package:haji_market/src/feature/auth/bloc/login_state.dart';
-
-import '../data/repository/login_repository.dart';
+import '../data/auth_repository.dart';
 
 class LoginCubit extends Cubit<LoginState> {
-  final LoginRepository loginRepository;
+  LoginCubit({required IAuthRepository authRepository})
+    : _authRepository = authRepository,
+      super(const LoginStateInitial());
 
-  LoginCubit({required this.loginRepository}) : super(InitState());
+  final IAuthRepository _authRepository;
 
-  Future<void> login(BuildContext context, String phone, String password) async {
+  Future<void> login(String phone, String password) async {
     try {
-      emit(LoadingState());
-      final data = await loginRepository.login(phone, password);
+      emit(const LoginStateLoading(action: LoginAction.login));
+      await _authRepository.login(phone: phone, password: password);
 
-      if (data == 200) {
-        emit(LoadedState());
-        emit(InitState());
-      }
-      if (data == 400) {
-        emit(InitState());
-        AppSnackBar.show(context, 'Неверный телефон или пароль', type: AppSnackType.error);
-      }
-      if (data == 500) {
-        emit(InitState());
-        Get.snackbar('500', 'Ошибка сервера', backgroundColor: Colors.redAccent);
-      }
+      if (isClosed) return;
+      emit(const LoginStateSuccess(action: LoginAction.login));
+    } on RestClientException catch (e) {
+      if (isClosed) return;
+      emit(LoginStateError(message: e.message, action: LoginAction.login));
     } catch (e) {
-      log(e.toString());
-      // emit(ErrorState(message: 'Ошибка'));
+      if (isClosed) return;
+      emit(LoginStateError(message: e.toString(), action: LoginAction.login));
     }
   }
 
   Future<void> lateAuth() async {
     try {
-      emit(LoadingState());
-      final data = await loginRepository.lateAuth();
+      emit(const LoginStateLoading(action: LoginAction.lateAuth));
+      await _authRepository.lateAuth();
 
-      if (data == 200) {
-        emit(LoadedState());
-        emit(InitState());
-      }
-      if (data == 400) {
-        emit(InitState());
-        Get.snackbar(
-          'Ошибка запроса!',
-          'Неверный телефон или пароль',
-          backgroundColor: Colors.redAccent,
-        );
-      }
-      if (data == 500) {
-        emit(InitState());
-        Get.snackbar('500', 'Ошибка сервера', backgroundColor: Colors.redAccent);
-      }
+      if (isClosed) return;
+      emit(const LoginStateSuccess(action: LoginAction.lateAuth));
+    } on RestClientException catch (e) {
+      if (isClosed) return;
+      emit(LoginStateError(message: e.message, action: LoginAction.lateAuth));
     } catch (e) {
-      log(e.toString());
-      // emit(ErrorState(message: 'Ошибка'));
+      if (isClosed) return;
+      emit(LoginStateError(message: e.toString(), action: LoginAction.lateAuth));
     }
   }
 
@@ -81,55 +60,81 @@ class LoginCubit extends Cubit<LoginState> {
     String email,
   ) async {
     try {
-      emit(LoadingState());
-      await loginRepository.edit(
-        firstname,
-        lastName,
-        surName,
-        phone,
-        avatar,
-        gender,
-        birthday,
-        country,
-        city,
-        street,
-        home,
-        porch,
-        floor,
-        room,
-        email,
+      emit(const LoginStateLoading(action: LoginAction.editProfile));
+      await _authRepository.editProfile(
+        firstName: firstname,
+        lastName: lastName,
+        surName: surName,
+        phone: phone,
+        avatarPath: avatar,
+        gender: gender,
+        birthday: birthday,
+        country: country,
+        city: city,
+        street: street,
+        home: home,
+        porch: porch,
+        floor: floor,
+        room: room,
+        email: email,
       );
+
+      if (isClosed) return;
+      emit(const LoginStateSuccess(action: LoginAction.editProfile));
+    } on RestClientException catch (e) {
+      if (isClosed) return;
+      emit(LoginStateError(message: e.message, action: LoginAction.editProfile));
     } catch (e) {
-      log(e.toString());
-      emit(ErrorState(message: e.toString()));
+      if (isClosed) return;
+      emit(LoginStateError(message: e.toString(), action: LoginAction.editProfile));
     }
   }
 
   Future<void> editPush(int pushStatus) async {
     try {
-      emit(LoadingState());
-      await loginRepository.editPush(pushStatus);
+      emit(const LoginStateLoading(action: LoginAction.editPushSettings));
+      await _authRepository.editPush(pushStatus: pushStatus);
+
+      if (isClosed) return;
+      emit(const LoginStateSuccess(action: LoginAction.editPushSettings));
+    } on RestClientException catch (e) {
+      if (isClosed) return;
+      emit(LoginStateError(message: e.message, action: LoginAction.editPushSettings));
     } catch (e) {
-      log(e.toString());
-      emit(ErrorState(message: e.toString()));
+      if (isClosed) return;
+      emit(LoginStateError(message: e.toString(), action: LoginAction.editPushSettings));
     }
   }
 
-  Future<void> cityCode(code) async {
+  Future<void> cityCode(dynamic code) async {
     try {
-      await loginRepository.code(code);
+      emit(const LoginStateLoading(action: LoginAction.updateCityCode));
+      await _authRepository.updateCityCode(code: code.toString());
+
+      if (isClosed) return;
+      emit(const LoginStateSuccess(action: LoginAction.updateCityCode));
+    } on RestClientException catch (e) {
+      if (isClosed) return;
+      emit(LoginStateError(message: e.message, action: LoginAction.updateCityCode));
     } catch (e) {
-      log(e.toString());
-      // emit(ErrorState(message: 'Ошибка'));
+      if (isClosed) return;
+      emit(LoginStateError(message: e.toString(), action: LoginAction.updateCityCode));
     }
   }
 
   Future<void> delete() async {
     try {
-      await loginRepository.delete();
+      emit(const LoginStateLoading(action: LoginAction.deleteAccount));
+      await _authRepository.deleteAccount();
+
+      if (isClosed) return;
+      emit(const LoginStateSuccess(action: LoginAction.deleteAccount));
+    } on RestClientException catch (e) {
+      if (isClosed) return;
+      emit(LoginStateError(message: e.message, action: LoginAction.deleteAccount));
     } catch (e) {
-      log(e.toString());
-      // emit(ErrorState(message: 'Ошибка'));
+      if (isClosed) return;
+      emit(LoginStateError(message: e.toString(), action: LoginAction.deleteAccount));
     }
   }
 }

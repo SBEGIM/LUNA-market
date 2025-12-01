@@ -3,14 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/feature/bloger/auth/presentation/ui/blog_auth_page.dart';
 import 'package:haji_market/src/core/common/constants.dart';
-import 'package:haji_market/src/feature/app/widgets/custom_back_button.dart';
-import 'package:haji_market/src/feature/app/widgets/custom_switch_button.dart';
-import '../../../coop_request/presentation/ui/blogger_register_page.dart';
 
 @RoutePage()
 class BlogAuthRegisterPage extends StatefulWidget {
-  final bool? BackButton;
-  const BlogAuthRegisterPage({this.BackButton, Key? key}) : super(key: key);
+  const BlogAuthRegisterPage({super.key});
 
   @override
   State<BlogAuthRegisterPage> createState() => _BlogAuthRegisterPageState();

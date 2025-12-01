@@ -5,7 +5,6 @@ import 'package:get/route_manager.dart';
 import 'package:get_storage/get_storage.dart';
 
 import 'package:haji_market/src/feature/drawer/bloc/city_cubit.dart';
-import 'package:haji_market/src/feature/drawer/bloc/city_state.dart';
 import '../../../seller/profile/data/bloc/profile_edit_admin_cubit.dart';
 import '../../../../core/common/constants.dart';
 import '../../../auth/bloc/login_cubit.dart';
@@ -26,7 +25,7 @@ Future<dynamic> showAlertCityWidget(BuildContext context, bool shop) async {
           return GestureDetector(
             onTap: () => FocusScope.of(context).unfocus(),
             child: Container(
-              color: Colors.black.withOpacity(0.4), // полупрозрачный фон
+              color: Colors.black.withValues(alpha: .4), // полупрозрачный фон
               child: SafeArea(
                 top: false,
                 child: Align(
@@ -89,11 +88,11 @@ Future<dynamic> showAlertCityWidget(BuildContext context, bool shop) async {
                               child: BlocConsumer<CityCubit, CityState>(
                                 listener: (context, state) {},
                                 builder: (context, state) {
-                                  if (state is LoadedState) {
+                                  if (state is CityStateLoaded) {
                                     return ListView.separated(
                                       padding: const EdgeInsets.symmetric(vertical: 8),
                                       itemCount: state.city.length,
-                                      separatorBuilder: (_, __) =>
+                                      separatorBuilder: (_, _) =>
                                           const Divider(height: 1, color: AppColors.kGray2),
                                       itemBuilder: (context, index) {
                                         final item = state.city[index];
@@ -104,7 +103,7 @@ Future<dynamic> showAlertCityWidget(BuildContext context, bool shop) async {
                                           onTap: () {
                                             setState(() {
                                               selectedIndex = index;
-                                              cityCode = item.code as int?;
+                                              cityCode = item.code;
                                               cityName = item.city;
                                             });
                                           },
@@ -148,7 +147,7 @@ Future<dynamic> showAlertCityWidget(BuildContext context, bool shop) async {
                                         );
                                       },
                                     );
-                                  } else if (state is NodataState) {
+                                  } else if (state is CityStateNoData) {
                                     return Center(
                                       child: SingleChildScrollView(
                                         padding: const EdgeInsets.all(24),

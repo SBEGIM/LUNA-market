@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:haji_market/src/core/common/constants.dart';
-import 'package:haji_market/src/feature/home/data/model/cat_model.dart';
 import 'package:haji_market/src/feature/home/data/model/characteristic_model.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 

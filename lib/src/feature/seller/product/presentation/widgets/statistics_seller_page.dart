@@ -1,9 +1,6 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:haji_market/src/feature/auth/presentation/widgets/default_button.dart';
-import 'package:haji_market/src/feature/product/presentation/widgets/chip_date_widget.dart';
 import 'package:haji_market/src/feature/seller/product/bloc/statistic_product_seller_state.dart';
 import '../../../../../core/common/constants.dart';
 import '../../../../../core/constant/generated/assets.gen.dart';

@@ -1,7 +1,6 @@
 import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:get/route_manager.dart';
 import 'package:haji_market/src/feature/app/widgets/app_snack_bar.dart';
 import 'package:haji_market/src/feature/drawer/bloc/review_state.dart';
 import 'package:haji_market/src/feature/drawer/data/models/review_product_model.dart';
@@ -13,12 +12,10 @@ class ReviewCubit extends Cubit<ReviewState> {
 
   ReviewCubit({required this.reviewProductRepository}) : super(InitState());
 
-  Future<void> reviews(String product_id) async {
+  Future<void> reviews(String productId) async {
     try {
       emit(LoadingState());
-      final List<ReviewProductModel> data = await reviewProductRepository.productReviews(
-        product_id,
-      );
+      final List<ReviewProductModel> data = await reviewProductRepository.productReviews(productId);
 
       emit(LoadedState(data));
     } catch (e) {

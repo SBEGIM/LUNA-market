@@ -5,8 +5,8 @@ import 'package:flutter_masked_text2/flutter_masked_text2.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/feature/app/router/app_router.dart';
-import 'package:haji_market/src/feature/app/widgets/app_snack_bar.dart';
 import 'package:haji_market/src/feature/app/widgets/custom_back_button.dart';
+import 'package:haji_market/src/feature/app/widgets/app_snack_bar.dart';
 import 'package:haji_market/src/feature/auth/bloc/sms_state.dart';
 import 'package:haji_market/src/feature/auth/presentation/widgets/default_button.dart';
 import 'package:haji_market/src/feature/seller/auth/data/DTO/contry_seller_dto.dart';
@@ -51,7 +51,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
       ),
       body: BlocConsumer<SmsCubit, SmsState>(
         listener: (context, state) {
-          if (state is LoadedState) {
+          if (state is SmsStateSuccess && state.action == SmsAction.passwordSend) {
             context.pushRoute(
               LoginForgotPasswordRoute(
                 countryCode: countrySellerDto!.code,
@@ -59,125 +59,134 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
               ),
             );
           }
+
+          if (state is SmsStateError && state.action == SmsAction.passwordSend) {
+            AppSnackBar.show(context, state.message, type: AppSnackType.error);
+          }
         },
         builder: (context, state) {
-          if (state is InitState) {
-            return Padding(
-              padding: const EdgeInsets.only(left: 16.0, right: 16, top: 16, bottom: 22),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('Введите номер телефона', style: AppTextStyles.size28Weight700),
-                  SizedBox(height: 23),
-                  Text(
-                    'Номер телефона',
-                    textAlign: TextAlign.start,
-                    style: AppTextStyles.size13Weight500.copyWith(color: Color(0xFF636366)),
-                  ),
-                  SizedBox(height: 10),
-                  Row(
-                    children: [
-                      InkWell(
-                        onTap: () {
-                          showSellerLoginPhone(
-                            context,
-                            countryCall: (dto) {
-                              countrySellerDto = dto;
-                              setState(() {});
-                            },
-                          );
-                        },
-                        child: Shimmer(
+          final bool isLoading = state is SmsStateLoading && state.action == SmsAction.passwordSend;
+
+          return Stack(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 16.0, right: 16, top: 16, bottom: 22),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('Введите номер телефона', style: AppTextStyles.size28Weight700),
+                    SizedBox(height: 23),
+                    Text(
+                      'Номер телефона',
+                      textAlign: TextAlign.start,
+                      style: AppTextStyles.size13Weight500.copyWith(color: Color(0xFF636366)),
+                    ),
+                    SizedBox(height: 10),
+                    Row(
+                      children: [
+                        InkWell(
+                          onTap: () {
+                            showSellerLoginPhone(
+                              context,
+                              countryCall: (dto) {
+                                countrySellerDto = dto;
+                                setState(() {});
+                              },
+                            );
+                          },
+                          child: Shimmer(
+                            child: Container(
+                              height: 52,
+                              width: 83,
+                              padding: EdgeInsets.symmetric(horizontal: 15),
+                              decoration: BoxDecoration(
+                                color: AppColors.kGray2,
+                                borderRadius: BorderRadius.circular(16),
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Image.asset(countrySellerDto!.flagPath, width: 24, height: 24),
+                                  SizedBox(width: 8),
+                                  Text(
+                                    '${countrySellerDto?.code}',
+                                    style: AppTextStyles.size16Weight400,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(width: 6),
+                        // Поле ввода
+                        Flexible(
                           child: Container(
                             height: 52,
-                            width: 83,
-                            padding: EdgeInsets.symmetric(horizontal: 15),
+                            padding: EdgeInsets.symmetric(horizontal: 16),
                             decoration: BoxDecoration(
                               color: AppColors.kGray2,
                               borderRadius: BorderRadius.circular(16),
                             ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Image.asset(countrySellerDto!.flagPath, width: 24, height: 24),
-                                SizedBox(width: 8),
-                                Text(
-                                  '${countrySellerDto?.code}',
-                                  style: AppTextStyles.size16Weight400,
+                            alignment: Alignment.center,
+                            child: TextField(
+                              onChanged: (value) {
+                                setState(() {});
+                              },
+                              controller: phoneControllerAuth,
+                              keyboardType: TextInputType.phone,
+                              decoration: InputDecoration(
+                                hintText: 'Введите номер телефона',
+                                hintStyle: AppTextStyles.size16Weight400.copyWith(
+                                  color: Color(0xFF8E8E93),
                                 ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(width: 6),
-                      // Поле ввода
-                      Flexible(
-                        child: Container(
-                          height: 52,
-                          padding: EdgeInsets.symmetric(horizontal: 16),
-                          decoration: BoxDecoration(
-                            color: AppColors.kGray2,
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                          alignment: Alignment.center,
-                          child: TextField(
-                            onChanged: (value) {
-                              setState(() {});
-                            },
-                            controller: phoneControllerAuth,
-                            keyboardType: TextInputType.phone,
-                            decoration: InputDecoration(
-                              hintText: 'Введите номер телефона',
-                              hintStyle: AppTextStyles.size16Weight400.copyWith(
-                                color: Color(0xFF8E8E93),
+                                border: InputBorder.none,
                               ),
-                              border: InputBorder.none,
                             ),
                           ),
                         ),
+                      ],
+                    ),
+                    const Spacer(),
+                    Padding(
+                      padding: EdgeInsets.only(
+                        bottom: MediaQuery.of(context).viewInsets.bottom * 0.001,
                       ),
-                    ],
-                  ),
-                  const Spacer(),
-                  Padding(
-                    padding: EdgeInsets.only(
-                      bottom: MediaQuery.of(context).viewInsets.bottom * 0.001,
+                      child: DefaultButton(
+                        backgroundColor: phoneControllerAuth.text.length >= 15
+                            ? AppColors.mainPurpleColor
+                            : AppColors.mainBackgroundPurpleColor,
+                        text: 'Получить код',
+                        press: () {
+                          if (isLoading) return;
+                          if (phoneControllerAuth.text.length >= 15) {
+                            final sms = BlocProvider.of<SmsCubit>(context);
+                            sms.resetSend(phoneControllerAuth.text);
+                          } else {
+                            AppSnackBar.show(
+                              context,
+                              'Номер телефона пустой',
+                              type: AppSnackType.error,
+                            );
+                          }
+                        },
+                        color: Colors.white,
+                        width: double.infinity,
+                      ),
                     ),
-                    child: DefaultButton(
-                      backgroundColor: phoneControllerAuth.text.length >= 15
-                          ? AppColors.mainPurpleColor
-                          : AppColors.mainBackgroundPurpleColor,
-                      text: 'Получить код',
-                      press: () {
-                        if (phoneControllerAuth.text.length >= 15) {
-                          final sms = BlocProvider.of<SmsCubit>(context);
-                          sms.resetSend(context, phoneControllerAuth.text);
-                        } else {
-                          AppSnackBar.show(
-                            context,
-                            'Номер телефона пустой',
-                            type: AppSnackType.error,
-                          );
-                        }
-                      },
-                      color: Colors.white,
-                      width: double.infinity,
-                    ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            );
-          }
-          if (state is ErrorState) {
-            return Center(
-              child: Text(state.message, style: const TextStyle(color: Colors.redAccent)),
-            );
-          } else {
-            return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
-          }
+              if (isLoading)
+                const Positioned.fill(
+                  child: ColoredBox(
+                    color: Colors.white70,
+                    child: Center(child: CircularProgressIndicator(color: Colors.indigoAccent)),
+                  ),
+                ),
+            ],
+          );
         },
       ),
     );

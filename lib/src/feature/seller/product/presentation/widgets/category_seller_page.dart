@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:haji_market/src/feature/app/router/app_router.dart';
-import 'package:haji_market/src/feature/seller/product/presentation/ui/create_product_seller_page.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/feature/drawer/bloc/sub_cats_cubit.dart' as subCatCubit;
 import 'package:haji_market/src/feature/drawer/bloc/sub_cats_state.dart' as subCatState;

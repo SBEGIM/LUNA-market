@@ -5,12 +5,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/feature/drawer/bloc/shops_drawer_cubit.dart' as shopsDrawerCubit;
-import 'package:haji_market/src/feature/drawer/bloc/shops_drawer_state.dart' as shopsDrawerState;
 import 'package:haji_market/src/feature/drawer/bloc/sub_cats_cubit.dart' as subCatCubit;
 import 'package:haji_market/src/feature/drawer/bloc/sub_cats_state.dart' as subCatState;
 import 'package:haji_market/src/feature/drawer/presentation/widgets/filter_page.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:haji_market/src/feature/product/cubit/recently_watched_product_cubit.dart';
 import 'package:haji_market/src/feature/product/presentation/widgets/product_recommend_widget.dart';
 import 'package:haji_market/src/feature/product/presentation/widgets/show_filtr_price_widget.dart';
 import 'package:haji_market/src/feature/product/presentation/widgets/show_list_brands_widget.dart';
@@ -18,7 +16,6 @@ import 'package:haji_market/src/feature/product/provider/filter_provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../../../home/data/model/cat_model.dart';
 import '../../../drawer/bloc/brand_cubit.dart' as brandCubit;
-import 'package:haji_market/src/feature/drawer/bloc/brand_state.dart' as brandState;
 import '../../cubit/product_ad_cubit.dart';
 
 @RoutePage()

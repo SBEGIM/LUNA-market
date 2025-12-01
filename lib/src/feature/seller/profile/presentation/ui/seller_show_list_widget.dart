@@ -6,7 +6,6 @@ import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/feature/app/bloc/app_bloc.dart';
 import 'package:haji_market/src/feature/bloger/profile/presentation/widgets/show_module_profile_widget.dart';
 import 'package:haji_market/src/feature/drawer/presentation/widgets/show_alert_account_widget.dart';
-import 'package:haji_market/src/feature/tape/presentation/widgets/show_alert_report_widget.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 void showSellerSettingOptions(BuildContext context, String title, Function callback) {
@@ -107,6 +106,8 @@ void showSellerSettingOptions(BuildContext context, String title, Function callb
                             primaryColor: Colors.red,
                           );
 
+                          if (!context.mounted) return;
+
                           if (ok == true) {
                             Navigator.of(context).pop();
                             GetStorage().remove('seller_token');
@@ -133,6 +134,9 @@ void showSellerSettingOptions(BuildContext context, String title, Function callb
                             primaryText: 'Да',
                             primaryColor: Colors.red,
                           );
+
+                          if (!context.mounted) return;
+
                           if (ok == true) {
                             Navigator.of(context).pop();
                             GetStorage().remove('seller_token');
@@ -208,7 +212,7 @@ Widget buildSettingItem({
                       : Row(
                           children: [
                             Text(
-                              '$text',
+                              text,
                               style: AppTextStyles.size16Weight400.copyWith(
                                 color: widgetColor ?? AppColors.kGray300,
                               ),

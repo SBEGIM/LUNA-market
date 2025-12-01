@@ -10,7 +10,7 @@ import 'package:haji_market/src/feature/auth/presentation/ui/auth_page.dart';
 class ViewAuthRegisterPage extends StatefulWidget {
   final bool? backButton;
 
-  const ViewAuthRegisterPage({this.backButton, Key? key}) : super(key: key);
+  const ViewAuthRegisterPage({this.backButton, super.key});
 
   @override
   State<ViewAuthRegisterPage> createState() => _ViewAuthRegisterPageState();

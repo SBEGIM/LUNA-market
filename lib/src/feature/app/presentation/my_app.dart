@@ -38,14 +38,12 @@ import 'package:haji_market/src/feature/bloger/tape/data/repository/tape_blogger
 import 'package:haji_market/src/feature/drawer/bloc/bonus_cubit.dart';
 import 'package:haji_market/src/feature/drawer/bloc/order_cubit.dart';
 import 'package:haji_market/src/feature/product/cubit/product_ad_cubit.dart';
-import 'package:haji_market/src/feature/drawer/bloc/profit_cubit.dart';
 import 'package:haji_market/src/feature/drawer/bloc/respublic_cubit.dart';
 import 'package:haji_market/src/feature/product/data/model/product_model.dart';
 import 'package:haji_market/src/feature/drawer/data/repository/city_repo.dart';
 import 'package:haji_market/src/feature/drawer/data/repository/country_repo.dart';
 import 'package:haji_market/src/feature/drawer/data/repository/address_repo.dart';
 import 'package:haji_market/src/feature/drawer/data/repository/bonus_repo.dart';
-import 'package:haji_market/src/feature/drawer/data/repository/profit_repo.dart';
 import 'package:haji_market/src/feature/drawer/data/repository/respublic_repo.dart';
 import 'package:haji_market/src/feature/home/bloc/meta_cubit.dart';
 import 'package:haji_market/src/feature/home/bloc/partner_cubit.dart';
@@ -121,8 +119,7 @@ import '../../bloger/profile/data/repository/profile_month_statics_blogger_repo.
 import '../../bloger/profile/data/repository/profile_statics_blogger_repo.dart';
 import '../../auth/bloc/register_cubit.dart';
 import '../../auth/bloc/sms_cubit.dart';
-import '../../auth/data/repository/login_repository.dart';
-import '../../auth/data/repository/register_repo.dart';
+
 import '../../chat/data/cubit/message_cubit.dart';
 import '../../basket/bloc/basket_cubit.dart';
 import '../../drawer/bloc/brand_cubit.dart';
@@ -184,73 +181,8 @@ class _MyAppState extends State<MyApp> {
               home: MediaQuery.withNoTextScaling(
                 child: AppRouterBuilder(
                   createRouter: (context) => AppRouter(),
-                  builder: (context, parser, delegate) => MaterialApp.router(
-                    // builder: (context, child) => SizedBox(),
-                    // backButtonDispatcher:RootBackButtonDispatcher(),
-                    // routeInformationProvider: appRouter.routeInfoProvider(),
-                    // routerConfig: appRouter.config(
-                    //   deepLinkBuilder: (deepLink) async {
-                    //     return DeepLink.single(DetailCardProductRoute(product: ProductModel()));
-                    //     String bloggerId = Uri.parse(deepLink.path.toString()).queryParameters['blogger_id'].toString();
-                    //     String productId = Uri.parse(deepLink.path.toString()).queryParameters['product_id'].toString();
-
-                    //     String shopName = Uri.parse(deepLink.path.toString()).queryParameters['shop_name'].toString();
-                    //     String index = Uri.parse(deepLink.path.toString()).queryParameters['index'].toString();
-                    //     print(deepLink.path,);
-                    //     print(shopName,);
-                    //     print(index,);
-                    //     // if (productId != '' && productId != 'null') {
-                    //     //   print('wwww Success product');
-                    //     //   GetStorage().write('deep_blogger_id', bloggerId);
-                    //     //   GetStorage().write('deep_product_id', productId);
-                    //     //   const baseUrl = 'https://lunamarket.ru/api';
-
-                    //     //   final String? authToken = GetStorage().read('token');
-
-                    //     //   final response = await http.get(
-                    //     //     Uri.parse(
-                    //     //       '$baseUrl/shop/show?id=$productId',
-                    //     //     ),
-                    //     //     headers: {"Authorization": "Bearer $authToken"},
-                    //     //   );
-
-                    //     //   if (response.statusCode == 200) {
-                    //     //     final data = jsonDecode(response.body);
-
-                    //     //     product = ProductModel.fromJson(data['data']);
-                    //     //     return DeepLink([DetailCardProductRoute(product: product!)]);
-                    //     //     // Get.to(() => DetailCardProductPage(product: product!));
-
-                    //     //     // Get.snackbar('Промокод активирован',
-                    //     //     //     'покупайте товары и получайте скидку от Блогера',
-                    //     //     //     backgroundColor: Colors.blueAccent);
-                    //     //   } else {
-                    //     //     // Get.snackbar('Ошибка промокод', 'продукт или блогер не найден',
-                    //     //     //     backgroundColor: Colors.redAccent);
-                    //     //   }
-                    //     // }
-                    //     if (shopName != '' && shopName != 'null') {
-
-                    //       return const DeepLink([LauncherRoute(children: [BasketRoute()])]);
-                    //       // return DeepLink([
-                    //       //   LauncherRoute(children: [
-                    //       //     BaseTapeTab(children: [DetailTapeCardRoute(index: int.parse(index), shopName: shopName)])
-                    //       //   ])
-                    //       // ]);
-                    //       // BlocProvider.of<NavigationCubit>(context)
-                    //       //     .emit(DetailTapeState(int.parse(index), shopName));
-                    //     } else {
-                    //       return const DeepLink([LauncherRoute(children: [BasketRoute()])]);
-                    //     }
-                    //   },
-                    // ),
-                    routeInformationParser: parser,
-                    routerDelegate: delegate,
-                    // onGenerateTitle: (context) => context.localized.appTitle,
-                    // theme: ThemeData.light(),
-                    // darkTheme: ThemeData.dark(),
-                    // themeMode: themeMode,
-                  ),
+                  builder: (context, parser, delegate) =>
+                      MaterialApp.router(routeInformationParser: parser, routerDelegate: delegate),
                 ),
               ),
             ),
@@ -272,12 +204,18 @@ class MultiBlocWrapper extends StatelessWidget {
         BlocProvider(create: (_) => AppBloc()),
         BlocProvider(create: (_) => NavigationCubit()),
         BlocProvider(create: (_) => AdminNavigationCubit()),
-        BlocProvider(create: (_) => LoginCubit(loginRepository: LoginRepository())),
+        BlocProvider(
+          create: (context) => LoginCubit(authRepository: context.repository.authRepository),
+        ),
         BlocProvider(
           create: (_) => LoginBloggerCubit(loginBloggerRepository: LoginBloggerRepository()),
         ),
-        BlocProvider(create: (_) => SmsCubit(registerRepository: RegisterRepository())),
-        BlocProvider(create: (_) => RegisterCubit(registerRepository: RegisterRepository())),
+        BlocProvider(
+          create: (context) => SmsCubit(authRepository: context.repository.authRepository),
+        ),
+        BlocProvider(
+          create: (context) => RegisterCubit(authRepository: context.repository.authRepository),
+        ),
         BlocProvider(create: (_) => CatsCubit(catsRepository: context.repository.catsRepository)),
         BlocProvider(create: (_) => SubCatsCubit(subCatRepository: SubCatsRepository())),
         BlocProvider(
@@ -339,11 +277,6 @@ class MultiBlocWrapper extends StatelessWidget {
             bloggerShopProductsRepository: BloggerShopProductsRepository(),
           ),
         ),
-
-        // BlocProvider(
-        //     create: (_) => BloggerVideoProductsCubit(
-        //         bloggerShopProductsRepository:
-        //             BloggerVideoProductsRepository())),
         BlocProvider(
           create: (_) => BloggerNotificationCubit(
             bloggerNotificationRepository: BloggerNotificationRepository(),
@@ -404,7 +337,6 @@ class MultiBlocWrapper extends StatelessWidget {
           create: (_) =>
               RecentlyWatchedProductCubit(productRepository: RecentlyWatchedRepository()),
         ),
-        BlocProvider(create: (_) => ProfitCubit(profitRepository: ProfitRepository())),
         BlocProvider(create: (_) => BonusCubit(bonusRepository: BonusRepository())),
         BlocProvider(create: (_) => AddressCubit(addressRepository: AddressRepository())),
         BlocProvider(create: (_) => TapeBloggerCubit(tapeRepository: TapeBloggerRepository())),

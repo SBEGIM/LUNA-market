@@ -5,8 +5,6 @@ import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/feature/app/bloc/app_bloc.dart';
 import 'package:haji_market/src/feature/app/router/app_router.dart';
-import 'package:haji_market/src/feature/bloger/tape/bloc/tape_blogger_cubit.dart';
-import 'package:haji_market/src/feature/seller/product/bloc/product_seller_cubit.dart';
 
 @RoutePage()
 class SuccessSellerProductStorePage extends StatefulWidget {
@@ -52,13 +50,6 @@ class _SuccessSellerProductStorePageState extends State<SuccessSellerProductStor
             );
 
             router.replaceAll([const LauncherRoute()]);
-
-            // Future.microtask(() {
-            //   final productCubit = context.read<ProductSellerCubit>();
-            //   productCubit
-            //     ..resetState()
-            //     ..products('');
-            // });
           },
           child: SizedBox(
             height: 100,

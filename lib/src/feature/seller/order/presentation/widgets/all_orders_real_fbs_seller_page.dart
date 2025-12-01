@@ -9,8 +9,8 @@ import '../../bloc/basket_seller_cubit.dart';
 import '../../bloc/basket_seller_state.dart';
 
 class AllOrdersRealFbsSellerPage extends StatefulWidget {
-  String fulfillment;
-  AllOrdersRealFbsSellerPage({required this.fulfillment, Key? key}) : super(key: key);
+  final String fulfillment;
+  const AllOrdersRealFbsSellerPage({required this.fulfillment, super.key});
 
   @override
   State<AllOrdersRealFbsSellerPage> createState() => _AllOrdersRealFbsSellerPageState();
@@ -20,7 +20,7 @@ class _AllOrdersRealFbsSellerPageState extends State<AllOrdersRealFbsSellerPage>
   final RefreshController _controller = RefreshController();
   String status = '';
 
-  text(sts) {
+  void text(String? sts) {
     switch (sts) {
       case 'order':
         {
@@ -245,7 +245,10 @@ class _AllOrdersRealFbsSellerPageState extends State<AllOrdersRealFbsSellerPage>
                                 children: [
                                   SvgPicture.asset(
                                     'assets/icons/user.svg',
-                                    color: AppColors.kGray400,
+                                    colorFilter: ColorFilter.mode(
+                                      AppColors.kGray400,
+                                      BlendMode.srcIn,
+                                    ),
                                   ),
                                   Text(
                                     ' ${state.basketOrderRealFbsModel[index].user!.fullName}',

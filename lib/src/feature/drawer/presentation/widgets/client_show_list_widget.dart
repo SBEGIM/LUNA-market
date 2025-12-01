@@ -5,12 +5,8 @@ import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/feature/app/bloc/app_bloc.dart';
 import 'package:haji_market/src/feature/app/widgets/app_snack_bar.dart';
-import 'package:haji_market/src/feature/bloger/profile/presentation/ui/blogger_profile_page.dart';
 import 'package:haji_market/src/feature/bloger/profile/presentation/widgets/show_module_profile_widget.dart';
 import 'package:haji_market/src/feature/drawer/presentation/widgets/show_alert_account_widget.dart';
-import 'package:haji_market/src/feature/home/data/model/cat_model.dart';
-import 'package:haji_market/src/feature/home/data/model/characteristic_model.dart';
-import 'package:haji_market/src/feature/tape/presentation/widgets/show_alert_report_widget.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 void showClientSettingOptions(BuildContext context, bool isAuth, String title, Function callback) {

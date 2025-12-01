@@ -1,8 +1,6 @@
-import 'dart:developer';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/feature/bloger/auth/bloc/sms_blogger_cubit.dart';
 import 'package:haji_market/src/feature/bloger/auth/bloc/sms_blogger_state.dart';
@@ -142,9 +140,9 @@ class FieldsCoopRequest extends StatelessWidget {
   final bool arrow;
   final void Function()? onPressed;
   final void Function(String)? onChanged;
+  final TextEditingController? controller;
 
-  TextEditingController? controller;
-  FieldsCoopRequest({
+  const FieldsCoopRequest({
     required this.hintText,
     required this.titleText,
     required this.star,
@@ -152,8 +150,8 @@ class FieldsCoopRequest extends StatelessWidget {
     this.controller,
     this.onPressed,
     required this.onChanged,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

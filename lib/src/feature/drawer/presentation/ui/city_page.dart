@@ -7,10 +7,8 @@ import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/feature/app/widgets/custom_back_button.dart';
 import 'package:haji_market/src/feature/drawer/bloc/city_cubit.dart';
 
-import '../../bloc/city_state.dart';
-
 class CityPage extends StatefulWidget {
-  const CityPage({Key? key}) : super(key: key);
+  const CityPage({super.key});
 
   @override
   State<CityPage> createState() => _CityPageState();
@@ -55,7 +53,7 @@ class _CityPageState extends State<CityPage> {
           BlocConsumer<CityCubit, CityState>(
             listener: (context, state) {},
             builder: (context, state) {
-              if (state is LoadedState) {
+              if (state is CityStateLoaded) {
                 return Container(
                   color: Colors.white,
                   child: ListView.separated(
@@ -98,8 +96,8 @@ class _CityPageState extends State<CityPage> {
                   ),
                 );
               }
-              if (state is NodataState) {
-                return Container(
+              if (state is CityStateNoData) {
+                return SizedBox(
                   width: MediaQuery.of(context).size.height,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,

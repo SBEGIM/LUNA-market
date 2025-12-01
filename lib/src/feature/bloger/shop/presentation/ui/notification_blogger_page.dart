@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/feature/bloger/shop/bloc/blogger_notification_cubit.dart';
 import 'package:haji_market/src/feature/bloger/shop/bloc/blogger_notification_state.dart';
-import 'package:haji_market/src/feature/product/data/model/product_model.dart';
 
 class NotificationBloggerPage extends StatefulWidget {
   const NotificationBloggerPage({super.key});

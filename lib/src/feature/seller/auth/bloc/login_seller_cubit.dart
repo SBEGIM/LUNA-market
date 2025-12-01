@@ -1,7 +1,6 @@
 import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:haji_market/src/feature/app/widgets/app_snack_bar.dart';
 import 'package:haji_market/src/feature/seller/auth/bloc/login_seller_state.dart';
 import '../data/repository/login_seller_repository.dart';

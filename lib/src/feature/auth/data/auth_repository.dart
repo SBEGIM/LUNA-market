@@ -1,18 +1,14 @@
 import 'dart:convert';
-import 'package:haji_market/src/core/utils/talker_logger_util.dart';
-// import 'package:haji_market/src/features/app/service/notification_service.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:haji_market/src/feature/auth/data/DTO/register.dart';
 import 'package:haji_market/src/feature/auth/data/auth_remote_ds.dart';
 import 'package:haji_market/src/feature/auth/database/auth_dao.dart';
-import 'package:haji_market/src/feature/auth/data/models/common_lists_dto.dart';
-import 'package:haji_market/src/feature/auth/data/models/request/user_payload.dart';
 import 'package:haji_market/src/feature/auth/data/models/user_dto.dart';
 
 abstract interface class IAuthRepository {
   bool get isAuthenticated;
 
   UserDTO? get user;
-
-  Future<List<String>?> sendDeviceToken();
 
   Future<void> clearUser();
 
@@ -21,30 +17,79 @@ abstract interface class IAuthRepository {
 
   Future<String> forgotPasswordSmsCheck({required String phone, required String code});
 
-  Future forgotPasswordChangePassword({
-    required String passwordToken,
-    required String password,
-    required String passwordConfirmation,
-  });
-
   /// Auth
   Future<UserDTO> login({required String phone, required String password});
 
-  Future<CommonListsDTO> getRegisterFormOptions();
-
-  Future<int> registerSmsSend({required UserPayload payload});
-
   Future<UserDTO> registerSmsCheck({required String phone, required String code});
 
-  Future<String> generateCentrifugoToken();
+  Future<UserDTO> register({required RegisterDTO registerDto});
+
+  Future<UserDTO> lateAuth();
+
+  Future<UserDTO> editProfile({
+    required String firstName,
+    required String lastName,
+    required String surName,
+    required String phone,
+    String? avatarPath,
+    required String gender,
+    required String birthday,
+    required String country,
+    required String city,
+    required String street,
+    required String home,
+    required String porch,
+    required String floor,
+    required String room,
+    required String email,
+  });
+
+  Future<void> editPush({required int pushStatus});
+
+  Future<void> updateCityCode({required String code});
+
+  Future<void> deleteAccount();
+
+  Future<void> sendRegisterCode({required String phone});
+
+  Future<void> passwordResetByPhone({required String phone, required String password});
 }
 
 class AuthRepositoryImpl implements IAuthRepository {
-  const AuthRepositoryImpl({required IAuthRemoteDS remoteDS, required IAuthDao authDao})
+  AuthRepositoryImpl({required IAuthRemoteDS remoteDS, required IAuthDao authDao})
     : _remoteDS = remoteDS,
       _authDao = authDao;
   final IAuthRemoteDS _remoteDS;
   final IAuthDao _authDao;
+  final _box = GetStorage();
+
+  void _saveToGetStorage(UserDTO user) {
+    // TODO: Remove GetStorage after full migration to DAO
+    if (user.accessToken != null) _box.write('token', user.accessToken);
+    _box.write('user_id', user.id.toString());
+    if (user.firstName != null) _box.write('first_name', user.firstName);
+    if (user.lastName != null) _box.write('last_name', user.lastName);
+    if (user.surName != null) _box.write('sur_name', user.surName);
+    if (user.phone != null) _box.write('phone', user.phone);
+    if (user.gender != null) _box.write('gender', user.gender);
+    if (user.avatar != null) _box.write('avatar', user.avatar);
+    if (user.birthday != null) _box.write('birthday', user.birthday);
+    if (user.country != null) _box.write('country', user.country);
+    
+    if (user.city != null) {
+        _box.write('city', user.city?.name ?? ''); 
+    }
+
+    if (user.street != null) _box.write('street', user.street);
+    if (user.home != null) _box.write('home', user.home);
+    if (user.porch != null) _box.write('porch', user.porch);
+    if (user.floor != null) _box.write('floor', user.floor);
+    if (user.room != null) _box.write('room', user.room);
+    if (user.email != null) _box.write('email', user.email);
+    if (user.active != null) _box.write('active', user.active.toString());
+    
+    if (user.hasNotification != null) _box.write('push', user.hasNotification.toString());
+  }
 
   @override
   bool get isAuthenticated => _authDao.user.value != null;
@@ -67,48 +112,8 @@ class AuthRepositoryImpl implements IAuthRepository {
   Future<void> clearUser() async {
     try {
       await _authDao.user.remove();
-    } catch (e) {
-      rethrow;
-    }
-  }
-
-  @override
-  Future<List<String>?> sendDeviceToken() async {
-    try {
-      final deviceToken = _authDao.deviceToken.value;
-      // await NotificationService.instance.getDeviceToken(
-      //   authDao: _authDao,
-      // );
-
-      final remoteTopics = await _remoteDS.sendDeviceToken(
-        deviceToken: deviceToken ?? 'DEVICE_TOKEN_ERROR',
-      );
-
-      if (remoteTopics == null) return null;
-
-      final Set<String> remoteSet = remoteTopics.toSet();
-      final Set<String> localSet = (_authDao.pushTopics.value ?? []).toSet();
-
-      // Определяем темы для отписки и подписки
-      final List<String> topicsToUnsubscribe = localSet.difference(remoteSet).toList();
-      final List<String> topicsToSubscribe = remoteSet.difference(localSet).toList();
-      TalkerLoggerUtil.talker.info('topicsToUnsubscribe $topicsToUnsubscribe');
-      TalkerLoggerUtil.talker.info('topicsToSubscribe $topicsToSubscribe');
-
-      // Отписка от старых тем
-      // for (final topic in topicsToUnsubscribe) {
-      // await NotificationService.instance.unsubscribeFromTopic(topic: topic);
-      // }
-
-      // Сохраняем актуальные топики в локальный кэш
-      await _authDao.pushTopics.setValue(remoteTopics);
-
-      // Подписка на новые топики
-      // for (final topic in topicsToSubscribe) {
-      // await NotificationService.instance.subscribeToTopic(topic: topic);
-      // }
-
-      return remoteTopics;
+      // TODO: Remove GetStorage after full migration to DAO
+      await _box.erase();
     } catch (e) {
       rethrow;
     }
@@ -117,11 +122,114 @@ class AuthRepositoryImpl implements IAuthRepository {
   @override
   Future<UserDTO> login({required String phone, required String password}) async {
     try {
-      final user = await _remoteDS.login(phone: phone, password: password);
+      final deviceToken = _authDao.deviceToken.value ?? 'DEVICE_TOKEN_ERROR';
+      final user = await _remoteDS.login(phone: phone, password: password, deviceToken: deviceToken);
 
       await _authDao.user.setValue(jsonEncode(user.toJson()));
+      _saveToGetStorage(user);
 
       return user;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<UserDTO> register({required RegisterDTO registerDto}) async {
+    try {
+      final deviceToken = _authDao.deviceToken.value ?? 'DEVICE_TOKEN_ERROR';
+      final user = await _remoteDS.register(registerDto: registerDto, deviceToken: deviceToken);
+      await _authDao.user.setValue(jsonEncode(user.toJson()));
+      _saveToGetStorage(user);
+      return user;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<UserDTO> lateAuth() async {
+    try {
+      final user = await _remoteDS.lateAuth();
+      await _authDao.user.setValue(jsonEncode(user.toJson()));
+      _saveToGetStorage(user);
+      return user;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<UserDTO> editProfile({
+    required String firstName,
+    required String lastName,
+    required String surName,
+    required String phone,
+    String? avatarPath,
+    required String gender,
+    required String birthday,
+    required String country,
+    required String city,
+    required String street,
+    required String home,
+    required String porch,
+    required String floor,
+    required String room,
+    required String email,
+  }) async {
+    try {
+      final user = await _remoteDS.editProfile(
+        firstName: firstName,
+        lastName: lastName,
+        surName: surName,
+        phone: phone,
+        avatarPath: avatarPath,
+        gender: gender,
+        birthday: birthday,
+        country: country,
+        city: city,
+        street: street,
+        home: home,
+        porch: porch,
+        floor: floor,
+        room: room,
+        email: email,
+      );
+      await _authDao.user.setValue(jsonEncode(user.toJson()));
+      _saveToGetStorage(user);
+      return user;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<void> editPush({required int pushStatus}) async {
+    try {
+      await _remoteDS.editPush(pushStatus: pushStatus);
+      // TODO: Remove GetStorage after full migration to DAO
+      _box.write('push', pushStatus.toString());
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<void> updateCityCode({required String code}) async {
+    try {
+      await _remoteDS.updateCityCode(code: code);
+      // TODO: Remove GetStorage after full migration to DAO
+      _box.write('user_location_code', code.toString());
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<void> deleteAccount() async {
+    try {
+      await _remoteDS.deleteAccount();
+      await clearUser();
     } catch (e) {
       rethrow;
     }
@@ -146,46 +254,12 @@ class AuthRepositoryImpl implements IAuthRepository {
   }
 
   @override
-  Future forgotPasswordChangePassword({
-    required String passwordToken,
-    required String password,
-    required String passwordConfirmation,
-  }) async {
-    try {
-      return await _remoteDS.forgotPasswordChangePassword(
-        passwordToken: passwordToken,
-        password: password,
-        passwordConfirmation: passwordConfirmation,
-      );
-    } catch (e) {
-      rethrow;
-    }
-  }
-
-  @override
-  Future<CommonListsDTO> getRegisterFormOptions() async {
-    try {
-      return await _remoteDS.getRegisterFormOptions();
-    } catch (e) {
-      rethrow;
-    }
-  }
-
-  @override
-  Future<int> registerSmsSend({required UserPayload payload}) async {
-    try {
-      return await _remoteDS.registerSmsSend(payload: payload);
-    } catch (e) {
-      rethrow;
-    }
-  }
-
-  @override
   Future<UserDTO> registerSmsCheck({required String phone, required String code}) async {
     try {
       final user = await _remoteDS.registerSmsCheck(phone: phone, code: code);
 
       await _authDao.user.setValue(jsonEncode(user.toJson()));
+      _saveToGetStorage(user);
 
       return user;
     } catch (e) {
@@ -194,11 +268,18 @@ class AuthRepositoryImpl implements IAuthRepository {
   }
 
   @override
-  Future<String> generateCentrifugoToken() async {
+  Future<void> sendRegisterCode({required String phone}) async {
     try {
-      final token = await _remoteDS.generateCentrifugoToken();
+      await _remoteDS.sendRegisterCode(phone: phone);
+    } catch (e) {
+      rethrow;
+    }
+  }
 
-      return token;
+  @override
+  Future<void> passwordResetByPhone({required String phone, required String password}) async {
+    try {
+      await _remoteDS.passwordResetByPhone(phone: phone, password: password);
     } catch (e) {
       rethrow;
     }

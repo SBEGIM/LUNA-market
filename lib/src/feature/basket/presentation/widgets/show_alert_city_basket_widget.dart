@@ -3,13 +3,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/route_manager.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/src/feature/app/router/app_router.dart';
 import 'package:haji_market/src/feature/app/widgets/custom_cupertino_action_sheet.dart';
-import 'package:haji_market/src/feature/basket/presentation/ui/map_picker.dart';
 import 'package:haji_market/src/feature/drawer/bloc/city_cubit.dart';
-import 'package:haji_market/src/feature/drawer/bloc/city_state.dart';
-import '../../../../core/common/constants.dart';
+import 'package:haji_market/src/core/common/constants.dart';
 
 Future<dynamic> showAlertCityBasketWidget(BuildContext context, bool shop) async {
   int? city;
@@ -44,12 +41,12 @@ Future<dynamic> showAlertCityBasketWidget(BuildContext context, bool shop) async
             CupertinoActionSheetAction(
               child: BlocConsumer<CityCubit, CityState>(
                 listener: (context, state) {
-                  if (state is LoadedState) {
+                  if (state is CityStateLoaded) {
                     setState(() {});
                   }
                 },
                 builder: (context, state) {
-                  if (state is LoadedState) {
+                  if (state is CityStateLoaded) {
                     return Column(
                       children: [
                         Container(
@@ -97,7 +94,7 @@ Future<dynamic> showAlertCityBasketWidget(BuildContext context, bool shop) async
                                       const SizedBox(width: 6),
                                       Expanded(
                                         child: Text(
-                                          "${state.city[index].city ?? ''}",
+                                          state.city[index].city ?? '',
                                           style: const TextStyle(
                                             color: Colors.black,
                                             fontWeight: FontWeight.w500,
@@ -146,7 +143,7 @@ Future<dynamic> showAlertCityBasketWidget(BuildContext context, bool shop) async
                     //     ),
                     //   );
                     // }
-                  } else if (state is NodataState) {
+                  } else if (state is CityStateNoData) {
                     return SizedBox(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,

@@ -2,8 +2,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_masked_text2/flutter_masked_text2.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:get/route_manager.dart';
 import 'package:haji_market/src/core/presentation/widgets/shimmer/shimmer.dart';
 import 'package:haji_market/src/feature/app/bloc/app_bloc.dart';
 import 'package:haji_market/src/feature/app/widgets/app_snack_bar.dart';
@@ -30,7 +28,6 @@ class _LoginSellerPageState extends State<LoginSellerPage> {
   TextEditingController phoneControllerAuth = MaskedTextController(mask: '(000)-000-00-00');
   TextEditingController passwordController = TextEditingController();
   bool _passwordVisible = false;
-  bool __visibleIconView = false;
   bool isButtonEnabled = false;
 
   CountrySellerDto? countrySellerDto;
@@ -161,7 +158,7 @@ class _LoginSellerPageState extends State<LoginSellerPage> {
                               Image.asset(countrySellerDto!.flagPath, width: 24, height: 24),
                               SizedBox(width: 8),
                               Text(
-                                '${countrySellerDto!.code}',
+                                '${countrySellerDto?.code}',
                                 style: AppTextStyles.size16Weight400,
                               ),
                             ],
@@ -239,7 +236,6 @@ class _LoginSellerPageState extends State<LoginSellerPage> {
                           ),
                           onChanged: (value) {
                             setState(() {
-                              __visibleIconView = value.isNotEmpty;
                               isButtonEnabled = value.isNotEmpty;
                             });
                           },

@@ -17,7 +17,7 @@ import 'package:haji_market/src/feature/seller/product/data/DTO/size_count_selle
 import 'package:haji_market/src/feature/seller/product/bloc/characteristic_seller_cubit.dart';
 import 'package:haji_market/src/feature/seller/product/bloc/color_seller_cubit.dart';
 import 'package:haji_market/src/feature/seller/product/bloc/delete_image_seller_cubit.dart'
-    as deleteImageCubit;
+    as delete_image_seller_cubit;
 import 'package:haji_market/src/feature/seller/product/bloc/product_seller_state.dart';
 import 'package:haji_market/src/feature/seller/product/bloc/size_seller_cubit.dart';
 import 'package:haji_market/src/feature/seller/product/data/repository/product_seller_repository.dart';
@@ -26,22 +26,19 @@ import 'package:haji_market/src/feature/seller/product/presentation/widgets/show
 import 'package:haji_market/src/feature/seller/product/presentation/widgets/show_seller_cats_widget.dart';
 import 'package:haji_market/src/feature/seller/product/presentation/widgets/show_seller_characteristics_widget.dart';
 import 'package:haji_market/src/feature/seller/product/presentation/widgets/show_seller_optom_widget.dart';
-import 'package:haji_market/src/feature/seller/product/presentation/widgets/sub_cats_seller_page.dart';
 import 'package:haji_market/src/feature/bloger/profile/presentation/ui/blogger_ad_page.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/feature/drawer/bloc/sub_cats_cubit.dart';
 import 'package:haji_market/src/feature/home/bloc/cats_cubit.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:video_player/video_player.dart';
-import '../../../../app/widgets/custom_back_button.dart';
-import '../../../../drawer/bloc/brand_cubit.dart';
-import '../../../../home/data/model/cat_model.dart';
-import '../../../../home/data/model/characteristic_model.dart';
-import '../../bloc/product_seller_cubit.dart';
-import '../../data/models/product_seller_model.dart';
-import '../widgets/brand_seller_page.dart';
-import '../widgets/cats_seller_page.dart';
-import '../widgets/colors_seller_page.dart';
+import 'package:haji_market/src/feature/app/widgets/custom_back_button.dart';
+import 'package:haji_market/src/feature/drawer/bloc/brand_cubit.dart';
+import 'package:haji_market/src/feature/home/data/model/cat_model.dart';
+import 'package:haji_market/src/feature/home/data/model/characteristic_model.dart';
+import 'package:haji_market/src/feature/seller/product/bloc/product_seller_cubit.dart';
+import 'package:haji_market/src/feature/seller/product/data/models/product_seller_model.dart';
+import 'package:haji_market/src/feature/seller/product/presentation/widgets/colors_seller_page.dart';
 
 @RoutePage()
 class EditProductSellerPage extends StatefulWidget implements AutoRouteWrapper {
@@ -53,13 +50,6 @@ class EditProductSellerPage extends StatefulWidget implements AutoRouteWrapper {
 
   @override
   Widget wrappedRoute(BuildContext context) {
-    // return BlocProvider(
-    //   create: (context) =>
-    //       ProductSellerCubit(productAdminRepository: ProductSellerRepository())
-    //         ..products(''),
-    //   child: this,
-    // );
-
     return BlocProvider(
       create: (_) => ProductSellerCubit(productAdminRepository: ProductSellerRepository()),
       child: this,
@@ -157,10 +147,10 @@ class _EditProductSellerPageState extends State<EditProductSellerPage> {
   TextEditingController pointsBloggerController = TextEditingController();
   TextEditingController colorCountController = TextEditingController();
 
-  int cat_id = 0;
-  int color_id = 0;
-  int sub_cat_id = 0;
-  int brand_id = 0;
+  int catId = 0;
+  int colorId = 0;
+  int subCatId = 0;
+  int brandId = 0;
   bool isSwitchedOptom = false;
 
   CatsModel? cats;
@@ -170,8 +160,10 @@ class _EditProductSellerPageState extends State<EditProductSellerPage> {
 
   String currencyName = '₽';
   String compoundValue = '₽';
-  Future<void> CatById() async {
+  Future<void> getCategoryById() async {
     cats = await BlocProvider.of<CatsCubit>(context).catById(widget.product.catId.toString());
+
+    if (!mounted) return;
 
     if (widget.product.brandId != null) {
       brands = await BlocProvider.of<BrandCubit>(
@@ -181,17 +173,19 @@ class _EditProductSellerPageState extends State<EditProductSellerPage> {
       brands = CatsModel(id: 0, name: 'Не выбрано');
     }
 
+    if (!mounted) return;
+
     subCats = await BlocProvider.of<SubCatsCubit>(
       context,
     ).subCatById(widget.product.catId.toString(), widget.product.subCatId.toString());
+
+    if (!mounted) return;
 
     if (widget.product.color!.isNotEmpty) {
       colors = await BlocProvider.of<ColorSellerCubit>(
         context,
       ).ColorById(widget.product.color!.first);
-    } else {
-      CatsModel colors = CatsModel(id: 0, name: 'Выберите цвет');
-    }
+    } else {}
 
     setState(() {
       cats;
@@ -298,7 +292,7 @@ class _EditProductSellerPageState extends State<EditProductSellerPage> {
     }
 
     if (BlocProvider.of<CityCubit>(context).state is! LoadedState) {
-      BlocProvider.of<CityCubit>(context).citiesCdek('RU' ?? 'KZ');
+      BlocProvider.of<CityCubit>(context).citiesCdek('RU');
     }
 
     // WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -307,7 +301,7 @@ class _EditProductSellerPageState extends State<EditProductSellerPage> {
     //   // чтобы не сработали глобальные слушатели во время построения.
     //   context.read<ProductSellerCubit>().products('');
     // });
-    CatById();
+    getCategoryById();
     _sizeArray();
     _charactisticsArray();
     _colorArray();
@@ -322,9 +316,9 @@ class _EditProductSellerPageState extends State<EditProductSellerPage> {
         : '0';
     nameController.text = widget.product.name != null ? widget.product.name.toString() : '';
     countController.text = widget.product.count != null ? widget.product.count.toString() : '0';
-    cat_id = widget.product.catId ?? 0;
-    sub_cat_id = widget.product.subCatId ?? 0;
-    brand_id = widget.product.brandId ?? 0;
+    catId = widget.product.catId ?? 0;
+    subCatId = widget.product.subCatId ?? 0;
+    brandId = widget.product.brandId ?? 0;
     heightController.text = widget.product.height != null ? widget.product.height.toString() : '';
     widthController.text = widget.product.width != null ? widget.product.width.toString() : '';
     massaController.text = widget.product.massa != null ? widget.product.massa.toString() : '';
@@ -375,6 +369,8 @@ class _EditProductSellerPageState extends State<EditProductSellerPage> {
   void _charactisticsArray() async {
     characteristics = await BlocProvider.of<CharacteristicSellerCubit>(context).characteristic();
 
+    if (!mounted) return;
+
     subCharacteristics = await BlocProvider.of<CharacteristicSellerCubit>(
       context,
     ).subCharacteristic();
@@ -384,17 +380,6 @@ class _EditProductSellerPageState extends State<EditProductSellerPage> {
       subCharacteristicsValue?.add(CharacteristicsModel(id: element.id, value: element.value));
     });
     setState(() {});
-
-    // if ((widget.product.sizeV1 ?? []).isNotEmpty) {
-    //   for (final SizeDTO e in widget.product.sizeV1 ?? []) {
-    //     sizeCount.add(sizeCountDto(
-    //         id: mockSizes!.where((element) => element.name == e.name).isNotEmpty
-    //             ? mockSizes!.where((element) => element.name == e.name).first.id.toString()
-    //             : '-1',
-    //         name: e.name ?? '',
-    //         count: (e.count ?? 0).toString()));
-    //   }
-    // }
   }
 
   int filledCount = 1;
@@ -410,7 +395,7 @@ class _EditProductSellerPageState extends State<EditProductSellerPage> {
   String _locationSelect = 'Выбор лакации';
   String _locationSeller = 'Не выбрано';
 
-  List<CatsModel> _regions = [];
+  final List<CatsModel> _regions = [];
 
   final List<CatsModel> _locations = [
     CatsModel(id: 0, name: 'Не выбрано'),
@@ -419,15 +404,6 @@ class _EditProductSellerPageState extends State<EditProductSellerPage> {
     CatsModel(id: 3, name: 'Регион'),
     CatsModel(id: 4, name: 'Город/населенный пункт'),
     CatsModel(id: 5, name: 'Моя локация'),
-  ];
-
-  final List<CatsModel> _locationsValues = [
-    CatsModel(id: 0, name: 'Пункт 1'),
-    CatsModel(id: 1, name: 'Пункт 2'),
-    CatsModel(id: 2, name: 'Пункт 3'),
-    CatsModel(id: 3, name: 'Пункт 4'),
-    CatsModel(id: 4, name: 'Пункт 5'),
-    CatsModel(id: 5, name: 'Пункт 6'),
   ];
 
   void _regionsArray() async {
@@ -439,7 +415,7 @@ class _EditProductSellerPageState extends State<EditProductSellerPage> {
     }
   }
 
-  void _citiesArray(country) async {
+  void _citiesArray(String country) async {
     final List<CityModel> data = await BlocProvider.of<CityCubit>(context).citiesList(country);
 
     _regions.clear();
@@ -533,7 +509,7 @@ class _EditProductSellerPageState extends State<EditProductSellerPage> {
                 scrollDirection: Axis.horizontal,
                 physics: const NeverScrollableScrollPhysics(),
                 itemCount: totalSegments,
-                separatorBuilder: (_, __) => SizedBox(width: segmentSpacing),
+                separatorBuilder: (_, _) => SizedBox(width: segmentSpacing),
                 itemBuilder: (context, index) {
                   bool isFilled = index < filledCount;
                   return Container(
@@ -559,20 +535,13 @@ class _EditProductSellerPageState extends State<EditProductSellerPage> {
                 star: false,
                 arrow: true,
                 onPressed: () async {
-                  // final data = await Get.to(const CatsSellerPage());
-                  // if (data != null) {
-                  //   final CatsModel cat = data;
-                  //   setState(() {});
-                  //   cats = cat;
-                  // }
-
                   if (_cats.isEmpty) {
                     _cats = await BlocProvider.of<CatsCubit>(context).catsList();
                   }
 
-                  showSellerCatsOptions(context, 'Категория и тип', _cats, true, (value) {
-                    // BlocProvider.of<CatsCubit>(context).searchCats(value);
+                  if (!context.mounted) return;
 
+                  showSellerCatsOptions(context, 'Категория и тип', _cats, true, (value) {
                     setState(() {
                       cats = value;
                     });
@@ -589,6 +558,9 @@ class _EditProductSellerPageState extends State<EditProductSellerPage> {
                   if (_subCats.isEmpty) {
                     _subCats = await BlocProvider.of<SubCatsCubit>(context).subCatsList();
                   }
+
+                  if (!context.mounted) return;
+
                   showSellerCatsOptions(context, 'Подкатегория', _subCats, false, (value) {
                     setState(() {
                       subCats = value;
@@ -604,17 +576,11 @@ class _EditProductSellerPageState extends State<EditProductSellerPage> {
                 arrow: true,
                 readOnly: true,
                 onPressed: () async {
-                  print('www');
-                  // final data = await Get.to(const BrandSellerPage());
-                  // if (data != null) {
-                  //   final CatsModel brand = data;
-                  //   setState(() {});
-                  //   brands = brand;
-                  // }
-
                   if (_brands.isEmpty) {
                     _brands = await BlocProvider.of<BrandCubit>(context).brandsList();
                   }
+                  if (!context.mounted) return;
+
                   showSellerCatsOptions(context, 'Бренд', _brands, false, (value) {
                     setState(() {
                       brands = value;
@@ -823,7 +789,7 @@ class _EditProductSellerPageState extends State<EditProductSellerPage> {
                     _brands = await BlocProvider.of<BrandCubit>(context).brandsList();
                   }
 
-                  final List<CatsModel> _nds = [
+                  final List<CatsModel> nds = [
                     CatsModel(id: 0, name: '5 %'),
                     CatsModel(id: 1, name: '7 %'),
                     CatsModel(id: 2, name: '10 %'),
@@ -831,19 +797,14 @@ class _EditProductSellerPageState extends State<EditProductSellerPage> {
                     CatsModel(id: 4, name: 'Не облагается'),
                   ];
 
-                  showSellerCatsOptions(context, 'Выбор НДС', _nds, false, (value) {
-                    final CatsModel _data = value;
+                  if (!context.mounted) return;
+
+                  showSellerCatsOptions(context, 'Выбор НДС', nds, false, (value) {
+                    final CatsModel data0 = value;
 
                     setState(() {
-                      ndsController.text = _data.name!;
+                      ndsController.text = data0.name!;
                     });
-
-                    // print(value);
-                    // BlocProvider.of<BrandCubit>(context)
-                    //     .searchBrand(value);
-                    // final CatsModel brand = data;
-                    // setState(() {});
-                    // brands = brand;
                   });
                 },
               ),
@@ -955,7 +916,7 @@ class _EditProductSellerPageState extends State<EditProductSellerPage> {
                       child: Switch(
                         onChanged: toggleSwitchBs,
                         value: isSwitchedBs,
-                        activeColor: AppColors.kWhite,
+                        activeThumbColor: AppColors.kWhite,
                         activeTrackColor: AppColors.mainPurpleColor,
                         inactiveThumbColor: AppColors.kGray300,
                         inactiveTrackColor: AppColors.kGray2,
@@ -1022,7 +983,7 @@ class _EditProductSellerPageState extends State<EditProductSellerPage> {
                             child: Switch(
                               onChanged: toggleSwitchOptom,
                               value: isSwitchedOptom,
-                              activeColor: AppColors.kWhite,
+                              activeThumbColor: AppColors.kWhite,
                               activeTrackColor: AppColors.mainPurpleColor,
                               inactiveThumbColor: AppColors.kGray300,
                               inactiveTrackColor: AppColors.kGray2,
@@ -1159,10 +1120,6 @@ class _EditProductSellerPageState extends State<EditProductSellerPage> {
                     if (optomPriceController.text.isNotEmpty) {
                       bool exists = false;
 
-                      OptomPriceSellerDto? optomCountLast;
-                      // if (optomCount.isNotEmpty) {
-
-                      optomCountLast = optomCount.isNotEmpty ? optomCount.last : null;
                       for (var element in optomCount) {
                         if (element.count == optomCountController.text) {
                           exists = true;
@@ -1170,7 +1127,6 @@ class _EditProductSellerPageState extends State<EditProductSellerPage> {
                         }
                         continue;
                       }
-                      //   }
 
                       if (!exists) {
                         optomCount.add(
@@ -1273,32 +1229,6 @@ class _EditProductSellerPageState extends State<EditProductSellerPage> {
                     String colorNames = values.map((e) => e.name ?? 'Пустое').join(', ');
                     colorCountController.text = colorNames;
                     setState(() {});
-
-                    // Очистим, если нужно полностью перезаписать
-                    // checkColors?.clear();
-                    // colorCount.clear();
-
-                    // for (var e in values) {
-                    //   final colorId = e.id.toString();
-                    //   final colorName = e.name ?? 'Пустое';
-
-                    //   // Проверка, что уже не добавлен
-                    //   final alreadyExists = checkColors!
-                    //       .any((element) => element.name == colorName);
-
-                    //   if (!alreadyExists) {
-                    //     checkColors!.add(CatsModel(name: colorName));
-
-                    //     colorCount.add(ColorCountSellerDto(
-                    //       color_id: colorId,
-                    //       name: colorName,
-                    //       count: '0',
-                    //     ));
-                    //   } else {
-                    //     Get.snackbar('Ошибка', '$colorName уже добавлен!',
-                    //         backgroundColor: Colors.redAccent);
-                    //   }
-                    // }
                   });
                 },
               ),
@@ -1334,6 +1264,8 @@ class _EditProductSellerPageState extends State<EditProductSellerPage> {
                                     context,
                                   ).subCharacteristic(id: item.id.toString());
 
+                              if (!context.mounted) return;
+
                               showSellerListCharacteristicsOptions(
                                 context,
                                 item.key ?? 'Добавить характеристику',
@@ -1341,69 +1273,6 @@ class _EditProductSellerPageState extends State<EditProductSellerPage> {
                                 subIndexCharacteristics!,
                                 (CharacteristicsModel value) {
                                   {
-                                    // characteristicsValuelast =
-                                    //     CharacteristicsModel(
-                                    //         id: item.id,
-                                    //         key: item.key,
-                                    //         value: item.value);
-
-                                    // subCharacteristicsValueLast =
-                                    //     CharacteristicsModel(
-                                    //         id: value.id,
-                                    //         mainId: item.id,
-                                    //         key: value.key,
-                                    //         value: value.value);
-                                    // if (subCharacteristicsValueLast != null &&
-                                    //     characteristicsValuelast != null) {
-                                    //   bool exists = false;
-
-                                    //   for (int index = 0;
-                                    //       index <
-                                    //           characteristicsValue!.length;
-                                    //       index++) {
-                                    //     if (characteristicsValue![index]
-                                    //             .key ==
-                                    //         characteristicsValuelast!.key) {
-                                    //       if (subCharacteristicsValue![index]
-                                    //               .value ==
-                                    //           subCharacteristicsValueLast!
-                                    //               .value) {
-                                    //         exists = true;
-                                    //         setState(() {});
-                                    //       }
-                                    //     }
-                                    //     continue;
-                                    //   }
-
-                                    //   if (!exists) {
-                                    //     characteristicsValue!.add(
-                                    //         CharacteristicsModel(
-                                    //             id: characteristicsValuelast!
-                                    //                 .id!,
-                                    //             key: characteristicsValuelast!
-                                    //                 .key));
-                                    //     subCharacteristicsValue!.add(
-                                    //         CharacteristicsModel(
-                                    //             id: subCharacteristicsValueLast!
-                                    //                 .id!,
-                                    //             mainId: item.id,
-                                    //             value:
-                                    //                 subCharacteristicsValueLast!
-                                    //                     .value));
-
-                                    //     setState(() {});
-                                    //   } else {
-                                    //     // Get.to(() => {})
-                                    //     Get.snackbar(
-                                    //         'Ошибка', 'Данные уже имеется!',
-                                    //         backgroundColor:
-                                    //             Colors.redAccent);
-                                    //   }
-                                    // } else {
-                                    //   Get.snackbar('Ошибка', 'Нет данных!',
-                                    //       backgroundColor: Colors.redAccent);
-                                    // }
-
                                     final newCharacteristic = CharacteristicsModel(
                                       id: item.id,
                                       key: item.key,
@@ -1577,7 +1446,7 @@ class _EditProductSellerPageState extends State<EditProductSellerPage> {
                                                     shape: BoxShape.circle,
                                                     boxShadow: [
                                                       BoxShadow(
-                                                        color: Colors.black.withOpacity(0.2),
+                                                        color: Colors.black.withValues(alpha: .2),
                                                         blurRadius: 4,
                                                         offset: const Offset(0, 2),
                                                       ),
@@ -1598,43 +1467,6 @@ class _EditProductSellerPageState extends State<EditProductSellerPage> {
                                   ),
                                 )
                               : SizedBox(),
-                          // ? SizedBox(
-                          //     height: 100,
-                          //     width: 1000,
-                          //     child: ListView.builder(
-                          //       shrinkWrap: true,
-                          //       scrollDirection: Axis.horizontal,
-                          //       itemCount: _image.length,
-                          //       itemBuilder: (context, index) {
-                          //         return Stack(children: [
-                          //           Container(
-                          //             height: 92,
-                          //             width: 92,
-                          //             child: Image.file(
-                          //               File(_image[index]!.path),
-                          //             ),
-                          //           ),
-                          //           Positioned(
-                          //             top: 35,
-                          //             right: 35,
-                          //             child: GestureDetector(
-                          //               onTap: () {
-                          //                 _image.removeAt(index);
-                          //                 setState(() {
-                          //                   _image;
-                          //                 });
-                          //               },
-                          //               child: const Icon(
-                          //                 Icons.delete_outline_outlined,
-                          //                 color: Colors.grey,
-                          //               ),
-                          //             ),
-                          //           ),
-                          //         ]);
-                          //       },
-                          //     ),
-                          //   )
-                          // : Container(),
                         ],
                       ),
                     const SizedBox(height: 8),
@@ -1713,7 +1545,10 @@ class _EditProductSellerPageState extends State<EditProductSellerPage> {
                               children: [
                                 SvgPicture.asset(
                                   Assets.icons.videoSellerIcon.path,
-                                  color: AppColors.mainPurpleColor,
+                                  colorFilter: ColorFilter.mode(
+                                    AppColors.mainPurpleColor,
+                                    BlendMode.srcIn,
+                                  ),
                                 ),
                               ],
                             ),
@@ -1962,7 +1797,6 @@ class _EditProductSellerPageState extends State<EditProductSellerPage> {
                       _regionsArray();
                     }
                     if (data.name == 'Город/населенный пункт') {
-                      print('ok');
                       _citiesArray('RU');
                     }
 
@@ -1979,8 +1813,8 @@ class _EditProductSellerPageState extends State<EditProductSellerPage> {
                     _locationSelect == 'Город/населенный пункт' ||
                     _locationSelect == 'Моя локация'))
               FieldsProductRequest(
-                titleText: '$_locationSeller',
-                hintText: '$_locationSeller',
+                titleText: _locationSeller,
+                hintText: _locationSeller,
                 star: false,
                 arrow: true,
                 hintColor: false,
@@ -2011,7 +1845,7 @@ class _EditProductSellerPageState extends State<EditProductSellerPage> {
                   final data = await Get.to(const ColorsSellerPage());
                   if (data != null) {
                     final CatsModel cat = data;
-                    color_id = cat.id ?? 0;
+                    colorId = cat.id ?? 0;
                     setState(() {});
                     colors = cat;
                   }
@@ -2586,7 +2420,7 @@ class _EditProductSellerPageState extends State<EditProductSellerPage> {
                     Switch(
                       onChanged: toggleSwitchBs,
                       value: isSwitchedBs,
-                      activeColor: AppColors.kPrimaryColor,
+                      activeThumbColor: AppColors.kPrimaryColor,
                       activeTrackColor: AppColors.kPrimaryColor,
                       inactiveThumbColor: const Color.fromRGBO(245, 245, 245, 1),
                       inactiveTrackColor: const Color.fromRGBO(237, 237, 237, 1),
@@ -2620,7 +2454,7 @@ class _EditProductSellerPageState extends State<EditProductSellerPage> {
                     Switch(
                       onChanged: toggleSwitchFBS,
                       value: isSwitchedFBS,
-                      activeColor: AppColors.kPrimaryColor,
+                      activeThumbColor: AppColors.kPrimaryColor,
                       activeTrackColor: AppColors.kPrimaryColor,
                       inactiveThumbColor: const Color.fromRGBO(245, 245, 245, 1),
                       inactiveTrackColor: const Color.fromRGBO(237, 237, 237, 1),
@@ -2652,7 +2486,7 @@ class _EditProductSellerPageState extends State<EditProductSellerPage> {
                     Switch(
                       onChanged: toggleSwitchFBS,
                       value: !isSwitchedFBS,
-                      activeColor: AppColors.kPrimaryColor,
+                      activeThumbColor: AppColors.kPrimaryColor,
                       activeTrackColor: AppColors.kPrimaryColor,
                       inactiveThumbColor: const Color.fromRGBO(245, 245, 245, 1),
                       inactiveTrackColor: const Color.fromRGBO(237, 237, 237, 1),
@@ -2795,10 +2629,8 @@ class _EditProductSellerPageState extends State<EditProductSellerPage> {
                             if (optomPriceController.text.isNotEmpty) {
                               bool exists = false;
 
-                              OptomPriceSellerDto? optomCountLast;
                               // if (optomCount.isNotEmpty) {
 
-                              optomCountLast = optomCount.isNotEmpty ? optomCount.last : null;
                               for (var element in optomCount) {
                                 if (element.count == optomCountController.text) {
                                   exists = true;
@@ -2930,13 +2762,13 @@ class _EditProductSellerPageState extends State<EditProductSellerPage> {
                 padding: const EdgeInsets.only(top: 10.0, bottom: 10),
                 child:
                     BlocListener<
-                      deleteImageCubit.DeleteImageSellerCubit,
-                      deleteImageCubit.DeleteImageSellerState
+                      delete_image_seller_cubit.DeleteImageSellerCubit,
+                      delete_image_seller_cubit.DeleteImageSellerState
                     >(
                       listener: (context, state) {
-                        if (state is deleteImageCubit.LoadedState) {
+                        if (state is delete_image_seller_cubit.LoadedState) {
                           _networkImage.remove(state.deletingImagePath);
-                          BlocProvider.of<deleteImageCubit.DeleteImageSellerCubit>(
+                          BlocProvider.of<delete_image_seller_cubit.DeleteImageSellerCubit>(
                             context,
                           ).toInit();
                           setState(() {});
@@ -2968,7 +2800,7 @@ class _EditProductSellerPageState extends State<EditProductSellerPage> {
                                                       onTap: () {
                                                         if (widget.product.id != null) {
                                                           BlocProvider.of<
-                                                                deleteImageCubit.DeleteImageSellerCubit
+                                                                delete_image_seller_cubit.DeleteImageSellerCubit
                                                               >(context)
                                                               .deleteImage(
                                                                 imagePath: e,
@@ -3174,7 +3006,9 @@ class _EditProductSellerPageState extends State<EditProductSellerPage> {
                           children: [
                             SvgPicture.asset(
                               'assets/icons/video.svg',
-                              color: _video == null ? AppColors.kGray300 : AppColors.kPrimaryColor,
+                              colorFilter: _video == null
+                                  ? ColorFilter.mode(AppColors.kGray300, BlendMode.srcIn)
+                                  : ColorFilter.mode(AppColors.kPrimaryColor, BlendMode.srcIn),
                             ),
                             const SizedBox(width: 10),
                             const Text(
@@ -3279,10 +3113,10 @@ class _EditProductSellerPageState extends State<EditProductSellerPage> {
                       priceController.text,
                       countController.text,
                       compoundController.text,
-                      cats?.id.toString() ?? cat_id.toString(),
-                      subCats?.id.toString() ?? sub_cat_id.toString(),
-                      brand_id.toString(),
-                      colors?.id.toString() ?? color_id.toString(),
+                      cats?.id.toString() ?? catId.toString(),
+                      subCats?.id.toString() ?? subCatId.toString(),
+                      brandId.toString(),
+                      colors?.id.toString() ?? colorId.toString(),
                       descriptionController.text,
                       nameController.text,
                       heightController.text,
@@ -3297,7 +3131,7 @@ class _EditProductSellerPageState extends State<EditProductSellerPage> {
                       optomCount,
                       sizeCount,
                       fulfillment,
-                      _video != null ? _video!.path : null,
+                      _video?.path,
                       pointsController.text,
                       pointsBloggerController.text,
                       subIds,
@@ -3352,11 +3186,11 @@ class FieldsProductRequest extends StatefulWidget {
     this.controller,
     this.cats,
     this.textInputNumber,
-    Key? key,
+    super.key,
     this.onPressed,
     this.readOnly = false,
     this.maxLines, // добавили
-  }) : super(key: key);
+  });
 
   @override
   State<FieldsProductRequest> createState() => _FieldsProductRequestState();

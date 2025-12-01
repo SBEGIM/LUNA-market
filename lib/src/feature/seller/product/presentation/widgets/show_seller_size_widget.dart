@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/feature/home/data/model/cat_model.dart';
-import 'package:haji_market/src/feature/seller/product/data/DTO/optom_price_seller_dto.dart';
 import 'package:haji_market/src/feature/seller/product/data/DTO/size_count_seller_dto.dart';
 import 'package:haji_market/src/feature/seller/product/presentation/widgets/show_seller_cats_widget.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
