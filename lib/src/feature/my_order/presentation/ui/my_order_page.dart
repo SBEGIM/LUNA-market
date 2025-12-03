@@ -226,7 +226,10 @@ class _MyOrderPageState extends State<MyOrderPage> {
                 itemBuilder: (BuildContext context, int index) {
                   return Container(
                     padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
-                    child: MyOrderCardWidget(basketOrder: state.basketOrderModel[index]),
+                    child: MyOrderCardWidget(
+                      index: index,
+                      basketOrder: state.basketOrderModel[index],
+                    ),
                   );
                 },
               ),

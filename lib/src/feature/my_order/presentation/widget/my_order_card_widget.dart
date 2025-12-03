@@ -5,9 +5,10 @@ import 'package:haji_market/src/feature/basket/data/models/basket_order_model.da
 import 'package:haji_market/src/feature/my_order/presentation/widget/my_order_status_page.dart';
 
 class MyOrderCardWidget extends StatefulWidget {
+  int index;
   final BasketOrderModel basketOrder;
 
-  const MyOrderCardWidget({Key? key, required this.basketOrder}) : super(key: key);
+  MyOrderCardWidget({Key? key, required this.index, required this.basketOrder}) : super(key: key);
 
   @override
   State<MyOrderCardWidget> createState() => _MyOrderCardWidgetState();
@@ -104,7 +105,8 @@ class _MyOrderCardWidgetState extends State<MyOrderCardWidget> {
             ? Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => MyOrderStatusPage(basketOrder: widget.basketOrder),
+                  builder: (context) =>
+                      MyOrderStatusPage(index: widget.index, basketOrder: widget.basketOrder),
                 ),
               )
             : printError();

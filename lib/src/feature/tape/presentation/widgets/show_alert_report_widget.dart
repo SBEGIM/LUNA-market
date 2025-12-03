@@ -8,7 +8,7 @@ Future<bool?> showBrandedAlert(
   BuildContext context, {
   // общее
   required String title,
-  required String message,
+  String? message,
   BrandedAlertMode mode = BrandedAlertMode.confirm,
   bool barrierDismissible = true,
   // тексты
@@ -68,14 +68,17 @@ Future<bool?> showBrandedAlert(
                         Text(
                           title,
                           textAlign: TextAlign.center,
-                          style: AppTextStyles.size22Weight600,
+                          style:
+                              // ? AppTextStyles.size14Weight500.copyWith(color: Color(0xff3A3A3C))
+                              AppTextStyles.size22Weight600,
                         ),
-                        const SizedBox(height: 8),
-                        Text(
-                          message,
-                          textAlign: TextAlign.center,
-                          style: AppTextStyles.size16Weight400.copyWith(color: Color(0xff636366)),
-                        ),
+                        if (message != null) const SizedBox(height: 8),
+                        if (message != null)
+                          Text(
+                            message,
+                            textAlign: TextAlign.center,
+                            style: AppTextStyles.size16Weight400.copyWith(color: Color(0xff636366)),
+                          ),
                         const SizedBox(height: 16),
                         if (mode == BrandedAlertMode.confirm)
                           Row(

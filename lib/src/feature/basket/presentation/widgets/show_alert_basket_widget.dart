@@ -7,13 +7,13 @@ enum AccountAlertMode { confirm, acknowledge }
 Future<bool?> showBasketAlert(
   BuildContext context, {
   // общее
-  required String title,
-  required String message,
+  String? title,
+  String? message,
   AccountAlertMode mode = AccountAlertMode.confirm,
   bool barrierDismissible = false,
   // тексты
-  String cancelText = 'Отмена',
-  String primaryText = 'Ок',
+  String? cancelText,
+  String? primaryText,
   // цвета/стили
   Color primaryColor = const Color(0xFF7B61FF),
   Gradient? primaryGradient, // для большой фиолетовой кнопки
@@ -81,19 +81,21 @@ Future<bool?> showBasketAlert(
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Text(
-                                title,
-                                textAlign: TextAlign.center,
-                                style: AppTextStyles.size18Weight600,
-                              ),
-                              const SizedBox(height: 8),
-                              Text(
-                                message,
-                                textAlign: TextAlign.center,
-                                style: AppTextStyles.size14Weight500.copyWith(
-                                  color: Color(0xff3A3A3C),
+                              if (title != null)
+                                Text(
+                                  title,
+                                  textAlign: TextAlign.center,
+                                  style: AppTextStyles.size18Weight600,
                                 ),
-                              ),
+                              if (title != null) const SizedBox(height: 8),
+                              if (message != null)
+                                Text(
+                                  message,
+                                  textAlign: TextAlign.center,
+                                  style: AppTextStyles.size14Weight500.copyWith(
+                                    color: Color(0xff3A3A3C),
+                                  ),
+                                ),
                               const SizedBox(height: 24),
                             ],
                           ),
@@ -115,49 +117,52 @@ Future<bool?> showBasketAlert(
                             ),
                             child: Row(
                               children: [
-                                // левая кнопка + вертикальный разделитель по центру
-                                Expanded(
-                                  child: TextButton(
-                                    onPressed: () => Navigator.of(ctx).pop(false),
-                                    style: TextButton.styleFrom(
-                                      padding: EdgeInsets.zero,
-                                      foregroundColor: Colors.black,
-                                      shape: const RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.zero,
+                                if (cancelText != null)
+                                  // левая кнопка + вертикальный разделитель по центру
+                                  Expanded(
+                                    child: TextButton(
+                                      onPressed: () => Navigator.of(ctx).pop(false),
+                                      style: TextButton.styleFrom(
+                                        padding: EdgeInsets.zero,
+                                        foregroundColor: Colors.black,
+                                        shape: const RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.zero,
+                                        ),
                                       ),
-                                    ),
-                                    child: Text(
-                                      cancelText,
-                                      style: AppTextStyles.size18Weight600.copyWith(
-                                        color: Color(0xff636366),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                const VerticalDivider(
-                                  // та самая линия по центру, тянется на всю высоту 46
-                                  width: 0,
-                                  thickness: 1,
-                                  color: Color(0xFFD1D1D6),
-                                ),
-                                Expanded(
-                                  child: TextButton(
-                                    onPressed: () => Navigator.of(ctx).pop(true),
-                                    style: TextButton.styleFrom(
-                                      padding: EdgeInsets.zero,
-                                      foregroundColor: primaryColor ?? Color(0xffFF3347),
-                                      shape: const RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.zero,
-                                      ),
-                                    ),
-                                    child: Text(
-                                      primaryText,
-                                      style: AppTextStyles.size18Weight600.copyWith(
-                                        color: primaryColor ?? AppColors.mainRedColor,
+                                      child: Text(
+                                        cancelText,
+                                        style: AppTextStyles.size18Weight600.copyWith(
+                                          color: Color(0xff636366),
+                                        ),
                                       ),
                                     ),
                                   ),
-                                ),
+                                if (cancelText != null)
+                                  const VerticalDivider(
+                                    // та самая линия по центру, тянется на всю высоту 46
+                                    width: 0,
+                                    thickness: 1,
+                                    color: Color(0xFFD1D1D6),
+                                  ),
+                                if (primaryText != null)
+                                  Expanded(
+                                    child: TextButton(
+                                      onPressed: () => Navigator.of(ctx).pop(true),
+                                      style: TextButton.styleFrom(
+                                        padding: EdgeInsets.zero,
+                                        foregroundColor: primaryColor ?? Color(0xffFF3347),
+                                        shape: const RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.zero,
+                                        ),
+                                      ),
+                                      child: Text(
+                                        primaryText,
+                                        style: AppTextStyles.size18Weight600.copyWith(
+                                          color: primaryColor ?? AppColors.mainRedColor,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
                               ],
                             ),
                           ),

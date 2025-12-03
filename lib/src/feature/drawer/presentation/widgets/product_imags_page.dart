@@ -66,7 +66,7 @@ class _ProductImagesState extends State<ProductImages> {
           onTap: () {
             Navigator.pop(context);
           },
-          child: const Icon(Icons.arrow_back_ios, color: AppColors.kPrimaryColor),
+          child: const Icon(Icons.arrow_back_ios),
         ),
       ),
       body: Column(

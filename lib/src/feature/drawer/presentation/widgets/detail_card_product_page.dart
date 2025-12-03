@@ -158,6 +158,169 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
     super.dispose();
   }
 
+  void _openFullScreenImage(int initialIndex) {
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      barrierColor: Colors.black.withOpacity(0.9),
+      builder: (dialogContext) {
+        final pageController = PageController(initialPage: initialIndex);
+        int currentIndex = initialIndex;
+
+        return StatefulBuilder(
+          builder: (context, setStateDialog) {
+            return Stack(
+              children: [
+                // Сами фото
+                PageView.builder(
+                  controller: pageController,
+                  itemCount: widget.product.path?.length ?? 0,
+                  onPageChanged: (value) {
+                    currentIndex = value;
+                    setStateDialog(() {});
+                  },
+                  itemBuilder: (_, i) {
+                    return Center(
+                      child: InteractiveViewer(
+                        panEnabled: true,
+                        minScale: 1,
+                        maxScale: 4,
+                        child: Image.network(
+                          "https://lunamarket.ru/storage/${widget.product.path![i]}",
+                          fit: BoxFit.contain,
+                        ),
+                      ),
+                    );
+                  },
+                ),
+
+                // 🔹 ТВОИ ТОЧКИ ДЛЯ ФОТО 🔹
+                Positioned(
+                  bottom: 55,
+                  left: 16,
+                  right: 16,
+                  child: SizedBox(
+                    height: 30,
+                    // decoration: const BoxDecoration(
+                    //   color: AppColors.kWhite,
+                    //   borderRadius: BorderRadius.only(
+                    //     bottomLeft: Radius.circular(16),
+                    //     bottomRight: Radius.circular(16),
+                    //   ),
+                    // ),
+                    child: Center(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: List.generate(
+                          (widget.product.path?.length ?? 0),
+                          (index) => GestureDetector(
+                            onTap: () {
+                              currentIndex = index;
+                              pageController.animateToPage(
+                                index,
+                                duration: const Duration(milliseconds: 300),
+                                curve: Curves.easeInOut,
+                              );
+                              setStateDialog(() {});
+                            },
+                            child: Container(
+                              margin: const EdgeInsets.only(left: 16),
+                              height: 8,
+                              width: 8,
+                              decoration: BoxDecoration(
+                                color: currentIndex == index
+                                    ? AppColors.kGray400
+                                    : AppColors.kGray2,
+                                borderRadius: BorderRadius.circular(100),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+
+                // Крестик закрыть
+                Positioned(
+                  top: 40,
+                  right: 24,
+                  child: IconButton(
+                    icon: const Icon(Icons.close, color: Colors.white),
+                    onPressed: () => Navigator.pop(dialogContext),
+                  ),
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+  }
+
+  void _openFullScreenVideo() {
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      barrierColor: Colors.black.withOpacity(0.9),
+      builder: (dialogContext) {
+        return StatefulBuilder(
+          builder: (dialogContext, setStateDialog) {
+            final isPlaying = _controller!.value.isPlaying;
+
+            void togglePlay() {
+              if (isPlaying) {
+                _controller!.pause();
+              } else {
+                _controller!.play();
+              }
+              setStateDialog(() {}); // обновляем иконку в диалоге
+            }
+
+            return Stack(
+              children: [
+                // Видео
+                Center(
+                  child: AspectRatio(
+                    aspectRatio: _controller!.value.aspectRatio,
+                    child: GestureDetector(
+                      onTap: togglePlay, // тап по видео = play/pause
+                      child: VideoPlayer(_controller!),
+                    ),
+                  ),
+                ),
+
+                // Иконка play/pause в центре
+                Center(
+                  child: IconButton(
+                    iconSize: 72,
+                    onPressed: togglePlay,
+                    icon: isPlaying
+                        ? SizedBox.shrink()
+                        : Image.asset(Assets.icons.tapePlayIcon.path, height: 36, width: 36),
+                  ),
+                ),
+
+                // Крестик закрыть
+                Positioned(
+                  top: 40,
+                  right: 24,
+                  child: IconButton(
+                    icon: const Icon(Icons.close, color: Colors.white),
+                    onPressed: () {
+                      _controller!.pause();
+                      Navigator.pop(dialogContext);
+                    },
+                  ),
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final sizesRaw = widget.product.size ?? [];
@@ -220,9 +383,11 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                       if (isVideo) {
                         return GestureDetector(
                           onTap: () {
-                            _controller!.value.isPlaying
-                                ? _controller!.pause()
-                                : _controller!.play();
+                            _openFullScreenVideo();
+
+                            // _controller!.value.isPlaying
+                            //     ? _controller!.pause()
+                            //     : _controller!.play();
                           },
                           child: Stack(
                             children: [
@@ -258,42 +423,31 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                       }
 
                       // Фото
-                      return Container(
-                        padding: EdgeInsets.only(left: 16, right: 16, top: 8),
-                        decoration: BoxDecoration(color: Colors.white),
-                        child: Stack(
-                          children: [
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(12),
-                              child: Image.network(
-                                "https://lunamarket.ru/storage/${widget.product.path![index]}",
-                                fit: BoxFit.cover,
-                                height: 377,
-                                width: double.infinity,
-                                errorBuilder: (context, error, stackTrace) =>
-                                    const ErrorImageWidget(height: 283, width: double.infinity),
-                              ),
+                      return InkWell(
+                        onTap: () {
+                          _openFullScreenImage(index);
+
+                          // Get.to(
+                          //   () => ProductImages(
+                          //     images: widget.product.path,
+                          //     video: widget.product.video,
+                          //   ),
+                          // );
+                        },
+                        child: Container(
+                          padding: EdgeInsets.only(left: 16, right: 16, top: 8),
+                          decoration: BoxDecoration(color: Colors.white),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(12),
+                            child: Image.network(
+                              "https://lunamarket.ru/storage/${widget.product.path![index]}",
+                              fit: BoxFit.cover,
+                              height: 377,
+                              width: double.infinity,
+                              errorBuilder: (context, error, stackTrace) =>
+                                  const ErrorImageWidget(height: 283, width: double.infinity),
                             ),
-                            Positioned(
-                              bottom: 6,
-                              right: 20,
-                              child: GestureDetector(
-                                onTap: (() {
-                                  Get.to(
-                                    () => ProductImages(
-                                      images: widget.product.path,
-                                      video: widget.product.video,
-                                    ),
-                                  );
-                                }),
-                                child: Image.asset(
-                                  Assets.icons.fullscreen.path,
-                                  height: 25,
-                                  width: 25,
-                                ),
-                              ),
-                            ),
-                          ],
+                          ),
                         ),
                       );
                     },
@@ -390,6 +544,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
               ],
             ),
           ),
+
           Container(
             height: 30,
             decoration: BoxDecoration(

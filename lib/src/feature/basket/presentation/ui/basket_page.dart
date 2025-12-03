@@ -10,6 +10,7 @@ import 'package:haji_market/src/feature/app/widgets/app_snack_bar.dart';
 import 'package:haji_market/src/feature/basket/data/models/basket_show_model.dart';
 import 'package:haji_market/src/feature/basket/presentation/widgets/basket_card_widget.dart';
 import 'package:haji_market/src/feature/basket/presentation/widgets/show_alert_basket_widget.dart';
+import 'package:haji_market/src/feature/tape/presentation/widgets/show_alert_report_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:share_plus/share_plus.dart';
@@ -582,10 +583,14 @@ class _BasketPageState extends State<BasketPage> {
                           // }
                           // Get.to(const BasketOrderAddressPage())
                         } else {
-                          AppSnackBar.show(
+                          await showBasketAlert(
                             context,
-                            'Выберите товары,чтобы продолжить',
-                            type: AppSnackType.error,
+                            title: null,
+                            message: 'Выберите товары,чтобы продолжить',
+                            // mode: BrandedAlertMode.acknowledge,
+                            primaryText: 'Понятно',
+                            // если нужен свой градиент:
+                            // primaryGradient: const LinearGradient(colors: [Color(0xFF7B61FF), Color(0xFF8C52FF)]),
                           );
                         }
 

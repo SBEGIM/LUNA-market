@@ -368,7 +368,14 @@ class _HomePageState extends State<HomePage> {
             ),
 
             const SizedBox(height: 16),
-            const CatsPage(),
+            Container(
+              constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.315),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: const CatsPage(),
+            ),
 
             // const PopularCatsHomepage(),
             // const SizedBox(

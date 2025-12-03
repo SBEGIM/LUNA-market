@@ -259,4 +259,11 @@ class BasketCubit extends Cubit<BasketState> {
       emit(ErrorState(message: 'Ошибка сервера'));
     }
   }
+
+  void updateProductByIndex({required int index, required BasketOrderModel updatedOrder}) {
+    if (index < _orders.length) {
+      _orders[index] = updatedOrder;
+      emit(LoadedOrderState(_orders));
+    }
+  }
 }

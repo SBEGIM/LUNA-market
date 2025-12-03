@@ -26,15 +26,18 @@ import '../../../seller/order/bloc/order_status_seller_cubit.dart';
 import '../../../basket/bloc/basket_cubit.dart';
 
 class MyOrderStatusPage extends StatefulWidget {
-  final BasketOrderModel basketOrder;
+  int index;
+  BasketOrderModel basketOrder;
 
-  const MyOrderStatusPage({required this.basketOrder, super.key});
+  MyOrderStatusPage({required this.index, required this.basketOrder, super.key});
 
   @override
   State<MyOrderStatusPage> createState() => _MyOrderStatusPageState();
 }
 
 class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
+  late BasketOrderModel _basketOrder;
+
   bool inbasket = false;
   bool hidden = false;
   String productId = '';
@@ -49,6 +52,8 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
       final filters = context.read<FilterProvider>();
       BlocProvider.of<product_cubit.ProductCubit>(context).productsMbInteresting(filters);
     }
+
+    _basketOrder = widget.basketOrder;
     // статус прогресса теперь приходит с бэка в basketStatusTimeline,
     // поэтому orderTimeline больше не нужен
     super.initState();
@@ -87,7 +92,7 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
   @override
   Widget build(BuildContext context) {
     /// новый список шагов таймлайна из модели
-    final timelineSteps = widget.basketOrder.basketStatusTimeline ?? [];
+    final timelineSteps = _basketOrder.basketStatusTimeline ?? [];
 
     return Scaffold(
       backgroundColor: AppColors.kBackgroundColor,
@@ -95,7 +100,7 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
         backgroundColor: Colors.white,
         elevation: 0,
         centerTitle: true,
-        title: Text('№ ${widget.basketOrder.id}', style: AppTextStyles.size18Weight600),
+        title: Text('№ ${_basketOrder.id}', style: AppTextStyles.size18Weight600),
         leading: InkWell(
           onTap: () {
             context.router.pop();
@@ -108,14 +113,14 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
         child: IndexedStack(
           index: segmentValue,
           children: [
-            if (widget.basketOrder.product?.isNotEmpty ?? false)
+            if (_basketOrder.product?.isNotEmpty ?? false)
               ListView(
                 children: [
                   const SizedBox(height: 12),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      if (widget.basketOrder.status != 'cancel')
+                      if (_basketOrder.status != 'cancel')
                         Padding(
                           padding: const EdgeInsets.only(left: 16.0, right: 16),
                           child: Container(
@@ -128,15 +133,14 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 // ********* НОВАЯ ШАПКА ОЖИДАЕМОЙ ДОСТАВКИ *********
-                                if (widget.basketOrder.status != 'cancel')
+                                if (_basketOrder.status != 'cancel')
                                   Text(
-                                    'Ожидаемая доставка: ${widget.basketOrder.expectedDeliveryDate ?? ''}',
+                                    'Ожидаемая доставка: ${_basketOrder.expectedDeliveryDate ?? ''}',
                                     style: AppTextStyles.size18Weight700,
                                   ),
                                 const SizedBox(height: 20),
                                 // ********* ДИНАМИЧЕСКИЙ ТАЙМЛАЙН ИЗ basketStatusTimeline *********
-                                if (timelineSteps.isNotEmpty &&
-                                    widget.basketOrder.status != 'cancel')
+                                if (timelineSteps.isNotEmpty && _basketOrder.status != 'cancel')
                                   Column(
                                     children: [
                                       for (int i = 0; i < timelineSteps.length; i++)
@@ -196,7 +200,7 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                         mainAxisAlignment: MainAxisAlignment.start,
                                         children: [
                                           const SizedBox(width: 30),
-                                          if (widget.basketOrder.status == 'end')
+                                          if (_basketOrder.status == 'end')
                                             const SizedBox.shrink()
                                           else
                                             BlocConsumer<
@@ -229,15 +233,14 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                                         context,
                                                       ).basketStatus(
                                                         'end',
-                                                        widget.basketOrder.id.toString(),
-                                                        widget.basketOrder.product!.first.id
-                                                            .toString(),
+                                                        _basketOrder.id.toString(),
+                                                        _basketOrder.product!.first.id.toString(),
                                                         'fbs',
                                                       );
                                                     } else {
                                                       AppSnackBar.show(
                                                         context,
-                                                        '${widget.basketOrder.basketStatusTimeline![widget.basketOrder.currentStep! + 1].title}',
+                                                        '${_basketOrder.basketStatusTimeline![_basketOrder.currentStep! + 1].title}',
                                                         type: AppSnackType.error,
                                                       );
                                                     }
@@ -295,7 +298,7 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                           ),
                         ),
 
-                      if (widget.basketOrder.status == 'cancel')
+                      if (_basketOrder.status == 'cancel')
                         Container(
                           height: 74,
                           margin: EdgeInsets.symmetric(horizontal: 16),
@@ -323,8 +326,7 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
 
                       GestureDetector(
                         onTap: () {
-                          if (widget.basketOrder.status != 'courier' &&
-                              widget.basketOrder.status != 'cancel') {
+                          if (_basketOrder.status != 'courier' && _basketOrder.status != 'cancel') {
                             final List<String> cancelReasons = [
                               'Передумал покупать',
                               'Сроки доставки изменились',
@@ -339,10 +341,19 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                               String reason,
                             ) {
                               context.read<OrderStatusSellerCubit>().cancelOrder(
-                                widget.basketOrder.id.toString(),
+                                _basketOrder.id.toString(),
                                 'cancel',
                                 reason,
                               );
+
+                              BlocProvider.of<BasketCubit>(context).updateProductByIndex(
+                                index: _basketOrder.id!,
+                                updatedOrder: _basketOrder.copyWith(status: 'cancel'),
+                              );
+
+                              setState(() {
+                                _basketOrder = _basketOrder.copyWith(status: 'cancel');
+                              });
 
                               context.router.push(SuccessCancelRoute());
                             });
@@ -353,21 +364,21 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                             //         CancelOrderWidget(id: widget.basketOrder.id.toString()),
                             //   ),
                             // );
-                          } else if (widget.basketOrder.status != 'courier' &&
-                              widget.basketOrder.status != 'cancel') {
+                          } else if (_basketOrder.status != 'courier' &&
+                              _basketOrder.status != 'cancel') {
                             showOrderUncancel(context, 'Отменить заказ', [], (String reason) {});
                           } else {
                             ProductModel product = ProductModel(
-                              id: widget.basketOrder.product?.first.id,
-                              name: widget.basketOrder.product?.first.productName,
-                              price: widget.basketOrder.product?.first.price,
-                              count: widget.basketOrder.product?.first.count,
-                              compound: widget.basketOrder.product?.first.count,
-                              path: widget.basketOrder.product?.first.path,
+                              id: _basketOrder.product?.first.id,
+                              name: _basketOrder.product?.first.productName,
+                              price: _basketOrder.product?.first.price,
+                              count: _basketOrder.product?.first.count,
+                              compound: _basketOrder.product?.first.count,
+                              path: _basketOrder.product?.first.path,
                               pre_order: 1,
                               shop: Shop(
-                                id: widget.basketOrder.shopId,
-                                name: widget.basketOrder.product?.first.shopName,
+                                id: _basketOrder.shopId,
+                                name: _basketOrder.product?.first.shopName,
                               ),
                             );
                             showBasketBottomSheetOptions(
@@ -462,7 +473,7 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                             children: [
                               Text(
                                 // widget.basketOrder.status != 'courier' &&
-                                widget.basketOrder.status == 'cancel'
+                                _basketOrder.status == 'cancel'
                                     ? 'Повторить заказ'
                                     : 'Отменить заказ',
                                 style: AppTextStyles.size18Weight500.copyWith(
@@ -482,7 +493,7 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                       ),
                       InkWell(
                         onTap: () {
-                          final phone = widget.basketOrder.product?.first.shopPhone;
+                          final phone = _basketOrder.product?.first.shopPhone;
 
                           if (phone != null && phone.isNotEmpty) {
                             _callSeller(phone);
@@ -510,14 +521,14 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                               ),
                               const SizedBox(height: 8),
                               Text(
-                                '${widget.basketOrder.product!.first.shopName}',
+                                '${_basketOrder.product!.first.shopName}',
                                 style: AppTextStyles.size18Weight600,
                               ),
                               const SizedBox(height: 4),
                               Text(
-                                widget.basketOrder.product?.first.shopPhone != null ||
-                                        widget.basketOrder.product?.first.shopPhone != ''
-                                    ? '${widget.basketOrder.product?.first.shopPhone}'
+                                _basketOrder.product?.first.shopPhone != null ||
+                                        _basketOrder.product?.first.shopPhone != ''
+                                    ? '${_basketOrder.product?.first.shopPhone}'
                                     : 'Неизвестен',
                                 style: AppTextStyles.size16Weight500.copyWith(
                                   color: AppColors.mainPurpleColor,
@@ -550,7 +561,7 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                             const SizedBox(height: 8),
                             Text('Пункт выдачи  СДЭК', style: AppTextStyles.size18Weight600),
                             Text(
-                              widget.basketOrder.product?.first.address ?? 'Неизвестен',
+                              _basketOrder.product?.first.address ?? 'Неизвестен',
                               style: AppTextStyles.size16Weight400,
                             ),
                             Text(
@@ -564,11 +575,11 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                       ),
                       Container(
                         margin: const EdgeInsets.symmetric(horizontal: 16),
-                        height: (widget.basketOrder.product?.length ?? 1) * 130,
+                        height: (_basketOrder.product?.length ?? 1) * 130,
                         child: ListView.builder(
                           shrinkWrap: true,
                           physics: const NeverScrollableScrollPhysics(),
-                          itemCount: widget.basketOrder.product?.length,
+                          itemCount: _basketOrder.product?.length,
                           scrollDirection: Axis.vertical,
                           itemBuilder: (context, index) {
                             return Container(
@@ -583,10 +594,9 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                               child: Row(
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  if (widget.basketOrder.product != null &&
-                                      widget.basketOrder.product?[index].path != null &&
-                                      (widget.basketOrder.product?[index].path?.isNotEmpty ??
-                                          false))
+                                  if (_basketOrder.product != null &&
+                                      _basketOrder.product?[index].path != null &&
+                                      (_basketOrder.product?[index].path?.isNotEmpty ?? false))
                                     buildProductImage(index)
                                   else
                                     const ErrorImageWidget(width: 88, height: 88),
@@ -600,7 +610,7 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                         SizedBox(
                                           width: 238,
                                           child: Text(
-                                            '${widget.basketOrder.product?[index].productName}',
+                                            '${_basketOrder.product?[index].productName}',
                                             style: AppTextStyles.size14Weight500,
                                             maxLines: 1,
                                             overflow: TextOverflow.ellipsis,
@@ -618,7 +628,7 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                                 ),
                                               ),
                                               Text(
-                                                '${widget.basketOrder.product?[index].price} ₽',
+                                                '${_basketOrder.product?[index].price} ₽',
                                                 style: AppTextStyles.size14Weight500,
                                               ),
                                             ],
@@ -636,29 +646,28 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                                 ),
                                               ),
                                               Text(
-                                                '${widget.basketOrder.product?[index].count} шт',
+                                                '${_basketOrder.product?[index].count} шт',
                                                 style: AppTextStyles.size14Weight500,
                                               ),
                                             ],
                                           ),
                                         ),
                                         const SizedBox(height: 4),
-                                        if (widget.basketOrder.status == 'end')
+                                        if (_basketOrder.status == 'end')
                                           GestureDetector(
                                             onTap: () {
                                               productId =
-                                                  (widget.basketOrder.product?[index].id
-                                                      .toString() ??
+                                                  (_basketOrder.product?[index].id.toString() ??
                                                   '0');
                                               context.router.push(
                                                 ReviewOrderWidgetRoute(
-                                                  basketOrder: widget.basketOrder,
+                                                  basketOrder: _basketOrder,
                                                   index: index,
                                                 ),
                                               );
 
                                               productName =
-                                                  widget.basketOrder.product?[index].productName
+                                                  _basketOrder.product?[index].productName
                                                       .toString() ??
                                                   '0';
                                               hidden = !hidden;
@@ -709,7 +718,7 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                               children: [
                                 Text('Сумма', style: AppTextStyles.size16Weight400),
                                 Text(
-                                  '${widget.basketOrder.summa?.toInt()} ₽',
+                                  '${_basketOrder.summa?.toInt()} ₽',
                                   style: AppTextStyles.size16Weight600,
                                 ),
                               ],
@@ -720,7 +729,7 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                               children: [
                                 Text('Доставка', style: AppTextStyles.size16Weight400),
                                 Text(
-                                  '${widget.basketOrder.deliveryPrice ?? 0} ₽ ',
+                                  '${_basketOrder.deliveryPrice ?? 0} ₽ ',
                                   style: AppTextStyles.size16Weight600,
                                 ),
                               ],
@@ -773,7 +782,7 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                               children: [
                                 Text('Итого', style: AppTextStyles.size18Weight600),
                                 Text(
-                                  ' ${(widget.basketOrder.summa?.toInt() ?? 0) + (widget.basketOrder.deliveryPrice ?? 0)}₽',
+                                  ' ${(_basketOrder.summa?.toInt() ?? 0) + (_basketOrder.deliveryPrice ?? 0)}₽',
                                   style: AppTextStyles.size18Weight700,
                                 ),
                               ],
@@ -890,7 +899,7 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
   }
 
   String? _imageUrlFor(int index) {
-    final fbs = widget.basketOrder.product;
+    final fbs = _basketOrder.product;
     if (fbs == null || index < 0 || index >= fbs.length) return null;
 
     final paths = fbs[index].path; // предположительно List<String>?
