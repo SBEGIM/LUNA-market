@@ -171,7 +171,7 @@ class _MyOrdersSellerPageState extends State<MyOrdersSellerPage> {
             if (state is LoadedState) {
               return SmartRefresher(
                 onRefresh: () {
-                  BlocProvider.of<BasketSellerCubit>(context).basketOrderShow('fbs');
+                  BlocProvider.of<BasketSellerCubit>(context).basketOrderShow('');
                   _controller.refreshCompleted();
                 },
                 controller: _controller,

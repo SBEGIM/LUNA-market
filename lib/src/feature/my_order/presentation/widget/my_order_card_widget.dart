@@ -36,6 +36,10 @@ class _MyOrderCardWidgetState extends State<MyOrderCardWidget> {
         return 'Ошибка';
       case 'success':
         return 'Принят';
+      case 'ready_for_pickup':
+        return 'Готов к выдачи';
+      case 'delivered':
+        return 'Доставка в пункт выдачи';
       // если есть статусы типа спорный / возврат — добавь тут:
       // case 'dispute':
       //   return 'Спорный';
@@ -67,6 +71,10 @@ class _MyOrderCardWidgetState extends State<MyOrderCardWidget> {
         return 'Отменён магазином';
       case 'error':
         return 'Ошибка';
+      case 'ready_for_pickup':
+        return 'Готов к выдачи';
+      case 'delivered':
+        return 'Доставка в пункт выдачи';
       default:
         return 'Неизвестно';
     }

@@ -194,6 +194,17 @@ class BasketCubit extends Cubit<BasketState> {
     }
   }
 
+  Future<BasketOrderModel> basketOrderShowById({required int id}) async {
+    try {
+      final List<BasketOrderModel> data = await basketRepository.basketOrderShowById(id: id);
+
+      return data[0];
+    } catch (e) {
+      log(e.toString());
+      return _orders[0];
+    }
+  }
+
   Future<void> basketOrderShowPaginate({required String status}) async {
     try {
       basketOrderShowPage++;

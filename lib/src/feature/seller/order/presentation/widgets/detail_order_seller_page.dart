@@ -70,10 +70,10 @@ class _DetailOrderSellerPageState extends State<DetailOrderSellerPage> {
       case 'courier':
         {
           statusFBS = 'Доставка в пути';
-          postStatusFBS = '';
-          postSecondStatusFBS = 'error';
-          buttonTextFBS = 'Ожидание клиента';
-          buttonSecondTextFBS = 'Проблемы с заказом';
+          postStatusFBS = 'error';
+          postSecondStatusFBS = 'ready_for_pickup';
+          buttonTextFBS = 'Проблемы с заказом';
+          buttonSecondTextFBS = 'Готов к выдаче';
         }
         break;
       case 'error':
