@@ -136,7 +136,9 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                if (_basketOrder.status != 'cancel')
+                if (_basketOrder.status != 'cancel' &&
+                    _basketOrder.status != 'end' &&
+                    _basketOrder.status != 'return')
                   Padding(
                     padding: const EdgeInsets.only(left: 16.0, right: 16),
                     child: Container(
@@ -364,138 +366,133 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                     ),
                   ),
 
-                GestureDetector(
-                  onTap: () {
-                    if (_basketOrder.status != 'courier' && _basketOrder.status != 'cancel') {
-                      final List<String> cancelReasons = [
-                        'Передумал покупать',
-                        'Сроки доставки изменились',
-                        'У продавца нет товара в наличии',
-                        'У продавца нет цвета/размера/модели',
-                        'Продавец предлагал другую модель/\nтовар',
-                        'Товар не соответствует описанию/\nфото',
-                        'Другое',
-                      ];
-
-                      showOrderCancel(context, 'Причина возврата', cancelReasons, (String reason) {
-                        context.read<OrderStatusSellerCubit>().cancelOrder(
-                          _basketOrder.id.toString(),
-                          'cancel',
-                          reason,
-                        );
-
-                        BlocProvider.of<BasketCubit>(context).updateProductByIndex(
-                          index: _basketOrder.id!,
-                          updatedOrder: _basketOrder.copyWith(status: 'cancel'),
-                        );
-
-                        setState(() {
-                          _basketOrder = _basketOrder.copyWith(status: 'cancel');
-                        });
-
-                        context.router.push(SuccessCancelRoute());
-                      });
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(
-                      //     builder: (context) =>
-                      //         CancelOrderWidget(id: widget.basketOrder.id.toString()),
-                      //   ),
-                      // );
-                    } else if (_basketOrder.status == 'courier' &&
-                        _basketOrder.status != 'cancel') {
-                      showOrderUncancel(context, 'Отменить заказ', [], (String reason) {});
-                    } else {
-                      ProductModel product = ProductModel(
-                        id: _basketOrder.product?.first.id,
-                        name: _basketOrder.product?.first.productName,
-                        price: _basketOrder.product?.first.price,
-                        count: _basketOrder.product?.first.count,
-                        compound: _basketOrder.product?.first.count,
-                        path: _basketOrder.product?.first.path,
-                        pre_order: 1,
-                        shop: Shop(
-                          id: _basketOrder.shopId,
-                          name: _basketOrder.product?.first.shopName,
+                if (_basketOrder.status == 'end')
+                  Container(
+                    height: 74,
+                    margin: EdgeInsets.symmetric(horizontal: 16),
+                    padding: EdgeInsets.only(left: 16),
+                    alignment: Alignment.centerLeft,
+                    decoration: BoxDecoration(
+                      color: AppColors.kWhite,
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Выдан',
+                          style: AppTextStyles.size18Weight700.copyWith(
+                            color: AppColors.mainGreenColor,
+                          ),
                         ),
-                      );
-                      showBasketBottomSheetOptions(context, '${product.shop?.name}', 0, product, (
-                        int callBackCount,
-                        int callBackPrice,
-                        bool callBackOptom,
-                      ) {
-                        if (product.product_count == 0 && product.pre_order == 1) {
-                          if (product.inBasket == false) {
-                            showCupertinoModalPopup<void>(
-                              context: context,
-                              builder: (context) => PreOrderDialog(
-                                onYesTap: () {
-                                  Navigator.pop(context);
-                                  if (product.inBasket == false) {
-                                    BlocProvider.of<BasketCubit>(context).basketAdd(
-                                      product.id.toString(),
-                                      callBackCount,
-                                      callBackPrice,
-                                      '',
-                                      '',
-                                      isOptom: callBackOptom,
-                                    );
+                        Text('2 июня', style: AppTextStyles.size16Weight500),
+                      ],
+                    ),
+                  ),
 
-                                    // BlocProvider.of<productCubit.ProductCubit>(
-                                    //   context,
-                                    // ).updateProductByIndex(
-                                    //   index: widget.index,
-                                    //   updatedProduct: widget.product.copyWith(
-                                    //     basketCount: basketCount + 1,
-                                    //     inBasket: true,
-                                    //   ),
-                                    // );
-                                  }
-                                },
-                              ),
-                            );
-                          } else {
-                            context.router.pushAndPopUntil(
-                              const LauncherRoute(children: [BasketRoute()]),
-                              predicate: (route) => false,
-                            );
-                          }
+                if (_basketOrder.status == 'return')
+                  Container(
+                    height: 48,
+                    margin: EdgeInsets.symmetric(horizontal: 16),
+                    padding: EdgeInsets.only(left: 16),
+                    alignment: Alignment.centerLeft,
+                    decoration: BoxDecoration(
+                      color: AppColors.kWhite,
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [Text('Возврат оформлен', style: AppTextStyles.size18Weight700)],
+                    ),
+                  ),
 
-                          return;
-                        }
+                if (_basketOrder.status != 'end' &&
+                    _basketOrder.status != 'cancel' &&
+                    _basketOrder.status != 'return')
+                  GestureDetector(
+                    onTap: () {
+                      if (_basketOrder.status != 'courier' && _basketOrder.status != 'cancel') {
+                        final List<String> cancelReasons = [
+                          'Передумал покупать',
+                          'Сроки доставки изменились',
+                          'У продавца нет товара в наличии',
+                          'У продавца нет цвета/размера/модели',
+                          'Продавец предлагал другую модель/\nтовар',
+                          'Товар не соответствует описанию/\nфото',
+                          'Другое',
+                        ];
 
-                        // if (widget.product.inBasket == false) {
-                        BlocProvider.of<BasketCubit>(context).basketAdd(
-                          product.id.toString(),
-                          callBackCount,
-                          callBackPrice,
-                          '',
-                          '',
-                          isOptom: callBackOptom,
-                        );
+                        showOrderCancel(context, 'Причина возврата', cancelReasons, (
+                          String reason,
+                        ) {
+                          context.read<OrderStatusSellerCubit>().cancelOrder(
+                            _basketOrder.id.toString(),
+                            'cancel',
+                            reason,
+                          );
 
-                        // BlocProvider.of<productCubit.ProductCubit>(
+                          BlocProvider.of<BasketCubit>(context).updateProductByIndex(
+                            index: _basketOrder.id!,
+                            updatedOrder: _basketOrder.copyWith(status: 'cancel'),
+                          );
+
+                          setState(() {
+                            _basketOrder = _basketOrder.copyWith(status: 'cancel');
+                          });
+
+                          context.router.push(SuccessCancelRoute());
+                        });
+                        // Navigator.push(
                         //   context,
-                        // ).updateProductByIndex(
-                        //   index: widget.index,
-                        //   updatedProduct: widget.product.copyWith(
-                        //     basketCount: basketCount + 1,
-                        //     inBasket: true,
+                        //   MaterialPageRoute(
+                        //     builder: (context) =>
+                        //         CancelOrderWidget(id: widget.basketOrder.id.toString()),
                         //   ),
                         // );
-                        // setState(() {
-                        //   count += 1;
-                        //   // if (count == 0) {
-                        //   //   isvisible = false;
-                        //   // } else {
-                        //   //   isvisible = true;
-                        //   // }
-                        // });
-                      });
-                    }
-                  },
-                  child: Container(
-                    height: 40,
+                      } else if (_basketOrder.status == 'courier' &&
+                          _basketOrder.status != 'cancel') {
+                        showOrderUncancel(context, 'Отменить заказ', [], (String reason) {});
+                      }
+                    },
+                    child: Container(
+                      height: 40,
+                      margin: const EdgeInsets.only(left: 16, right: 16, top: 12),
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      width: double.infinity,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        color: AppColors.kWhite,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Отменить заказ',
+                            style: AppTextStyles.size18Weight500.copyWith(
+                              color: AppColors.mainPurpleColor,
+                            ),
+                          ),
+                          Image.asset(
+                            Assets.icons.defaultArrowForwardIcon.path,
+                            color: AppColors.mainPurpleColor,
+                            height: 20,
+                            width: 20,
+                            scale: 2.1,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                if (_basketOrder.status == 'end' ||
+                    _basketOrder.status == 'cancel' ||
+                    _basketOrder.status == 'return')
+                  Container(
+                    height: _basketOrder.status == 'cancel' || _basketOrder.status == 'return'
+                        ? 40
+                        : 100,
                     margin: const EdgeInsets.only(left: 16, right: 16, top: 12),
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     width: double.infinity,
@@ -504,27 +501,158 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                       color: AppColors.kWhite,
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          // widget.basketOrder.status != 'courier' &&
-                          _basketOrder.status == 'cancel' ? 'Повторить заказ' : 'Отменить заказ',
-                          style: AppTextStyles.size18Weight500.copyWith(
-                            color: AppColors.mainPurpleColor,
+                        InkWell(
+                          onTap: () {
+                            ProductModel product = ProductModel(
+                              id: _basketOrder.product?.first.id,
+                              name: _basketOrder.product?.first.productName,
+                              price: _basketOrder.product?.first.price,
+                              count: _basketOrder.product?.first.count,
+                              compound: _basketOrder.product?.first.count,
+                              path: _basketOrder.product?.first.path,
+                              pre_order: 1,
+                              shop: Shop(
+                                id: _basketOrder.shopId,
+                                name: _basketOrder.product?.first.shopName,
+                              ),
+                            );
+                            showBasketBottomSheetOptions(
+                              context,
+                              '${product.shop?.name}',
+                              0,
+                              product,
+                              (int callBackCount, int callBackPrice, bool callBackOptom) {
+                                if (product.product_count == 0 && product.pre_order == 1) {
+                                  if (product.inBasket == false) {
+                                    showCupertinoModalPopup<void>(
+                                      context: context,
+                                      builder: (context) => PreOrderDialog(
+                                        onYesTap: () {
+                                          Navigator.pop(context);
+                                          if (product.inBasket == false) {
+                                            BlocProvider.of<BasketCubit>(context).basketAdd(
+                                              product.id.toString(),
+                                              callBackCount,
+                                              callBackPrice,
+                                              '',
+                                              '',
+                                              isOptom: callBackOptom,
+                                            );
+                                          }
+                                        },
+                                      ),
+                                    );
+                                  } else {
+                                    context.router.pushAndPopUntil(
+                                      const LauncherRoute(children: [BasketRoute()]),
+                                      predicate: (route) => false,
+                                    );
+                                  }
+
+                                  return;
+                                }
+                                BlocProvider.of<BasketCubit>(context).basketAdd(
+                                  product.id.toString(),
+                                  callBackCount,
+                                  callBackPrice,
+                                  '',
+                                  '',
+                                  isOptom: callBackOptom,
+                                );
+                              },
+                            );
+                          },
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'Повторить заказ',
+                                style: AppTextStyles.size18Weight500.copyWith(
+                                  color: AppColors.mainPurpleColor,
+                                ),
+                              ),
+                              Image.asset(
+                                Assets.icons.defaultArrowForwardIcon.path,
+                                color: AppColors.mainPurpleColor,
+                                height: 20,
+                                width: 20,
+                                scale: 2.1,
+                              ),
+                            ],
                           ),
                         ),
-                        Image.asset(
-                          Assets.icons.defaultArrowForwardIcon.path,
-                          color: AppColors.mainPurpleColor,
-                          height: 20,
-                          width: 20,
-                          scale: 2.1,
-                        ),
+                        if (_basketOrder.status != 'cancel' && _basketOrder.status != 'return')
+                          SizedBox(height: 10),
+
+                        if (_basketOrder.status != 'cancel' && _basketOrder.status != 'return')
+                          InkWell(
+                            onTap: () {
+                              if (_basketOrder.status != 'courier' &&
+                                  _basketOrder.status != 'cancel') {
+                                final List<String> cancelReasons = [
+                                  'Товар или упаковка повреждены',
+                                  'Товар с браком / Не работает',
+                                  'Заказал не тот товар',
+                                  'В комплекте не хватает деталей или/\nчасти товара',
+                                  'Подделка',
+                                ];
+
+                                showOrderCancel(context, 'Причина возврата', cancelReasons, (
+                                  String reason,
+                                ) {
+                                  context.read<OrderStatusSellerCubit>().returnOrder(
+                                    _basketOrder.id.toString(),
+                                    'return',
+                                    reason,
+                                  );
+
+                                  BlocProvider.of<BasketCubit>(context).updateProductByIndex(
+                                    index: _basketOrder.id!,
+                                    updatedOrder: _basketOrder.copyWith(status: 'return'),
+                                  );
+
+                                  setState(() {
+                                    _basketOrder = _basketOrder.copyWith(status: 'return');
+                                  });
+
+                                  context.router.push(SuccessCancelRoute());
+                                });
+                              }
+                            },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text('Оформить возврат', style: AppTextStyles.size18Weight500),
+                                    Text(
+                                      'Можно вернуть в течение 14 дней',
+                                      style: AppTextStyles.size13Weight400.copyWith(
+                                        color: Color(0xff8E8E93),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Image.asset(
+                                  Assets.icons.defaultArrowForwardIcon.path,
+                                  color: AppColors.kNeutralBlackColor,
+                                  height: 20,
+                                  width: 20,
+                                  scale: 2.1,
+                                ),
+                              ],
+                            ),
+                          ),
                       ],
                     ),
                   ),
-                ),
+
                 InkWell(
                   onTap: () {
                     final phone = _basketOrder.product?.first.shopPhone;
@@ -608,8 +736,10 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                   ),
                 ),
                 Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 16),
-                  height: (_basketOrder.product?.length ?? 1) * 130,
+                  margin: const EdgeInsets.only(left: 16, right: 16, bottom: 12, top: 12),
+                  height:
+                      (_basketOrder.product?.length ?? 1) *
+                      (_basketOrder.status == 'end' ? 124 : 112),
                   child: ListView.builder(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
@@ -617,14 +747,12 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                     scrollDirection: Axis.vertical,
                     itemBuilder: (context, index) {
                       return Container(
-                        height: 112,
-                        width: 358,
+                        height: _basketOrder.status == 'end' ? 124 : 112,
                         decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(16),
                         ),
-                        margin: const EdgeInsets.only(top: 12),
-                        padding: const EdgeInsets.all(20),
+                        padding: const EdgeInsets.only(left: 20, right: 20),
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
@@ -635,56 +763,46 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                             else
                               const ErrorImageWidget(width: 88, height: 88),
                             const SizedBox(width: 16),
-                            SizedBox(
-                              width: 238,
+                            Expanded(
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  SizedBox(
-                                    width: 238,
-                                    child: Text(
-                                      '${_basketOrder.product?[index].productName}',
-                                      style: AppTextStyles.size14Weight500,
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
+                                  Text(
+                                    '${_basketOrder.product?[index].productName}',
+                                    style: AppTextStyles.size14Weight500,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
                                   ),
-                                  SizedBox(
-                                    width: 238,
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          'Сумма:',
-                                          style: AppTextStyles.size14Weight400.copyWith(
-                                            color: const Color(0xff8E8E93),
-                                          ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        'Сумма:',
+                                        style: AppTextStyles.size14Weight400.copyWith(
+                                          color: const Color(0xff8E8E93),
                                         ),
-                                        Text(
-                                          '${_basketOrder.product?[index].price} ₽',
-                                          style: AppTextStyles.size14Weight500,
-                                        ),
-                                      ],
-                                    ),
+                                      ),
+                                      Text(
+                                        '${_basketOrder.product?[index].price} ₽',
+                                        style: AppTextStyles.size14Weight500,
+                                      ),
+                                    ],
                                   ),
-                                  SizedBox(
-                                    width: 238,
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          'Количество:',
-                                          style: AppTextStyles.size14Weight400.copyWith(
-                                            color: const Color(0xff8E8E93),
-                                          ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        'Количество:',
+                                        style: AppTextStyles.size14Weight400.copyWith(
+                                          color: const Color(0xff8E8E93),
                                         ),
-                                        Text(
-                                          '${_basketOrder.product?[index].count} шт',
-                                          style: AppTextStyles.size14Weight500,
-                                        ),
-                                      ],
-                                    ),
+                                      ),
+                                      Text(
+                                        '${_basketOrder.product?[index].count} шт',
+                                        style: AppTextStyles.size14Weight500,
+                                      ),
+                                    ],
                                   ),
                                   const SizedBox(height: 4),
                                   if (_basketOrder.status == 'end')
@@ -707,7 +825,7 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                         setState(() {});
                                       },
                                       child: Container(
-                                        height: 38,
+                                        height: 32,
                                         width: 136,
                                         alignment: Alignment.center,
                                         decoration: BoxDecoration(

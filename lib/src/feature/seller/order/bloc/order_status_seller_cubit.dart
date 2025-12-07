@@ -40,6 +40,17 @@ class OrderStatusSellerCubit extends Cubit<OrderStatusSellerState> {
     }
   }
 
+  Future<void> returnOrder(String id, String status, String? text) async {
+    try {
+      final data = await basketRepository.status(id, status, text);
+
+      emit(ReturnState());
+    } catch (e) {
+      log(e.toString());
+      emit(ErrorState(message: 'Ошибка сервера'));
+    }
+  }
+
   void updateProductByIndex({required int index, required BasketOrderModel updatedOrder}) {
     // if (index < _products.length) {
     //   _products[index] = updatedProduct;

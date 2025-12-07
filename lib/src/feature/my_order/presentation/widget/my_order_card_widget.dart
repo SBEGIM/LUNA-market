@@ -43,8 +43,8 @@ class _MyOrderCardWidgetState extends State<MyOrderCardWidget> {
       // если есть статусы типа спорный / возврат — добавь тут:
       // case 'dispute':
       //   return 'Спорный';
-      // case 'refund':
-      //   return 'Возврат';
+      case 'return':
+        return 'Возврат';
       default:
         return 'Неизвестно';
     }
