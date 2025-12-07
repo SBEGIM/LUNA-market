@@ -9,8 +9,7 @@ import 'package:shimmer/shimmer.dart';
 import 'package:haji_market/src/feature/home/data/model/cat_model.dart';
 import 'package:haji_market/src/feature/drawer/bloc/sub_cats_cubit.dart';
 import 'package:haji_market/src/feature/drawer/bloc/sub_cats_state.dart';
-import 'package:haji_market/src/feature/drawer/bloc/brand_cubit.dart' as brand_cubit;
-import 'package:haji_market/src/feature/drawer/bloc/brand_state.dart' as brand_state;
+import 'package:haji_market/src/feature/drawer/bloc/brand_cubit.dart';
 
 @RoutePage()
 class SubCatalogPage extends StatefulWidget {
@@ -35,10 +34,10 @@ class _SubCatalogPageState extends State<SubCatalogPage> {
   void initState() {
     BlocProvider.of<SubCatsCubit>(context).subCats(widget.cats?.id ?? 0);
 
-    brand_cubit.BrandCubit brandInitCubit = BlocProvider.of<brand_cubit.BrandCubit>(context);
+    BrandCubit brandInitCubit = BlocProvider.of<BrandCubit>(context);
 
-    if (brandInitCubit.state is! brand_state.LoadedState) {
-      BlocProvider.of<brand_cubit.BrandCubit>(context).brands(subCatId: widget.cats!.id);
+    if (brandInitCubit.state is! BrandStateLoaded) {
+      BlocProvider.of<BrandCubit>(context).brands(subCatId: widget.cats!.id);
     }
 
     brandList();
@@ -47,7 +46,7 @@ class _SubCatalogPageState extends State<SubCatalogPage> {
   }
 
   Future<void> brandList() async {
-    final List<CatsModel> data = await BlocProvider.of<brand_cubit.BrandCubit>(
+    final List<CatsModel> data = await BlocProvider.of<BrandCubit>(
       context,
     ).brandsList();
     brands.addAll(data);
@@ -71,8 +70,7 @@ class _SubCatalogPageState extends State<SubCatalogPage> {
           },
           icon: Icon(Icons.arrow_back_ios_new),
         ),
-        actions: [
-        ],
+        actions: [],
         titleSpacing: 0,
         title: Text(widget.cats?.name ?? '', style: AppTextStyles.size18Weight600),
       ),
@@ -212,7 +210,6 @@ class _SubCatalogPageState extends State<SubCatalogPage> {
                                     brandId: brands[index].id,
                                   ),
                                 );
-
                               },
                               child: Container(
                                 width: 64,

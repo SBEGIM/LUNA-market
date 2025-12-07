@@ -6,16 +6,16 @@ import 'package:haji_market/src/feature/home/data/repository/meta_repository..da
 class MetaCubit extends Cubit<MetaState> {
   final MetaRepository metaRepository;
 
-  MetaCubit({required this.metaRepository}) : super(InitState());
+  MetaCubit({required this.metaRepository}) : super(MetaStateInitial());
 
   Future<void> partners() async {
     try {
-      emit(LoadingState());
+      emit(MetaStateLoading());
       final MetaModel data = await metaRepository.metas();
 
-      emit(LoadedState(data));
+      emit(MetaStateLoaded(data));
     } catch (e) {
-      emit(ErrorState(message: 'Ошибка сервера'));
+      emit(MetaStateError(message: 'Ошибка сервера'));
     }
   }
 }

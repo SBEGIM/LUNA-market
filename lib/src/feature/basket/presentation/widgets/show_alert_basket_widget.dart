@@ -22,10 +22,10 @@ Future<bool?> showBasketAlert(
     context: context,
     barrierLabel: 'branded_alert',
     barrierDismissible: barrierDismissible,
-    barrierColor: Colors.black.withOpacity(0.35),
+    barrierColor: Colors.black.withValues(alpha: .35),
     transitionDuration: const Duration(milliseconds: 220),
-    pageBuilder: (_, __, ___) => const SizedBox.shrink(),
-    transitionBuilder: (ctx, anim, __, ___) {
+    pageBuilder: (_, _, _) => const SizedBox.shrink(),
+    transitionBuilder: (ctx, anim, _, _) {
       final curved = CurvedAnimation(
         parent: anim,
         curve: Curves.easeOutCubic,
@@ -66,7 +66,7 @@ Future<bool?> showBasketAlert(
                       borderRadius: BorderRadius.circular(20),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withOpacity(0.06),
+                          color: Colors.black.withValues(alpha: .06),
                           blurRadius: 24,
                           offset: const Offset(0, 10),
                         ),
@@ -145,7 +145,7 @@ Future<bool?> showBasketAlert(
                                     onPressed: () => Navigator.of(ctx).pop(true),
                                     style: TextButton.styleFrom(
                                       padding: EdgeInsets.zero,
-                                      foregroundColor: primaryColor ?? Color(0xffFF3347),
+                                      foregroundColor: primaryColor,
                                       shape: const RoundedRectangleBorder(
                                         borderRadius: BorderRadius.zero,
                                       ),
@@ -153,7 +153,7 @@ Future<bool?> showBasketAlert(
                                     child: Text(
                                       primaryText,
                                       style: AppTextStyles.size18Weight600.copyWith(
-                                        color: primaryColor ?? AppColors.mainRedColor,
+                                        color: primaryColor,
                                       ),
                                     ),
                                   ),

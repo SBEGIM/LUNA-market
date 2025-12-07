@@ -23,17 +23,16 @@ import '../../../drawer/bloc/brand_cubit.dart' as brandCubit;
 class ProductsRecentlyWatchedPage extends StatefulWidget {
   final CatsModel cats;
   final CatsModel? subCats;
+  final int? brandId;
+  final String? shopId;
 
-  int? brandId;
-  String? shopId;
-
-  ProductsRecentlyWatchedPage({
+  const ProductsRecentlyWatchedPage({
     required this.cats,
     this.brandId,
     this.shopId,
     this.subCats,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   State<ProductsRecentlyWatchedPage> createState() => _ProductsRecentlyWatchedPageState();

@@ -7,16 +7,14 @@ import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/feature/home/data/model/characteristic_model.dart';
 import 'package:haji_market/src/feature/product/cubit/product_cubit.dart';
 import 'package:haji_market/src/feature/product/provider/filter_provider.dart';
-import 'package:haji_market/src/feature/seller/product/bloc/characteristic_seller_cubit.dart'
-    as charCubit;
-import 'package:haji_market/src/feature/seller/product/bloc/characteristics_seller_state.dart'
-    as charState;
+import 'package:haji_market/src/feature/seller/product/bloc/characteristic_seller_cubit.dart';
 
 import 'brands_page.dart';
 
 class FilterPage extends StatefulWidget {
-  String? shopId;
-  FilterPage({this.shopId, Key? key}) : super(key: key);
+  final String? shopId;
+
+  const FilterPage({this.shopId, super.key});
 
   @override
   State<FilterPage> createState() => _FilterPageState();
@@ -25,15 +23,15 @@ class FilterPage extends StatefulWidget {
 class _FilterPageState extends State<FilterPage> {
   final List<int> _selectListChar = [];
   List<CharacteristicsModel> subChar = [];
-  Map<int, List<CharacteristicsModel>> _subCharMap = {};
+  final Map<int, List<CharacteristicsModel>> _subCharMap = {};
   final box = GetStorage();
 
   @override
   void initState() {
     super.initState();
-    final initCharCubit = BlocProvider.of<charCubit.CharacteristicSellerCubit>(context);
+    final initCharCubit = BlocProvider.of<CharacteristicSellerCubit>(context);
 
-    if (charState.CharacteristicSellerState is! charState.LoadedState) {
+    if (CharacteristicSellerState is! CharacteristicSellerStateLoaded) {
       initCharCubit.characteristic();
       subChars();
     }
@@ -42,7 +40,7 @@ class _FilterPageState extends State<FilterPage> {
   }
 
   Future<void> clearFilterIds() async {
-    print('hasData ${box.hasData('charFilterId')}');
+    debugPrint('hasData ${box.hasData('charFilterId')}');
 
     if (box.hasData('charFilterId')) {
       final raw = box.read('charFilterId');
@@ -54,52 +52,39 @@ class _FilterPageState extends State<FilterPage> {
         _selectListChar.clear();
         box.remove('charFilterId');
 
-        print('charFilterId пустой, удаляю из хранилища');
+        debugPrint('charFilterId пустой, удаляю из хранилища');
       } else {
         try {
           // Если хранишь как строку JSON: "[1,2,3]"
           final decoded = raw is String ? json.decode(raw) : raw;
           final ab = (decoded as List).cast<int>().toList();
 
-          ab.forEach((element) {
-            print('charFilterId: $element');
+          for (var element in ab) {
+            debugPrint('charFilterId: $element');
 
             _selectListChar.contains(element)
                 ? _selectListChar.remove(element)
                 : _selectListChar.add(element);
-          });
+          }
 
           // _selectListChar.addAll(ab);
         } catch (e) {
-          print('Ошибка при чтении фильтров: $e');
+          debugPrint('Ошибка при чтении фильтров: $e');
         }
       }
     }
   }
 
   Future<void> subChars() async {
-    final initCharCubit = BlocProvider.of<charCubit.CharacteristicSellerCubit>(context);
+    final initCharCubit = BlocProvider.of<CharacteristicSellerCubit>(context);
 
     final subCharList = await initCharCubit.subListCharacteristic();
 
-    subCharList!.forEach((e) {
+    for (var e in subCharList!) {
       _subCharMap.putIfAbsent(e.mainId!, () => []).add(e);
-    });
+    }
 
     setState(() {});
-
-    // if (!_subCharMap.containsKey(id)) {
-    //   final initCharCubit =
-    //       BlocProvider.of<charCubit.CharacteristicSellerCubit>(context);
-    //   final subCharList = await initCharCubit.subCharacteristic(id: id);
-
-    //   print(subCharList?.isNotEmpty);
-    //   if (subCharList != null && subCharList.isNotEmpty) {
-    //     _subCharMap[id] = subCharList;
-
-    //     setState(() {});
-    //   }
-    // }
   }
 
   @override
@@ -132,10 +117,6 @@ class _FilterPageState extends State<FilterPage> {
             onTap: _selectListChar.isEmpty
                 ? null
                 : () {
-                    // GetStorage().remove('CatId');
-                    // GetStorage().remove('subCatFilterId');
-                    // GetStorage().remove('shopFilterId');
-                    // GetStorage().remove('search');
                     setState(() {
                       _selectListChar.clear();
                     });
@@ -168,9 +149,9 @@ class _FilterPageState extends State<FilterPage> {
       body: ListView(
         children: [
           const SizedBox(height: 10),
-          BlocConsumer<charCubit.CharacteristicSellerCubit, charState.CharacteristicSellerState>(
+          BlocConsumer<CharacteristicSellerCubit, CharacteristicSellerState>(
             listener: (context, state) {
-              if (state is charState.LoadedState) {
+              if (state is CharacteristicSellerStateLoaded) {
                 //   _subCharMap.clear();
                 //   final characteristics = state.characteristics.take(3);
                 //   for (final item in characteristics) {
@@ -180,7 +161,7 @@ class _FilterPageState extends State<FilterPage> {
               }
             },
             builder: (context, state) {
-              if (state is charState.ErrorState) {
+              if (state is CharacteristicSellerStateError) {
                 return Center(
                   child: Text(
                     state.message,
@@ -188,7 +169,7 @@ class _FilterPageState extends State<FilterPage> {
                   ),
                 );
               }
-              if (state is charState.LoadedState) {
+              if (state is CharacteristicSellerStateLoaded) {
                 return ListView.builder(
                   scrollDirection: Axis.vertical,
                   physics: const NeverScrollableScrollPhysics(),
@@ -281,6 +262,9 @@ class _FilterPageState extends State<FilterPage> {
                 filters.setChar(_selectListChar);
               }
               await BlocProvider.of<ProductCubit>(context).products(filters);
+
+              if (!context.mounted) return;
+
               Navigator.pop(context);
             },
             child: Text(
@@ -301,7 +285,6 @@ class _FilterPageState extends State<FilterPage> {
               ? _selectListChar.remove(index)
               : _selectListChar.add(index);
         });
-        // GetStorage().write('charFilterId', jsonEncode(_selectListChar));
 
         GetStorage().write('charFilterId', _selectListChar.toString());
       },

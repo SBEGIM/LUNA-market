@@ -60,7 +60,7 @@ class _BlogRegisterPageState extends State<BlogRegisterPage> {
       flagPath: Assets.icons.ruFlagIcon.path,
       name: 'Россия',
     );
-    if (BlocProvider.of<meta_cubit.MetaCubit>(context).state is! meta_state.LoadedState) {
+    if (BlocProvider.of<meta_cubit.MetaCubit>(context).state is! meta_state.MetaStateLoaded) {
       BlocProvider.of<meta_cubit.MetaCubit>(context).partners();
     }
     super.initState();
@@ -837,7 +837,7 @@ class _BlogRegisterPageState extends State<BlogRegisterPage> {
                                 width: 311,
                                 child: BlocBuilder<meta_cubit.MetaCubit, meta_state.MetaState>(
                                   builder: (context, state) {
-                                    if (state is meta_state.LoadedState) {
+                                    if (state is meta_state.MetaStateLoaded) {
                                       metasBody.addAll([
                                         state.metas.terms_of_use!,
                                         state.metas.privacy_policy!,

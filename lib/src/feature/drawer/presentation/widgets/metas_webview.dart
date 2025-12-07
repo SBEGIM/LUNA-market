@@ -4,10 +4,10 @@ import 'package:haji_market/src/feature/home/data/repository/popular_shops_repos
 import 'package:share_plus/share_plus.dart';
 
 class MetasPage extends StatefulWidget {
-  String? title;
+  final String? title;
+  final String? body;
 
-  String? body;
-  MetasPage({this.title, this.body, Key? key}) : super(key: key);
+  const MetasPage({this.title, this.body, super.key});
 
   @override
   State<MetasPage> createState() => _MetasPageState();
@@ -117,8 +117,6 @@ class _MetasPageState extends State<MetasPage> {
             icon: const Icon(Icons.share),
             onPressed: () async {
               setState(() {});
-
-              // final pdf = await createDocument();
 
               await Share.share("$baseUrl/pdf/$type");
             },

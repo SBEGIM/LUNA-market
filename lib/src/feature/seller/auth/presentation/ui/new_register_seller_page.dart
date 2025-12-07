@@ -12,8 +12,8 @@ import 'package:haji_market/src/feature/seller/auth/bloc/register_seller_cubit.d
 import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/feature/app/router/app_router.dart';
 import 'package:haji_market/src/feature/drawer/presentation/widgets/metas_webview.dart';
-import 'package:haji_market/src/feature/home/bloc/meta_cubit.dart' as metaCubit;
-import 'package:haji_market/src/feature/home/bloc/meta_state.dart' as metaState;
+import 'package:haji_market/src/feature/home/bloc/meta_cubit.dart';
+import 'package:haji_market/src/feature/home/bloc/meta_state.dart';
 import 'package:haji_market/src/feature/seller/auth/presentation/widget/show_seller_login_phone_widget.dart';
 import 'package:haji_market/src/feature/seller/auth/presentation/widget/show_seller_register_type_widget.dart';
 import 'package:shimmer_animation/shimmer_animation.dart';
@@ -91,8 +91,8 @@ class _CoopRequestPageState extends State<RegisterSellerPage> {
 
   @override
   void initState() {
-    if (BlocProvider.of<metaCubit.MetaCubit>(context).state is! metaState.LoadedState) {
-      BlocProvider.of<metaCubit.MetaCubit>(context).partners();
+    if (BlocProvider.of<MetaCubit>(context).state is! MetaStateLoaded) {
+      BlocProvider.of<MetaCubit>(context).partners();
     }
 
     countrySellerDto = CountrySellerDto(
@@ -167,7 +167,7 @@ class _CoopRequestPageState extends State<RegisterSellerPage> {
                 scrollDirection: Axis.horizontal,
                 physics: const NeverScrollableScrollPhysics(),
                 itemCount: totalSegments,
-                separatorBuilder: (_, __) => SizedBox(width: segmentSpacing),
+                separatorBuilder: (_, _) => SizedBox(width: segmentSpacing),
                 itemBuilder: (context, index) {
                   bool isFilled = index < filledCount;
                   return Container(
@@ -659,9 +659,9 @@ class _CoopRequestPageState extends State<RegisterSellerPage> {
                                   ),
                                 ),
                                 SizedBox(width: 10),
-                                BlocBuilder<metaCubit.MetaCubit, metaState.MetaState>(
+                                BlocBuilder<MetaCubit, MetaState>(
                                   builder: (context, state) {
-                                    if (state is metaState.LoadedState) {
+                                    if (state is MetaStateLoaded) {
                                       metasBody.addAll([
                                         state.metas.terms_of_use!,
                                         state.metas.privacy_policy!,
@@ -857,7 +857,8 @@ class _CoopRequestPageState extends State<RegisterSellerPage> {
             );
 
             await BlocProvider.of<RegisterSellerCubit>(context).register(registerDto);
-            if (!mounted) return;
+
+            if (!context.mounted) return;
 
             context.router.push(SuccessSellerRegisterRoute());
 

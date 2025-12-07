@@ -3,7 +3,7 @@ import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 
 class PunktsWidget extends StatelessWidget {
-  const PunktsWidget({Key? key}) : super(key: key);
+  const PunktsWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
