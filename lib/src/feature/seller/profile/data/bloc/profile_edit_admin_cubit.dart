@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:haji_market/src/feature/seller/profile/data/bloc/profile_edit_admin_state.dart';

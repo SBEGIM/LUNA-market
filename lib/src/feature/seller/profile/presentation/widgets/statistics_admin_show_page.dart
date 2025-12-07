@@ -9,7 +9,7 @@ import 'package:haji_market/src/feature/seller/profile/data/bloc/profile_month_s
 import '../../../../../core/common/constants.dart';
 
 class StatisticsAdminShowPage extends StatefulWidget {
-  const StatisticsAdminShowPage({Key? key}) : super(key: key);
+  const StatisticsAdminShowPage({super.key});
 
   @override
   State<StatisticsAdminShowPage> createState() => _StatisticsAdminShowPageState();
@@ -548,10 +548,9 @@ void _showMonthPickerBottomSheet(
   ];
 
   // Текущий месяц (индекс с 0)
-  final int currentMonthIndex = DateTime.now().month - 1;
 
   final FixedExtentScrollController scrollController = FixedExtentScrollController(
-    initialItem: initialSelectedMonth ?? currentMonthIndex,
+    initialItem: initialSelectedMonth,
   );
 
   showModalBottomSheet(
@@ -768,68 +767,4 @@ void _showYearPickerBottomSheet(
       );
     },
   );
-}
-
-class StatisticWidgetContainer extends StatelessWidget {
-  final String text;
-  final String subText;
-  final String url;
-  final bool? png;
-  const StatisticWidgetContainer({
-    required this.text,
-    required this.subText,
-    required this.url,
-    required this.png,
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 168,
-      height: 156,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        color: Colors.white,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
-            spreadRadius: 1,
-            // blurRadius: 1,
-            offset: const Offset(0, 1), // changes position of shadow
-          ),
-        ],
-      ),
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          png == false
-              ? SvgPicture.asset(
-                  url,
-                  // color: AppColors.kPrimaryColor,
-                )
-              : Image.asset(url),
-          const SizedBox(height: 12),
-          Text(
-            text,
-            style: const TextStyle(
-              color: AppColors.kGray900,
-              fontSize: 24,
-              fontWeight: FontWeight.w700,
-            ),
-          ),
-          const SizedBox(height: 4),
-          Text(
-            subText,
-            style: const TextStyle(
-              color: AppColors.kGray900,
-              fontSize: 14,
-              fontWeight: FontWeight.w400,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 }

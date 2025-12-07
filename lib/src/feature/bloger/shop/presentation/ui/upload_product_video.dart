@@ -39,8 +39,8 @@ class _UploadProductVideoPageState extends State<UploadProductVideoPage> {
 
   @override
   void initState() {
-    print('init ${widget.id}');
-    // TODO: implement initState
+    debugPrint('init ${widget.id}');
+
     super.initState();
   }
 

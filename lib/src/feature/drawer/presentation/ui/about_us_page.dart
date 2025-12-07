@@ -233,7 +233,7 @@ class _AboutUsPageState extends State<AboutUsPage> {
                 ),
                 BlocBuilder<MetaCubit, MetaState>(
                   builder: (context, state) {
-                    if (state is LoadedState) {
+                    if (state is MetaStateLoaded) {
                       metasBody.addAll([
                         state.metas.terms_of_use!,
                         state.metas.privacy_policy!,

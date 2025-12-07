@@ -2,30 +2,29 @@ import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import '../../home/data/model/cat_model.dart';
 import '../data/repository/brand_repo.dart';
-import 'brand_state.dart';
 
 class BrandCubit extends Cubit<BrandState> {
   final BrandsRepository brandRepository;
 
-  BrandCubit({required this.brandRepository}) : super(InitState());
+  BrandCubit({required this.brandRepository}) : super(BrandStateInitial());
   List<CatsModel> _brands = [];
 
   Future<void> brands({int? subCatId, bool hasNotSpecified = false}) async {
     try {
-      emit(LoadingState());
+      emit(BrandStateLoading());
       final List<CatsModel> data = await brandRepository.brandApi(subCatId: subCatId);
       _brands = data;
       if (hasNotSpecified) {
         _brands.insert(0, CatsModel(name: 'Не определен'));
       }
       if (_brands.isEmpty) {
-        emit(NoDataState());
+        emit(BrandStateNoData());
       } else {
-        emit(LoadedState(_brands));
+        emit(BrandStateLoaded(_brands));
       }
     } catch (e) {
       log(e.toString());
-      emit(ErrorState(message: 'Ошибка сервера'));
+      emit(BrandStateError(message: 'Ошибка сервера'));
     }
   }
 
@@ -68,6 +67,28 @@ class BrandCubit extends Cubit<BrandState> {
         temp.add(_brands[i]);
       }
     }
-    emit(LoadedState(temp));
+    emit(BrandStateLoaded(temp));
   }
+}
+
+sealed class BrandState {
+  const BrandState();
+}
+
+class BrandStateInitial extends BrandState {}
+
+class BrandStateLoading extends BrandState {}
+
+class BrandStateNoData extends BrandState {}
+
+class BrandStateLoaded extends BrandState {
+  final List<CatsModel> cats;
+
+  const BrandStateLoaded(this.cats);
+}
+
+class BrandStateError extends BrandState {
+  final String message;
+
+  const BrandStateError({required this.message});
 }

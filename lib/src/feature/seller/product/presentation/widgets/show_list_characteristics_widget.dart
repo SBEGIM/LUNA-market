@@ -10,7 +10,7 @@ void showSellerListCharacteristicsOptions(
   List<CharacteristicsModel> categories,
   Function callback,
 ) {
-  List<CharacteristicsModel> _filteredCategories = [...categories];
+  List<CharacteristicsModel> filteredCategories = [...categories];
 
   int selectedCategory = -1;
 
@@ -30,7 +30,7 @@ void showSellerListCharacteristicsOptions(
           return ConstrainedBox(
             constraints: BoxConstraints(
               minHeight: 200,
-              maxHeight: (_filteredCategories.length * 85 + 100).toDouble().clamp(250, 500),
+              maxHeight: (filteredCategories.length * 85 + 100).toDouble().clamp(250, 500),
             ),
             child: Column(
               mainAxisSize: MainAxisSize.max,
@@ -51,44 +51,6 @@ void showSellerListCharacteristicsOptions(
                     ],
                   ),
                 ),
-
-                // // Поисковое поле
-                // Container(
-                //   margin: const EdgeInsets.symmetric(horizontal: 16),
-                //   padding: const EdgeInsets.symmetric(horizontal: 12),
-                //   decoration: BoxDecoration(
-                //     color: const Color(0xFFEDEEEF),
-                //     borderRadius: BorderRadius.circular(12),
-                //   ),
-                //   child: Row(
-                //     children: [
-                //       const Icon(Icons.search, color: Colors.grey),
-                //       const SizedBox(width: 8),
-                //       Expanded(
-                //         child: TextField(
-                //           controller: searchController,
-                //           onChanged: (value) {
-                //             setState(() {
-                //               _filteredCategories = categories.where((cat) {
-                //                 return (type == 'params'
-                //                         ? (cat.key ?? '')
-                //                         : (cat.value ?? ''))
-                //                     .toLowerCase()
-                //                     .contains(value.toLowerCase());
-                //               }).toList();
-                //             });
-                //           },
-                //           decoration: const InputDecoration(
-                //             hintText: 'Поиск',
-                //             border: InputBorder.none,
-                //           ),
-                //         ),
-                //       ),
-                //     ],
-                //   ),
-                // ),
-
-                // const SizedBox(height: 12),
 
                 // Список категорий
                 Flexible(

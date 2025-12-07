@@ -7,7 +7,7 @@ import 'package:haji_market/src/feature/my_order/presentation/widget/my_order_st
 class MyOrderCardWidget extends StatefulWidget {
   final BasketOrderModel basketOrder;
 
-  const MyOrderCardWidget({Key? key, required this.basketOrder}) : super(key: key);
+  const MyOrderCardWidget({super.key, required this.basketOrder});
 
   @override
   State<MyOrderCardWidget> createState() => _MyOrderCardWidgetState();

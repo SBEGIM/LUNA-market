@@ -24,7 +24,9 @@ class _TapeCardWidgetState extends State<TapeCardWidget> {
   @override
   void initState() {
     _controller =
-        VideoPlayerController.network('https://lunamarket.ru/storage/${widget.tape.video}')
+        VideoPlayerController.networkUrl(
+            Uri.parse('https://lunamarket.ru/storage/${widget.tape.video}'),
+          )
           ..initialize().then((_) {
             _controller!.pause();
             setState(() {});
@@ -79,13 +81,7 @@ class _TapeCardWidgetState extends State<TapeCardWidget> {
                   tapeBloc: BlocProvider.of<TapeCubit>(context),
                 ),
               );
-              // Navigator.push(
-              //   context,
-              //   MaterialPageRoute(
-              //       builder: (context) => const Base(
-              //             index: 4,
-              //           )),
-              // );
+              ;
             },
             child: Padding(
               padding: const EdgeInsets.only(left: 12.0, top: 8, right: 24),
@@ -109,13 +105,6 @@ class _TapeCardWidgetState extends State<TapeCardWidget> {
                   tapeBloc: BlocProvider.of<TapeCubit>(context),
                 ),
               );
-              // Navigator.push(
-              //   context,
-              //   MaterialPageRoute(
-              //       builder: (context) => const Base(
-              //             index: 4,
-              //           )),
-              // );
             },
             child: Padding(
               padding: const EdgeInsets.only(left: 8.0, bottom: 8),
@@ -126,7 +115,7 @@ class _TapeCardWidgetState extends State<TapeCardWidget> {
                     Image.asset(Assets.icons.viewTapeIcon.path, scale: 1.9),
                     SizedBox(width: 8),
                     Text(
-                      '${formatViews(widget.tape.view ?? 0)}',
+                      formatViews(widget.tape.view ?? 0),
                       style: AppTextStyles.size14Weight600.copyWith(color: AppColors.kWhite),
                     ),
                   ],
@@ -134,24 +123,6 @@ class _TapeCardWidgetState extends State<TapeCardWidget> {
               ),
             ),
           ),
-          // Container(
-          //   alignment: Alignment.center,
-          //   margin: const EdgeInsets.only(top: 225),
-          //   decoration: BoxDecoration(
-          //     color: Colors.grey.withOpacity(0.5),
-          //     borderRadius: const BorderRadius.only(
-          //       topLeft: Radius.circular(0),
-          //       topRight: Radius.circular(0),
-          //       bottomLeft: Radius.circular(8),
-          //       bottomRight: Radius.circular(8),
-          //     ),
-          //   ),
-          //   child: Text(
-          //     '${tape.shop!.name}',
-          //     textAlign: TextAlign.center,
-          //     style: TextStyle(color: Colors.white, fontSize: 12),
-          //   ),
-          // ),
         ],
       ),
     );

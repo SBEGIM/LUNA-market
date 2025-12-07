@@ -11,7 +11,7 @@ enum UserRole { buyer, seller, blogger }
 
 void showRolePicker(BuildContext context, String type) {
   UserRole? selectedRole = type == 'change_cabinet' ? UserRole.seller : UserRole.buyer;
-  final _box = GetStorage();
+  final box = GetStorage();
 
   showDialog(
     context: context,
@@ -91,7 +91,7 @@ void showRolePicker(BuildContext context, String type) {
                           Navigator.of(dialogContext).pop(selectedRole);
 
                           if (UserRole.blogger == selectedRole) {
-                            _box.read('blogger_token') != null
+                            box.read('blogger_token') != null
                                 ? BlocProvider.of<AppBloc>(context).add(
                                     const AppEvent.chageState(state: AppState.inAppBlogerState()),
                                   )
@@ -99,7 +99,7 @@ void showRolePicker(BuildContext context, String type) {
                           }
 
                           if (UserRole.seller == selectedRole) {
-                            _box.read('seller_token') != null
+                            box.read('seller_token') != null
                                 ? BlocProvider.of<AppBloc>(context).add(
                                     const AppEvent.chageState(state: AppState.inAppAdminState()),
                                   )
@@ -229,7 +229,7 @@ class _RoleTrailingIcon extends StatelessWidget {
         boxShadow: isSelected
             ? [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.10),
+                  color: Colors.black.withValues(alpha: .10),
                   blurRadius: 8,
                   offset: const Offset(0, 2),
                 ),

@@ -22,12 +22,16 @@ import '../../cubit/product_ad_cubit.dart';
 class ProductsRecommendedPage extends StatefulWidget {
   final CatsModel cats;
   final CatsModel? subCats;
+  final int? brandId;
+  final String? shopId;
 
-  int? brandId;
-  String? shopId;
-
-  ProductsRecommendedPage({required this.cats, this.brandId, this.shopId, this.subCats, Key? key})
-    : super(key: key);
+  const ProductsRecommendedPage({
+    required this.cats,
+    this.brandId,
+    this.shopId,
+    this.subCats,
+    super.key,
+  });
 
   @override
   State<ProductsRecommendedPage> createState() => _ProductsRecommendedPageState();
@@ -35,13 +39,6 @@ class ProductsRecommendedPage extends StatefulWidget {
 
 class _ProductsRecommendedPageState extends State<ProductsRecommendedPage> {
   final boxMain = GetStorage().write('rating', false);
-  final _box = GetStorage();
-
-  // late final dynamic
-  //     _scrollViewListener; // может быть StreamSubscription или VoidCallback
-
-  late final dynamic _charFilterListener;
-  // bool _hideProducts = false;
 
   List<CatsModel> subCats = [];
   List<CatsModel> brands = [];
@@ -66,22 +63,6 @@ class _ProductsRecommendedPageState extends State<ProductsRecommendedPage> {
       brand = CatsModel(id: widget.brandId, name: '');
     }
 
-    // final initial = _box.read('scrollView');
-    // _hideProducts = initial is bool ? initial : (initial == 'true');
-
-    // слушаем изменения ключа 'scrollView'
-    // _scrollViewListener = _box.listenKey('scrollView', (value) {
-    // if (!mounted) return;
-    // final v = value is bool ? value : (value == 'true');
-    // if (v != _hideProducts) {
-    //   setState(() => _hideProducts = v);
-    // }
-    // });
-
-    _charFilterListener = _box.listenKey('charFilterId', (value) {
-      if (!mounted) return;
-      filterCharIcon(value);
-    });
     BlocProvider.of<shopsDrawerCubit.ShopsDrawerCubit>(context).shopsDrawer(widget.cats.id);
     BlocProvider.of<brandCubit.BrandCubit>(context).brands(subCatId: widget.cats.id);
 
@@ -98,39 +79,22 @@ class _ProductsRecommendedPageState extends State<ProductsRecommendedPage> {
     super.initState();
   }
 
-  subCatList() async {
+  Future<void> subCatList() async {
     subCatCubit.SubCatsCubit subCatsCubit = BlocProvider.of<subCatCubit.SubCatsCubit>(context);
     final List<CatsModel> data = await subCatsCubit.subCatList(widget.cats.id);
     subCats.addAll(data);
     setState(() {});
   }
 
-  brandList() async {
+  Future<void> brandList() async {
     final List<CatsModel> data = await BlocProvider.of<brandCubit.BrandCubit>(context).brandsList();
     brands.addAll(data);
     setState(() {});
   }
 
-  void filterCharIcon(value) {
-    if (value != null) {
-      setState(() => filterIcon = true);
-    } else {
-      setState(() => filterIcon = false);
-    }
-  }
-
   @override
   void dispose() {
     GetStorage().remove('scrollView');
-
-    // if (_scrollViewListener is Function) {
-    //   (_scrollViewListener as void Function()).call();
-    // } else {
-    //   try {
-    //     _scrollViewListener.cancel();
-    //   } catch (_) {}
-    // }
-    // _focus.dispose();
     super.dispose();
   }
 
@@ -139,10 +103,6 @@ class _ProductsRecommendedPageState extends State<ProductsRecommendedPage> {
 
   final TextEditingController searchController = TextEditingController();
   Future<void> onLoading() async {
-    final filters = context.read<FilterProvider>();
-
-    // await BlocProvider.of<ProductAdCubit>(context)
-    //     .productsPagination(filters);
     await Future.delayed(const Duration(milliseconds: 2000));
     _refreshController.loadComplete();
   }
@@ -314,7 +274,7 @@ class _ProductsRecommendedPageState extends State<ProductsRecommendedPage> {
                                             sortKey = 'rating';
                                             break;
                                           default:
-                                            print("число не равно 1, 2, 3");
+                                            debugPrint("число не равно 1, 2, 3");
                                         }
 
                                         filters.setSort(sortKey);

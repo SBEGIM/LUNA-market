@@ -5,10 +5,9 @@ import 'package:haji_market/src/feature/seller/tape_admin/data/cubit/tape_admin_
 import 'package:haji_market/src/core/common/constants.dart';
 import '../../data/cubit/tape_admin_cubit.dart';
 
-// import '../widgets/grid_tape_list.dart';
 @RoutePage()
 class TapeAdminPage extends StatefulWidget {
-  const TapeAdminPage({Key? key}) : super(key: key);
+  const TapeAdminPage({super.key});
 
   @override
   State<TapeAdminPage> createState() => _TapeAdminPageState();
@@ -62,7 +61,7 @@ class _TapeAdminPageState extends State<TapeAdminPage> {
             return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
           }
           if (state is NoDataState) {
-            return Container(
+            return SizedBox(
               width: MediaQuery.of(context).size.height,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -93,156 +92,11 @@ class _TapeAdminPageState extends State<TapeAdminPage> {
 
           if (state is LoadedState) {
             return Container();
-
-            // GridView.builder(
-            //   padding: const EdgeInsets.all(1),
-            //   gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-            //     maxCrossAxisExtent: 150,
-            //     childAspectRatio: 1 / 2,
-            //     mainAxisSpacing: 3,
-            //     crossAxisSpacing: 3,
-            //   ),
-            //   itemCount: state.tapeModel.length,
-            //   // children: const [],
-            //   itemBuilder: (context, index) {
-            //     return Shimmer(
-            //       duration: const Duration(seconds: 3), //Default value
-            //       interval: const Duration(
-            //           microseconds:
-            //               1), //Default value: Duration(seconds: 0)
-            //       color: Colors.white, //Default value
-            //       colorOpacity: 0, //Default value
-            //       enabled: true, //Default value
-            //       direction:
-            //           const ShimmerDirection.fromLTRB(), //Default Value
-            //       child: Container(
-            //         decoration: BoxDecoration(
-            //           borderRadius: BorderRadius.circular(12),
-            //           color: Colors.grey.withOpacity(0.6),
-            //         ),
-            //         child: BloggerTapeCardWidget(
-            //           tape: state.tapeModel[index],
-            //           index: index,
-            //         ),
-            //       ),
-            //     );
-            //   },
-            // );
-
-            // return GridView.builder(
-            //   padding: const EdgeInsets.all(1),
-            //   gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-            //     maxCrossAxisExtent: 150,
-            //     childAspectRatio: 1 / 2,
-            //     mainAxisSpacing: 3,
-            //     crossAxisSpacing: 3,
-            //   ),
-            //   itemCount: state.tapeModel.length,
-            //   // children: const [],
-            //   itemBuilder: (context, index) {
-            //     return Stack(
-            //       children: [
-            //         Image.asset('assets/images/tape.png'),
-            //         Image.network(
-            //           "https://lunamarket.ru/storage/${state.tapeModel[index].image}",
-            //         ),
-            //         Align(
-            //           alignment: Alignment.bottomCenter,
-            //           child: Container(
-            //             width: MediaQuery.of(context).size.width,
-            //             color: Colors.transparent.withOpacity(0.4),
-            //             child: Text(
-            //               '${state.tapeModel[index].name}',
-            //               textAlign: TextAlign.center,
-            //               style: const TextStyle(
-            //                   color: Colors.white,
-            //                   fontSize: 12,
-            //                   fontWeight: FontWeight.w600),
-            //             ),
-            //           ),
-            //         ),
-            //         Padding(
-            //           padding: const EdgeInsets.only(right: 5.0, top: 5),
-            //           child: Align(
-            //               alignment: Alignment.topRight,
-            //               child: Container(
-            //                   decoration: BoxDecoration(
-            //                       color: Colors.white,
-            //                       borderRadius: BorderRadius.circular(10)),
-            //                   padding: const EdgeInsets.all(3),
-            //                   child: InkWell(
-            //                     onTap: () {
-            //                       showAlertTapeWidget(context);
-            //                       // showAlertStaticticsWidget(context);
-            //                     },
-            //                     child: const Icon(
-            //                       Icons.more_vert_outlined,
-            //                       color: AppColors.kPrimaryColor,
-            //                     ),
-            //                   ))),
-            //         ),
-            //       ],
-            //     );
-            //   },
-            // );
           } else {
             return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
           }
         },
       ),
     );
-
-    //  GridView(
-    //   padding: const EdgeInsets.all(1),
-    //   gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-    //     maxCrossAxisExtent: 150,
-    //     childAspectRatio: 1 / 2,
-    //     mainAxisSpacing: 3,
-    //     crossAxisSpacing: 3,
-    //   ),
-    //   children: [
-    //     Stack(
-    //       children: [
-    //         Image.asset('assets/images/tape.png'),
-    //         Align(
-    //           alignment: Alignment.bottomCenter,
-    //           child: Container(
-    //             width: MediaQuery.of(context).size.width,
-    //             color: Colors.transparent.withOpacity(0.4),
-    //             child: const Text(
-    //               'ZARA',
-    //               textAlign: TextAlign.center,
-    //               style: TextStyle(
-    //                   color: Colors.white,
-    //                   fontSize: 12,
-    //                   fontWeight: FontWeight.w600),
-    //             ),
-    //           ),
-    //         ),
-    //         Padding(
-    //           padding: const EdgeInsets.only(right: 5.0, top: 5),
-    //           child: Align(
-    //               alignment: Alignment.topRight,
-    //               child: Container(
-    //                   decoration: BoxDecoration(
-    //                       color: Colors.white,
-    //                       borderRadius: BorderRadius.circular(10)),
-    //                   padding: const EdgeInsets.all(3),
-    //                   child: InkWell(
-    //                     onTap: () {
-    //                       showAlertTapeWidget(context);
-    //                       // showAlertStaticticsWidget(context);
-    //                     },
-    //                     child: const Icon(
-    //                       Icons.more_vert_outlined,
-    //                       color: AppColors.kPrimaryColor,
-    //                     ),
-    //                   ))),
-    //         ),
-    //       ],
-    //     ),
-    //   ],
-    // ),
-    //);
   }
 }

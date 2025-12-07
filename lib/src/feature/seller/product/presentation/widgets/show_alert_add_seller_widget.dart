@@ -23,10 +23,10 @@ void showAdsOptions(BuildContext context, ProductSellerModel product) {
 class AdsOptionsModal extends StatefulWidget {
   final ProductSellerModel product;
 
-  const AdsOptionsModal({Key? key, required this.product}) : super(key: key);
+  const AdsOptionsModal({super.key, required this.product});
 
   @override
-  _AdsOptionsModalState createState() => _AdsOptionsModalState();
+  State<AdsOptionsModal> createState() => _AdsOptionsModalState();
 }
 
 class _AdsOptionsModalState extends State<AdsOptionsModal> {

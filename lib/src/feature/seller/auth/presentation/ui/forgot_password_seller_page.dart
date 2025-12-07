@@ -17,7 +17,7 @@ import '../../../../../core/constant/generated/assets.gen.dart';
 
 @RoutePage()
 class ForgotPasswordSellerPage extends StatefulWidget {
-  const ForgotPasswordSellerPage({Key? key}) : super(key: key);
+  const ForgotPasswordSellerPage({super.key});
 
   @override
   State<ForgotPasswordSellerPage> createState() => _ForgotPasswordSellerPageState();
@@ -26,13 +26,10 @@ class ForgotPasswordSellerPage extends StatefulWidget {
 class _ForgotPasswordSellerPageState extends State<ForgotPasswordSellerPage> {
   TextEditingController phoneControllerAuth = MaskedTextController(mask: '(000)-000-00-00');
 
-  bool _visibleIconView = false;
   CountrySellerDto? countrySellerDto;
 
   @override
   void initState() {
-    // TODO: implement initState
-
     countrySellerDto = CountrySellerDto(
       code: '+7',
       flagPath: Assets.icons.ruFlagIcon.path,
@@ -62,20 +59,6 @@ class _ForgotPasswordSellerPageState extends State<ForgotPasswordSellerPage> {
                 textEditingController: phoneControllerAuth.text,
               ),
             );
-            // LoginForgotSellerPasswordPage(
-            //  ,
-            // );
-            // showModalBottomSheet(
-            //     backgroundColor: Colors.white,
-            //     shape: const RoundedRectangleBorder(
-            //       borderRadius: BorderRadius.only(
-            //           topLeft: Radius.circular(10.0),
-            //           topRight: Radius.circular(10.0)),
-            //     ),
-            //     context: context,
-            //     builder: (context) {
-            //       return ();
-            //     });
           }
         },
         builder: (context, state) {
@@ -122,7 +105,7 @@ class _ForgotPasswordSellerPageState extends State<ForgotPasswordSellerPage> {
                                 Image.asset(countrySellerDto!.flagPath, width: 24, height: 24),
                                 SizedBox(width: 8),
                                 Text(
-                                  '${countrySellerDto!.code}',
+                                  '${countrySellerDto?.code}',
                                   style: AppTextStyles.size16Weight400,
                                 ),
                               ],
@@ -143,9 +126,6 @@ class _ForgotPasswordSellerPageState extends State<ForgotPasswordSellerPage> {
                           alignment: Alignment.center,
                           child: TextField(
                             onChanged: (value) {
-                              phoneControllerAuth.text.length.toInt() != 0
-                                  ? _visibleIconView = true
-                                  : _visibleIconView = false;
                               setState(() {});
                             },
                             controller: phoneControllerAuth,
