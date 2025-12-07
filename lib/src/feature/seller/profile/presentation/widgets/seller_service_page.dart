@@ -8,6 +8,8 @@ import 'package:haji_market/src/feature/drawer/bloc/country_cubit.dart';
 import 'package:haji_market/src/feature/seller/profile/presentation/widgets/bank_page.dart';
 
 class SellerServicePage extends StatefulWidget {
+  const SellerServicePage({super.key});
+
   @override
   State<SellerServicePage> createState() => _SellerServicePage();
 }
@@ -56,12 +58,10 @@ class _SellerServicePage extends State<SellerServicePage> {
   bool exists = GetStorage().hasData('shop_location_code');
   String? city = GetStorage().read('city_shop');
   String? _deviceToken = GetStorage().read('device_token');
-  String? _organizationType = GetStorage().read('seller_type_organization');
+  final String? _organizationType = GetStorage().read('seller_type_organization');
 
   @override
   void initState() {
-    // TODO: implement initState
-
     if (_deviceToken != null) {
       services[0] = {
         "name": "Пуш",
@@ -152,7 +152,7 @@ class _SellerServicePage extends State<SellerServicePage> {
     super.dispose();
   }
 
-  _cdeKService() {
+  void _cdeKService() {
     services[1]['isLoading'] = true;
     services[1]['status'] = "В процессе";
     setState(() {});
@@ -160,7 +160,7 @@ class _SellerServicePage extends State<SellerServicePage> {
     showAlertCountryWidget(context, () {}, true);
   }
 
-  _pushService() async {
+  Future<void> _pushService() async {
     final deviceToken = await FirebaseMessaging.instance.getToken();
 
     if (deviceToken != null) {
@@ -168,12 +168,12 @@ class _SellerServicePage extends State<SellerServicePage> {
     }
   }
 
-  _bankService() async {
+  Future<void> _bankService() async {
     services[2]['isLoading'] = true;
     services[2]['status'] = "В процессе";
     setState(() {});
 
-    final data = Get.to(BankPage());
+    Get.to(BankPage());
   }
 
   @override

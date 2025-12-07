@@ -9,7 +9,7 @@ import '../../../../home/data/model/cat_model.dart';
 import '../../bloc/color_seller_state.dart';
 
 class ColorsSellerPage extends StatefulWidget {
-  const ColorsSellerPage({Key? key}) : super(key: key);
+  const ColorsSellerPage({super.key});
 
   @override
   State<ColorsSellerPage> createState() => _ColorsSellerPageState();

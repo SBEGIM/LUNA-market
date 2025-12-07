@@ -7,11 +7,10 @@ import '../widgets/show_alert_statictics_seller_widget.dart';
 
 class ProductCardSellerPage extends StatefulWidget {
   final ProductSellerModel product;
+  final ProductSellerCubit cubit;
+  final BuildContext context;
 
-  ProductSellerCubit cubit;
-  BuildContext context;
-
-  ProductCardSellerPage({
+  const ProductCardSellerPage({
     required this.product,
     required this.context,
     required this.cubit,

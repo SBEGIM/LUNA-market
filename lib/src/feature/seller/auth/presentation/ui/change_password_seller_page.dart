@@ -149,9 +149,9 @@ class FieldsCoopRequest extends StatelessWidget {
   final bool arrow;
   final void Function()? onPressed;
   final void Function(String)? onChanged;
+  final TextEditingController? controller;
 
-  TextEditingController? controller;
-  FieldsCoopRequest({
+  const FieldsCoopRequest({
     required this.hintText,
     required this.titleText,
     required this.star,
@@ -159,8 +159,8 @@ class FieldsCoopRequest extends StatelessWidget {
     this.controller,
     this.onPressed,
     required this.onChanged,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -206,11 +206,6 @@ class FieldsCoopRequest extends StatelessWidget {
                     color: AppColors.kGray300,
                   ),
                 ),
-
-                // suffixIcon: IconButton(
-                //     onPressed: () {},
-                //     icon: SvgPicture.asset('assets/icons/back_menu.svg ',
-                //         color: Colors.grey)),
               ),
             ),
           ),

@@ -5,12 +5,11 @@ import 'package:get/route_manager.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/src/feature/product/cubit/product_cubit.dart';
 import 'package:haji_market/src/feature/product/provider/filter_provider.dart';
-import '../../../../core/common/constants.dart';
-import '../../bloc/brand_cubit.dart';
-import '../../bloc/brand_state.dart';
+import 'package:haji_market/src/core/common/constants.dart';
+import 'package:haji_market/src/feature/drawer/bloc/brand_cubit.dart';
 
 class BrandsPage extends StatefulWidget {
-  const BrandsPage({Key? key}) : super(key: key);
+  const BrandsPage({super.key});
 
   @override
   State<BrandsPage> createState() => _BrandsPageState();
@@ -56,7 +55,7 @@ class _BrandsPageState extends State<BrandsPage> {
         child: BlocConsumer<BrandCubit, BrandState>(
           listener: (context, state) {},
           builder: (context, state) {
-            if (state is ErrorState) {
+            if (state is BrandStateError) {
               return Center(
                 child: Text(
                   state.message,
@@ -64,7 +63,7 @@ class _BrandsPageState extends State<BrandsPage> {
                 ),
               );
             }
-            if (state is LoadedState) {
+            if (state is BrandStateLoaded) {
               return ListView.builder(
                 // physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
@@ -78,7 +77,6 @@ class _BrandsPageState extends State<BrandsPage> {
                         child: InkWell(
                           onTap: () {
                             setState(() {
-                              //  _selectedIndexSort = index;
                               if (_selectedListSort.contains(index)) {
                                 _selectedListSort.remove(index);
                               } else {
@@ -90,12 +88,7 @@ class _BrandsPageState extends State<BrandsPage> {
                               final filters = context.read<FilterProvider>();
 
                               BlocProvider.of<ProductCubit>(context).products(filters);
-
-                              // subCatName =
-                              //     state.cats[index].name.toString();
                             });
-                            // BlocProvider.of<ProductCubit>(context)
-                            //     .products();
                           },
                           child: ListTile(
                             selected: _selectedListSort.contains(index),

@@ -3,14 +3,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/route_manager.dart';
 import 'package:haji_market/src/core/common/constants.dart';
-import 'package:haji_market/src/feature/drawer/bloc/sub_cats_cubit.dart' as subCatCubit;
-import '../../../../app/widgets/custom_back_button.dart';
-import '../../../../home/bloc/cats_cubit.dart';
-import '../../../../home/bloc/cats_state.dart';
-import '../../../../home/data/model/cat_model.dart';
+import 'package:haji_market/src/feature/drawer/bloc/sub_cats_cubit.dart' as sub_cats_cubit;
+import 'package:haji_market/src/feature/app/widgets/custom_back_button.dart';
+import 'package:haji_market/src/feature/home/bloc/cats_cubit.dart';
+import 'package:haji_market/src/feature/home/bloc/cats_state.dart';
+import 'package:haji_market/src/feature/home/data/model/cat_model.dart';
 
 class CatsSellerPage extends StatefulWidget {
-  const CatsSellerPage({Key? key}) : super(key: key);
+  const CatsSellerPage({super.key});
 
   @override
   State<CatsSellerPage> createState() => _CatsSellerPageState();
@@ -18,8 +18,6 @@ class CatsSellerPage extends StatefulWidget {
 
 class _CatsSellerPageState extends State<CatsSellerPage> {
   int _selectedIndex = -1;
-  final int _selectedIndex2 = -1;
-  CatsModel? _subCat;
   CatsModel? _cat;
 
   @override
@@ -85,7 +83,7 @@ class _CatsSellerPageState extends State<CatsSellerPage> {
                                       _selectedIndex = -1;
                                     });
                                   } else {
-                                    await BlocProvider.of<subCatCubit.SubCatsCubit>(
+                                    await BlocProvider.of<sub_cats_cubit.SubCatsCubit>(
                                       context,
                                     ).subCats(state.cats[index].id, isAddAllProducts: false);
 

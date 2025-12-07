@@ -27,8 +27,8 @@ import 'package:haji_market/src/feature/seller/product/data/repository/product_s
 import 'package:haji_market/src/feature/seller/product/presentation/ui/map_seller_picker.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/feature/drawer/presentation/widgets/metas_webview.dart';
-import 'package:haji_market/src/feature/home/bloc/meta_cubit.dart' as metaCubit;
-import 'package:haji_market/src/feature/home/bloc/meta_state.dart' as metaState;
+import 'package:haji_market/src/feature/home/bloc/meta_cubit.dart';
+import 'package:haji_market/src/feature/home/bloc/meta_state.dart';
 import 'package:haji_market/src/feature/seller/product/presentation/widgets/show_list_characteristics_widget.dart';
 import 'package:haji_market/src/feature/seller/product/presentation/widgets/show_seller_cats_widget.dart';
 import 'package:haji_market/src/feature/seller/product/presentation/widgets/show_seller_characteristics_widget.dart';
@@ -150,7 +150,7 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
   String _locationSelect = 'Выбор лакации';
   String _locationSeller = 'Не выбрано';
 
-  List<CatsModel> _locations = [
+  final List<CatsModel> _locations = [
     CatsModel(id: 0, name: 'Не выбрано'),
     CatsModel(id: 1, name: 'Без ограничений'),
     CatsModel(id: 2, name: 'Вся Россия'),
@@ -159,16 +159,7 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
     CatsModel(id: 5, name: 'Моя локация'),
   ];
 
-  List<CatsModel> _locationsValues = [
-    CatsModel(id: 0, name: 'Пункт 1'),
-    CatsModel(id: 1, name: 'Пункт 2'),
-    CatsModel(id: 2, name: 'Пункт 3'),
-    CatsModel(id: 3, name: 'Пункт 4'),
-    CatsModel(id: 4, name: 'Пункт 5'),
-    CatsModel(id: 5, name: 'Пункт 6'),
-  ];
-
-  List<CatsModel> _regions = [];
+  final List<CatsModel> _regions = [];
 
   void _regionsArray() async {
     final List<CountryModel> data = await BlocProvider.of<CountryCubit>(context).countryList();
@@ -418,16 +409,12 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
 
   @override
   void initState() {
-    // cats = widget.cat;
-    // subCats = widget.subCat;
-    // brands = CatsModel(id: 0, name: 'Выберите из списка');
-    // colors = CatsModel(id: 0, name: 'Выберите цвет');
     articul();
-    if (BlocProvider.of<metaCubit.MetaCubit>(context).state is! metaState.LoadedState) {
-      BlocProvider.of<metaCubit.MetaCubit>(context).partners();
+    if (BlocProvider.of<MetaCubit>(context).state is! MetaStateLoaded) {
+      BlocProvider.of<MetaCubit>(context).partners();
     }
 
-    if (BlocProvider.of<BrandCubit>(context).state is! metaState.LoadedState) {
+    if (BlocProvider.of<BrandCubit>(context).state is! MetaStateLoaded) {
       BlocProvider.of<BrandCubit>(context).brands();
     }
 
@@ -444,7 +431,7 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
     }
 
     if (BlocProvider.of<CityCubit>(context).state is! LoadedState) {
-      BlocProvider.of<CityCubit>(context).citiesCdek('RU' ?? 'KZ');
+      BlocProvider.of<CityCubit>(context).citiesCdek('RU');
     }
 
     _sizeArray();
@@ -856,12 +843,6 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
                             subCats = value;
                           });
                         });
-                        // final data = await Get.to(SubCatsAdminPage(cats: cats));
-                        // if (data != null) {
-                        //   final Cats cat = data;
-                        //   setState(() {});
-                        //   subCats = cat;
-                        // }
                       },
                     ),
                   if (filledCount == 1)
@@ -880,21 +861,7 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
                           setState(() {
                             brands = value;
                           });
-
-                          // print(value);
-                          // BlocProvider.of<BrandCubit>(context)
-                          //     .searchBrand(value);
-                          // final CatsModel brand = data;
-                          // setState(() {});
-                          // brands = brand;
                         });
-
-                        // final data = await Get.to(const BrandSellerPage());
-                        // if (data != null) {
-                        //   final CatsModel brand = data;
-                        //   setState(() {});
-                        //   brands = brand;
-                        // }
                       },
                     ),
                   if (filledCount == 1)
@@ -1124,9 +1091,9 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
                       errorText: fieldStep1Errors['pointBlogger'],
                     ),
                   if (filledCount == 1)
-                    BlocBuilder<metaCubit.MetaCubit, metaState.MetaState>(
+                    BlocBuilder<MetaCubit, MetaState>(
                       builder: (context, state) {
-                        if (state is metaState.LoadedState) {
+                        if (state is MetaStateLoaded) {
                           metasBody.addAll([
                             state.metas.terms_of_use!,
                             state.metas.privacy_policy!,
@@ -1270,129 +1237,6 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
                               ],
                             ),
                           ),
-
-                          // GetStorage().read('seller_partner') == '1'
-                          //     ? Container(
-                          //         padding:
-                          //             const EdgeInsets.symmetric(horizontal: 10),
-                          //         margin: const EdgeInsets.only(bottom: 10),
-                          //         decoration: BoxDecoration(
-                          //             color: const Color(0xff42BB5D),
-                          //             borderRadius: BorderRadius.circular(8)),
-                          //         alignment: Alignment.center,
-                          //         // width: 343,
-                          //         height: 38,
-                          //         child: const Row(
-                          //           children: [
-                          //             Icon(
-                          //               Icons.check_circle,
-                          //               color: Colors.white,
-                          //             ),
-                          //             SizedBox(width: 10),
-                          //             Text(
-                          //               'У вас есть партнерство с этой компанией.',
-                          //               style: TextStyle(
-                          //                   fontSize: 12,
-                          //                   fontWeight: FontWeight.w400,
-                          //                   color: Colors.white),
-                          //             ),
-                          //           ],
-                          //         ),
-                          //       )
-                          //     : const SizedBox.shrink(),
-
-                          // Row(
-                          //   children: [
-                          //     Container(
-                          //       //alignment: Alignment.topCenter,
-                          //       padding: const EdgeInsets.only(bottom: 6),
-                          //       margin: const EdgeInsets.only(right: 10),
-                          //       decoration: BoxDecoration(
-                          //           color: Colors.white,
-                          //           borderRadius: BorderRadius.circular(8)),
-                          //       width: 102,
-                          //       height: 38,
-                          //       child: TextField(
-                          //         onChanged: (value) {
-                          //           // setState(() {});
-                          //         },
-                          //         textAlign: TextAlign.center,
-                          //         controller: optomCountController,
-                          //         keyboardType:
-                          //             const TextInputType.numberWithOptions(
-                          //                 signed: true, decimal: false),
-                          //         onSubmitted: (_) {},
-                          //         decoration: const InputDecoration(
-                          //           border: InputBorder.none,
-                          //           hintText: 'Количество',
-                          //           hintStyle: TextStyle(
-                          //               fontSize: 12,
-                          //               fontWeight: FontWeight.w400),
-                          //           enabledBorder: UnderlineInputBorder(
-                          //             borderSide: BorderSide(color: Colors.white),
-                          //             // borderRadius: BorderRadius.circular(3),
-                          //           ),
-                          //         ),
-                          //       ),
-                          //     ),
-                          //     Container(
-                          //       //alignment: Alignment.topCenter,
-                          //       padding: const EdgeInsets.only(bottom: 6),
-                          //       margin: const EdgeInsets.only(right: 10),
-                          //       decoration: BoxDecoration(
-                          //           color: Colors.white,
-                          //           borderRadius: BorderRadius.circular(8)),
-                          //       width: 102,
-                          //       height: 38,
-                          //       child: TextField(
-                          //         textAlign: TextAlign.center,
-                          //         controller: optomPriceController,
-                          //         keyboardType:
-                          //             const TextInputType.numberWithOptions(
-                          //                 signed: true, decimal: false),
-                          //         decoration: const InputDecoration(
-                          //           border: InputBorder.none,
-                          //           hintText: 'Введите цену',
-                          //           hintStyle: TextStyle(
-                          //               fontSize: 12,
-                          //               fontWeight: FontWeight.w400),
-                          //           enabledBorder: UnderlineInputBorder(
-                          //             borderSide: BorderSide(color: Colors.white),
-                          //             // borderRadius: BorderRadius.circular(3),
-                          //           ),
-                          //         ),
-                          //       ),
-                          //     ),
-                          //     Container(
-                          //       //alignment: Alignment.topCenter,
-                          //       padding: const EdgeInsets.only(bottom: 6),
-                          //       margin: const EdgeInsets.only(right: 10),
-                          //       decoration: BoxDecoration(
-                          //           color: Colors.white,
-                          //           borderRadius: BorderRadius.circular(8)),
-                          //       width: 50,
-                          //       height: 38,
-                          //       child: TextField(
-                          //         textAlign: TextAlign.center,
-                          //         controller: optomTotalController,
-                          //         keyboardType:
-                          //             const TextInputType.numberWithOptions(
-                          //                 signed: true, decimal: false),
-                          //         decoration: const InputDecoration(
-                          //           border: InputBorder.none,
-                          //           hintText: 'В наличии шт',
-                          //           hintStyle: TextStyle(
-                          //               fontSize: 12,
-                          //               fontWeight: FontWeight.w400),
-                          //           enabledBorder: UnderlineInputBorder(
-                          //             borderSide: BorderSide(color: Colors.white),
-                          //             // borderRadius: BorderRadius.circular(3),
-                          //           ),
-                          //         ),
-                          //       ),
-                          //     ),
-                          //   ],
-                          // )
                         ],
                       ),
                     ),
@@ -1589,167 +1433,6 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
                       ),
                     ),
 
-                  // if (filledCount == 3)
-                  //   SizedBox(
-                  //     child: Column(
-                  //       crossAxisAlignment: CrossAxisAlignment.start,
-                  //       children: [
-                  //         const Text(
-                  //           'Размер',
-                  //           style: TextStyle(
-                  //               fontSize: 16, fontWeight: FontWeight.w700),
-                  //         ),
-                  //         const SizedBox(height: 10),
-                  //         GestureDetector(
-                  //           onTap: () {
-                  //             showSellerSizeOptions(
-                  //                 context, 'Добавить размеры', mockSizes,
-                  //                 (SizeCountSellerDto value) {
-                  //               sizeId = value.id;
-                  //               sizeName = value.name;
-                  //               sizeCountController.text = value.count;
-
-                  //               if (sizeCountController.text.isNotEmpty) {
-                  //                 bool exists = false;
-
-                  //                 //  Cats? sizeCountLast;
-                  //                 // if (optomCount.isNotEmpty) {
-
-                  //                 // sizeCountLast = mockSizeAdds!.isEmpty ? mockSizeAdds!.last : null;
-                  //                 for (var element in mockSizeAdds!) {
-                  //                   if (element.name == sizeName) {
-                  //                     exists = true;
-                  //                     setState(() {});
-                  //                   }
-                  //                   continue;
-                  //                 }
-                  //                 //   }
-
-                  //                 if (!exists) {
-                  //                   mockSizeAdds!.add(CatsModel(name: sizeName));
-
-                  //                   sizeCount.add(SizeCountSellerDto(
-                  //                       id: sizeId,
-                  //                       name: sizeName,
-                  //                       count: sizeCountController.text));
-
-                  //                   setState(() {});
-
-                  //                   sizeId = '';
-                  //                   sizeName = '';
-                  //                   sizeCountController.clear();
-                  //                 } else {
-                  //                   // Get.to(() => {})
-
-                  //                   sizeId = '';
-                  //                   sizeName = '';
-                  //                   sizeCountController.clear();
-                  //                   Get.snackbar('Ошибка', 'Данные уже имеется!',
-                  //                       backgroundColor: Colors.redAccent);
-                  //                 }
-                  //               } else {
-                  //                 Get.snackbar('Ошибка', 'Нет данных!',
-                  //                     backgroundColor: Colors.redAccent);
-                  //               }
-                  //             });
-                  //           },
-                  //           child: Container(
-                  //             decoration: BoxDecoration(
-                  //                 color: AppColors.mainBackgroundPurpleColor,
-                  //                 borderRadius: BorderRadius.circular(8)),
-                  //             alignment: Alignment.center,
-                  //             width: double.infinity,
-                  //             height: 38,
-                  //             child: const Text(
-                  //               '+ Добавить размер',
-                  //               style: TextStyle(
-                  //                   fontSize: 14,
-                  //                   fontWeight: FontWeight.w700,
-                  //                   color: AppColors.mainPurpleColor),
-                  //             ),
-                  //           ),
-                  //         ),
-                  //       ],
-                  //     ),
-                  //   ),
-
-                  // if (filledCount == 3)
-                  //   SizedBox(
-                  //     height: 88,
-                  //     child: ListView.builder(
-                  //         scrollDirection: Axis.horizontal,
-                  //         // physics: const NeverScrollableScrollPhysics(),
-                  //         itemCount: sizeCount.length,
-                  //         itemBuilder: ((context, index) {
-                  //           return Container(
-                  //             padding: EdgeInsets.all(12),
-                  //             margin: EdgeInsets.all(5),
-                  //             alignment: Alignment.center,
-                  //             decoration: BoxDecoration(
-                  //                 borderRadius: BorderRadius.circular(12),
-                  //                 color: AppColors.kBackgroundColor),
-                  //             height: 58,
-                  //             child: Row(
-                  //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //               crossAxisAlignment: CrossAxisAlignment.start,
-                  //               children: [
-                  //                 Column(
-                  //                   mainAxisAlignment: MainAxisAlignment.center,
-                  //                   crossAxisAlignment: CrossAxisAlignment.start,
-                  //                   children: [
-                  //                     Row(
-                  //                       children: [
-                  //                         Text(
-                  //                           'Размер: ',
-                  //                           style: const TextStyle(
-                  //                               fontSize: 14,
-                  //                               color: AppColors.kGray300,
-                  //                               fontWeight: FontWeight.w400),
-                  //                         ),
-                  //                         Text(
-                  //                           '${sizeCount[index].name}',
-                  //                           style: const TextStyle(
-                  //                               fontSize: 14,
-                  //                               fontWeight: FontWeight.w500),
-                  //                         ),
-                  //                       ],
-                  //                     ),
-                  //                     Row(
-                  //                       children: [
-                  //                         Text(
-                  //                           'Количество: ',
-                  //                           style: const TextStyle(
-                  //                               fontSize: 14,
-                  //                               color: AppColors.kGray300,
-                  //                               fontWeight: FontWeight.w400),
-                  //                         ),
-                  //                         Text(
-                  //                           '${sizeCount[index].count} шт',
-                  //                           style: const TextStyle(
-                  //                               fontSize: 14,
-                  //                               fontWeight: FontWeight.w500),
-                  //                         ),
-                  //                       ],
-                  //                     ),
-                  //                   ],
-                  //                 ),
-                  //                 InkWell(
-                  //                   onTap: (() {
-                  //                     sizeCount.removeAt(index);
-                  //                     setState(() {});
-                  //                   }),
-                  //                   child: Icon(
-                  //                     Icons.close,
-                  //                     color: Colors.red,
-                  //                   ),
-                  //                 )
-                  //               ],
-                  //             ),
-                  //           );
-                  //         })),
-                  //   ),
-
-                  // if (filledCount == 3) const SizedBox(height: 15),
                   if (filledCount == 3)
                     FieldsProductRequest(
                       titleText: 'Укажите размер и количество',
@@ -1801,89 +1484,6 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
                       },
                     ),
 
-                  // if (filledCount == 3)
-                  //   SizedBox(
-                  //     child: Column(
-                  //       crossAxisAlignment: CrossAxisAlignment.start,
-                  //       children: [
-                  //         const Text(
-                  //           'Цвет',
-                  //           style: TextStyle(
-                  //               fontSize: 16, fontWeight: FontWeight.w700),
-                  //         ),
-                  //         const SizedBox(height: 10),
-                  //         GestureDetector(
-                  //           onTap: () {
-                  //             showSellerCatsOptions(
-                  //                 context, 'Добавить цвет', mockColors!, (value) {
-                  //               final CatsModel catsModel = value;
-
-                  //               print(catsModel.name);
-
-                  //               final colorId = catsModel.id.toString();
-                  //               final colorName = catsModel.name ?? 'Пустое';
-
-                  //               colorCountController.text = catsModel.name!;
-
-                  //               if (colorCountController.text.isNotEmpty) {
-                  //                 bool exists = false;
-
-                  //                 //  Cats? sizeCountLast;
-                  //                 // if (optomCount.isNotEmpty) {
-
-                  //                 // sizeCountLast = mockSizeAdds!.isEmpty ? mockSizeAdds!.last : null;
-                  //                 for (var element in checkColors!) {
-                  //                   if (element.name == colorName) {
-                  //                     exists = true;
-                  //                     setState(() {});
-                  //                   }
-                  //                   continue;
-                  //                 }
-                  //                 //   }
-
-                  //                 if (!exists) {
-                  //                   checkColors!.add(CatsModel(name: colorName));
-
-                  //                   colorCount.add(ColorCountSellerDto(
-                  //                       color_id: colorId,
-                  //                       name: colorName,
-                  //                       count: colorCountController.text));
-
-                  //                   setState(() {});
-
-                  //                   colorCountController.clear();
-                  //                 } else {
-                  //                   colorCountController.clear();
-                  //                   Get.snackbar('Ошибка', 'Данные уже имеется!',
-                  //                       backgroundColor: Colors.redAccent);
-                  //                 }
-                  //               } else {
-                  //                 Get.snackbar('Ошибка', 'Нет данных!',
-                  //                     backgroundColor: Colors.redAccent);
-                  //               }
-
-                  //               setState(() {});
-                  //             });
-                  //           },
-                  //           child: Container(
-                  //             decoration: BoxDecoration(
-                  //                 color: AppColors.mainBackgroundPurpleColor,
-                  //                 borderRadius: BorderRadius.circular(8)),
-                  //             alignment: Alignment.center,
-                  //             width: double.infinity,
-                  //             height: 38,
-                  //             child: const Text(
-                  //               '+ Добавить цвет',
-                  //               style: TextStyle(
-                  //                   fontSize: 14,
-                  //                   fontWeight: FontWeight.w700,
-                  //                   color: AppColors.mainPurpleColor),
-                  //             ),
-                  //           ),
-                  //         ),
-                  //       ],
-                  //     ),
-                  //   ),
                   if (filledCount == 3)
                     FieldsProductRequest(
                       titleText: 'Укажите цвета',
@@ -2235,282 +1835,10 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
                               },
                             ),
                           ),
-                          // Row(
-                          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          //   crossAxisAlignment: CrossAxisAlignment.center,
-                          //   children: [
-                          //     Expanded(
-                          //       child: Column(
-                          //         crossAxisAlignment: CrossAxisAlignment.start,
-                          //         children: [
-                          //           Row(
-                          //             children: [
-                          //               Expanded(
-                          //                 child: Container(
-                          //                   alignment: Alignment.centerLeft,
-                          //                   margin:
-                          //                       const EdgeInsets.only(right: 10),
-                          //                   padding: const EdgeInsets.symmetric(
-                          //                       horizontal: 10),
-                          //                   decoration: BoxDecoration(
-                          //                       color: Colors.white,
-                          //                       borderRadius:
-                          //                           BorderRadius.circular(8)),
-                          //                   // width: 111,
-                          //                   height: 38,
-                          //                   child: Row(
-                          //                       mainAxisAlignment:
-                          //                           MainAxisAlignment
-                          //                               .spaceBetween,
-                          //                       children: [
-                          //                         Text(
-                          //                           characteristicName == ''
-                          //                               ? 'Параметр'
-                          //                               : characteristicName,
-                          //                           style: const TextStyle(
-                          //                               fontSize: 12,
-                          //                               fontWeight:
-                          //                                   FontWeight.w400),
-                          //                         ),
-                          //                         PopupMenuButton(
-                          //                           onSelected: (value) async {
-                          //                             characteristicsValuelast =
-                          //                                 CharacteristicsModel(
-                          //                                     id: value.id,
-                          //                                     key: value.key);
-                          //                             //sizeId = value.id.toString();
-                          //                             characteristicId =
-                          //                                 value.id.toString();
-                          //                             characteristicName =
-                          //                                 value.key ?? 'Пустое';
-                          //                             subCharacteristics =
-                          //                                 await BlocProvider.of<
-                          //                                             CharacteristicSellerCubit>(
-                          //                                         context)
-                          //                                     .subCharacteristic(
-                          //                                         id: value.id
-                          //                                             .toString());
-                          //                             setState(() {});
-                          //                           },
-                          //                           shape:
-                          //                               const RoundedRectangleBorder(
-                          //                             borderRadius:
-                          //                                 BorderRadius.all(
-                          //                               Radius.circular(15.0),
-                          //                             ),
-                          //                           ),
-                          //                           icon: SvgPicture.asset(
-                          //                               'assets/icons/dropdown.svg'),
-                          //                           position:
-                          //                               PopupMenuPosition.under,
-                          //                           offset: const Offset(0, 0),
-                          //                           itemBuilder: (
-                          //                             BuildContext bc,
-                          //                           ) {
-                          //                             return characteristics!
-                          //                                 .map<PopupMenuItem>(
-                          //                                     (e) {
-                          //                               return PopupMenuItem(
-                          //                                 value: e,
-                          //                                 child: Text(
-                          //                                   e.key ?? 'Пустое',
-                          //                                   style:
-                          //                                       const TextStyle(
-                          //                                     color: Colors.black,
-                          //                                   ),
-                          //                                 ),
-                          //                               );
-                          //                             }).toList();
-                          //                           },
-                          //                         )
-                          //                       ]),
-                          //                 ),
-                          //               ),
-                          //             ],
-                          //           ),
-                          //           const SizedBox(
-                          //             height: 5,
-                          //           ),
-                          //           Row(
-                          //             children: [
-                          //               Expanded(
-                          //                 child: Container(
-                          //                   alignment: Alignment.centerLeft,
-                          //                   margin:
-                          //                       const EdgeInsets.only(right: 10),
-                          //                   padding: const EdgeInsets.symmetric(
-                          //                       horizontal: 10),
-                          //                   decoration: BoxDecoration(
-                          //                       color: Colors.white,
-                          //                       borderRadius:
-                          //                           BorderRadius.circular(8)),
-                          //                   // width: 111,
-                          //                   height: 38,
-                          //                   child: Row(
-                          //                       mainAxisAlignment:
-                          //                           MainAxisAlignment
-                          //                               .spaceBetween,
-                          //                       children: [
-                          //                         Text(
-                          //                           subCharacteristicName == ''
-                          //                               ? 'Значение'
-                          //                               : subCharacteristicName,
-                          //                           style: const TextStyle(
-                          //                               fontSize: 12,
-                          //                               fontWeight:
-                          //                                   FontWeight.w400),
-                          //                         ),
-                          //                         PopupMenuButton(
-                          //                           onSelected: (value) {
-                          //                             subCharacteristicsValueLast =
-                          //                                 CharacteristicsModel(
-                          //                                     id: value.id,
-                          //                                     value: value.value);
-
-                          //                             // subCharacteristicsValue!.add(value as Characteristics);
-                          //                             //sizeId = value.id.toString();
-                          //                             subCharacteristicId =
-                          //                                 value.id.toString();
-                          //                             subCharacteristicName =
-                          //                                 value.value ?? 'Пустое';
-                          //                             setState(() {});
-                          //                           },
-                          //                           shape:
-                          //                               const RoundedRectangleBorder(
-                          //                             borderRadius:
-                          //                                 BorderRadius.all(
-                          //                               Radius.circular(15.0),
-                          //                             ),
-                          //                           ),
-                          //                           icon: SvgPicture.asset(
-                          //                               'assets/icons/dropdown.svg'),
-                          //                           position:
-                          //                               PopupMenuPosition.under,
-                          //                           offset: const Offset(0, 0),
-                          //                           itemBuilder: (
-                          //                             BuildContext bc,
-                          //                           ) {
-                          //                             return subCharacteristics!
-                          //                                 .map<PopupMenuItem>(
-                          //                                     (e) {
-                          //                               return PopupMenuItem(
-                          //                                 value: e,
-                          //                                 child: Text(
-                          //                                   e.value ?? 'Пустое',
-                          //                                   style:
-                          //                                       const TextStyle(
-                          //                                     color: Colors.black,
-                          //                                   ),
-                          //                                 ),
-                          //                               );
-                          //                             }).toList();
-                          //                           },
-                          //                         )
-                          //                       ]),
-                          //                 ),
-                          //               ),
-                          //             ],
-                          //           ),
-                          //         ],
-                          //       ),
-                          //     ),
-                          //   ],
-                          // )
                         ],
                       ),
                     ),
-                  // if (filledCount == 3) const SizedBox(height: 28),
-                  // if (filledCount == 3)
-                  //   SizedBox(
-                  //     height:
-                  //         (120 * (characteristicsValue?.length ?? 0)).toDouble(),
-                  //     width: double.infinity,
-                  //     child: ListView.builder(
-                  //         scrollDirection: Axis.vertical,
-                  //         // physics: const NeverScrollableScrollPhysics(),
-                  //         itemCount: characteristicsValue?.length ?? 0,
-                  //         itemBuilder: ((context, index) {
-                  //           return SizedBox(
-                  //             height: 120,
-                  //             width: double.infinity,
-                  //             child: Column(
-                  //               mainAxisAlignment: MainAxisAlignment.start,
-                  //               crossAxisAlignment: CrossAxisAlignment.start,
-                  //               children: [
-                  //                 Row(
-                  //                   mainAxisAlignment:
-                  //                       MainAxisAlignment.spaceBetween,
-                  //                   crossAxisAlignment: CrossAxisAlignment.center,
-                  //                   children: [
-                  //                     Flexible(
-                  //                       child: FieldsProductRequest(
-                  //                         titleText:
-                  //                             '${characteristics?[index].key}',
-                  //                         hintText:
-                  //                             '${subCharacteristics?[index].value}',
-                  //                         star: false,
-                  //                         readOnly: true,
-                  //                         arrow: true,
-                  //                         hintColor: true,
-                  //                         controller: countController,
-                  //                         textInputNumber: true,
-                  //                       ),
-                  //                     ),
-                  //                     InkWell(
-                  //                       onTap: (() {
-                  //                         characteristicsValue?.removeAt(index);
-                  //                         subCharacteristics?.removeAt(index);
-                  //                         setState(() {});
-                  //                       }),
-                  //                       child: Icon(
-                  //                         Icons.delete_forever,
-                  //                         color: Colors.black,
-                  //                         size: 30,
-                  //                       ),
-                  //                     ),
-                  //                   ],
-                  //                 ),
-                  //                 SizedBox(height: 10),
-                  //               ],
-                  //             ),
-                  //           );
-                  //         })),
-                  //   ),
 
-                  // Container(
-                  //   padding: const EdgeInsets.symmetric(horizontal: 10),
-                  //   decoration: BoxDecoration(
-                  //       color: Colors.white,
-                  //       borderRadius: BorderRadius.circular(8)),
-                  //   alignment: Alignment.center,
-                  //   child: Row(
-                  //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //     children: [
-                  //       Row(
-                  //         children: [
-                  //           SvgPicture.asset('assets/icons/bs4.svg'),
-                  //           const SizedBox(
-                  //             width: 10,
-                  //           ),
-                  //           const Text('Безопасная сделка'),
-                  //         ],
-                  //       ),
-                  //       Switch(
-                  //         onChanged: toggleSwitch,
-                  //         value: isSwitched,
-                  //         activeColor: AppColors.kPrimaryColor,
-                  //         activeTrackColor: AppColors.kPrimaryColor,
-                  //         inactiveThumbColor:
-                  //             const Color.fromRGBO(245, 245, 245, 1),
-                  //         inactiveTrackColor:
-                  //             const Color.fromRGBO(237, 237, 237, 1),
-                  //       ),
-                  //     ],
-                  //   ),
-                  // ),
-                  // const SizedBox(
-                  //  height: 10,
-                  //  ),
                   if (filledCount == 4)
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -3069,8 +2397,8 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
                       countController.text,
                       compoundController.text,
                       cats?.id.toString() ?? '',
-                      subCats?.id == null ? null : subCats?.id.toString(),
-                      brands?.id == null ? null : brands?.id.toString(),
+                      subCats?.id?.toString(),
+                      brands?.id?.toString(),
                       colors?.id.toString() ?? '',
                       descriptionController.text,
                       nameController.text,
@@ -3088,7 +2416,7 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
                       sizeCount,
                       fulfillment,
                       subIds,
-                      _video != null ? _video!.path : null,
+                      _video?.path,
                     );
                   } else {
                     filledCount--;

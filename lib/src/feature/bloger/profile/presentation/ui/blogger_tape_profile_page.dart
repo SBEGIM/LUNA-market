@@ -25,6 +25,7 @@ class ProfileBloggerTapePage extends StatefulWidget implements AutoRouteWrapper 
   final String bloggerAvatar;
   final bool inSubscribe;
   final Function(bool)? onSubChanged;
+  
   ProfileBloggerTapePage({
     required this.bloggerId,
     required this.bloggerCreatedAt,

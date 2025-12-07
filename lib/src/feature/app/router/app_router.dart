@@ -30,7 +30,6 @@ import 'package:haji_market/src/feature/seller/auth/presentation/ui/forgot_passw
 import 'package:haji_market/src/feature/seller/auth/presentation/ui/init_seller_page.dart';
 import 'package:haji_market/src/feature/seller/auth/presentation/ui/auth_seller_page.dart';
 import 'package:haji_market/src/feature/seller/auth/presentation/ui/new_register_seller_page.dart';
-import 'package:haji_market/src/feature/seller/auth/presentation/ui/register_seller_page.dart';
 import 'package:haji_market/src/feature/seller/auth/presentation/ui/success_register_seller_page.dart';
 import 'package:haji_market/src/feature/seller/auth/presentation/widget/login_forget_password_modal_bottom.dart';
 import 'package:haji_market/src/feature/seller/chat/presentation/chat_seller_page.dart';

@@ -7,9 +7,9 @@ import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/feature/basket/bloc/basket_cubit.dart';
 
 class CancelOrderWidget extends StatefulWidget {
-  String id;
+  final String id;
 
-  CancelOrderWidget({required this.id, Key? key}) : super(key: key);
+  const CancelOrderWidget({required this.id, super.key});
 
   @override
   State<CancelOrderWidget> createState() => _CancelOrderWidgetState();
@@ -87,7 +87,7 @@ class _CancelOrderWidgetState extends State<CancelOrderWidget> {
                             ),
                           ),
                           SizedBox(width: 8),
-                          Container(
+                          SizedBox(
                             width: 20,
                             height: 20,
                             child: Image.asset(

@@ -5,9 +5,6 @@ import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/feature/app/router/app_router.dart';
 
-// ignore: unused_element
-const _tag = 'BaseNew';
-
 class BaseShop extends StatefulWidget {
   const BaseShop({super.key});
 
@@ -25,9 +22,6 @@ class _BaseShopState extends State<BaseShop> with TickerProviderStateMixin {
     super.initState();
   }
 
-  // final activeColorFilter = const ColorFilter.mode(AppColors.kGrey400, BlendMode.srcIn);
-  // final disabledColorFilter = const ColorFilter.mode(AppColors.kSecondary100, BlendMode.srcIn);
-
   @override
   Widget build(BuildContext context) {
     return AutoTabsScaffold(
@@ -44,9 +38,6 @@ class _BaseShopState extends State<BaseShop> with TickerProviderStateMixin {
       transitionBuilder: (context, child, animation) {
         return SafeArea(bottom: false, child: child);
       },
-      // floatingActionButton: FloatingActionButton(onPressed: () {
-      //   AutoTabsRouter.of(context).setActiveIndex(2);
-      // }),
       bottomNavigationBuilder: (_, tabsRouter) {
         return Container(
           height: 94,
@@ -62,36 +53,6 @@ class _BaseShopState extends State<BaseShop> with TickerProviderStateMixin {
               if (tabsRouter.activeIndex == index) {
                 tabsRouter.popTop();
               } else {
-                // bool exists = GetStorage().hasData('shop_location_code');
-                // String? city = GetStorage().read('city_shop');
-
-                // if (!exists && (index != 1)) {
-                //   // Get.showSnackbar(
-                //   // Get.closeCurrentSnackbar();
-                //   Get.snackbar(
-                //     'СДЕК магазин',
-                //     city != null
-                //         ? 'Ваш город $city?'
-                //         : 'Ваш город неизвестен для cрока доставки!',
-                //     icon: const Icon(Icons.add_location_sharp),
-                //     duration: const Duration(seconds: 30),
-                //     backgroundColor: Colors.orangeAccent,
-                //     onTap: (snack) {
-                //       Get.closeCurrentSnackbar();
-
-                //       Future.wait([
-                //         BlocProvider.of<countryCubit.CountryCubit>(context)
-                //             .country()
-                //       ]);
-                //       showAlertCountryWidget(context, () {
-                //         // context.router.pop();
-                //         // setState(() {});
-                //       }, true);
-                //     },
-                //   );
-                //   //  / );
-
-                // }
                 tabsRouter.setActiveIndex(index);
               }
             },

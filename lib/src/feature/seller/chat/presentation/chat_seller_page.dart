@@ -19,7 +19,7 @@ class ChatSellerPage extends StatefulWidget {
 }
 
 class _ChatSellerPageState extends State<ChatSellerPage> {
-  RefreshController _refreshController = RefreshController(initialRefresh: false);
+  final RefreshController _refreshController = RefreshController(initialRefresh: false);
 
   TextEditingController searchController = TextEditingController();
 

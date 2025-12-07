@@ -65,7 +65,7 @@ class _BlogShopsPageState extends State<BlogShopsPage> {
       BlocProvider.of<catsCubit.CatsCubit>(context).cats();
     }
 
-    if (BlocProvider.of<metaCubit.MetaCubit>(context).state is! metaState.LoadedState) {
+    if (BlocProvider.of<metaCubit.MetaCubit>(context).state is! metaState.MetaStateLoaded) {
       BlocProvider.of<metaCubit.MetaCubit>(context).partners();
     }
     super.initState();

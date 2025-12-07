@@ -35,7 +35,7 @@ class _AdvertBottomSheetState extends State<AdvertBottomSheet> {
   @override
   void initState() {
     baseUrl;
-    if (BlocProvider.of<MetaCubit>(context).state is! LoadedState) {
+    if (BlocProvider.of<MetaCubit>(context).state is! MetaStateLoaded) {
       BlocProvider.of<MetaCubit>(context).partners();
     }
     super.initState();
@@ -50,7 +50,7 @@ class _AdvertBottomSheetState extends State<AdvertBottomSheet> {
       builder: (context, scrollController) {
         return BlocBuilder<MetaCubit, MetaState>(
           builder: (context, state) {
-            if (state is LoadedState) {
+            if (state is MetaStateLoaded) {
               return Container(
                 padding: const EdgeInsets.all(16),
                 color: Colors.white,

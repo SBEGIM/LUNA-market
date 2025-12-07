@@ -1,17 +1,33 @@
+import 'package:equatable/equatable.dart';
 import 'package:haji_market/src/feature/home/data/model/meta_model.dart';
 
-abstract class MetaState {}
-
-class InitState extends MetaState {}
-
-class LoadingState extends MetaState {}
-
-class LoadedState extends MetaState {
-  MetaModel metas;
-  LoadedState(this.metas);
+sealed class MetaState extends Equatable {
+  const MetaState();
 }
 
-class ErrorState extends MetaState {
-  String message;
-  ErrorState({required this.message});
+class MetaStateInitial extends MetaState {
+  @override
+  List<Object?> get props => [];
+}
+
+class MetaStateLoading extends MetaState {
+  @override
+  List<Object?> get props => [];
+}
+
+class MetaStateLoaded extends MetaState {
+  final MetaModel metas;
+
+  const MetaStateLoaded(this.metas);
+
+  @override
+  List<Object?> get props => [metas];
+}
+
+class MetaStateError extends MetaState {
+  final String message;
+  const MetaStateError({required this.message});
+
+  @override
+  List<Object?> get props => [message];
 }

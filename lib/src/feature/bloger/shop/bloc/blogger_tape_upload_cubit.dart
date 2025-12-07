@@ -11,7 +11,7 @@ class BloggerTapeUploadCubit extends Cubit<BloggerTapeUploadState> {
   Future<void> uploadVideo(String product_id, video) async {
     try {
       emit(LoadingState());
-      final data = await bloggerTapeUploadRepository.uploadVideo(product_id, video);
+      await bloggerTapeUploadRepository.uploadVideo(product_id, video);
       emit(LoadedState());
       emit(InitState());
     } catch (e) {

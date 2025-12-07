@@ -10,7 +10,7 @@ import 'package:haji_market/src/feature/bloger/tape/bloc/upload_video_blogger_cu
 import 'package:haji_market/src/feature/bloger/tape/data/repository/upload_video_blogger_repo.dart';
 import 'package:haji_market/src/feature/initialization/logic/composition_root.dart';
 import 'package:haji_market/src/feature/product/cubit/recently_watched_product_cubit.dart';
-import 'package:haji_market/src/feature/product/data/repository/recently%20watched_repo.dart';
+import 'package:haji_market/src/feature/product/data/repository/recently_watched_repo.dart';
 import 'package:haji_market/src/feature/product/provider/filter_provider.dart';
 import 'package:haji_market/src/feature/seller/auth/bloc/register_seller_cubit.dart';
 import 'package:haji_market/src/feature/seller/auth/bloc/sms_seller_cubit.dart';
@@ -54,7 +54,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:get/route_manager.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:haji_market/src/feature/seller/app/bloc/admin_navigation_cubit/admin_navigation_cubit.dart';
 import 'package:haji_market/src/feature/seller/auth/bloc/login_seller_cubit.dart';
 import 'package:haji_market/src/feature/seller/auth/data/repository/login_seller_repository.dart';
 import 'package:haji_market/src/feature/seller/order/bloc/basket_seller_cubit.dart';
@@ -203,7 +202,6 @@ class MultiBlocWrapper extends StatelessWidget {
       providers: [
         BlocProvider(create: (_) => AppBloc()),
         BlocProvider(create: (_) => NavigationCubit()),
-        BlocProvider(create: (_) => AdminNavigationCubit()),
         BlocProvider(
           create: (context) => LoginCubit(authRepository: context.repository.authRepository),
         ),

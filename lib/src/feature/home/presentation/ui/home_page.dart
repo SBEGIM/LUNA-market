@@ -22,8 +22,8 @@ import 'package:haji_market/src/feature/home/bloc/banners_cubit.dart' as bannerC
 import 'package:haji_market/src/feature/home/bloc/banners_state.dart' as bannerState;
 import 'package:haji_market/src/feature/home/bloc/partner_cubit.dart' as partnerCubit;
 import 'package:haji_market/src/feature/home/bloc/partner_state.dart' as partnerState;
-import 'package:haji_market/src/feature/home/bloc/meta_cubit.dart' as metaCubit;
-import 'package:haji_market/src/feature/home/bloc/meta_state.dart' as metaState;
+import 'package:haji_market/src/feature/home/bloc/meta_cubit.dart';
+import 'package:haji_market/src/feature/home/bloc/meta_state.dart';
 import 'package:haji_market/src/feature/home/presentation/ui/banner_page.dart';
 import 'package:haji_market/src/feature/home/presentation/ui/cats_page.dart';
 import 'package:haji_market/src/feature/home/presentation/widgets/product_mb_interesting_card.dart';
@@ -44,7 +44,8 @@ import '../../bloc/popular_shops_state.dart' as popShopsState;
 class HomePage extends StatefulWidget {
   final void Function()? drawerCallback;
   final GlobalKey<ScaffoldState>? globalKey;
-  const HomePage({this.globalKey, this.drawerCallback, Key? key}) : super(key: key);
+
+  const HomePage({this.globalKey, this.drawerCallback, super.key});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -77,7 +78,7 @@ class _HomePageState extends State<HomePage> {
       // Unexpected type, bail out
       return null;
     }
-    print(data);
+    debugPrint(data.toString());
     return CityModel.fromJson(Map<String, dynamic>.from(data));
   }
 
@@ -122,8 +123,8 @@ class _HomePageState extends State<HomePage> {
       }
 
       // Meta
-      if (BlocProvider.of<metaCubit.MetaCubit>(context).state is! metaState.LoadedState) {
-        BlocProvider.of<metaCubit.MetaCubit>(context).partners();
+      if (BlocProvider.of<MetaCubit>(context).state is! MetaStateLoaded) {
+        BlocProvider.of<MetaCubit>(context).partners();
       }
 
       // Products
@@ -195,7 +196,7 @@ class _HomePageState extends State<HomePage> {
                           Image.asset(Assets.icons.location.path, height: 20, width: 20),
                           SizedBox(width: 4.0),
                           Text(
-                            '${loadCity()?.city ?? 'Не указан'}',
+                            loadCity()?.city ?? 'Не указан',
                             style: AppTextStyles.size16Weight500.copyWith(
                               color: AppColors.mainPurpleColor,
                             ),

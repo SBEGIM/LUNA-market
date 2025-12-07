@@ -116,7 +116,7 @@ class _BasketOrderAddressPageState extends State<BasketOrderAddressPage> {
     basketData();
     city = loadCity();
 
-    if (State is! metaState.LoadedState) {
+    if (State is! metaState.MetaStateLoaded) {
       BlocProvider.of<metaCubit.MetaCubit>(context).partners();
     }
     if (widget.office != null) {
@@ -214,15 +214,7 @@ class _BasketOrderAddressPageState extends State<BasketOrderAddressPage> {
 
     if (state is LoadedState) {
       for (final item in state.basketShowModel) {
-        // final int price = item.product?.price?.toInt() ?? 0;
-        // final int percent = item.product?.compound?.toInt() ?? 0;
-
-        // print(item.product?.compound);
-
-        // final int discounted =
-        //     (price * (100 - percent) / 100).round(); // тут округляем в конце
-
-        total += (item.product?.compound?.toInt() ?? 0) * (item?.basketCount ?? 1);
+        total += (item.product?.compound?.toInt() ?? 0) * (item.basketCount ?? 1);
       }
 
       return formatPrice(total);
@@ -243,6 +235,9 @@ class _BasketOrderAddressPageState extends State<BasketOrderAddressPage> {
         leading: IconButton(
           onPressed: () async {
             await BlocProvider.of<BasketCubit>(context).basketBackSelectProducts();
+
+            if (!context.mounted) return;
+
             Navigator.pop(context);
           },
           icon: const Icon(Icons.arrow_back_ios, color: AppColors.kLightBlackColor),
@@ -916,7 +911,7 @@ class _BasketOrderAddressPageState extends State<BasketOrderAddressPage> {
                       SizedBox(width: 8),
                       BlocBuilder<metaCubit.MetaCubit, metaState.MetaState>(
                         builder: (context, state) {
-                          if (state is metaState.LoadedState) {
+                          if (state is metaState.MetaStateLoaded) {
                             metasBody.addAll([
                               state.metas.terms_of_use!,
                               state.metas.privacy_policy!,

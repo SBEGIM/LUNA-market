@@ -6,8 +6,7 @@ import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/feature/app/router/app_router.dart';
 import 'package:haji_market/src/feature/home/data/model/cat_model.dart';
 import 'package:haji_market/src/feature/product/provider/filter_provider.dart';
-import 'package:haji_market/src/feature/drawer/bloc/brand_cubit.dart' as brand_cubit;
-import 'package:haji_market/src/feature/drawer/bloc/brand_state.dart' as brand_state;
+import 'package:haji_market/src/feature/drawer/bloc/brand_cubit.dart';
 import 'package:shimmer_animation/shimmer_animation.dart';
 import 'package:haji_market/src/feature/home/bloc/cats_cubit.dart';
 import 'package:haji_market/src/feature/home/bloc/cats_state.dart';
@@ -27,10 +26,10 @@ class _CatalogPageState extends State<CatalogPage> {
 
   @override
   void initState() {
-    brand_cubit.BrandCubit brandInitCubit = BlocProvider.of<brand_cubit.BrandCubit>(context);
+    BrandCubit brandInitCubit = BlocProvider.of<BrandCubit>(context);
 
-    if (brandInitCubit.state is! brand_state.LoadedState) {
-      BlocProvider.of<brand_cubit.BrandCubit>(context).brands();
+    if (brandInitCubit.state is! BrandStateLoaded) {
+      BlocProvider.of<BrandCubit>(context).brands();
     }
 
     brandList();
@@ -38,14 +37,8 @@ class _CatalogPageState extends State<CatalogPage> {
     super.initState();
   }
 
-  brandList() async {
-    // widget.catChapters?.forEach((cat) {
-    //   print(cat.name ?? '');
-    // });
-
-    final List<CatsModel> data = await BlocProvider.of<brand_cubit.BrandCubit>(
-      context,
-    ).brandsList();
+  Future<void> brandList() async {
+    final List<CatsModel> data = await BlocProvider.of<BrandCubit>(context).brandsList();
     brands.addAll(data);
     setState(() {});
   }
@@ -70,42 +63,6 @@ class _CatalogPageState extends State<CatalogPage> {
         titleSpacing: 0,
         // leadingWiadth: 1,
         title: Text('Все категории', style: AppTextStyles.size18Weight600),
-
-        // Container(
-        //   height: 34,
-        //   width: 279,
-        //   decoration: BoxDecoration(
-        //       color: const Color(0xFFF8F8F8),
-        //       borderRadius: BorderRadius.circular(10)),
-        //   child: TextField(
-        //       controller: searchController,
-        //       onChanged: (value) {
-        //         if (value.isEmpty) {
-        //           BlocProvider.of<CatsCubit>(context).saveCats();
-        //         } else {
-        //           BlocProvider.of<CatsCubit>(context).searchCats(value);
-        //         }
-
-        //         // if (searchController.text.isEmpty)
-        //         //   BlocProvider.of<CityCubit>(context)
-        //         //       .cities(value);
-        //       },
-        //       decoration: const InputDecoration(
-        //         prefixIcon: Icon(
-        //           Icons.search,
-        //           color: AppColors.kGray300,
-        //         ),
-        //         hintText: 'Поиск',
-        //         hintStyle: TextStyle(
-        //           color: AppColors.kGray300,
-        //           fontSize: 16,
-        //         ),
-        //         border: InputBorder.none,
-        //       ),
-        //       style: const TextStyle(
-        //         color: Colors.black,
-        //       )),
-        // ),
       ),
       body: Column(
         children: [
@@ -133,15 +90,6 @@ class _CatalogPageState extends State<CatalogPage> {
                       context.router.push(
                         ProductsRoute(cats: allCats, subCats: null, brandId: brands[index].id),
                       );
-                      // if (brands[index] == brand) {
-                      //   brand = null;
-                      //   BlocProvider.of<CatsCubit>(context).cats();
-                      // } else {
-                      //   brand = brands[index];
-                      //   BlocProvider.of<CatsCubit>(context)
-                      //       .catsByBrand(brand!.id!);
-                      // }
-                      // setState(() {});
                     },
                     child: Container(
                       width: 64,
@@ -264,38 +212,6 @@ class _CatalogPageState extends State<CatalogPage> {
                       ),
                     ],
                   );
-
-                  // ListView.builder(
-                  //   itemCount: state.cats.length,
-                  //   itemBuilder: (context, index) {
-                  //     return
-                  // return Column(
-                  //   mainAxisSize: MainAxisSize.max,
-                  //   children: [
-                  // if (index == 0) const SizedBox(height: 5),
-                  // InkWell(
-                  //   onTap: () {
-                  //     Navigator.push(
-                  //       context,
-                  //       MaterialPageRoute(
-                  //           builder: (context) =>
-                  //               UnderCatalogPage(cats: state.cats[index])),
-                  //     );
-                  //   },
-                  //   child:
-                  //     CatalogListTile(
-                  //   title: '${state.cats[index].name}',
-                  //   url:
-                  //       "http://80.87.202.73:8001/storage/${state.cats[index].icon!}",
-                  // );
-
-                  //   const Divider(
-                  //     color: AppColors.kGray400,
-                  //   ),
-                  // ],
-                  // );
-                  //},
-                  // );
                 } else {
                   return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
                 }
@@ -319,8 +235,8 @@ class CatalogListTile extends StatelessWidget {
     required this.title,
     required this.bonus,
     required this.credit,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -397,7 +313,7 @@ class CatalogListTile extends StatelessWidget {
                             // shimmer_animation: Shimmer(child: ...)
                             child: Container(
                               // лёгкая подложка, чтобы блик был заметен
-                              color: Colors.white.withOpacity(0.06),
+                              color: Colors.white.withValues(alpha: 0.06),
                             ),
                           ),
                         ),

@@ -13,7 +13,7 @@ class ProductWidget extends StatefulWidget {
   const ProductWidget({Key? key}) : super(key: key);
 
   @override
-  _ProductWidgetState createState() => _ProductWidgetState();
+  State<ProductWidget> createState() => _ProductWidgetState();
 }
 
 class _ProductWidgetState extends State<ProductWidget> {
