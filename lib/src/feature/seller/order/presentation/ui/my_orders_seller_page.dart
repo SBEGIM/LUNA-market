@@ -19,7 +19,13 @@ class MyOrdersSellerPage extends StatefulWidget {
 class _MyOrdersSellerPageState extends State<MyOrdersSellerPage> {
   int segmentValue = 0;
   final TextEditingController _searchController = TextEditingController();
-  final RefreshController _controller = RefreshController();
+  final RefreshController _refreshController = RefreshController();
+
+  Future<void> onLoading() async {
+    await BlocProvider.of<BasketSellerCubit>(context).basketOrderShowPaginate('');
+    await Future.delayed(const Duration(milliseconds: 2000));
+    _refreshController.loadComplete();
+  }
 
   @override
   void initState() {
@@ -109,7 +115,7 @@ class _MyOrdersSellerPageState extends State<MyOrdersSellerPage> {
                           _buildSegmentItem(
                             index: 1,
                             label: 'Новые',
-                            status: 'active',
+                            status: 'order',
                             isActive: segmentValue == 1,
                             width: 74,
                           ),
@@ -172,9 +178,11 @@ class _MyOrdersSellerPageState extends State<MyOrdersSellerPage> {
               return SmartRefresher(
                 onRefresh: () {
                   BlocProvider.of<BasketSellerCubit>(context).basketOrderShow('');
-                  _controller.refreshCompleted();
+                  _refreshController.refreshCompleted();
                 },
-                controller: _controller,
+                controller: _refreshController,
+                enablePullUp: true,
+                onLoading: onLoading,
                 child: ListView.builder(
                   padding: EdgeInsets.zero,
                   itemCount: state.basketOrderModel.length,
@@ -190,9 +198,9 @@ class _MyOrdersSellerPageState extends State<MyOrdersSellerPage> {
               return SmartRefresher(
                 onRefresh: () {
                   BlocProvider.of<BasketSellerCubit>(context).basketOrderShow('fbs');
-                  _controller.refreshCompleted();
+                  _refreshController.refreshCompleted();
                 },
-                controller: _controller,
+                controller: _refreshController,
                 child: const Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [Center(child: CircularProgressIndicator(color: Colors.indigoAccent))],

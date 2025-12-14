@@ -130,8 +130,8 @@ class _ChatPageState extends State<ChatPage> {
                   padding: const EdgeInsets.only(left: 16, right: 0),
                   child: SmartRefresher(
                     controller: _refreshController,
-                    enablePullDown: false,
-                    enablePullUp: true,
+                    enablePullDown: true,
+                    enablePullUp: false,
                     onLoading: () {
                       onLoading();
                     },

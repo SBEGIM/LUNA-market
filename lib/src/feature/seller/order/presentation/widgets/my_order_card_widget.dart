@@ -40,6 +40,8 @@ class _SellerMyOrderCardWidgetState extends State<SellerMyOrderCardWidget> {
       //   return 'Спорный';
       // case 'refund':
       //   return 'Возврат';
+      case 'return':
+        return 'Возврат';
       default:
         return 'Неизвестно';
     }
@@ -64,6 +66,8 @@ class _SellerMyOrderCardWidgetState extends State<SellerMyOrderCardWidget> {
         return 'Отменён клиентом';
       case 'rejected':
         return 'Отменён магазином';
+      case 'return':
+        return 'Ошибка';
       case 'error':
         return 'Ошибка';
       default:

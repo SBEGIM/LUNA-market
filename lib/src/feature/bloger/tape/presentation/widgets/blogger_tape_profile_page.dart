@@ -6,6 +6,7 @@ import 'package:get/route_manager.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/feature/app/router/app_router.dart';
+import 'package:haji_market/src/feature/bloger/chat/presentation/message_blogger_page.dart';
 import 'package:haji_market/src/feature/bloger/profile/bloc/profile_statics_blogger_cubit.dart';
 import 'package:haji_market/src/feature/bloger/profile/bloc/profile_statics_blogger_state.dart';
 import 'package:haji_market/src/feature/chat/presentation/message.dart';
@@ -21,7 +22,7 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:shimmer_animation/shimmer_animation.dart';
 
 @RoutePage()
-class ProfileSellerTapePage extends StatefulWidget implements AutoRouteWrapper {
+class ProfileSellerTapeBloggerPage extends StatefulWidget implements AutoRouteWrapper {
   final int sellerId;
   final int chatId;
   final String sellerCreatedAt;
@@ -29,7 +30,7 @@ class ProfileSellerTapePage extends StatefulWidget implements AutoRouteWrapper {
   final String sellerAvatar;
   final bool inSubscribe;
   final Function(bool)? onSubChanged;
-  ProfileSellerTapePage({
+  ProfileSellerTapeBloggerPage({
     required this.sellerId,
     required this.chatId,
     required this.sellerCreatedAt,
@@ -41,7 +42,7 @@ class ProfileSellerTapePage extends StatefulWidget implements AutoRouteWrapper {
   }) : super(key: key);
 
   @override
-  State<ProfileSellerTapePage> createState() => _ProfileBloggerTapePageState();
+  State<ProfileSellerTapeBloggerPage> createState() => _ProfileSellerTapeBloggerPageState();
 
   @override
   Widget wrappedRoute(BuildContext context) {
@@ -52,7 +53,7 @@ class ProfileSellerTapePage extends StatefulWidget implements AutoRouteWrapper {
   }
 }
 
-class _ProfileBloggerTapePageState extends State<ProfileSellerTapePage> {
+class _ProfileSellerTapeBloggerPageState extends State<ProfileSellerTapeBloggerPage> {
   final _box = GetStorage();
 
   bool inSub = false;
@@ -198,11 +199,12 @@ class _ProfileBloggerTapePageState extends State<ProfileSellerTapePage> {
 
                             // if (state.tapeModel[index].chatId ==
                             //     null) {
-                            Get.to(
-                              MessagePage(
+
+                            context.router.push(
+                              MessageBloggerRoute(
                                 userId: widget.sellerId,
-                                name: widget.sellerName,
-                                avatar: widget.sellerAvatar,
+                                userName: widget.sellerName,
+                                // avatar: widget.sellerAvatar,
                                 chatId: widget.chatId,
                               ),
                             );

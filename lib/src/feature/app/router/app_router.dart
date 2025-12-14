@@ -8,6 +8,7 @@ import 'package:haji_market/src/feature/auth/presentation/widgets/login_forget_p
 import 'package:haji_market/src/feature/basket/data/models/basket_order_model.dart';
 import 'package:haji_market/src/feature/bloger/auth/presentation/ui/login_forget_password_modal_bottom.dart';
 import 'package:haji_market/src/feature/bloger/chat/presentation/chat_blogger_page.dart';
+import 'package:haji_market/src/feature/bloger/chat/presentation/message_blogger_page.dart';
 import 'package:haji_market/src/feature/bloger/coop_request/presentation/ui/blogger_register_page.dart';
 import 'package:haji_market/src/feature/bloger/coop_request/presentation/ui/success_blogger_register_page.dart';
 import 'package:haji_market/src/feature/bloger/shop/presentation/ui/shop_products_page.dart';
@@ -15,6 +16,7 @@ import 'package:haji_market/src/feature/bloger/shop/presentation/ui/success_blog
 import 'package:haji_market/src/feature/bloger/shop/presentation/ui/upload_product_video.dart';
 import 'package:haji_market/src/feature/bloger/tape/bloc/tape_blogger_cubit.dart';
 import 'package:haji_market/src/feature/bloger/tape/data/model/tape_blogger_model.dart';
+import 'package:haji_market/src/feature/bloger/tape/presentation/widgets/blogger_tape_profile_page.dart';
 import 'package:haji_market/src/feature/bloger/tape/presentation/widgets/detail_tape_card_page.dart';
 import 'package:haji_market/src/feature/bloger/tape/presentation/widgets/edit_tape_vidoe.dart';
 import 'package:haji_market/src/feature/bloger/tape/presentation/widgets/tape_card_widget.dart';
@@ -189,10 +191,13 @@ class AppRouter extends RootStackRouter {
 
     //Blogger pages
     AutoRoute(page: DetailTapeBloggerCardRoute.page),
+    AutoRoute(page: ProfileSellerTapeBloggerRoute.page),
+
     AutoRoute(page: EditTapeVideoRoute.page),
     AutoRoute(page: ShopProductsBloggerRoute.page),
     AutoRoute(page: UploadProductVideoRoute.page),
     AutoRoute(page: SuccessBloggerTapeUploadVideoRoute.page),
+    AutoRoute(page: MessageBloggerRoute.page),
   ];
 }
 

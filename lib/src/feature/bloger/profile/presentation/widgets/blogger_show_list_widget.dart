@@ -72,7 +72,7 @@ void showBloggerSettingOptions(BuildContext context, String title, Function call
                       buildSettingItem(
                         onTap: () {
                           final List<String> options = ['Русский', 'Казахский', 'Английский'];
-                          showModuleProfile(context, 'Язык', options, (value) {
+                          showModuleProfile(context, 'Язык', lang, options, (value) {
                             GetStorage().write('language', value);
 
                             lang = value;

@@ -44,6 +44,7 @@ class _DetailOrderSellerPageState extends State<DetailOrderSellerPage> {
 
   @override
   void initState() {
+    /// ---------- FBS (продавец в режиме FBS) ----------
     switch (widget.basket.status) {
       case 'order':
         {
@@ -62,7 +63,7 @@ class _DetailOrderSellerPageState extends State<DetailOrderSellerPage> {
           postStatusFBS = 'courier';
           postSecondStatusFBS = 'cancel';
 
-          buttonTextFBS = 'Передать курьеру';
+          buttonTextFBS = 'Передать службе доставки';
           buttonSecondTextFBS = 'Отклонить';
         }
         break;
@@ -72,64 +73,113 @@ class _DetailOrderSellerPageState extends State<DetailOrderSellerPage> {
           statusFBS = 'Доставка в пути';
           postStatusFBS = 'error';
           postSecondStatusFBS = 'ready_for_pickup';
+
           buttonTextFBS = 'Проблемы с заказом';
           buttonSecondTextFBS = 'Готов к выдаче';
         }
         break;
+
+      case 'ready_for_pickup':
+        {
+          statusFBS = 'Готов к выдаче';
+          postStatusFBS = 'delivered';
+          postSecondStatusFBS = 'return';
+
+          buttonTextFBS = 'Выдать заказ';
+          buttonSecondTextFBS = 'Оформить возврат';
+        }
+        break;
+
+      case 'delivered':
+        {
+          statusFBS = 'Заказ доставлен';
+          postStatusFBS = 'end';
+          postSecondStatusFBS = 'end';
+
+          buttonTextFBS = 'Завершить';
+          buttonSecondTextFBS = 'Завершить';
+        }
+        break;
+
+      case 'return':
+        {
+          statusFBS = 'Возврат заказа';
+          postStatusFBS = 'end';
+          postSecondStatusFBS = 'end';
+
+          buttonTextFBS = 'Завершить';
+          buttonSecondTextFBS = 'Завершить';
+        }
+        break;
+
       case 'error':
         {
           statusFBS = 'Ошибка';
           postStatusFBS = 'courier';
           postSecondStatusFBS = '';
-          buttonTextFBS = 'Передать курьеру';
+
+          buttonTextFBS = 'Передать службе доставки';
           buttonSecondTextFBS = 'Ошибка c заказом';
         }
         break;
+
       case 'cancel':
         {
           statusFBS = 'Клиент отменил заказ';
           postStatusFBS = 'end';
           postSecondStatusFBS = 'end';
+
           buttonTextFBS = 'Завершить';
           buttonSecondTextFBS = 'Завершить';
         }
         break;
+
       case 'rejected':
         {
           statusFBS = 'Магазин отменил заказ';
           postStatusFBS = 'rejected';
           postSecondStatusFBS = 'rejected';
+
           buttonTextFBS = 'Вы отменили заказ';
           buttonSecondTextFBS = 'Вы отменили заказ';
         }
         break;
+
       case 'end':
         {
           statusFBS = 'Заказ окончен';
           postStatusFBS = 'end';
           postSecondStatusFBS = 'end';
+
           buttonTextFBS = 'Заказ окончен';
           buttonSecondTextFBS = 'Заказ окончен';
         }
         break;
+
       case 'success':
         {
-          statusFBS = 'Принять';
+          // 🔹 РАНЬШЕ тут было "Принять" — это действие, а не статус.
+          // Сейчас показываем нормальный статус, переходы НЕ меняем.
+          statusFBS = 'Заказ оформлен';
           postStatusFBS = 'courier';
           postSecondStatusFBS = 'rejected';
+
           buttonTextFBS = 'Передать курьеру';
           buttonSecondTextFBS = 'Отклонить';
         }
         break;
+
       case 'in_process':
         {
           statusFBS = 'В процессе';
           postStatusFBS = 'success';
           postSecondStatusFBS = 'rejected';
+
           buttonTextFBS = 'Принять';
           buttonSecondTextFBS = 'Отклонить';
         }
         break;
+
       default:
         {
           statusFBS = 'Неизвестно';
@@ -139,6 +189,7 @@ class _DetailOrderSellerPageState extends State<DetailOrderSellerPage> {
         break;
     }
 
+    /// ---------- Real FBS (второй сценарий продавца) ----------
     switch (widget.basket.status) {
       case 'order':
         {
@@ -157,7 +208,7 @@ class _DetailOrderSellerPageState extends State<DetailOrderSellerPage> {
           postStatusRealFBS = 'courier';
           postSecondStatusRealFBS = 'cancel';
 
-          buttonTextRealFBS = 'Передать курьеру';
+          buttonTextRealFBS = 'Передать службе доставки';
           buttonSecondTextRealFBS = 'Отменить заказ';
         }
         break;
@@ -167,68 +218,115 @@ class _DetailOrderSellerPageState extends State<DetailOrderSellerPage> {
           statusRealFBS = 'Доставка в пути';
           postStatusRealFBS = '';
           postSecondStatusRealFBS = 'error';
+
           buttonTextRealFBS = 'Ожидание клиента';
           buttonSecondTextRealFBS = 'Проблемы с заказом';
         }
         break;
+
+      case 'ready_for_pickup':
+        {
+          statusRealFBS = 'Готов к выдаче';
+          postStatusRealFBS = 'delivered';
+          postSecondStatusRealFBS = 'return';
+
+          buttonTextRealFBS = 'Выдать заказ';
+          buttonSecondTextRealFBS = 'Оформить возврат';
+        }
+        break;
+
+      case 'delivered':
+        {
+          statusRealFBS = 'Заказ доставлен';
+          postStatusRealFBS = 'end';
+          postSecondStatusRealFBS = 'end';
+
+          buttonTextRealFBS = 'Завершить';
+          buttonSecondTextRealFBS = 'Завершить';
+        }
+        break;
+
+      case 'return':
+        {
+          statusRealFBS = 'Возврат заказа';
+          postStatusRealFBS = 'end';
+          postSecondStatusRealFBS = 'end';
+
+          buttonTextRealFBS = 'Завершить';
+          buttonSecondTextRealFBS = 'Завершить';
+        }
+        break;
+
       case 'error':
         {
           statusRealFBS = 'Ошибка';
           postStatusRealFBS = 'courier';
           postSecondStatusRealFBS = '';
-          buttonTextRealFBS = 'Передать курьеру';
+
+          buttonTextRealFBS = 'Передать службе доставки';
           buttonSecondTextRealFBS = 'Ошибка c заказом';
         }
         break;
+
       case 'cancel':
         {
           statusRealFBS = 'Клиент отменил заказ';
           postStatusRealFBS = 'end';
           postSecondStatusRealFBS = 'end';
+
           buttonTextRealFBS = 'Завершить';
           buttonSecondTextRealFBS = 'Завершить';
         }
         break;
+
       case 'rejected':
         {
           statusRealFBS = 'Магазин отменил заказ';
           postStatusRealFBS = 'rejected';
           postSecondStatusRealFBS = 'rejected';
+
           buttonTextRealFBS = 'Вы отменили заказ';
           buttonSecondTextRealFBS = 'Вы отменили заказ';
         }
         break;
+
       case 'end':
         {
           statusRealFBS = 'Заказ окончен';
           postStatusRealFBS = 'end';
           postSecondStatusRealFBS = 'end';
+
           buttonTextRealFBS = 'Заказ окончен';
           buttonSecondTextRealFBS = 'Заказ окончен';
         }
         break;
+
       case 'success':
         {
-          statusRealFBS = 'Принять';
+          // 🔹 Аналогично FBS — статус делаем осмысленным.
+          statusRealFBS = 'Заказ оформлен';
           postStatusRealFBS = 'courier';
           postSecondStatusRealFBS = 'rejected';
-          buttonTextRealFBS = 'Передать курьеру';
+
+          buttonTextRealFBS = 'Передать службе доставки';
           buttonSecondTextRealFBS = 'Отклонить';
         }
         break;
+
       case 'in_process':
         {
           statusRealFBS = 'В процессе';
           postStatusRealFBS = 'success';
           postSecondStatusRealFBS = 'rejected';
+
           buttonTextRealFBS = 'Принять';
           buttonSecondTextRealFBS = 'Отклонить';
         }
         break;
+
       default:
         {
           statusRealFBS = 'Неизвестно';
-
           buttonTextRealFBS = 'В ожидании';
           buttonSecondTextRealFBS = 'В ожидании';
         }
@@ -508,6 +606,8 @@ class _DetailOrderSellerPageState extends State<DetailOrderSellerPage> {
                   ),
                 ),
                 Container(
+                  height: 116,
+                  width: 358,
                   padding: const EdgeInsets.all(16),
                   margin: const EdgeInsets.symmetric(horizontal: 16),
                   decoration: BoxDecoration(
@@ -519,14 +619,16 @@ class _DetailOrderSellerPageState extends State<DetailOrderSellerPage> {
                     children: [
                       Text(
                         'Клиент',
-                        style: AppTextStyles.aboutTextStyle.copyWith(color: AppColors.kGray300),
+                        style: AppTextStyles.size14Weight500.copyWith(color: Color(0xffAEAEB2)),
                       ),
-                      const SizedBox(height: 10),
+                      const SizedBox(height: 4),
                       Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Container(
-                            height: 64,
-                            width: 64,
+                            height: 60,
+                            width: 60,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(31),
                               image: DecorationImage(
@@ -540,51 +642,47 @@ class _DetailOrderSellerPageState extends State<DetailOrderSellerPage> {
                               ),
                             ),
                           ),
-                          const SizedBox(width: 20),
-                          Container(
-                            alignment: Alignment.center,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  '${widget.basket.user!.fullName}',
-                                  style: AppTextStyles.defaultButtonTextStyle,
-                                ),
-                                const SizedBox(height: 10),
-                                InkWell(
-                                  onTap: () {
-                                    Get.to(
-                                      MessageSeller(
-                                        userId: widget.basket.user!.id,
-                                        userName: widget.basket.user!.fullName,
-                                        // avatar: state.tapeModel[index].shop!.image,
-                                        chatId: widget.basket.chatId,
-                                      ),
-                                    );
-                                  },
-                                  child: const Row(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Icon(
-                                        Icons.chat_bubble,
+                          const SizedBox(width: 8),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                '${widget.basket.user!.fullName}',
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: AppTextStyles.size16Weight600,
+                              ),
+                              const SizedBox(height: 2),
+                              InkWell(
+                                onTap: () {
+                                  Get.to(
+                                    MessageSeller(
+                                      userId: widget.basket.user!.id,
+                                      userName: widget.basket.user!.fullName,
+                                      chatId: widget.basket.chatId,
+                                    ),
+                                  );
+                                },
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.chat_bubble,
+                                      color: AppColors.mainPurpleColor,
+                                      size: 20,
+                                    ),
+                                    SizedBox(width: 6),
+                                    Text(
+                                      'Написать в чат',
+                                      style: AppTextStyles.size14Weight400.copyWith(
                                         color: AppColors.mainPurpleColor,
-                                        size: 20,
                                       ),
-                                      SizedBox(width: 5),
-                                      Text(
-                                        'Написать в чат',
-                                        style: TextStyle(
-                                          color: AppColors.mainPurpleColor,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
+                                    ),
+                                  ],
                                 ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
                         ],
                       ),
@@ -628,84 +726,104 @@ class _DetailOrderSellerPageState extends State<DetailOrderSellerPage> {
                   builder: (context, state) {
                     return Container(
                       height: 65,
+                      width: MediaQuery.of(context).size.width,
+                      padding: EdgeInsets.symmetric(horizontal: 16),
                       color: Colors.white,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
-                          GestureDetector(
-                            onTap: () {
-                              if (postStatusFBS != '' && statusFBS != 'in_process') {
-                                BlocProvider.of<OrderStatusSellerCubit>(context).basketStatus(
-                                  postStatusFBS,
-                                  widget.basket.id.toString(),
-                                  widget.basket.product!.first.id.toString(),
-                                  'fbs',
-                                );
+                          Expanded(
+                            child: GestureDetector(
+                              onTap: () {
+                                if (postStatusFBS != '' && statusFBS != 'in_process') {
+                                  BlocProvider.of<OrderStatusSellerCubit>(context).basketStatus(
+                                    postStatusFBS,
+                                    widget.basket.id.toString(),
+                                    widget.basket.product!.first.id.toString(),
+                                    'fbs',
+                                  );
 
-                                BlocProvider.of<BasketSellerCubit>(
-                                  context,
-                                ).basketOrderRealFBSshow('realFBS');
+                                  BlocProvider.of<BasketSellerCubit>(
+                                    context,
+                                  ).basketOrderRealFBSshow('realFBS');
 
-                                Get.back();
-                              } else {
-                                Get.snackbar(
-                                  'Заказ',
-                                  'Невозможно изменить статус',
-                                  backgroundColor: Colors.orangeAccent,
-                                );
-                              }
-                            },
-                            child: Container(
-                              height: 40,
-                              width: 173,
-                              decoration: BoxDecoration(
-                                color: Color(0xffEAECED),
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              alignment: Alignment.center,
-                              child: state is LoadingState
-                                  ? const Center(child: CircularProgressIndicator.adaptive())
-                                  : Text(buttonTextFBS, style: AppTextStyles.size16Weight600),
-                            ),
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              if (postSecondStatusFBS != '') {
-                                BlocProvider.of<BasketSellerCubit>(context).basketStatus(
-                                  postSecondStatusFBS,
-                                  widget.basket.id.toString(),
-                                  widget.basket.product!.first.id.toString(),
-                                  'fbs',
-                                );
-                                BlocProvider.of<BasketSellerCubit>(
-                                  context,
-                                ).basketOrderRealFBSshow('fbs');
-
-                                Get.back();
-                              } else {
-                                Get.snackbar(
-                                  'Заказ',
-                                  'Невозможно изменить статус',
-                                  backgroundColor: Colors.orangeAccent,
-                                );
-                              }
-                            },
-                            child: Container(
-                              height: 40,
-                              width: 173,
-                              decoration: BoxDecoration(
-                                color: AppColors.mainPurpleColor,
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              alignment: Alignment.center,
-                              child: Text(
-                                buttonSecondTextFBS,
-                                style: AppTextStyles.size16Weight600.copyWith(
-                                  color: AppColors.kWhite,
+                                  Get.back();
+                                } else {
+                                  Get.snackbar(
+                                    'Заказ',
+                                    'Невозможно изменить статус',
+                                    backgroundColor: Colors.orangeAccent,
+                                  );
+                                }
+                              },
+                              child: Container(
+                                height: 40,
+                                decoration: BoxDecoration(
+                                  color: widget.basket.status != 'accepted'
+                                      ? Color(0xffEAECED)
+                                      : AppColors.mainPurpleColor,
+                                  borderRadius: BorderRadius.circular(10),
                                 ),
+                                alignment: Alignment.center,
+                                child: state is LoadingState
+                                    ? const Center(child: CircularProgressIndicator.adaptive())
+                                    : Text(
+                                        buttonTextFBS,
+                                        style: AppTextStyles.size16Weight600.copyWith(
+                                          color: widget.basket.status != 'accepted'
+                                              ? AppColors.kLightBlackColor
+                                              : AppColors.kWhite,
+                                        ),
+                                      ),
                               ),
                             ),
                           ),
+
+                          widget.basket.status != 'accepted'
+                              ? SizedBox(width: 12)
+                              : SizedBox.shrink(),
+
+                          widget.basket.status == 'accepted'
+                              ? SizedBox.shrink()
+                              : Expanded(
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      if (postSecondStatusFBS != '') {
+                                        BlocProvider.of<BasketSellerCubit>(context).basketStatus(
+                                          postSecondStatusFBS,
+                                          widget.basket.id.toString(),
+                                          widget.basket.product!.first.id.toString(),
+                                          'fbs',
+                                        );
+                                        BlocProvider.of<BasketSellerCubit>(
+                                          context,
+                                        ).basketOrderRealFBSshow('fbs');
+
+                                        Get.back();
+                                      } else {
+                                        Get.snackbar(
+                                          'Заказ',
+                                          'Невозможно изменить статус',
+                                          backgroundColor: Colors.orangeAccent,
+                                        );
+                                      }
+                                    },
+                                    child: Container(
+                                      height: 40,
+                                      decoration: BoxDecoration(
+                                        color: AppColors.mainPurpleColor,
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      alignment: Alignment.center,
+                                      child: Text(
+                                        buttonSecondTextFBS,
+                                        style: AppTextStyles.size16Weight600.copyWith(
+                                          color: AppColors.kWhite,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
                         ],
                       ),
                     );

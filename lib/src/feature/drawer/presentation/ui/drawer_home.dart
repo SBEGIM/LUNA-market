@@ -126,7 +126,7 @@ class _DrawerPageState extends State<DrawerPage> {
 
   void _onSupportTap() {
     final List<String> options = ['Whats App', 'Telegram', 'Email'];
-    showModuleProfile(context, 'Техподдержка', options, (value) {
+    showModuleProfile(context, 'Техподдержка', '', options, (value) {
       const url = "https://t.me/LUNAmarketAdmin";
       switch (value) {
         case 'Whats App':
@@ -222,19 +222,14 @@ class _DrawerHeader extends StatelessWidget {
                         backgroundColor: AppColors.kGray200,
                         backgroundImage: imageFile != null
                             ? FileImage(File(imageFile!.path))
-                            : NetworkImage(
-                                'https://lunamarket.ru/storage/${box.read('avatar')}',
-                              ) as ImageProvider,
+                            : NetworkImage('https://lunamarket.ru/storage/${box.read('avatar')}')
+                                  as ImageProvider,
                       ),
                     ),
                     Positioned(
                       bottom: 0,
                       right: 0,
-                      child: Image.asset(
-                        Assets.icons.sellerCameraIcon.path,
-                        height: 40,
-                        width: 40,
-                      ),
+                      child: Image.asset(Assets.icons.sellerCameraIcon.path, height: 40, width: 40),
                     ),
                   ],
                 ),
@@ -253,9 +248,7 @@ class _DrawerHeader extends StatelessWidget {
               children: [
                 Text(
                   city?.city ?? 'Алматы',
-                  style: AppTextStyles.size14Weight500.copyWith(
-                    color: const Color(0xff959595),
-                  ),
+                  style: AppTextStyles.size14Weight500.copyWith(color: const Color(0xff959595)),
                 ),
               ],
             ),
@@ -284,11 +277,7 @@ class _DrawerHeader extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Image.asset(
-                      Assets.icons.backClientIcon.path,
-                      height: 18,
-                      width: 18,
-                    ),
+                    Image.asset(Assets.icons.backClientIcon.path, height: 18, width: 18),
                     const SizedBox(width: 5),
                     Text('Сменить кабинет', style: AppTextStyles.size16Weight500),
                   ],
@@ -431,10 +420,7 @@ class _ActionButtons extends StatelessWidget {
       height: 114,
       margin: const EdgeInsets.symmetric(vertical: 12),
       alignment: Alignment.center,
-      decoration: BoxDecoration(
-        color: AppColors.kWhite,
-        borderRadius: BorderRadius.circular(20),
-      ),
+      decoration: BoxDecoration(color: AppColors.kWhite, borderRadius: BorderRadius.circular(20)),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -447,37 +433,19 @@ class _ActionButtons extends StatelessWidget {
                 MaterialPageRoute(builder: (context) => const BonusUserPage()),
               );
             },
-            child: Image.asset(
-              Assets.icons.profileClientBonusIcon.path,
-              height: 82,
-              width: 114,
-            ),
+            child: Image.asset(Assets.icons.profileClientBonusIcon.path, height: 82, width: 114),
           ),
           InkWell(
             onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const MyOrderPage()),
-              );
+              Navigator.push(context, MaterialPageRoute(builder: (context) => const MyOrderPage()));
             },
-            child: Image.asset(
-              Assets.icons.profileClientOrderIcon.path,
-              height: 82,
-              width: 114,
-            ),
+            child: Image.asset(Assets.icons.profileClientOrderIcon.path, height: 82, width: 114),
           ),
           InkWell(
             onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const ChatPage()),
-              );
+              Navigator.push(context, MaterialPageRoute(builder: (context) => const ChatPage()));
             },
-            child: Image.asset(
-              Assets.icons.profileClientChatIcon.path,
-              height: 82,
-              width: 114,
-            ),
+            child: Image.asset(Assets.icons.profileClientChatIcon.path, height: 82, width: 114),
           ),
         ],
       ),
@@ -529,10 +497,7 @@ class _MenuOptionsList extends StatelessWidget {
 
           _ProfileMenuItem(
             onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const AboutUsPage()),
-              );
+              Navigator.push(context, MaterialPageRoute(builder: (context) => const AboutUsPage()));
             },
             title: 'LUNA market',
             iconPath: Assets.icons.about.path,
@@ -550,7 +515,7 @@ class _MenuOptionsList extends StatelessWidget {
             count: 4,
             iconPath: Assets.icons.settingIcon.path,
           ),
-          
+
           // Add some bottom padding for better scrolling experience
           const SizedBox(height: 40),
         ],

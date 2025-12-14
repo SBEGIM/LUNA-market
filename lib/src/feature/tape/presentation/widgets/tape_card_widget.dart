@@ -52,38 +52,37 @@ class _TapeCardWidgetState extends State<TapeCardWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(12),
-      child: Stack(
-        children: [
-          Positioned.fill(
-            child: SizedBox.expand(
-              child: FittedBox(
-                alignment: Alignment.center,
-                fit: BoxFit.fitHeight,
-                child: SizedBox(
-                  height: _controller!.value.size.height,
-                  width: _controller!.value.size.width,
-                  child: AspectRatio(
-                    aspectRatio: _controller!.value.aspectRatio,
-                    child: VideoPlayer(_controller!),
+    return GestureDetector(
+      onTap: () {
+        context.router.push(
+          DetailTapeCardRoute(
+            index: widget.index,
+            shopName: widget.tape.shop!.name!,
+            tapeBloc: BlocProvider.of<TapeCubit>(context),
+          ),
+        );
+      },
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(12),
+        child: Stack(
+          children: [
+            Positioned.fill(
+              child: SizedBox.expand(
+                child: FittedBox(
+                  alignment: Alignment.center,
+                  fit: BoxFit.cover,
+                  child: SizedBox(
+                    height: _controller!.value.size.height,
+                    width: _controller!.value.size.width,
+                    child: AspectRatio(
+                      aspectRatio: _controller!.value.aspectRatio,
+                      child: VideoPlayer(_controller!),
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
-          InkWell(
-            onTap: () {
-              context.router.push(
-                DetailTapeCardRoute(
-                  index: widget.index,
-                  shopName: widget.tape.shop!.name!,
-                  tapeBloc: BlocProvider.of<TapeCubit>(context),
-                ),
-              );
-              ;
-            },
-            child: Padding(
+            Padding(
               padding: const EdgeInsets.only(left: 12.0, top: 8, right: 24),
               child: Align(
                 alignment: Alignment.topLeft,
@@ -95,18 +94,7 @@ class _TapeCardWidgetState extends State<TapeCardWidget> {
                 ),
               ),
             ),
-          ),
-          InkWell(
-            onTap: () {
-              context.router.push(
-                DetailTapeCardRoute(
-                  index: widget.index,
-                  shopName: widget.tape.shop!.name!,
-                  tapeBloc: BlocProvider.of<TapeCubit>(context),
-                ),
-              );
-            },
-            child: Padding(
+            Padding(
               padding: const EdgeInsets.only(left: 8.0, bottom: 8),
               child: Align(
                 alignment: Alignment.bottomLeft,
@@ -122,8 +110,8 @@ class _TapeCardWidgetState extends State<TapeCardWidget> {
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

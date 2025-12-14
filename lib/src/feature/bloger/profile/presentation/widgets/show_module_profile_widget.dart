@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
@@ -6,6 +8,7 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 void showModuleProfile(
   BuildContext context,
   String title,
+  String current,
   List<String> options,
   Function(String) callback,
 ) {
@@ -26,8 +29,8 @@ void showModuleProfile(
         builder: (ctx, setState) {
           return ConstrainedBox(
             constraints: BoxConstraints(
-              minHeight: 360.0,
-              maxHeight: 360.clamp(360.0, 490.0).toDouble(),
+              minHeight: 280.0,
+              maxHeight: 280.clamp(260.0, 390.0).toDouble(),
             ),
             child: Column(
               mainAxisSize: MainAxisSize.max,
@@ -66,13 +69,22 @@ void showModuleProfile(
                     itemCount: _filteredCategories.length,
                     separatorBuilder: (_, __) => const SizedBox(height: 0),
                     itemBuilder: (context, index) {
+                      _filteredCategories.forEach((element) {
+                        if (element == current) {
+                          selectedReport = element;
+                          selectedIndex = index;
+                        }
+                      });
                       final category = _filteredCategories[index];
                       final isSelected = (category == selectedReport);
+
                       return InkWell(
                         borderRadius: BorderRadius.circular(8),
                         onTap: () => setState(() {
                           selectedReport = category;
                           selectedIndex = index;
+                          callback.call(_filteredCategories[selectedIndex]);
+                          Navigator.pop(ctx);
                         }),
                         child: SizedBox(
                           height: 56,
@@ -88,15 +100,13 @@ void showModuleProfile(
                                         category,
                                         maxLines: 1,
                                         overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(
-                                          fontSize: 15,
-                                          height: 1.2,
+                                        style: AppTextStyles.size16Weight500.copyWith(
                                           color: isSelected
                                               ? AppColors.mainPurpleColor
                                               : Colors.black,
                                           fontWeight: isSelected
                                               ? FontWeight.w600
-                                              : FontWeight.w400,
+                                              : FontWeight.w500,
                                         ),
                                       ),
                                     ),
@@ -118,58 +128,59 @@ void showModuleProfile(
                     },
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 16, right: 16, top: 24),
-                  child: SizedBox(
-                    width: double.infinity,
-                    height: 52, // ← было 48
-                    child: ElevatedButton(
-                      onPressed: (selectedIndex >= 0 && selectedIndex < _filteredCategories.length)
-                          ? () async {
-                              callback.call(_filteredCategories[selectedIndex]);
-                              Navigator.pop(ctx);
-                              // final ok = await showBrandedAlert(
-                              //   context,
-                              //   title: 'Внимание',
-                              //   message:
-                              //       'Отправленная жалоба будет рассмотрена модераторами. Вы уверены, что хотите продолжить?',
-                              //   mode: BrandedAlertMode.confirm,
-                              //   cancelText: 'Отмена',
-                              //   primaryText: 'Пожаловаться',
-                              // );
-                              // if (ok == true) {
-                              //   await showBrandedAlert(
-                              //     context,
-                              //     title: 'Спасибо за ваш отзыв',
-                              //     message:
-                              //         'Мы проверим это видео и примем меры, если потребуется',
-                              //     mode: BrandedAlertMode.acknowledge,
-                              //     primaryText: 'Закрыть',
-                              //     // если нужен свой градиент:
-                              //     // primaryGradient: const LinearGradient(colors: [Color(0xFF7B61FF), Color(0xFF8C52FF)]),
-                              //   );
-                              // }
-                            }
-                          : null,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.mainPurpleColor,
-                        disabledBackgroundColor: AppColors.mainPurpleColor,
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                        padding: EdgeInsets.zero,
-                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                      ),
-                      child: Text(
-                        selectedIndex >= 0 ? "Выбрать" : "Отмена",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 16,
-                          height: 1.0,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
+
+                // Padding(
+                //   padding: const EdgeInsets.only(left: 16, right: 16, top: 24),
+                //   child: SizedBox(
+                //     width: double.infinity,
+                //     height: 52, // ← было 48
+                //     child: ElevatedButton(
+                //       onPressed: (selectedIndex >= 0 && selectedIndex < _filteredCategories.length)
+                //           ? () async {
+                //               callback.call(_filteredCategories[selectedIndex]);
+                //               Navigator.pop(ctx);
+                //               // final ok = await showBrandedAlert(
+                //               //   context,
+                //               //   title: 'Внимание',
+                //               //   message:
+                //               //       'Отправленная жалоба будет рассмотрена модераторами. Вы уверены, что хотите продолжить?',
+                //               //   mode: BrandedAlertMode.confirm,
+                //               //   cancelText: 'Отмена',
+                //               //   primaryText: 'Пожаловаться',
+                //               // );
+                //               // if (ok == true) {
+                //               //   await showBrandedAlert(
+                //               //     context,
+                //               //     title: 'Спасибо за ваш отзыв',
+                //               //     message:
+                //               //         'Мы проверим это видео и примем меры, если потребуется',
+                //               //     mode: BrandedAlertMode.acknowledge,
+                //               //     primaryText: 'Закрыть',
+                //               //     // если нужен свой градиент:
+                //               //     // primaryGradient: const LinearGradient(colors: [Color(0xFF7B61FF), Color(0xFF8C52FF)]),
+                //               //   );
+                //               // }
+                //             }
+                //           : null,
+                //       style: ElevatedButton.styleFrom(
+                //         backgroundColor: AppColors.mainPurpleColor,
+                //         disabledBackgroundColor: AppColors.mainPurpleColor,
+                //         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                //         padding: EdgeInsets.zero,
+                //         tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                //       ),
+                //       child: Text(
+                //         selectedIndex >= 0 ? "Выбрать" : "Отмена",
+                //         style: TextStyle(
+                //           color: Colors.white,
+                //           fontWeight: FontWeight.w600,
+                //           fontSize: 16,
+                //           height: 1.0,
+                //         ),
+                //       ),
+                //     ),
+                //   ),
+                // ),
               ],
             ),
           );

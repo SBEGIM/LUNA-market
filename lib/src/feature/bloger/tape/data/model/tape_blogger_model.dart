@@ -2,6 +2,7 @@ class TapeBloggerModel {
   TapeBloggerModel({
     int? id,
     int? tapeId,
+    int? chatId,
     String? name,
     String? catName,
     int? price,
@@ -22,6 +23,7 @@ class TapeBloggerModel {
   }) {
     _id = id;
     _tapeId = tapeId;
+    _chatId = chatId;
     _name = name;
     _catName = catName;
     _price = price;
@@ -44,6 +46,7 @@ class TapeBloggerModel {
   TapeBloggerModel.fromJson(dynamic json) {
     _id = json['id'];
     _tapeId = json['tape_id'];
+    _chatId = json['chat_id'];
     _name = json['name'];
     _catName = json['cat_name'];
     _price = json['price'];
@@ -64,6 +67,7 @@ class TapeBloggerModel {
   }
   int? _id;
   int? _tapeId;
+  int? _chatId;
   String? _name;
   String? _catName;
   int? _price;
@@ -84,6 +88,7 @@ class TapeBloggerModel {
 
   int? get id => _id;
   int? get tapeId => _tapeId;
+  int? get chatId => _chatId;
   String? get name => _name;
   String? get catName => _catName;
   int? get price => _price;
@@ -106,6 +111,7 @@ class TapeBloggerModel {
     final map = <String, dynamic>{};
     map['id'] = _id;
     map['tape_id'] = _tapeId;
+    map['chat_id'] = _chatId;
     map['name'] = _name;
     map['cat_name'] = _catName;
     map['price'] = _price;

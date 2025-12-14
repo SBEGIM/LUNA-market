@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
+import 'package:haji_market/src/feature/app/router/app_router.dart';
 import 'package:haji_market/src/feature/bloger/chat/presentation/message_blogger_page.dart';
 import 'package:intl/intl.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -177,8 +178,8 @@ class _ChatBloggerPageState extends State<ChatBloggerPage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             GestureDetector(
-                              onTap: () => Get.to(
-                                MessageBlogger(
+                              onTap: () => context.router.push(
+                                MessageBloggerRoute(
                                   chatId: state.chat[index].chatId,
                                   userId: state.chat[index].userId,
                                   userName: state.chat[index].name,
