@@ -76,7 +76,7 @@ class _FavoritePageState extends State<FavoritePage> {
             return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
           }
           if (state is NoDataState) {
-            return Expanded(
+            return SizedBox.expand(
               child: SmartRefresher(
                 controller: refreshController,
                 enablePullDown: true,
