@@ -18,10 +18,10 @@ class Chat {
 
   Future<List<ChatSellerModel>> chatList(int page) async {
     try {
-      final String? token = _box.read('seller_token');
+      final String? token = _box.read('blogger_token');
 
       final response = await http.get(
-        Uri.parse("$baseUrl/chat/shop?page=$page"),
+        Uri.parse("$baseUrl/chat/blogger?page=$page"),
         headers: {"Authorization": "Bearer $token"},
       );
 

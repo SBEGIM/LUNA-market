@@ -119,6 +119,7 @@ class _DetailStorePageState extends State<DetailStorePage> {
                         name: widget.product.shop?.name,
                         avatar: widget.product.shop?.image,
                         chatId: widget.product.shop?.chat_id ?? 0,
+                        role: 'shop',
                       ),
                     );
                   },

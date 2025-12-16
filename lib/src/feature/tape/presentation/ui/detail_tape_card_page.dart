@@ -1821,8 +1821,7 @@ class _inReportState extends State<inReport> {
           'Дискриминация или оскорбления',
         ];
 
-        showReportOptions(context, 'Пожаловаться на видео:', _reports, (value) {});
-        // showAlertTapeWidget(context);
+        showReportOptions(context, widget.tape.id!, 'Пожаловаться на видео:', _reports, (value) {});
 
         BlocProvider.of<tapeCubit.TapeCubit>(context).update(
           widget.tape,

@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
+import 'package:haji_market/src/feature/tape/bloc/tape_cubit.dart';
 import 'package:haji_market/src/feature/tape/presentation/widgets/show_alert_report_widget.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 void showReportOptions(
   BuildContext context,
+  int tapeId,
   String title,
   List<String> reports,
   Function(String) callback,
@@ -150,6 +153,11 @@ void showReportOptions(
                                     primaryText: 'Закрыть',
                                     // если нужен свой градиент:
                                     // primaryGradient: const LinearGradient(colors: [Color(0xFF7B61FF), Color(0xFF8C52FF)]),
+                                  );
+
+                                  BlocProvider.of<TapeCubit>(context).report(
+                                    tapeId: tapeId,
+                                    report: _filteredCategories[selectedIndex],
                                   );
                                 }
                               }

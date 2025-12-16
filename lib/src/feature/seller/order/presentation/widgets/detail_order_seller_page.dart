@@ -661,6 +661,7 @@ class _DetailOrderSellerPageState extends State<DetailOrderSellerPage> {
                                       userId: widget.basket.user!.id,
                                       userName: widget.basket.user!.fullName,
                                       chatId: widget.basket.chatId,
+                                      role: 'user',
                                     ),
                                   );
                                 },

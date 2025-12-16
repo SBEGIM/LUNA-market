@@ -139,6 +139,15 @@ class TapeCubit extends Cubit<TapeState> {
     emit(LoadedState(List.from(array)));
   }
 
+  Future<void> report({required int tapeId, required String report}) async {
+    try {
+      await tapeRepository.report(tapeId, report);
+    } catch (e) {
+      log(e.toString());
+      emit(ErrorState(message: 'Ошибка при увеличении просмотров'));
+    }
+  }
+
   Future<void> view(int id) async {
     try {
       await tapeRepository.view(id);

@@ -26,8 +26,9 @@ class MessageSeller extends StatefulWidget {
   int? chatId;
   int? userId;
   String? userName;
+  String? role;
 
-  MessageSeller({this.chatId, this.userId, this.userName, super.key});
+  MessageSeller({this.chatId, this.userId, this.userName, required this.role, super.key});
 
   @override
   State<MessageSeller> createState() => _MessageSellerState();
@@ -51,6 +52,8 @@ class _MessageSellerState extends State<MessageSeller> {
         'action': 'message',
         'text': _chatTextController.text.toString(),
         'to': widget.userId,
+        'from_role': 'blogger',
+        'to_role': widget.role,
         'chat_id': widget.chatId,
       });
 
@@ -70,6 +73,8 @@ class _MessageSellerState extends State<MessageSeller> {
         'path': data,
         'type': 'image',
         'to': widget.userId,
+        'from_role': 'blogger',
+        'to_role': widget.role,
         'chat_id': widget.chatId,
       });
 
@@ -130,7 +135,7 @@ class _MessageSellerState extends State<MessageSeller> {
   @override
   void initState() {
     BlocProvider.of<MessageSellerCubit>(context).getMessage(widget.chatId ?? 0, widget.userId ?? 0);
-    channel = IOWebSocketChannel.connect("ws://lunamarket.ru:1995/?user_id=$sellerId");
+    channel = IOWebSocketChannel.connect("ws://lunamarket.ru:1995/?user_id=$sellerId&role=shop");
 
     channel.ready.then((value) {
       ready = true;
@@ -158,321 +163,329 @@ class _MessageSellerState extends State<MessageSeller> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.kWhite,
-      appBar: AppBar(
-        elevation: 0,
-        titleSpacing: 0,
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).unfocus(),
+
+      child: Scaffold(
+        resizeToAvoidBottomInset: true,
         backgroundColor: AppColors.kWhite,
-        surfaceTintColor: AppColors.kWhite,
-        leading: IconButton(
-          onPressed: () async {
-            // await context.read<ChatCubit>().chat();
-            // if (!context.mounted) return;
-            Get.back();
-          },
-          icon: Image.asset(Assets.icons.defaultBackIcon.path, fit: BoxFit.contain, scale: 2.1),
-          tooltip: 'Back',
+        appBar: AppBar(
+          elevation: 0,
+          titleSpacing: 0,
+          backgroundColor: AppColors.kWhite,
+          surfaceTintColor: AppColors.kWhite,
+          leading: IconButton(
+            onPressed: () async {
+              // await context.read<ChatCubit>().chat();
+              // if (!context.mounted) return;
+              Get.back();
+            },
+            icon: Image.asset(Assets.icons.defaultBackIcon.path, fit: BoxFit.contain, scale: 2.1),
+            tooltip: 'Back',
+          ),
+          centerTitle: true,
+          title: Text(widget.userName ?? 'Чат', style: AppTextStyles.size18Weight600),
         ),
-        centerTitle: true,
-        title: Text(widget.userName ?? 'Чат', style: AppTextStyles.size18Weight600),
-      ),
 
-      bottomNavigationBar: SafeArea(
-        top: false,
-        child: AnimatedSize(
-          duration: const Duration(milliseconds: 150),
-          curve: Curves.easeOut,
-          child: Container(
-            // height: 56,
-            decoration: BoxDecoration(
-              color: const Color(0xffF8F8F8),
-              borderRadius: BorderRadius.circular(16),
-            ),
-            margin: const EdgeInsets.only(left: 16, right: 16, bottom: 12, top: 10),
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: _chatTextController.text.length >= 20
-                      ? CrossAxisAlignment.end
-                      : CrossAxisAlignment.center, // важно
-                  children: [
-                    GestureDetector(
-                      onTap: () async {
-                        // if (_image == null) {
-                        final bool? isCamera = await showAccountAlert(
-                          context,
-                          title: 'Изменить фото',
-                          message: 'Выберите источник',
-                          mode: AccountAlertMode.confirm,
-                          cancelText: 'Галерея',
-                          primaryText: 'Камера',
-                          primaryColor: Colors.red,
-                        );
-
-                        if (!mounted || isCamera == null) return;
-                        _handleImageSelection(isCamera);
-
-                        // showClientImageOptions(context, false, 'Изменить фото профиля', (
-                        //   value,
-                        // ) async {
-                        //   if (value == 'image') {
-
-                        //   } else {
-                        //     Navigator.of(context).pop();
-                        //   }
-                        // });
-                        //   Get.defaultDialog(
-                        //     title: "Отправить фото",
-                        //     middleText: '',
-                        //     textConfirm: 'Камера',
-                        //     textCancel: 'Фото',
-                        //     titlePadding: const EdgeInsets.only(top: 40),
-                        //     onConfirm: () async {
-                        //       Get.back();
-                        //       change = true;
-                        //       await _getImage();
-                        //       if (!mounted) return;
-                        //       setState(() {});
-                        //     },
-                        //     onCancel: () async {
-                        //       Get.back();
-                        //       change = false;
-                        //       await _getImage();
-                        //       if (!mounted) return;
-                        //       setState(() {});
-                        //     },
-                        //   );
-                        // }
-                        // }
-                      },
-                      child: SizedBox(
-                        height: 24,
-                        width: 24,
-                        child: Image.asset(Assets.icons.attachIcon.path, fit: BoxFit.cover),
-                      ),
-                    ),
-                    const SizedBox(width: 9),
-                    Expanded(
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 14),
-                        decoration: BoxDecoration(
-                          color: AppColors.kWhite,
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        child: TextField(
-                          controller: _chatTextController,
-                          onChanged: (value) {
-                            if (_chatTextController.text.length >= 20) {
-                              setState(() {});
-                            }
-                          },
-                          autocorrect: false,
-                          minLines: 1,
-                          maxLines: 5,
-                          keyboardType: TextInputType.multiline,
-                          textInputAction: TextInputAction.newline,
-                          style: AppTextStyles.size16Weight400.copyWith(
-                            color: const Color(0xff1C1C1E),
-                          ),
-                          decoration: const InputDecoration(
-                            isDense: true,
-                            border: InputBorder.none,
-                            hintText: 'Напишите сообщение',
-                          ),
-                        ),
-                      ),
-                    ),
-
-                    const SizedBox(width: 9),
-                    GestureDetector(
-                      onTap: () {
-                        SendData();
-                      },
-                      child: SizedBox(
-                        height: 24,
-                        width: 24,
-                        child: Image.asset(
-                          Assets.icons.sendIcon.path,
-                          fit: BoxFit.contain,
-                          color: const Color(0xffAEAEB2),
-                        ),
-                      ),
-                    ),
-                  ],
-
-                  //   if (value == 'image') {
+        bottomNavigationBar: Padding(
+          padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+          child: SafeArea(
+            top: false,
+            child: AnimatedSize(
+              duration: const Duration(milliseconds: 150),
+              curve: Curves.easeOut,
+              child: Container(
+                // height: 56,
+                decoration: BoxDecoration(
+                  color: const Color(0xffF8F8F8),
+                  borderRadius: BorderRadius.circular(16),
                 ),
+                margin: const EdgeInsets.only(left: 16, right: 16, bottom: 12, top: 10),
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: _chatTextController.text.length >= 20
+                          ? CrossAxisAlignment.end
+                          : CrossAxisAlignment.center, // важно
+                      children: [
+                        GestureDetector(
+                          onTap: () async {
+                            // if (_image == null) {
+                            final bool? isCamera = await showAccountAlert(
+                              context,
+                              title: 'Изменить фото',
+                              message: 'Выберите источник',
+                              mode: AccountAlertMode.confirm,
+                              cancelText: 'Галерея',
+                              primaryText: 'Камера',
+                              primaryColor: Colors.red,
+                            );
 
-                if (_image != null)
-                  Stack(
-                    clipBehavior: Clip.none,
-                    children: [
-                      Container(
-                        height: 80,
-                        width: 80,
-                        margin: const EdgeInsets.only(top: 12),
-                        decoration: BoxDecoration(borderRadius: BorderRadius.circular(16)),
-                        clipBehavior: Clip.hardEdge,
-                        child: Image.file(File(_image!.path), fit: BoxFit.cover),
-                      ),
-                      Positioned(
-                        right: -4,
-                        top: 4,
-                        child: InkWell(
-                          onTap: () {
-                            setState(() => _image = null);
+                            if (!mounted || isCamera == null) return;
+                            _handleImageSelection(isCamera);
+
+                            // showClientImageOptions(context, false, 'Изменить фото профиля', (
+                            //   value,
+                            // ) async {
+                            //   if (value == 'image') {
+
+                            //   } else {
+                            //     Navigator.of(context).pop();
+                            //   }
+                            // });
+                            //   Get.defaultDialog(
+                            //     title: "Отправить фото",
+                            //     middleText: '',
+                            //     textConfirm: 'Камера',
+                            //     textCancel: 'Фото',
+                            //     titlePadding: const EdgeInsets.only(top: 40),
+                            //     onConfirm: () async {
+                            //       Get.back();
+                            //       change = true;
+                            //       await _getImage();
+                            //       if (!mounted) return;
+                            //       setState(() {});
+                            //     },
+                            //     onCancel: () async {
+                            //       Get.back();
+                            //       change = false;
+                            //       await _getImage();
+                            //       if (!mounted) return;
+                            //       setState(() {});
+                            //     },
+                            //   );
+                            // }
+                            // }
                           },
-                          child: Image.asset(
-                            Assets.icons.defaultCloseIcon.path,
+                          child: SizedBox(
                             height: 24,
                             width: 24,
+                            child: Image.asset(Assets.icons.attachIcon.path, fit: BoxFit.cover),
                           ),
                         ),
+                        const SizedBox(width: 9),
+                        Expanded(
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 14),
+                            decoration: BoxDecoration(
+                              color: AppColors.kWhite,
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                            child: TextField(
+                              controller: _chatTextController,
+                              onChanged: (value) {
+                                if (_chatTextController.text.length >= 20) {
+                                  setState(() {});
+                                }
+                              },
+                              autocorrect: false,
+                              minLines: 1,
+                              maxLines: 5,
+                              keyboardType: TextInputType.multiline,
+                              textInputAction: TextInputAction.newline,
+                              style: AppTextStyles.size16Weight400.copyWith(
+                                color: const Color(0xff1C1C1E),
+                              ),
+                              decoration: const InputDecoration(
+                                isDense: true,
+                                border: InputBorder.none,
+                                hintText: 'Напишите сообщение',
+                              ),
+                            ),
+                          ),
+                        ),
+
+                        const SizedBox(width: 9),
+                        GestureDetector(
+                          onTap: () {
+                            SendData();
+                          },
+                          child: SizedBox(
+                            height: 24,
+                            width: 24,
+                            child: Image.asset(
+                              Assets.icons.sendIcon.path,
+                              fit: BoxFit.contain,
+                              color: const Color(0xffAEAEB2),
+                            ),
+                          ),
+                        ),
+                      ],
+
+                      //   if (value == 'image') {
+                    ),
+
+                    if (_image != null)
+                      Stack(
+                        clipBehavior: Clip.none,
+                        children: [
+                          Container(
+                            height: 80,
+                            width: 80,
+                            margin: const EdgeInsets.only(top: 12),
+                            decoration: BoxDecoration(borderRadius: BorderRadius.circular(16)),
+                            clipBehavior: Clip.hardEdge,
+                            child: Image.file(File(_image!.path), fit: BoxFit.cover),
+                          ),
+                          Positioned(
+                            right: -4,
+                            top: 4,
+                            child: InkWell(
+                              onTap: () {
+                                setState(() => _image = null);
+                              },
+                              child: Image.asset(
+                                Assets.icons.defaultCloseIcon.path,
+                                height: 24,
+                                width: 24,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-              ],
+                  ],
+                ),
+              ),
             ),
           ),
         ),
-      ),
 
-      body: BlocConsumer<MessageSellerCubit, MessageSellerState>(
-        listener: (context, state) {},
-        builder: (context, state) {
-          if (state is ErrorState) {
-            return Center(
-              child: Text(
-                state.message,
-                style: const TextStyle(fontSize: 20.0, color: Colors.grey),
-              ),
-            );
-          }
+        body: BlocConsumer<MessageSellerCubit, MessageSellerState>(
+          listener: (context, state) {},
+          builder: (context, state) {
+            if (state is ErrorState) {
+              return Center(
+                child: Text(
+                  state.message,
+                  style: const TextStyle(fontSize: 20.0, color: Colors.grey),
+                ),
+              );
+            }
 
-          if (state is LoadedState) {
-            // state.chat.forEach((element) {
-            //   return chat.add(element);
-            // });
-            return ready
-                ? SmartRefresher(
-                    controller: _refreshController,
-                    enablePullDown: true,
-                    enablePullUp: false,
-                    reverse: false,
-                    onLoading: () {
-                      onLoading();
-                    },
-                    // onRefresh: () {
-                    //   onRefresh();
-                    // },
-                    child: GroupedListView<MessageSellerDTO, DateTime>(
-                      elements: state.chat,
-                      groupBy: (message) => DateTime(
-                        (message.createdAt ?? DateTime.now()).year,
-                        (message.createdAt ?? DateTime.now()).month,
-                        (message.createdAt ?? DateTime.now()).day,
-                      ),
-                      reverse: true,
-                      sort: false,
-                      floatingHeader: true,
-                      // itemScrollController: itemScrollController,
-                      // sort: false,
+            if (state is LoadedState) {
+              // state.chat.forEach((element) {
+              //   return chat.add(element);
+              // });
+              return ready
+                  ? SmartRefresher(
+                      controller: _refreshController,
+                      enablePullDown: true,
+                      enablePullUp: false,
+                      reverse: false,
+                      onLoading: () {
+                        onLoading();
+                      },
+                      // onRefresh: () {
+                      //   onRefresh();
+                      // },
+                      child: GroupedListView<MessageSellerDTO, DateTime>(
+                        elements: state.chat,
+                        groupBy: (message) => DateTime(
+                          (message.createdAt ?? DateTime.now()).year,
+                          (message.createdAt ?? DateTime.now()).month,
+                          (message.createdAt ?? DateTime.now()).day,
+                        ),
+                        reverse: true,
+                        sort: false,
+                        floatingHeader: true,
+                        // itemScrollController: itemScrollController,
+                        // sort: false,
 
-                      // initialScrollIndex: 1,
-                      // elementIdentifier: (element) => element.
-                      //     , // optional - see below for usage
-                      // optional
-                      // order: StickyGroupedListOrder.DESC, // optional
-                      // reverse: true,
-                      groupSeparatorBuilder: (DateTime element) => Container(
-                        margin: const EdgeInsets.only(top: 8, bottom: 8),
-                        alignment: Alignment.center,
-                        height: 20,
-                        child: Text(
-                          DateFormat("dd.MM.yyyy").format(element),
-                          // element.createdAt ?? '01.01.2023 00:00:00',
-                          style: const TextStyle(
-                            color: Colors.grey,
-                            fontSize: 12,
-                            fontWeight: FontWeight.w500,
+                        // initialScrollIndex: 1,
+                        // elementIdentifier: (element) => element.
+                        //     , // optional - see below for usage
+                        // optional
+                        // order: StickyGroupedListOrder.DESC, // optional
+                        // reverse: true,
+                        groupSeparatorBuilder: (DateTime element) => Container(
+                          margin: const EdgeInsets.only(top: 8, bottom: 8),
+                          alignment: Alignment.center,
+                          height: 20,
+                          child: Text(
+                            DateFormat("dd.MM.yyyy").format(element),
+                            // element.createdAt ?? '01.01.2023 00:00:00',
+                            style: const TextStyle(
+                              color: Colors.grey,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w500,
+                            ),
                           ),
                         ),
-                      ),
-                      itemBuilder: (context, dynamic element) => Align(
-                        alignment: element.userId != int.parse(sellerId)
-                            ? Alignment.centerLeft
-                            : Alignment.centerRight,
-                        child: Card(
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                          margin: const EdgeInsets.only(top: 4, bottom: 4, left: 16, right: 16),
-                          color: element.userId == int.parse(sellerId)
-                              ? Color(0xffF1EBFE)
-                              : AppColors.kPrimaryColor,
-                          child: element.type == 'message'
-                              ? Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text(
-                                    element.text ?? '2',
+                        itemBuilder: (context, dynamic element) => Align(
+                          alignment: element.userId != int.parse(sellerId)
+                              ? Alignment.centerLeft
+                              : Alignment.centerRight,
+                          child: Card(
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                            margin: const EdgeInsets.only(top: 4, bottom: 4, left: 16, right: 16),
+                            color: element.userId == int.parse(sellerId)
+                                ? Color(0xffF1EBFE)
+                                : AppColors.kPrimaryColor,
+                            child: element.type == 'message'
+                                ? Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text(
+                                      element.text ?? '2',
 
-                                    style: AppTextStyles.size16Weight400.copyWith(
-                                      color: element.userId == int.parse(sellerId)
-                                          ? Colors.black
-                                          : Colors.white,
-                                    ),
-                                  ),
-                                )
-                              : Container(
-                                  padding: EdgeInsets.zero,
-                                  margin: EdgeInsets.zero,
-                                  height: 80,
-                                  width: 80,
-                                  decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                      image: NetworkImage(
-                                        "https://lunamarket.ru/storage/${element.path ?? ''}",
+                                      style: AppTextStyles.size16Weight400.copyWith(
+                                        color: element.userId == int.parse(sellerId)
+                                            ? Colors.black
+                                            : Colors.white,
                                       ),
-                                      fit: BoxFit.cover,
                                     ),
-                                    borderRadius: BorderRadius.circular(12),
+                                  )
+                                : Container(
+                                    padding: EdgeInsets.zero,
+                                    margin: EdgeInsets.zero,
+                                    height: 80,
+                                    width: 80,
+                                    decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                        image: NetworkImage(
+                                          "https://lunamarket.ru/storage/${element.path ?? ''}",
+                                        ),
+                                        fit: BoxFit.cover,
+                                      ),
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
                                   ),
-                                ),
+                          ),
                         ),
+
+                        // optional
                       ),
+                    )
+                  : const Center(child: CircularProgressIndicator(color: Colors.blueAccent));
+            } else {
+              return const Center(child: CircularProgressIndicator(color: Colors.red));
+            }
+          },
+        ),
 
-                      // optional
-                    ),
-                  )
-                : const Center(child: CircularProgressIndicator(color: Colors.blueAccent));
-          } else {
-            return const Center(child: CircularProgressIndicator(color: Colors.red));
-          }
-        },
+        // SizedBox(height: 20, child: Text(message)),
+        // bottomSheet: // floatingActionButton: FloatingActionButton(
+        //   backgroundColor: Colors.white,
+        //   child: Icon(
+        //     Icons.send,
+        //     color: Colors.black,
+        //   ),
+        //   onPressed: () {
+        //     SendData();
+        //     //_scrollController.position.maxScrollExtent;
+
+        //     // _scrollController.animateTo(
+        //     //   10 * 2.63 * (text.length).toDouble(),
+        //     //   curve: Curves.linear,
+        //     //   duration: const Duration(milliseconds: 20),
+        //     // );
+        //   },
+        // ),
       ),
-
-      // SizedBox(height: 20, child: Text(message)),
-      // bottomSheet: // floatingActionButton: FloatingActionButton(
-      //   backgroundColor: Colors.white,
-      //   child: Icon(
-      //     Icons.send,
-      //     color: Colors.black,
-      //   ),
-      //   onPressed: () {
-      //     SendData();
-      //     //_scrollController.position.maxScrollExtent;
-
-      //     // _scrollController.animateTo(
-      //     //   10 * 2.63 * (text.length).toDouble(),
-      //     //   curve: Curves.linear,
-      //     //   duration: const Duration(milliseconds: 20),
-      //     // );
-      //   },
-      // ),
     );
   }
 

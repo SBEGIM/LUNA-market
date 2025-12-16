@@ -204,6 +204,7 @@ class _ProfileBloggerTapePageState extends State<ProfileSellerTapePage> {
                                 name: widget.sellerName,
                                 avatar: widget.sellerAvatar,
                                 chatId: widget.chatId,
+                                role: 'shop',
                               ),
                             );
                           },

@@ -150,10 +150,16 @@ class _LauncherAppState extends State<LauncherApp> {
               name: chat['name'],
               avatar: chat['avatar'],
               chatId: chat['chat_id'],
+              role: chat['role'],
             ),
           ),
           orElse: () => Get.to(
-            MessageSeller(userId: chat['user_id'], userName: chat['name'], chatId: chat['chat_id']),
+            MessageSeller(
+              userId: chat['user_id'],
+              userName: chat['name'],
+              chatId: chat['chat_id'],
+              role: chat['role'],
+            ),
           ),
         ),
         backgroundColor: Colors.blueAccent,

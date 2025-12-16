@@ -12,6 +12,7 @@ class TapeRepository {
   Future<List<TapeModel>> tapes(inSub, inFav, search, bloggerId, page) =>
       _tapeApi.tapes(inSub, inFav, search, bloggerId, page);
 
+  report(id, report) => _tapeApi.report(id, report);
   view(id) => _tapeApi.view(id);
   like(id) => _tapeApi.like(id);
   share(id) => _tapeApi.share(id);
@@ -58,6 +59,18 @@ class TapeApi {
     } catch (e) {
       throw Exception(e);
     }
+  }
+
+  report(int id, String report) async {
+    final String? token = _box.read('token');
+
+    final response = await http.post(
+      Uri.parse('$baseUrl/shop/tape/report'),
+      body: {'tape_id': id.toString(), 'report': report},
+      headers: {"Authorization": "Bearer $token"},
+    );
+
+    return response.statusCode;
   }
 
   view(int id) async {

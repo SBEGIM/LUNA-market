@@ -884,7 +884,6 @@ class _CoopRequestPageState extends State<RegisterSellerPage> {
           ),
         ),
       ),
-
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
 
