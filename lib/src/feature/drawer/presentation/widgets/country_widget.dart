@@ -9,10 +9,10 @@ import '../../../../core/common/constants.dart';
 import '../../../app/widgets/custom_back_button.dart';
 
 class CountryWidget extends StatefulWidget {
-  const CountryWidget({Key? key}) : super(key: key);
+  const CountryWidget({super.key});
 
   @override
-  _CountryWidgetState createState() => _CountryWidgetState();
+  State<CountryWidget> createState() => _CountryWidgetState();
 }
 
 class _CountryWidgetState extends State<CountryWidget> {

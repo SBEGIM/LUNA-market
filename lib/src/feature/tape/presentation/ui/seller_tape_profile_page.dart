@@ -2,7 +2,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:get/route_manager.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/feature/app/router/app_router.dart';
@@ -29,16 +28,17 @@ class ProfileSellerTapePage extends StatefulWidget implements AutoRouteWrapper {
   final String sellerAvatar;
   final bool inSubscribe;
   final Function(bool)? onSubChanged;
-  ProfileSellerTapePage({
+
+  const ProfileSellerTapePage({
     required this.sellerId,
     required this.chatId,
     required this.sellerCreatedAt,
     required this.sellerName,
     required this.sellerAvatar,
-    Key? key,
+    super.key,
     required this.inSubscribe,
     this.onSubChanged,
-  }) : super(key: key);
+  });
 
   @override
   State<ProfileSellerTapePage> createState() => _ProfileBloggerTapePageState();
@@ -53,8 +53,6 @@ class ProfileSellerTapePage extends StatefulWidget implements AutoRouteWrapper {
 }
 
 class _ProfileBloggerTapePageState extends State<ProfileSellerTapePage> {
-  final _box = GetStorage();
-
   bool inSub = false;
   RefreshController refreshController = RefreshController();
 
@@ -90,7 +88,7 @@ class _ProfileBloggerTapePageState extends State<ProfileSellerTapePage> {
         ),
         centerTitle: true,
         title: Text(
-          '${widget.sellerName}',
+          widget.sellerName,
           style: const TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.w600),
         ),
         // actions: [
@@ -127,7 +125,7 @@ class _ProfileBloggerTapePageState extends State<ProfileSellerTapePage> {
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(60),
                           image: DecorationImage(
-                            image: widget.sellerAvatar != null
+                            image: widget.sellerAvatar.isNotEmpty
                                 ? NetworkImage(
                                     "https://lunamarket.ru/storage/${widget.sellerAvatar}",
                                   )
@@ -178,7 +176,7 @@ class _ProfileBloggerTapePageState extends State<ProfileSellerTapePage> {
                             decoration: BoxDecoration(
                               color: inSub != true
                                   ? AppColors.mainPurpleColor
-                                  : AppColors.mainPurpleColor.withOpacity(0.5),
+                                  : AppColors.mainPurpleColor.withValues(alpha: 0.5),
                               borderRadius: BorderRadius.circular(12),
                             ),
                             alignment: Alignment.center,
@@ -196,14 +194,15 @@ class _ProfileBloggerTapePageState extends State<ProfileSellerTapePage> {
                           onTap: () {
                             GetStorage().write('video_stop', true);
 
-                            // if (state.tapeModel[index].chatId ==
-                            //     null) {
-                            Get.to(
-                              MessagePage(
-                                userId: widget.sellerId,
-                                name: widget.sellerName,
-                                avatar: widget.sellerAvatar,
-                                chatId: widget.sellerId,
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => MessagePage(
+                                  userId: widget.sellerId,
+                                  name: widget.sellerName,
+                                  avatar: widget.sellerAvatar,
+                                  chatId: widget.sellerId,
+                                ),
                               ),
                             );
                           },
@@ -231,12 +230,12 @@ class _ProfileBloggerTapePageState extends State<ProfileSellerTapePage> {
                             GetStorage().remove('subCatFilterId');
                             GetStorage().remove('shopFilterId');
                             GetStorage().remove('search');
-                            GetStorage().write('shopFilter', widget.sellerName ?? '');
+                            GetStorage().write('shopFilter', widget.sellerName);
                             // GetStorage().write('shopFilterId', state.popularShops[index].id);
 
                             List<int> selectedListSort = [];
 
-                            selectedListSort.add(widget.sellerId as int);
+                            selectedListSort.add(widget.sellerId);
 
                             GetStorage().write('shopFilterId', selectedListSort.toString());
 
@@ -428,7 +427,7 @@ class _ProfileBloggerTapePageState extends State<ProfileSellerTapePage> {
                               child: Container(
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(12),
-                                  color: Colors.grey.withOpacity(0.6),
+                                  color: Colors.grey.withValues(alpha: .6),
                                 ),
                                 child: TapeCardWidget(tape: state.tapeModel[index], index: index),
                               ),

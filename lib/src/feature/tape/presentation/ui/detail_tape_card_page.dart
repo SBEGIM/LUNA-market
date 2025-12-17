@@ -32,13 +32,14 @@ class DetailTapeCardPage extends StatefulWidget implements AutoRouteWrapper {
   final int? tapeId;
   final String? shopName;
   final tapeCubit.TapeCubit tapeBloc;
+
   const DetailTapeCardPage({
     required this.index,
     required this.shopName,
-    Key? key,
+    super.key,
     required this.tapeBloc,
     this.tapeId,
-  }) : super(key: key);
+  });
 
   @override
   State<DetailTapeCardPage> createState() => _DetailTapeCardPageState();
@@ -68,7 +69,7 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
 
   int compoundPrice = 0;
 
-  procentPrice(price, compound) {
+  int procentPrice(price, compound) {
     var pp = (((price!.toInt() - compound!.toInt()) / price!.toInt()) * 100) as double;
     return pp.toInt();
   }
@@ -525,13 +526,13 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                                   ),
                                 ),
                                 SizedBox(height: 17.5),
-                                isLike(
+                                IsLikeWidget(
                                   tape: state.tapeModel[index],
                                   index: index,
                                   isBlogger: false,
                                 ),
                                 const SizedBox(height: 10),
-                                inFavorites(
+                                InFavoritesWidget(
                                   tape: state.tapeModel[index],
                                   index: index,
                                   isBlogger: false,
@@ -1076,13 +1077,13 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                                   ),
                                 ),
                                 SizedBox(height: 16),
-                                isLike(
+                                IsLikeWidget(
                                   tape: state.tapeModel[index],
                                   index: index,
                                   isBlogger: false,
                                 ),
                                 const SizedBox(height: 10),
-                                inFavorites(
+                                InFavoritesWidget(
                                   tape: state.tapeModel[index],
                                   index: index,
                                   isBlogger: false,
@@ -1357,16 +1358,16 @@ class _VideosState extends State<Videos> {
   }
 }
 
-class inSubs extends StatefulWidget {
+class InSubsWidget extends StatefulWidget {
   final TapeModel tape;
   final int index;
-  const inSubs({required this.tape, required this.index, super.key});
+  const InSubsWidget({required this.tape, required this.index, super.key});
 
   @override
-  State<inSubs> createState() => _inSubsState();
+  State<InSubsWidget> createState() => _InSubsWidgetState();
 }
 
-class _inSubsState extends State<inSubs> {
+class _InSubsWidgetState extends State<InSubsWidget> {
   bool? inSub;
 
   @override
@@ -1409,17 +1410,17 @@ class _inSubsState extends State<inSubs> {
   }
 }
 
-class isLike extends StatefulWidget {
+class IsLikeWidget extends StatefulWidget {
   final TapeModel tape;
   final int index;
   final bool isBlogger;
-  const isLike({required this.tape, required this.index, super.key, required this.isBlogger});
+  const IsLikeWidget({required this.tape, required this.index, super.key, required this.isBlogger});
 
   @override
-  State<isLike> createState() => _isLikeState();
+  State<IsLikeWidget> createState() => _IsLikeWidgetState();
 }
 
-class _isLikeState extends State<isLike> {
+class _IsLikeWidgetState extends State<IsLikeWidget> {
   bool? isLiked;
 
   @override
@@ -1473,17 +1474,17 @@ class _isLikeState extends State<isLike> {
   }
 }
 
-class inFavorites extends StatefulWidget {
+class InFavoritesWidget extends StatefulWidget {
   final TapeModel tape;
   final int index;
   final bool isBlogger;
-  const inFavorites({required this.tape, required this.index, super.key, required this.isBlogger});
+  const InFavoritesWidget({required this.tape, required this.index, super.key, required this.isBlogger});
 
   @override
-  State<inFavorites> createState() => _inFavoritesState();
+  State<InFavoritesWidget> createState() => _InFavoritesWidgetState();
 }
 
-class _inFavoritesState extends State<inFavorites> {
+class _InFavoritesWidgetState extends State<InFavoritesWidget> {
   bool? inFavorite;
 
   @override

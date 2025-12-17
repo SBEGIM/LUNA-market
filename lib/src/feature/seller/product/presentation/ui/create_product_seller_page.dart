@@ -21,7 +21,7 @@ import 'package:haji_market/src/feature/home/data/model/country_model.dart';
 import 'package:haji_market/src/feature/seller/product/bloc/color_seller_cubit.dart';
 import 'package:haji_market/src/feature/seller/product/data/DTO/size_count_seller_dto.dart';
 import 'package:haji_market/src/feature/seller/product/bloc/last_articul_seller_cubit.dart'
-    as lastArticul;
+    as last_articul;
 import 'package:haji_market/src/feature/seller/product/bloc/size_seller_cubit.dart';
 import 'package:haji_market/src/feature/seller/product/data/repository/product_seller_repository.dart';
 import 'package:haji_market/src/feature/seller/product/presentation/ui/map_seller_picker.dart';
@@ -170,7 +170,7 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
     }
   }
 
-  void _citiesArray(country) async {
+  void _citiesArray(String country) async {
     final List<CityModel> data = await BlocProvider.of<CityCubit>(context).citiesList(country);
 
     _regions.clear();
@@ -311,6 +311,8 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
   void _charactisticsArray() async {
     characteristics = await BlocProvider.of<CharacteristicSellerCubit>(context).characteristic();
 
+    if (!mounted) return;
+
     subCharacteristics = await BlocProvider.of<CharacteristicSellerCubit>(
       context,
     ).subCharacteristic();
@@ -400,7 +402,7 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
   }
 
   void articul() async {
-    await BlocProvider.of<lastArticul.LastArticulSellerCubit>(context).getLastArticul().then((
+    await BlocProvider.of<last_articul.LastArticulSellerCubit>(context).getLastArticul().then((
       last,
     ) {
       articulController.text = last.toString();
@@ -557,7 +559,6 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
       fieldStep1Errors['price'] = _validatePrice(priceController.text.trim());
 
       fieldStep1Errors['compound'] = _validatePrice(compoundController.text.trim());
-      ;
 
       fieldStep1Errors['nds'] = _validatePercent(ndsController.text.trim());
 
@@ -759,7 +760,7 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
                     scrollDirection: Axis.horizontal,
                     physics: const NeverScrollableScrollPhysics(),
                     itemCount: totalSegments,
-                    separatorBuilder: (_, __) => SizedBox(width: segmentSpacing),
+                    separatorBuilder: (_, _) => SizedBox(width: segmentSpacing),
                     itemBuilder: (context, index) {
                       bool isFilled = index < filledCount;
                       return Container(
@@ -810,19 +811,14 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
                         if (_cats.isEmpty) {
                           _cats = await BlocProvider.of<CatsCubit>(context).catsList();
                         }
-                        showSellerCatsOptions(context, 'Категория и тип', _cats, true, (value) {
-                          // BlocProvider.of<CatsCubit>(context).searchCats(value);
 
+                        if (!context.mounted) return;
+
+                        showSellerCatsOptions(context, 'Категория и тип', _cats, true, (value) {
                           setState(() {
                             cats = value;
                           });
                         });
-                        // final data = await Get.to(const CatsAdminPage());
-                        // if (data != null) {
-                        //   final Cats cat = data;
-                        //   setState(() {});
-                        //   cats = cat;
-                        // }
                       },
                     ),
 
@@ -838,6 +834,9 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
                         if (_subCats.isEmpty) {
                           _subCats = await BlocProvider.of<SubCatsCubit>(context).subCatsList();
                         }
+
+                        if (!context.mounted) return;
+
                         showSellerCatsOptions(context, 'Подкатегория', _subCats, true, (value) {
                           setState(() {
                             subCats = value;
@@ -857,6 +856,9 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
                         if (_brands.isEmpty) {
                           _brands = await BlocProvider.of<BrandCubit>(context).brandsList();
                         }
+
+                        if (!context.mounted) return;
+
                         showSellerCatsOptions(context, 'Бренд', _brands, true, (value) {
                           setState(() {
                             brands = value;
@@ -875,11 +877,11 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
                     ),
                   if (filledCount == 1)
                     BlocListener<
-                      lastArticul.LastArticulSellerCubit,
-                      lastArticul.LastArticulSellerState
+                      last_articul.LastArticulSellerCubit,
+                      last_articul.LastArticulSellerState
                     >(
                       listener: (context, stateArticul) {
-                        if (stateArticul is lastArticul.LoadedState) {
+                        if (stateArticul is last_articul.LoadedState) {
                           articulController.text = getFormattedArticle(
                             stateArticul.articul.toString(),
                           );
@@ -940,20 +942,20 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
                                 SizedBox(width: 5),
                                 InkWell(
                                   onTap: () {
-                                    final List<CatsModel> _currency = [
+                                    final List<CatsModel> currency = [
                                       CatsModel(id: 0, name: 'Российский рубль (RUB)'),
                                       CatsModel(id: 1, name: 'Казахстанский тенге (KZT)'),
                                       CatsModel(id: 2, name: 'Белорусский рубль (BYN)'),
                                     ];
-                                    showSellerCatsOptions(context, 'Валюта', _currency, false, (
+                                    showSellerCatsOptions(context, 'Валюта', currency, false, (
                                       value,
                                     ) {
-                                      final CatsModel _data = value;
-                                      if (_data.id! == 0) {
+                                      final CatsModel data0 = value;
+                                      if (data0.id! == 0) {
                                         currencyName = '₽';
-                                      } else if (_data.id == 1) {
+                                      } else if (data0.id == 1) {
                                         currencyName = '₸';
-                                      } else if (_data.id == 2) {
+                                      } else if (data0.id == 2) {
                                         currencyName = 'BYN';
                                       }
                                       setState(() {});
@@ -1005,14 +1007,14 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
                               SizedBox(width: 5),
                               InkWell(
                                 onTap: () {
-                                  final List<CatsModel> _nds = [
+                                  final List<CatsModel> nds0 = [
                                     CatsModel(id: 0, name: 'Рубль, ₽'),
                                     CatsModel(id: 1, name: 'Процент, %'),
                                   ];
 
-                                  showSellerCatsOptions(context, 'Скидка', _nds, false, (value) {
-                                    final CatsModel _data = value;
-                                    if (_data.name! == 'Рубль, ₽') {
+                                  showSellerCatsOptions(context, 'Скидка', nds0, false, (value) {
+                                    final CatsModel data0 = value;
+                                    if (data0.name! == 'Рубль, ₽') {
                                       compoundValue = '₽';
                                     } else {
                                       compoundValue = '%';
@@ -1043,7 +1045,7 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
                       textInputNumber: true,
                       errorText: fieldStep1Errors['nds'],
                       onPressed: () async {
-                        final List<CatsModel> _nds = [
+                        final List<CatsModel> nds = [
                           CatsModel(id: 0, name: '5 %'),
                           CatsModel(id: 1, name: '7 %'),
                           CatsModel(id: 2, name: '10 %'),
@@ -1051,21 +1053,12 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
                           CatsModel(id: 4, name: 'Не облагается'),
                         ];
 
-                        showSellerCatsOptions(context, 'Выбор НДС', _nds, false, (value) {
-                          final CatsModel _data = value;
+                        showSellerCatsOptions(context, 'Выбор НДС', nds, false, (value) {
+                          final CatsModel data0 = value;
 
                           setState(() {
-                            ndsController.text = _data.name!;
+                            ndsController.text = data0.name!;
                           });
-
-                          print(_data.name!);
-
-                          // print(value);
-                          // BlocProvider.of<BrandCubit>(context)
-                          //     .searchBrand(value);
-                          // final CatsModel brand = data;
-                          // setState(() {});
-                          // brands = brand;
                         });
                       },
                     ),
@@ -1364,10 +1357,6 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
                           if (optomPriceController.text.isNotEmpty) {
                             bool exists = false;
 
-                            OptomPriceSellerDto? optomCountLast;
-                            // if (optomCount.isNotEmpty) {
-
-                            optomCountLast = optomCount.isNotEmpty ? optomCount.last : null;
                             for (var element in optomCount) {
                               if (element.count == optomCountController.text) {
                                 exists = true;
@@ -1375,7 +1364,6 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
                               }
                               continue;
                             }
-                            //   }
 
                             if (!exists) {
                               optomCount.add(
@@ -1533,182 +1521,16 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
                           String colorNames = values.map((e) => e.name ?? 'Пустое').join(', ');
                           colorCountController.text = colorNames;
                           setState(() {});
-
-                          // Очистим, если нужно полностью перезаписать
-                          // checkColors?.clear();
-                          // colorCount.clear();
-
-                          // for (var e in values) {
-                          //   final colorId = e.id.toString();
-                          //   final colorName = e.name ?? 'Пустое';
-
-                          //   // Проверка, что уже не добавлен
-                          //   final alreadyExists = checkColors!
-                          //       .any((element) => element.name == colorName);
-
-                          //   if (!alreadyExists) {
-                          //     checkColors!.add(CatsModel(name: colorName));
-
-                          //     colorCount.add(ColorCountSellerDto(
-                          //       color_id: colorId,
-                          //       name: colorName,
-                          //       count: '0',
-                          //     ));
-                          //   } else {
-                          //     Get.snackbar('Ошибка', '$colorName уже добавлен!',
-                          //         backgroundColor: Colors.redAccent);
-                          //   }
-                          // }
                         });
                       },
                     ),
 
-                  // if (filledCount == 3) SizedBox(height: 5),
-
-                  // if (filledCount == 3)
-                  //   SizedBox(
-                  //     height: 62,
-                  //     child: ListView.builder(
-                  //         scrollDirection: Axis.horizontal,
-                  //         // physics: const NeverScrollableScrollPhysics(),
-                  //         itemCount: colorCount.length,
-                  //         itemBuilder: ((context, index) {
-                  //           return Container(
-                  //             padding: EdgeInsets.all(8),
-                  //             margin: EdgeInsets.all(5),
-                  //             alignment: Alignment.topCenter,
-                  //             decoration: BoxDecoration(
-                  //                 borderRadius: BorderRadius.circular(12),
-                  //                 color: AppColors.kBackgroundColor),
-                  //             height: 62,
-                  //             child: Row(
-                  //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //               crossAxisAlignment: CrossAxisAlignment.center,
-                  //               children: [
-                  //                 Padding(
-                  //                   padding: const EdgeInsets.only(top: 10.0),
-                  //                   child: Text(
-                  //                     '${colorCount[index].name}',
-                  //                     style: const TextStyle(
-                  //                         fontSize: 14,
-                  //                         fontWeight: FontWeight.w500),
-                  //                   ),
-                  //                 ),
-                  //                 SizedBox(width: 10),
-                  //                 InkWell(
-                  //                   onTap: (() {
-                  //                     colorCount.removeAt(index);
-                  //                     setState(() {});
-                  //                   }),
-                  //                   child: Icon(
-                  //                     Icons.close,
-                  //                     color: Colors.red,
-                  //                   ),
-                  //                 )
-                  //               ],
-                  //             ),
-                  //           );
-                  //         })),
-                  //   ),
-
-                  // if (filledCount == 2)
-                  //   FieldsProductRequest(
-                  //     titleText: 'Цвет ',
-                  //     hintText: colors!.name.toString(),
-                  //     hintColor: colors!.id != 0 ? true : false,
-                  //     star: true,
-                  //     arrow: true,
-                  //     onPressed: () async {
-                  //       final data = await Get.to(const ColorsSellerPage());
-                  //       if (data != null) {
-                  //         final CatsModel cat = data;
-                  //         setState(() {});
-                  //         colors = cat;
-                  //       }
-                  //     },
-                  //   ),
                   if (filledCount == 3)
                     SizedBox(
                       height: characteristics!.length * 90,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          // const Text(
-                          //   'Характиристика',
-                          //   style: TextStyle(
-                          //       fontSize: 16, fontWeight: FontWeight.w700),
-                          // ),
-                          // const SizedBox(height: 10),
-                          // GestureDetector(
-                          //   onTap: () {
-                          //     showSellerCharacteristicsOptions(context,
-                          //         'Добавить характеристику', subCharacteristics,
-                          //         (SizeCountSellerDto value) {
-                          //       {
-                          //         if (subCharacteristicsValueLast != null &&
-                          //             characteristicsValuelast != null) {
-                          //           bool exists = false;
-
-                          //           for (int index = 0;
-                          //               index < characteristicsValue!.length;
-                          //               index++) {
-                          //             if (characteristicsValue![index].key ==
-                          //                 characteristicsValuelast!.key) {
-                          //               if (subCharacteristicsValue![index]
-                          //                       .value ==
-                          //                   subCharacteristicsValueLast!
-                          //                       .value) {
-                          //                 exists = true;
-                          //                 setState(() {});
-                          //               }
-                          //             }
-                          //             continue;
-                          //           }
-
-                          //           if (!exists) {
-                          //             characteristicsValue!.add(
-                          //                 CharacteristicsModel(
-                          //                     id: characteristicsValuelast!.id!,
-                          //                     key: characteristicsValuelast!
-                          //                         .key));
-                          //             subCharacteristicsValue!.add(
-                          //                 CharacteristicsModel(
-                          //                     id: subCharacteristicsValueLast!
-                          //                         .id!,
-                          //                     value:
-                          //                         subCharacteristicsValueLast!
-                          //                             .value));
-
-                          //             setState(() {});
-                          //           } else {
-                          //             // Get.to(() => {})
-                          //             Get.snackbar(
-                          //                 'Ошибка', 'Данные уже имеется!',
-                          //                 backgroundColor: Colors.redAccent);
-                          //           }
-                          //         } else {
-                          //           Get.snackbar('Ошибка', 'Нет данных!',
-                          //               backgroundColor: Colors.redAccent);
-                          //         }
-                          //       }
-                          //     });
-                          //   },
-                          //   child: Container(
-                          //     decoration: BoxDecoration(
-                          //         color: AppColors.mainBackgroundPurpleColor,
-                          //         borderRadius: BorderRadius.circular(8)),
-                          //     alignment: Alignment.center,
-                          //     width: double.infinity,
-                          //     height: 38,
-                          //     child: const Text(
-                          //       '+ Добавить',
-                          //       style: TextStyle(
-                          //           fontSize: 14,
-                          //           fontWeight: FontWeight.w700,
-                          //           color: AppColors.mainPurpleColor),
-                          //     ),
-                          //   ),
-                          // ),
                           Flexible(
                             child: ListView.builder(
                               shrinkWrap: true, // 🔑 делает ListView высотой по содержимому
@@ -1735,6 +1557,8 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
                                           context,
                                         ).subCharacteristic(id: item.id.toString());
 
+                                    if (!context.mounted) return;
+
                                     showSellerListCharacteristicsOptions(
                                       context,
                                       item.key ?? 'Добавить характеристику',
@@ -1742,69 +1566,6 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
                                       subIndexCharacteristics!,
                                       (CharacteristicsModel value) {
                                         {
-                                          // characteristicsValuelast =
-                                          //     CharacteristicsModel(
-                                          //         id: item.id,
-                                          //         key: item.key,
-                                          //         value: item.value);
-
-                                          // subCharacteristicsValueLast =
-                                          //     CharacteristicsModel(
-                                          //         id: value.id,
-                                          //         mainId: item.id,
-                                          //         key: value.key,
-                                          //         value: value.value);
-                                          // if (subCharacteristicsValueLast != null &&
-                                          //     characteristicsValuelast != null) {
-                                          //   bool exists = false;
-
-                                          //   for (int index = 0;
-                                          //       index <
-                                          //           characteristicsValue!.length;
-                                          //       index++) {
-                                          //     if (characteristicsValue![index]
-                                          //             .key ==
-                                          //         characteristicsValuelast!.key) {
-                                          //       if (subCharacteristicsValue![index]
-                                          //               .value ==
-                                          //           subCharacteristicsValueLast!
-                                          //               .value) {
-                                          //         exists = true;
-                                          //         setState(() {});
-                                          //       }
-                                          //     }
-                                          //     continue;
-                                          //   }
-
-                                          //   if (!exists) {
-                                          //     characteristicsValue!.add(
-                                          //         CharacteristicsModel(
-                                          //             id: characteristicsValuelast!
-                                          //                 .id!,
-                                          //             key: characteristicsValuelast!
-                                          //                 .key));
-                                          //     subCharacteristicsValue!.add(
-                                          //         CharacteristicsModel(
-                                          //             id: subCharacteristicsValueLast!
-                                          //                 .id!,
-                                          //             mainId: item.id,
-                                          //             value:
-                                          //                 subCharacteristicsValueLast!
-                                          //                     .value));
-
-                                          //     setState(() {});
-                                          //   } else {
-                                          //     // Get.to(() => {})
-                                          //     Get.snackbar(
-                                          //         'Ошибка', 'Данные уже имеется!',
-                                          //         backgroundColor:
-                                          //             Colors.redAccent);
-                                          //   }
-                                          // } else {
-                                          //   Get.snackbar('Ошибка', 'Нет данных!',
-                                          //       backgroundColor: Colors.redAccent);
-                                          // }
-
                                           final newCharacteristic = CharacteristicsModel(
                                             id: item.id,
                                             key: item.key,
@@ -1912,7 +1673,7 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
                                       padding: EdgeInsets.zero,
                                       physics: const ClampingScrollPhysics(),
                                       itemCount: _image.length,
-                                      separatorBuilder: (_, __) => const SizedBox(width: 8),
+                                      separatorBuilder: (_, _) => const SizedBox(width: 8),
                                       itemBuilder: (context, index) {
                                         return SizedBox(
                                           width: 120,
@@ -2296,7 +2057,6 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
                             _regionsArray();
                           }
                           if (data.name == 'Город/населенный пункт') {
-                            print('ok');
                             _citiesArray('RU');
                           }
 
@@ -2312,8 +2072,8 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
                           _locationSelect == 'Город/населенный пункт' ||
                           _locationSelect == 'Моя локация'))
                     FieldsProductRequest(
-                      titleText: '$_locationSeller',
-                      hintText: '$_locationSeller',
+                      titleText: _locationSeller,
+                      hintText: _locationSeller,
                       star: false,
                       arrow: true,
                       hintColor: false,
@@ -2472,12 +2232,12 @@ class FieldsProductRequest extends StatefulWidget {
     this.controller,
     this.cats,
     this.textInputNumber,
-    Key? key,
+    super.key,
     this.onPressed,
     this.readOnly = false,
     this.maxLines,
     this.errorText,
-  }) : super(key: key);
+  });
 
   @override
   State<FieldsProductRequest> createState() => _FieldsProductRequestState();

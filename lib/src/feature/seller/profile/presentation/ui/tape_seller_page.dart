@@ -1,7 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/route_manager.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/feature/bloger/tape/bloc/tape_blogger_cubit.dart';
@@ -11,7 +10,6 @@ import 'package:haji_market/src/feature/bloger/tape/presentation/widgets/tape_ca
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:shimmer_animation/shimmer_animation.dart';
 
-// import '../widgets/grid_tape_list.dart';
 @RoutePage()
 class TapeSellerPage extends StatefulWidget {
   const TapeSellerPage({super.key});
@@ -22,14 +20,7 @@ class TapeSellerPage extends StatefulWidget {
 
 class _TapeSellerPageState extends State<TapeSellerPage> with TickerProviderStateMixin {
   late final TabController _tabs = TabController(length: 2, vsync: this, initialIndex: 0);
-
-  final List<Map> myProducts = List.generate(
-    6,
-    (index) => {"id": index, "name": "Product "},
-  ).toList();
-
-  TextEditingController searchController = TextEditingController();
-  final int _value = 1;
+  final TextEditingController searchController = TextEditingController();
 
   @override
   void initState() {
@@ -42,6 +33,8 @@ class _TapeSellerPageState extends State<TapeSellerPage> with TickerProviderStat
   @override
   void dispose() {
     _tabs.dispose();
+    searchController.dispose();
+    refreshController.dispose();
     super.dispose();
   }
 
@@ -173,15 +166,17 @@ class _TapeSellerPageState extends State<TapeSellerPage> with TickerProviderStat
                             ),
                             child: InkWell(
                               onTap: () {
-                                Get.to(
-                                  DetailTapeBloggerCardPage(
-                                    index: index,
-                                    tapeId: state.tapeModel[index].tapeId,
-                                    tape: state.tapeModel[index],
-                                    tapeBloc: BlocProvider.of<TapeBloggerCubit>(context),
-                                    shopName: state.tapeModel[index].shop!.name,
-                                  ),
-                                );
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (_) => DetailTapeBloggerCardPage(
+                                        index: index,
+                                        tapeId: state.tapeModel[index].tapeId,
+                                        tape: state.tapeModel[index],
+                                        tapeBloc: BlocProvider.of<TapeBloggerCubit>(context),
+                                        shopName: state.tapeModel[index].shop!.name,
+                                      ),
+                                    ),
+                                  );
                               },
                               child: BloggerTapeCardPage(
                                 tape: state.tapeModel[index],
@@ -193,63 +188,6 @@ class _TapeSellerPageState extends State<TapeSellerPage> with TickerProviderStat
                       },
                     ),
                   );
-
-                  // return GridView.builder(
-                  //   padding: const EdgeInsets.all(1),
-                  //   gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                  //     maxCrossAxisExtent: 150,
-                  //     childAspectRatio: 1 / 2,
-                  //     mainAxisSpacing: 3,
-                  //     crossAxisSpacing: 3,
-                  //   ),
-                  //   itemCount: state.tapeModel.length,
-                  //   // children: const [],
-                  //   itemBuilder: (context, index) {
-                  //     return Stack(
-                  //       children: [
-                  //         Image.asset('assets/images/tape.png'),
-                  //         Image.network(
-                  //           "https://lunamarket.ru/storage/${state.tapeModel[index].image}",
-                  //         ),
-                  //         Align(
-                  //           alignment: Alignment.bottomCenter,
-                  //           child: Container(
-                  //             width: MediaQuery.of(context).size.width,
-                  //             color: Colors.transparent.withOpacity(0.4),
-                  //             child: Text(
-                  //               '${state.tapeModel[index].name}',
-                  //               textAlign: TextAlign.center,
-                  //               style: const TextStyle(
-                  //                   color: Colors.white,
-                  //                   fontSize: 12,
-                  //                   fontWeight: FontWeight.w600),
-                  //             ),
-                  //           ),
-                  //         ),
-                  //         Padding(
-                  //           padding: const EdgeInsets.only(right: 5.0, top: 5),
-                  //           child: Align(
-                  //               alignment: Alignment.topRight,
-                  //               child: Container(
-                  //                   decoration: BoxDecoration(
-                  //                       color: Colors.white,
-                  //                       borderRadius: BorderRadius.circular(10)),
-                  //                   padding: const EdgeInsets.all(3),
-                  //                   child: InkWell(
-                  //                     onTap: () {
-                  //                       showAlertTapeWidget(context);
-                  //                       // showAlertStaticticsWidget(context);
-                  //                     },
-                  //                     child: const Icon(
-                  //                       Icons.more_vert_outlined,
-                  //                       color: AppColors.kPrimaryColor,
-                  //                     ),
-                  //                   ))),
-                  //         ),
-                  //       ],
-                  //     );
-                  //   },
-                  // );
                 } else {
                   return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
                 }
@@ -259,59 +197,6 @@ class _TapeSellerPageState extends State<TapeSellerPage> with TickerProviderStat
         ],
       ),
     );
-
-    //  GridView(
-    //   padding: const EdgeInsets.all(1),
-    //   gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-    //     maxCrossAxisExtent: 150,
-    //     childAspectRatio: 1 / 2,
-    //     mainAxisSpacing: 3,
-    //     crossAxisSpacing: 3,
-    //   ),
-    //   children: [
-    //     Stack(
-    //       children: [
-    //         Image.asset('assets/images/tape.png'),
-    //         Align(
-    //           alignment: Alignment.bottomCenter,
-    //           child: Container(
-    //             width: MediaQuery.of(context).size.width,
-    //             color: Colors.transparent.withOpacity(0.4),
-    //             child: const Text(
-    //               'ZARA',
-    //               textAlign: TextAlign.center,
-    //               style: TextStyle(
-    //                   color: Colors.white,
-    //                   fontSize: 12,
-    //                   fontWeight: FontWeight.w600),
-    //             ),
-    //           ),
-    //         ),
-    //         Padding(
-    //           padding: const EdgeInsets.only(right: 5.0, top: 5),
-    //           child: Align(
-    //               alignment: Alignment.topRight,
-    //               child: Container(
-    //                   decoration: BoxDecoration(
-    //                       color: Colors.white,
-    //                       borderRadius: BorderRadius.circular(10)),
-    //                   padding: const EdgeInsets.all(3),
-    //                   child: InkWell(
-    //                     onTap: () {
-    //                       showAlertTapeWidget(context);
-    //                       // showAlertStaticticsWidget(context);
-    //                     },
-    //                     child: const Icon(
-    //                       Icons.more_vert_outlined,
-    //                       color: AppColors.kPrimaryColor,
-    //                     ),
-    //                   ))),
-    //         ),
-    //       ],
-    //     ),
-    //   ],
-    // ),
-    //);
   }
 }
 
