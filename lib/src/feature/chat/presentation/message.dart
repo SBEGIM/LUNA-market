@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
@@ -12,7 +13,6 @@ import 'package:haji_market/src/feature/chat/data/DTO/message_dto.dart';
 import 'package:haji_market/src/feature/chat/data/cubit/chat_cubit.dart';
 import 'package:haji_market/src/feature/chat/data/cubit/message_cubit.dart';
 import 'package:haji_market/src/feature/chat/data/cubit/message_state.dart';
-import 'package:haji_market/src/feature/drawer/presentation/widgets/client_show_image_list_widget.dart';
 import 'package:haji_market/src/feature/drawer/presentation/widgets/show_alert_account_widget.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
@@ -165,6 +165,57 @@ class _MessagePageState extends State<MessagePage> {
     });
 
     super.initState();
+  }
+
+  void _openFullScreenImage(String path) {
+    final p = path.trim();
+    if (p.isEmpty) return;
+
+    final imageUrl = "https://lunamarket.ru/storage/$p";
+    final tc = TransformationController();
+
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      barrierColor: Colors.black.withOpacity(0.9),
+      builder: (dialogContext) {
+        return Stack(
+          children: [
+            Center(
+              child: FractionallySizedBox(
+                widthFactor: 0.92, // было 1.0 (почти на весь экран) → 92% ширины
+                heightFactor: 0.78, // 78% высоты
+                child: InteractiveViewer(
+                  panEnabled: true,
+                  minScale: 1,
+                  maxScale: 3, // чуть меньше зум
+                  child: Image.network(
+                    imageUrl,
+                    fit: BoxFit.contain,
+                    loadingBuilder: (context, child, loadingProgress) {
+                      if (loadingProgress == null) return child;
+                      return const Center(child: CircularProgressIndicator(strokeWidth: 2));
+                    },
+                    errorBuilder: (context, error, stackTrace) => const Center(
+                      child: Icon(Icons.broken_image_outlined, color: Colors.grey, size: 40),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+
+            Positioned(
+              top: 40,
+              right: 24,
+              child: IconButton(
+                icon: const Icon(Icons.close, color: Colors.white),
+                onPressed: () => Navigator.pop(dialogContext),
+              ),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -445,19 +496,46 @@ class _MessagePageState extends State<MessagePage> {
                                     ),
                                   ),
                                 )
-                              : Container(
-                                  padding: EdgeInsets.zero,
-                                  margin: EdgeInsets.zero,
-                                  height: 80,
-                                  width: 80,
-                                  decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                      image: NetworkImage(
-                                        "https://lunamarket.ru/storage/${element.path ?? ''}",
-                                      ),
-                                      fit: BoxFit.cover,
-                                    ),
+                              : InkWell(
+                                  onTap: () {
+                                    final p = element.path ?? '';
+                                    if (p.isEmpty) return;
+                                    _openFullScreenImage(p);
+                                  },
+                                  child: ClipRRect(
                                     borderRadius: BorderRadius.circular(12),
+                                    child: Image.network(
+                                      "https://lunamarket.ru/storage/${element.path ?? ''}",
+                                      width: 80,
+                                      height: 80,
+                                      fit: BoxFit.cover,
+                                      loadingBuilder: (context, child, loadingProgress) {
+                                        if (loadingProgress == null) return child;
+                                        return Container(
+                                          width: 80,
+                                          height: 80,
+                                          color: Colors.grey.shade200,
+                                          alignment: Alignment.center,
+                                          child: const SizedBox(
+                                            width: 18,
+                                            height: 18,
+                                            child: CircularProgressIndicator(strokeWidth: 2),
+                                          ),
+                                        );
+                                      },
+                                      errorBuilder: (context, error, stackTrace) {
+                                        return Container(
+                                          width: 80,
+                                          height: 80,
+                                          color: Colors.grey.shade200,
+                                          alignment: Alignment.center,
+                                          child: const Icon(
+                                            Icons.broken_image_outlined,
+                                            color: Colors.grey,
+                                          ),
+                                        );
+                                      },
+                                    ),
                                   ),
                                 ),
                         ),

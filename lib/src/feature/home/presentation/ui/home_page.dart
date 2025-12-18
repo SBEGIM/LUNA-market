@@ -396,99 +396,6 @@ class _HomePageState extends State<HomePage> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text('Рекомендуем', style: AppTextStyles.size18Weight700),
-                        InkWell(
-                          onTap: () {
-                            context.router.push(ProductsRecommendedRoute(cats: CatsModel()));
-                          },
-                          child: Text(
-                            'Показать все',
-                            style: AppTextStyles.size14Weight500.copyWith(
-                              color: AppColors.mainPurpleColor,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 16),
-                    BlocConsumer<productAdCubit.ProductAdCubit, productAdState.ProductAdState>(
-                      listener: (context, state) {},
-                      builder: (context, state) {
-                        if (state is productAdState.ErrorState) {
-                          return Center(
-                            child: Text(
-                              state.message,
-                              style: const TextStyle(fontSize: 20.0, color: Colors.grey),
-                            ),
-                          );
-                        }
-                        if (state is productAdState.LoadingState) {
-                          return Container(
-                            color: Colors.transparent,
-                            child: SizedBox(
-                              height: 315,
-                              child: ListView.builder(
-                                scrollDirection: Axis.horizontal,
-                                itemCount: 2,
-                                itemBuilder: (BuildContext ctx, index) {
-                                  return Padding(
-                                    padding: EdgeInsets.only(right: 12),
-                                    child: const ShimmerBox(height: 315, width: 173, radius: 16),
-                                  );
-                                },
-                              ),
-                            ),
-                          );
-                        }
-
-                        if (state is productAdState.LoadedState) {
-                          return SizedBox(
-                            height: 315,
-                            child: ListView.builder(
-                              scrollDirection: Axis.horizontal,
-                              itemCount: state.productModel.length,
-                              itemBuilder: (context, index) {
-                                return GestureDetector(
-                                  onTap: () => context.router.push(
-                                    DetailCardProductRoute(product: state.productModel[index]),
-                                  ),
-                                  child: ProductMbInterestingCard(
-                                    product: state.productModel[index],
-                                  ),
-                                );
-                              },
-                            ),
-                          );
-                        } else {
-                          return const Center(
-                            child: CircularProgressIndicator(color: Colors.indigoAccent),
-                          );
-                        }
-                      },
-                    ),
-                    // SingleChildScrollView(
-                    //     scrollDirection: Axis.horizontal,
-                    //     child: Row(children: const <Widget>[
-                    //       BannerWatcehRecently(),
-                    //       BannerWatcehRecently(),
-                    //       BannerWatcehRecently(),
-                    //       BannerWatcehRecently(),
-                    //     ])),
-                  ],
-                ),
-              ),
-            ),
-
-            SizedBox(
-              // color: Colors.white,
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
                         const Text('Недавно смотрели', style: AppTextStyles.size18Weight700),
                         InkWell(
                           onTap: () {
@@ -611,6 +518,100 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
             ),
+
+            SizedBox(
+              // color: Colors.white,
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text('Рекомендуем', style: AppTextStyles.size18Weight700),
+                        InkWell(
+                          onTap: () {
+                            context.router.push(ProductsRecommendedRoute(cats: CatsModel()));
+                          },
+                          child: Text(
+                            'Показать все',
+                            style: AppTextStyles.size14Weight500.copyWith(
+                              color: AppColors.mainPurpleColor,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 16),
+                    BlocConsumer<productAdCubit.ProductAdCubit, productAdState.ProductAdState>(
+                      listener: (context, state) {},
+                      builder: (context, state) {
+                        if (state is productAdState.ErrorState) {
+                          return Center(
+                            child: Text(
+                              state.message,
+                              style: const TextStyle(fontSize: 20.0, color: Colors.grey),
+                            ),
+                          );
+                        }
+                        if (state is productAdState.LoadingState) {
+                          return Container(
+                            color: Colors.transparent,
+                            child: SizedBox(
+                              height: 315,
+                              child: ListView.builder(
+                                scrollDirection: Axis.horizontal,
+                                itemCount: 2,
+                                itemBuilder: (BuildContext ctx, index) {
+                                  return Padding(
+                                    padding: EdgeInsets.only(right: 12),
+                                    child: const ShimmerBox(height: 315, width: 173, radius: 16),
+                                  );
+                                },
+                              ),
+                            ),
+                          );
+                        }
+
+                        if (state is productAdState.LoadedState) {
+                          return SizedBox(
+                            height: 315,
+                            child: ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: state.productModel.length,
+                              itemBuilder: (context, index) {
+                                return GestureDetector(
+                                  onTap: () => context.router.push(
+                                    DetailCardProductRoute(product: state.productModel[index]),
+                                  ),
+                                  child: ProductMbInterestingCard(
+                                    product: state.productModel[index],
+                                  ),
+                                );
+                              },
+                            ),
+                          );
+                        } else {
+                          return const Center(
+                            child: CircularProgressIndicator(color: Colors.indigoAccent),
+                          );
+                        }
+                      },
+                    ),
+                    // SingleChildScrollView(
+                    //     scrollDirection: Axis.horizontal,
+                    //     child: Row(children: const <Widget>[
+                    //       BannerWatcehRecently(),
+                    //       BannerWatcehRecently(),
+                    //       BannerWatcehRecently(),
+                    //       BannerWatcehRecently(),
+                    //     ])),
+                  ],
+                ),
+              ),
+            ),
+
             const SizedBox(height: 100),
             // BlocBuilder<metaCubit.MetaCubit, metaState.MetaState>(
             //     builder: (context, state) {

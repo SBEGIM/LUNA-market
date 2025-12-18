@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/route_manager.dart';
+import 'package:haji_market/src/feature/app/widgets/app_snack_bar.dart';
 import 'package:haji_market/src/feature/seller/order/bloc/order_status_seller_cubit.dart';
 import 'package:haji_market/src/feature/seller/order/data/models/basket_order_seller_model.dart';
 import 'package:haji_market/src/feature/seller/order/presentation/widgets/delivery_note_seller_widget.dart';
@@ -26,25 +27,26 @@ class DetailOrderSellerPage extends StatefulWidget implements AutoRouteWrapper {
 
 class _DetailOrderSellerPageState extends State<DetailOrderSellerPage> {
   String statusFBS = '';
-  String statusRealFBS = '';
+  // String statusRealFBS = '';
 
   String postStatusFBS = '';
-  String postStatusRealFBS = '';
+  // String postStatusRealFBS = '';
 
   String postSecondStatusFBS = '';
-  String postSecondStatusRealFBS = '';
+  // String postSecondStatusRealFBS = '';
 
   String buttonTextFBS = '';
-  String buttonTextRealFBS = '';
+  // String buttonTextRealFBS = '';
 
   String buttonSecondTextFBS = '';
-  String buttonSecondTextRealFBS = '';
+  // String buttonSecondTextRealFBS = '';
 
   int segmentValue = 0;
 
+  String textSnackBar = '';
+
   @override
   void initState() {
-    /// ---------- FBS (продавец в режиме FBS) ----------
     switch (widget.basket.status) {
       case 'order':
         {
@@ -82,11 +84,13 @@ class _DetailOrderSellerPageState extends State<DetailOrderSellerPage> {
       case 'ready_for_pickup':
         {
           statusFBS = 'Готов к выдаче';
-          postStatusFBS = 'delivered';
-          postSecondStatusFBS = 'return';
+          postStatusFBS = '';
+          postSecondStatusFBS = '';
 
-          buttonTextFBS = 'Выдать заказ';
-          buttonSecondTextFBS = 'Оформить возврат';
+          textSnackBar = 'Ожидайте, клиент забирает заказ';
+
+          buttonTextFBS = 'Клиент забирает заказ';
+          buttonSecondTextFBS = '';
         }
         break;
 
@@ -148,11 +152,13 @@ class _DetailOrderSellerPageState extends State<DetailOrderSellerPage> {
       case 'end':
         {
           statusFBS = 'Заказ окончен';
-          postStatusFBS = 'end';
-          postSecondStatusFBS = 'end';
+          postStatusFBS = '';
+          postSecondStatusFBS = '';
+
+          textSnackBar = 'Клиент получил товар';
 
           buttonTextFBS = 'Заказ окончен';
-          buttonSecondTextFBS = 'Заказ окончен';
+          buttonSecondTextFBS = '';
         }
         break;
 
@@ -185,150 +191,6 @@ class _DetailOrderSellerPageState extends State<DetailOrderSellerPage> {
           statusFBS = 'Неизвестно';
           buttonTextFBS = 'В ожидании';
           buttonSecondTextFBS = 'В ожидании';
-        }
-        break;
-    }
-
-    /// ---------- Real FBS (второй сценарий продавца) ----------
-    switch (widget.basket.status) {
-      case 'order':
-        {
-          statusRealFBS = 'Заказ оформлен';
-          postStatusRealFBS = 'accepted';
-          postSecondStatusRealFBS = 'cancel';
-
-          buttonTextRealFBS = 'Принять';
-          buttonSecondTextRealFBS = 'Отменить заказ';
-        }
-        break;
-
-      case 'accepted':
-        {
-          statusRealFBS = 'Заказ оформлен';
-          postStatusRealFBS = 'courier';
-          postSecondStatusRealFBS = 'cancel';
-
-          buttonTextRealFBS = 'Передать службе доставки';
-          buttonSecondTextRealFBS = 'Отменить заказ';
-        }
-        break;
-
-      case 'courier':
-        {
-          statusRealFBS = 'Доставка в пути';
-          postStatusRealFBS = '';
-          postSecondStatusRealFBS = 'error';
-
-          buttonTextRealFBS = 'Ожидание клиента';
-          buttonSecondTextRealFBS = 'Проблемы с заказом';
-        }
-        break;
-
-      case 'ready_for_pickup':
-        {
-          statusRealFBS = 'Готов к выдаче';
-          postStatusRealFBS = 'delivered';
-          postSecondStatusRealFBS = 'return';
-
-          buttonTextRealFBS = 'Выдать заказ';
-          buttonSecondTextRealFBS = 'Оформить возврат';
-        }
-        break;
-
-      case 'delivered':
-        {
-          statusRealFBS = 'Заказ доставлен';
-          postStatusRealFBS = 'end';
-          postSecondStatusRealFBS = 'end';
-
-          buttonTextRealFBS = 'Завершить';
-          buttonSecondTextRealFBS = 'Завершить';
-        }
-        break;
-
-      case 'return':
-        {
-          statusRealFBS = 'Возврат заказа';
-          postStatusRealFBS = 'end';
-          postSecondStatusRealFBS = 'end';
-
-          buttonTextRealFBS = 'Завершить';
-          buttonSecondTextRealFBS = 'Завершить';
-        }
-        break;
-
-      case 'error':
-        {
-          statusRealFBS = 'Ошибка';
-          postStatusRealFBS = 'courier';
-          postSecondStatusRealFBS = '';
-
-          buttonTextRealFBS = 'Передать службе доставки';
-          buttonSecondTextRealFBS = 'Ошибка c заказом';
-        }
-        break;
-
-      case 'cancel':
-        {
-          statusRealFBS = 'Клиент отменил заказ';
-          postStatusRealFBS = 'end';
-          postSecondStatusRealFBS = 'end';
-
-          buttonTextRealFBS = 'Завершить';
-          buttonSecondTextRealFBS = 'Завершить';
-        }
-        break;
-
-      case 'rejected':
-        {
-          statusRealFBS = 'Магазин отменил заказ';
-          postStatusRealFBS = 'rejected';
-          postSecondStatusRealFBS = 'rejected';
-
-          buttonTextRealFBS = 'Вы отменили заказ';
-          buttonSecondTextRealFBS = 'Вы отменили заказ';
-        }
-        break;
-
-      case 'end':
-        {
-          statusRealFBS = 'Заказ окончен';
-          postStatusRealFBS = 'end';
-          postSecondStatusRealFBS = 'end';
-
-          buttonTextRealFBS = 'Заказ окончен';
-          buttonSecondTextRealFBS = 'Заказ окончен';
-        }
-        break;
-
-      case 'success':
-        {
-          // 🔹 Аналогично FBS — статус делаем осмысленным.
-          statusRealFBS = 'Заказ оформлен';
-          postStatusRealFBS = 'courier';
-          postSecondStatusRealFBS = 'rejected';
-
-          buttonTextRealFBS = 'Передать службе доставки';
-          buttonSecondTextRealFBS = 'Отклонить';
-        }
-        break;
-
-      case 'in_process':
-        {
-          statusRealFBS = 'В процессе';
-          postStatusRealFBS = 'success';
-          postSecondStatusRealFBS = 'rejected';
-
-          buttonTextRealFBS = 'Принять';
-          buttonSecondTextRealFBS = 'Отклонить';
-        }
-        break;
-
-      default:
-        {
-          statusRealFBS = 'Неизвестно';
-          buttonTextRealFBS = 'В ожидании';
-          buttonSecondTextRealFBS = 'В ожидании';
         }
         break;
     }
@@ -648,7 +510,7 @@ class _DetailOrderSellerPageState extends State<DetailOrderSellerPage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                '${widget.basket.user!.fullName}',
+                                '${widget.basket.user?.fullName ?? ''}',
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: AppTextStyles.size16Weight600,
@@ -718,8 +580,6 @@ class _DetailOrderSellerPageState extends State<DetailOrderSellerPage> {
                 BlocConsumer<OrderStatusSellerCubit, OrderStatusSellerState>(
                   listener: (context, state) {
                     if (state is LoadedState) {
-                      BlocProvider.of<BasketSellerCubit>(context).basketOrderShow('fbs');
-                      Navigator.pop(context);
                     } else if (state is ErrorState) {
                       Get.snackbar('Ошибка', state.message, backgroundColor: Colors.redAccent);
                     }
@@ -736,25 +596,33 @@ class _DetailOrderSellerPageState extends State<DetailOrderSellerPage> {
                           Expanded(
                             child: GestureDetector(
                               onTap: () {
-                                if (postStatusFBS != '' && statusFBS != 'in_process') {
+                                print(postStatusFBS);
+                                if (postStatusFBS != '' &&
+                                    statusFBS != 'in_process' &&
+                                    statusFBS != 'ready_for_pickup') {
                                   BlocProvider.of<OrderStatusSellerCubit>(context).basketStatus(
                                     postStatusFBS,
                                     widget.basket.id.toString(),
                                     widget.basket.product!.first.id.toString(),
-                                    'fbs',
+                                    '',
                                   );
 
-                                  BlocProvider.of<BasketSellerCubit>(
-                                    context,
-                                  ).basketOrderRealFBSshow('realFBS');
-
-                                  Get.back();
+                                  BlocProvider.of<BasketSellerCubit>(context).basketOrderShow('');
+                                  Navigator.pop(context);
                                 } else {
-                                  Get.snackbar(
-                                    'Заказ',
-                                    'Невозможно изменить статус',
-                                    backgroundColor: Colors.orangeAccent,
-                                  );
+                                  if (widget.basket.status == 'end') {
+                                    AppSnackBar.show(
+                                      context,
+                                      textSnackBar,
+                                      type: AppSnackType.success,
+                                    );
+                                  } else {
+                                    AppSnackBar.show(
+                                      context,
+                                      textSnackBar,
+                                      type: AppSnackType.error,
+                                    );
+                                  }
                                 }
                               },
                               child: Container(
@@ -784,7 +652,9 @@ class _DetailOrderSellerPageState extends State<DetailOrderSellerPage> {
                               ? SizedBox(width: 12)
                               : SizedBox.shrink(),
 
-                          widget.basket.status == 'accepted'
+                          widget.basket.status == 'accepted' ||
+                                  widget.basket.status == 'ready_for_pickup' ||
+                                  widget.basket.status == 'end'
                               ? SizedBox.shrink()
                               : Expanded(
                                   child: GestureDetector(
@@ -794,13 +664,13 @@ class _DetailOrderSellerPageState extends State<DetailOrderSellerPage> {
                                           postSecondStatusFBS,
                                           widget.basket.id.toString(),
                                           widget.basket.product!.first.id.toString(),
-                                          'fbs',
+                                          '',
                                         );
+
                                         BlocProvider.of<BasketSellerCubit>(
                                           context,
-                                        ).basketOrderRealFBSshow('fbs');
-
-                                        Get.back();
+                                        ).basketOrderShow('');
+                                        Navigator.pop(context);
                                       } else {
                                         Get.snackbar(
                                           'Заказ',

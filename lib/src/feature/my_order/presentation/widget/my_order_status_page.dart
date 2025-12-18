@@ -2,7 +2,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/route_manager.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/feature/app/router/app_router.dart';
@@ -12,7 +11,6 @@ import 'package:haji_market/src/feature/basket/data/models/basket_order_model.da
 import 'package:haji_market/src/feature/drawer/presentation/widgets/pre_order_dialog.dart';
 import 'package:haji_market/src/feature/drawer/presentation/widgets/show_basket_bottom_sheet_widget.dart';
 import 'package:haji_market/src/feature/home/presentation/widgets/product_watching_card.dart';
-import 'package:haji_market/src/feature/my_order/presentation/widget/cancel_order_widget.dart';
 import 'package:haji_market/src/feature/my_order/presentation/widget/show_order_cancel_widget.dart';
 import 'package:haji_market/src/feature/my_order/presentation/widget/show_order_uncancel_widget.dart';
 import 'package:haji_market/src/feature/product/cubit/product_cubit.dart' as product_cubit;
@@ -233,20 +231,28 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                         builder: (context, state) {
                                           return GestureDetector(
                                             onTap: () async {
-                                              if (_basketOrder.basketStatusTimeline!.last.isDone ==
-                                                      true ||
-                                                  _basketOrder.status == 'ready_for_pickup' ||
-                                                  _basketOrder.status == 'delivered') {
+                                              if (_basketOrder.status == 'ready_for_pickup' ||
+                                                  _basketOrder.status == 'taken') {
                                                 final timeline = List.of(
                                                   _basketOrder.basketStatusTimeline!,
                                                 );
                                                 timeline[timeline.length - 1] = timeline.last
                                                     .copyWith(isDone: true);
+                                                String sendStatus = '';
+                                                if (_basketOrder.status == 'ready_for_pickup') {
+                                                  sendStatus = 'taken';
+                                                }
 
+                                                if (_basketOrder.status == 'taken') {
+                                                  sendStatus = 'end';
+                                                }
+
+                                                // if (_basketOrder.basketStatusTimeline!.last.isDone ==
+                                                //     true) {
                                                 BlocProvider.of<OrderStatusSellerCubit>(
                                                   context,
                                                 ).basketStatus(
-                                                  'end',
+                                                  sendStatus,
                                                   _basketOrder.id.toString(),
                                                   _basketOrder.product!.first.id.toString(),
                                                   'fbs',
@@ -257,21 +263,23 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                                 ).updateProductByIndex(
                                                   index: widget.index,
                                                   updatedOrder: _basketOrder.copyWith(
-                                                    status: 'end',
+                                                    status: sendStatus,
                                                     basketStatusTimeline: timeline,
                                                   ),
                                                 );
 
                                                 setState(() {
                                                   _basketOrder = _basketOrder.copyWith(
-                                                    status: 'end',
+                                                    status: sendStatus,
                                                     basketStatusTimeline: timeline,
                                                   );
                                                 });
 
                                                 AppSnackBar.show(
                                                   context,
-                                                  'Заказ выдан',
+                                                  sendStatus == 'taken'
+                                                      ? 'Заказ забран'
+                                                      : 'Заказ выдан',
                                                   type: AppSnackType.success,
                                                 );
                                               } else {
@@ -308,9 +316,9 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                                       strokeWidth: 2,
                                                     )
                                                   : Text(
-                                                      _basketOrder.status == 'end'
-                                                          ? 'Подтвердить'
-                                                          : 'Забрать заказ',
+                                                      _basketOrder.status == 'ready_for_pickup'
+                                                          ? 'Забрать заказ'
+                                                          : 'Подтвердить',
                                                       textAlign: TextAlign.center,
                                                       style: AppTextStyles.size13Weight500.copyWith(
                                                         color: AppColors.kWhite,

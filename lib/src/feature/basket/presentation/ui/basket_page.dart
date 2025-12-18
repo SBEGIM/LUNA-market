@@ -158,12 +158,12 @@ class _BasketPageState extends State<BasketPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.kBackgroundColor,
+      backgroundColor: AppColors.kWhite,
       extendBody: true,
       appBar: AppBar(
         centerTitle: true,
-        surfaceTintColor: Colors.white,
-        backgroundColor: Colors.white,
+        surfaceTintColor: AppColors.kWhite,
+        backgroundColor: AppColors.kWhite,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(bottom: Radius.circular(16)),
         ),
@@ -276,7 +276,7 @@ class _BasketPageState extends State<BasketPage> {
                   ),
                 );
               } else {
-                return Container(height: 36, color: AppColors.kBackgroundColor);
+                return Container(height: 36, color: AppColors.kWhite);
               }
             },
           ),

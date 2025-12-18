@@ -6,6 +6,7 @@ import 'package:haji_market/src/feature/drawer/presentation/widgets/count_zero_d
 import 'package:haji_market/src/feature/home/bloc/meta_cubit.dart';
 import 'package:haji_market/src/feature/tape/bloc/tape_check_cubit.dart';
 import 'package:haji_market/src/feature/tape/data/repository/tape_repository.dart';
+import 'package:haji_market/src/feature/tape/presentation/widgets/show_alert_report_widget.dart';
 import 'package:haji_market/src/feature/tape/presentation/widgets/show_report_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:video_player/video_player.dart';
@@ -1813,6 +1814,18 @@ class _inReportState extends State<inReport> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () async {
+        if (inReport == true) {
+          await showBrandedAlert(
+            context,
+            title: 'Жалоба уже отправлена',
+            message:
+                'Мы уже получили вашу жалобу на это видео. Повторная отправка не требуется — мы проверим видео и при необходимости примем меры.',
+            mode: BrandedAlertMode.acknowledge,
+            primaryText: 'Закрыть',
+          );
+          return;
+        }
+
         List<String> _reports = [
           'Жестокое обращение с детьми',
           'Спам',
@@ -1821,29 +1834,25 @@ class _inReportState extends State<inReport> {
           'Дискриминация или оскорбления',
         ];
 
-        showReportOptions(
-          context,
-          widget.tape.tapeId!,
-          'Пожаловаться на видео:',
-          _reports,
-          (value) {},
-        );
-
-        BlocProvider.of<tapeCubit.TapeCubit>(context).update(
-          widget.tape,
-          widget.index,
-          widget.tape.inSubscribe,
-          widget.tape.inBasket,
-          widget.tape.inFavorite,
-          !inReport!,
-          widget.tape.isLiked,
-          widget.tape.statistics?.like ?? 0,
-          widget.tape.statistics?.favorite ?? 0,
-          widget.tape.statistics?.send ?? 0,
-          isBlogger: widget.isBlogger,
-        );
-        setState(() {
-          inReport = !inReport!;
+        showReportOptions(context, widget.tape.tapeId!, 'Пожаловаться на видео:', _reports, (
+          value,
+        ) {
+          BlocProvider.of<tapeCubit.TapeCubit>(context).update(
+            widget.tape,
+            widget.index,
+            widget.tape.inSubscribe,
+            widget.tape.inBasket,
+            widget.tape.inFavorite,
+            !inReport!,
+            widget.tape.isLiked,
+            widget.tape.statistics?.like ?? 0,
+            widget.tape.statistics?.favorite ?? 0,
+            widget.tape.statistics?.send ?? 0,
+            isBlogger: widget.isBlogger,
+          );
+          setState(() {
+            inReport = !inReport!;
+          });
         });
       },
       child: ClipRRect(

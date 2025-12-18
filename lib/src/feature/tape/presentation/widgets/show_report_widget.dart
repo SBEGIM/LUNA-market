@@ -132,7 +132,6 @@ void showReportOptions(
                         onPressed:
                             (selectedIndex >= 0 && selectedIndex < _filteredCategories.length)
                             ? () async {
-                                callback.call(_filteredCategories[selectedIndex]);
                                 Navigator.pop(ctx);
                                 final ok = await showBrandedAlert(
                                   context,
@@ -144,6 +143,7 @@ void showReportOptions(
                                   primaryText: 'Пожаловаться',
                                 );
                                 if (ok == true) {
+                                  callback.call(_filteredCategories[selectedIndex]);
                                   await showBrandedAlert(
                                     context,
                                     title: 'Спасибо за ваш отзыв',
