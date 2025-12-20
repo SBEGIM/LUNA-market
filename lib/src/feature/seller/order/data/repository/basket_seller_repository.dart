@@ -20,6 +20,9 @@ class BasketSellerRepository {
 
   Future<void> basketStatus(String status, id, productId, fulfillment) =>
       _basket.basketStatus(status, id, productId, fulfillment);
+
+  Future<List<BasketOrderSellerModel>> basketOrderShowById(int id) =>
+      _basket.basketOrderShowById(id);
 }
 
 class Basket {
@@ -74,5 +77,18 @@ class Basket {
     );
 
     return;
+  }
+
+  Future<List<BasketOrderSellerModel>> basketOrderShowById(int id) async {
+    final String? token = _box.read('seller_token');
+
+    final response = await http.get(
+      Uri.parse("$baseUrl/basket/order/seller/status/by/id?id=$id"),
+      headers: {"Authorization": "Bearer $token"},
+    );
+
+    final data = jsonDecode(response.body);
+
+    return (data['data'] as List).map((e) => BasketOrderSellerModel.fromJson(e)).toList();
   }
 }

@@ -106,4 +106,15 @@ class BasketSellerCubit extends Cubit<BasketAdminState> {
       emit(ErrorState(message: 'Ошибка сервера'));
     }
   }
+
+  Future<BasketOrderSellerModel> basketOrderShowById({required int id}) async {
+    try {
+      final List<BasketOrderSellerModel> data = await basketRepository.basketOrderShowById(id);
+
+      return data[0];
+    } catch (e) {
+      log(e.toString());
+      return endOrders[0];
+    }
+  }
 }

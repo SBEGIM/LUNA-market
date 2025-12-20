@@ -274,7 +274,7 @@ class _MessagePageState extends State<MessagePage> {
                             // if (_image == null) {
                             final bool? isCamera = await showAccountAlert(
                               context,
-                              title: 'Изменить фото',
+                              title: 'Добавить фото',
                               message: 'Выберите источник',
                               mode: AccountAlertMode.confirm,
                               cancelText: 'Галерея',

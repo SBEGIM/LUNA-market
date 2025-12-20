@@ -108,7 +108,7 @@ class _SellerMyOrderCardWidgetState extends State<SellerMyOrderCardWidget> {
             ? Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => DetailOrderSellerPage(basket: widget.basketOrder),
+                  builder: (context) => DetailOrderSellerPage(basketOrder: widget.basketOrder),
                 ),
               )
             : printError();

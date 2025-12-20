@@ -135,10 +135,13 @@ class _ChatSellerPageState extends State<ChatSellerPage> {
                   ),
                   SizedBox(
                     height: 600,
-                    child: ListView.builder(
+                    child: ListView.separated(
                       padding: EdgeInsets.only(top: 16),
                       physics: const NeverScrollableScrollPhysics(),
                       itemCount: state.chat.length,
+                      separatorBuilder: (context, index) {
+                        return SizedBox(height: 12);
+                      },
                       itemBuilder: ((context, index) {
                         return GestureDetector(
                           onTap: () => Get.to(

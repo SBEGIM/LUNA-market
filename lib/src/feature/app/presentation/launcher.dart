@@ -132,7 +132,7 @@ class _LauncherAppState extends State<LauncherApp> {
       Get.snackbar(
         notification?.title ?? '',
         notification?.body ?? '',
-        onTap: (_) => Get.to(DetailOrderSellerPage(basket: basket)),
+        onTap: (_) => Get.to(DetailOrderSellerPage(basketOrder: basket)),
         backgroundColor: Colors.blueAccent,
         duration: const Duration(seconds: 10),
       );
