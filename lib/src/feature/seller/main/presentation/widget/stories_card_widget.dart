@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
-import 'package:get/route_manager.dart';
 import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/feature/seller/main/data/model/stories_seller_model.dart';
 import 'package:shimmer/shimmer.dart';
@@ -76,7 +75,7 @@ class _StoryScreenState extends State<StoryScreen> {
     if (_currentIndex < widget.stories.length - 1) {
       _pageController.nextPage(duration: const Duration(milliseconds: 700), curve: Curves.linear);
     } else {
-      Get.back();
+      Navigator.of(context).pop();
     }
   }
 
@@ -133,8 +132,8 @@ class _StoryScreenState extends State<StoryScreen> {
                     placeholder: MemoryImage(kTransparentImage),
                     image: NetworkImage("https://lunamarket.ru/storage/${story.image}"),
                     fit: BoxFit.cover,
-                    placeholderErrorBuilder: (_, __, ___) => _buildShimmerPlaceholder(),
-                    imageErrorBuilder: (_, __, ___) => const Icon(Icons.error, color: Colors.white),
+                    placeholderErrorBuilder: (_, _, _) => _buildShimmerPlaceholder(),
+                    imageErrorBuilder: (_, _, _) => const Icon(Icons.error, color: Colors.white),
                     fadeInDuration: const Duration(milliseconds: 400),
                   ),
                 ),

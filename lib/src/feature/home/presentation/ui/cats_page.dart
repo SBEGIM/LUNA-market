@@ -24,10 +24,9 @@ class _CatsPageState extends State<CatsPage> {
 
   @override
   void initState() {
-    if (BlocProvider.of<CatsCubit>(context).state is! LoadedState) {
+    if (BlocProvider.of<CatsCubit>(context).state is! CatsStateLoaded) {
       BlocProvider.of<CatsCubit>(context).cats();
     }
-    // TODO: implement initState
     super.initState();
   }
 
@@ -36,13 +35,13 @@ class _CatsPageState extends State<CatsPage> {
     return BlocConsumer<CatsCubit, CatsState>(
       listener: (context, state) {},
       builder: (context, state) {
-        if (state is ErrorState) {
+        if (state is CatsStateError) {
           return Center(
             child: Text(state.message, style: const TextStyle(fontSize: 20.0, color: Colors.grey)),
           );
         }
 
-        if (state is LoadedState) {
+        if (state is CatsStateLoaded) {
           return Container(
             height: 280,
             decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(16)),

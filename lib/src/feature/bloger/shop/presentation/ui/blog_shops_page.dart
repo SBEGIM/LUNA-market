@@ -3,24 +3,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:get/get.dart';
 import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/feature/app/router/app_router.dart';
 import 'package:haji_market/src/feature/app/widgets/shimmer_box.dart';
 import 'package:haji_market/src/feature/bloger/shop/presentation/ui/notification_blogger_page.dart';
 import 'package:haji_market/src/feature/bloger/shop/presentation/widgets/show_blogget_cats_widget.dart';
-import 'package:haji_market/src/feature/home/bloc/cats_cubit.dart' as catsCubit;
-import 'package:haji_market/src/feature/home/bloc/cats_state.dart' as catsState;
-import 'package:haji_market/src/feature/home/bloc/meta_cubit.dart' as metaCubit;
-import 'package:haji_market/src/feature/home/bloc/meta_state.dart' as metaState;
+import 'package:haji_market/src/feature/home/bloc/cats_cubit.dart';
+import 'package:haji_market/src/feature/home/bloc/cats_state.dart';
+import 'package:haji_market/src/feature/home/bloc/meta_cubit.dart';
+import 'package:haji_market/src/feature/home/bloc/meta_state.dart';
 import 'package:haji_market/src/feature/home/data/model/cat_model.dart';
 import 'package:haji_market/src/feature/seller/main/presentation/widget/stories_card_widget.dart';
-import '../../../../home/bloc/popular_shops_cubit.dart';
-import '../../../../home/bloc/popular_shops_state.dart';
-import 'package:haji_market/src/feature/seller/main/cubit/stories_seller_cubit.dart'
-    as sellerStoriesCubit;
-import 'package:haji_market/src/feature/seller/main/cubit/stories_seller_state.dart'
-    as sellerStoriesState;
+import 'package:haji_market/src/feature/home/bloc/popular_shops_cubit.dart';
+import 'package:haji_market/src/feature/home/bloc/popular_shops_state.dart';
+import 'package:haji_market/src/feature/seller/main/cubit/stories_seller_cubit.dart';
+import 'package:haji_market/src/feature/seller/main/cubit/stories_seller_state.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 
 @RoutePage()
@@ -38,35 +35,20 @@ class _BlogShopsPageState extends State<BlogShopsPage> {
 
   final searchController = TextEditingController();
 
-  // List<String> metas = [
-  //   'Пользовательское соглашение',
-  //   'Оферта для продавцов',
-  //   'Политика конфиденциальности',
-  //   'Типовой договор купли-продажи',
-  //   'Типовой договор на оказание рекламных услуг'
-  // ];
-
   List<CatsModel> _cats = [];
-
-  // List<String> images = [
-  //   Assets.images.storyFirst.path,
-  //   Assets.images.storySecond.path,
-  //   Assets.images.storyThirty.path,
-  //   Assets.images.storyForty.path
-  // ];
 
   List<String> metasBody = [];
   @override
   void initState() {
     BlocProvider.of<PopularShopsCubit>(context).popShops();
 
-    BlocProvider.of<sellerStoriesCubit.StoriesSellerCubit>(context).news();
-    if (BlocProvider.of<catsCubit.CatsCubit>(context).state is! catsState.LoadedState) {
-      BlocProvider.of<catsCubit.CatsCubit>(context).cats();
+    BlocProvider.of<StoriesSellerCubit>(context).news();
+    if (BlocProvider.of<CatsCubit>(context).state is! CatsStateLoaded) {
+      BlocProvider.of<CatsCubit>(context).cats();
     }
 
-    if (BlocProvider.of<metaCubit.MetaCubit>(context).state is! metaState.MetaStateLoaded) {
-      BlocProvider.of<metaCubit.MetaCubit>(context).partners();
+    if (BlocProvider.of<MetaCubit>(context).state is! MetaStateLoaded) {
+      BlocProvider.of<MetaCubit>(context).partners();
     }
     super.initState();
   }
@@ -87,7 +69,9 @@ class _BlogShopsPageState extends State<BlogShopsPage> {
             padding: const EdgeInsets.only(right: 8),
             child: InkWell(
               onTap: () {
-                Get.to(NotificationBloggerPage());
+                Navigator.of(
+                  context,
+                ).push(MaterialPageRoute(builder: (_) => const NotificationBloggerPage()));
               },
               child: Stack(
                 clipBehavior: Clip.none,
@@ -131,12 +115,9 @@ class _BlogShopsPageState extends State<BlogShopsPage> {
             ),
             child: Column(
               children: [
-                BlocBuilder<
-                  sellerStoriesCubit.StoriesSellerCubit,
-                  sellerStoriesState.StoriesSellerState
-                >(
+                BlocBuilder<StoriesSellerCubit, StoriesSellerState>(
                   builder: (context, state) {
-                    if (state is sellerStoriesState.ErrorState) {
+                    if (state is StoriesSellerStateError) {
                       return Center(
                         child: Text(
                           state.message,
@@ -144,7 +125,7 @@ class _BlogShopsPageState extends State<BlogShopsPage> {
                         ),
                       );
                     }
-                    if (state is sellerStoriesState.LoadedState) {
+                    if (state is StoriesSellerStateLoaded) {
                       return Padding(
                         padding: const EdgeInsets.only(left: 16.0),
                         child: SizedBox(
@@ -155,8 +136,12 @@ class _BlogShopsPageState extends State<BlogShopsPage> {
                             itemCount: state.storiesSeelerModel.length,
                             itemBuilder: (context, index) {
                               return InkWell(
-                                onTap: () => Get.to(
-                                  StoryScreen(stories: state.storiesSeelerModel[index].stories),
+                                onTap: () => Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (_) => StoryScreen(
+                                      stories: state.storiesSeelerModel[index].stories,
+                                    ),
+                                  ),
                                 ),
                                 child: Container(
                                   margin: EdgeInsets.only(left: index == 0 ? 0 : 5),
@@ -273,67 +258,6 @@ class _BlogShopsPageState extends State<BlogShopsPage> {
             ),
           ),
 
-          // Container(
-          //   margin: const EdgeInsets.symmetric(horizontal: 16),
-          //   child: const Text(
-          //     'При продаже каждого рекламированного товара блогером % от каждой стоимости товара будет перечисляться на счет блогера. Размещая рекламные материалы, вы принимаете условия',
-          //     style: TextStyle(
-          //         fontSize: 12,
-          //         fontWeight: FontWeight.w400,
-          //         color: Colors.grey),
-          //   ),
-          // ),
-
-          // BlocBuilder<metaCubit.MetaCubit, metaState.MetaState>(
-          //     builder: (context, state) {
-          //   if (state is metaState.LoadedState) {
-          //     metasBody.addAll([
-          //       state.metas.terms_of_use!,
-          //       state.metas.privacy_policy!,
-          //       state.metas.contract_offer!,
-          //       state.metas.shipping_payment!,
-          //       state.metas.TTN!,
-          //     ]);
-          //     return GestureDetector(
-          //       onTap: () {
-          //         Get.to(() => MetasPage(
-          //               title: metas[3],
-          //               body: metasBody[3],
-          //             ));
-          //       },
-          //       child: Container(
-          //         margin: const EdgeInsets.symmetric(horizontal: 16),
-          //         child: RichText(
-          //           textAlign: TextAlign.left,
-          //           text: const TextSpan(
-          //             style: TextStyle(fontSize: 16, color: Colors.black),
-          //             children: <TextSpan>[
-          //               TextSpan(
-          //                 text:
-          //                     "При продаже каждого рекламированного товара блогером % от каждой стоимости товара будет перечисляться на счет блогера. Размещая рекламные материалы, вы принимаете условия ",
-          //                 style: TextStyle(
-          //                     fontSize: 12,
-          //                     fontWeight: FontWeight.w400,
-          //                     color: Colors.grey),
-          //               ),
-          //               TextSpan(
-          //                 text:
-          //                     "Типового договора на оказание рекламных услуг\n",
-          //                 style: TextStyle(
-          //                     fontSize: 12,
-          //                     fontWeight: FontWeight.w400,
-          //                     color: AppColors.kPrimaryColor),
-          //               )
-          //             ],
-          //           ),
-          //         ),
-          //       ),
-          //     );
-          //   } else {
-          //     return const Center(
-          //         child: CircularProgressIndicator(color: Colors.indigoAccent));
-          //   }
-          // }),
           const SizedBox(height: 10),
 
           Padding(
@@ -345,10 +269,12 @@ class _BlogShopsPageState extends State<BlogShopsPage> {
                 InkWell(
                   onTap: () async {
                     if (_cats.isEmpty) {
-                      _cats = await BlocProvider.of<catsCubit.CatsCubit>(context).catsList();
+                      _cats = await BlocProvider.of<CatsCubit>(context).catsList();
 
                       _cats.insert(0, CatsModel(id: 0, name: 'Все магазины'));
                     }
+
+                    if (!context.mounted) return;
 
                     showBlogerCatsOptions(
                       context,

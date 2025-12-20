@@ -1,25 +1,20 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/route_manager.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/feature/app/widgets/shimmer_box.dart';
 import 'package:haji_market/src/feature/seller/main/cubit/news_seller_cubit.dart';
 import 'package:haji_market/src/feature/seller/main/cubit/news_seller_state.dart';
-import 'package:haji_market/src/feature/seller/main/cubit/seller_notification_cubit.dart'
-    as notificationCubit;
-import 'package:haji_market/src/feature/seller/main/cubit/stories_seller_cubit.dart'
-    as sellerStoriesCubit;
-import 'package:haji_market/src/feature/seller/main/cubit/stories_seller_state.dart'
-    as sellerStoriesState;
+import 'package:haji_market/src/feature/seller/main/cubit/seller_notification_cubit.dart';
+import 'package:haji_market/src/feature/seller/main/cubit/stories_seller_cubit.dart';
+import 'package:haji_market/src/feature/seller/main/cubit/stories_seller_state.dart';
 import 'package:haji_market/src/feature/seller/main/presentation/notification_seller_page.dart';
 import 'package:haji_market/src/feature/seller/main/presentation/widget/news_card_widget.dart';
 import 'package:haji_market/src/feature/seller/main/presentation/widget/stories_card_widget.dart';
-import 'package:haji_market/src/feature/seller/profile/data/bloc/profile_statics_admin_cubit.dart'
-    as profileStatisticsCubit;
+import 'package:haji_market/src/feature/seller/profile/data/bloc/profile_statics_admin_cubit.dart';
 import 'package:haji_market/src/feature/seller/profile/data/bloc/profile_statics_admin_state.dart'
-    as profileStatisticsState;
+    as profile_statics_admin_state;
 import 'package:intl/intl.dart';
 
 @RoutePage()
@@ -36,14 +31,14 @@ class _HomeSellerAdminPageState extends State<HomeSellerAdminPage> {
   @override
   void initState() {
     BlocProvider.of<NewsSellerCubit>(context).news();
-    BlocProvider.of<profileStatisticsCubit.ProfileStaticsAdminCubit>(context).statics();
-    BlocProvider.of<sellerStoriesCubit.StoriesSellerCubit>(context).news();
+    BlocProvider.of<ProfileStaticsAdminCubit>(context).statics();
+    BlocProvider.of<StoriesSellerCubit>(context).news();
     notificationCount();
     super.initState();
   }
 
   Future<int> notificationCount() async {
-    unreadCount = await BlocProvider.of<notificationCubit.SellerNotificationCubit>(context).count();
+    unreadCount = await BlocProvider.of<SellerNotificationCubit>(context).count();
     setState(() {});
 
     return unreadCount;
@@ -70,7 +65,9 @@ class _HomeSellerAdminPageState extends State<HomeSellerAdminPage> {
             padding: const EdgeInsets.only(right: 8),
             child: InkWell(
               onTap: () {
-                Get.to(NotificationSellerPage());
+                Navigator.of(
+                  context,
+                ).push(MaterialPageRoute(builder: (_) => const NotificationSellerPage()));
               },
               child: Stack(
                 clipBehavior: Clip.none,
@@ -108,9 +105,9 @@ class _HomeSellerAdminPageState extends State<HomeSellerAdminPage> {
       ),
       body: Column(
         children: [
-          BlocBuilder<sellerStoriesCubit.StoriesSellerCubit, sellerStoriesState.StoriesSellerState>(
+          BlocBuilder<StoriesSellerCubit, StoriesSellerState>(
             builder: (context, state) {
-              if (state is sellerStoriesState.ErrorState) {
+              if (state is StoriesSellerStateError) {
                 return Center(
                   child: Text(
                     state.message,
@@ -118,7 +115,7 @@ class _HomeSellerAdminPageState extends State<HomeSellerAdminPage> {
                   ),
                 );
               }
-              if (state is sellerStoriesState.LoadedState) {
+              if (state is StoriesSellerStateLoaded) {
                 return Padding(
                   padding: const EdgeInsets.only(left: 8.0),
                   child: SizedBox(
@@ -128,8 +125,12 @@ class _HomeSellerAdminPageState extends State<HomeSellerAdminPage> {
                       itemCount: state.storiesSeelerModel.length,
                       itemBuilder: (context, index) {
                         return InkWell(
-                          onTap: () =>
-                              Get.to(StoryScreen(stories: state.storiesSeelerModel[index].stories)),
+                          onTap: () => Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (_) =>
+                                  StoryScreen(stories: state.storiesSeelerModel[index].stories),
+                            ),
+                          ),
                           child: Container(
                             margin: const EdgeInsets.only(left: 5),
                             padding: EdgeInsets.all(index == 0 ? 2 : 2),
@@ -194,11 +195,11 @@ class _HomeSellerAdminPageState extends State<HomeSellerAdminPage> {
           ),
 
           BlocBuilder<
-            profileStatisticsCubit.ProfileStaticsAdminCubit,
-            profileStatisticsState.ProfileStaticsAdminState
+            ProfileStaticsAdminCubit,
+            profile_statics_admin_state.ProfileStaticsAdminState
           >(
             builder: (context, state) {
-              if (state is profileStatisticsState.ErrorState) {
+              if (state is profile_statics_admin_state.ErrorState) {
                 return Center(
                   child: Text(
                     state.message,
@@ -206,7 +207,7 @@ class _HomeSellerAdminPageState extends State<HomeSellerAdminPage> {
                   ),
                 );
               }
-              if (state is profileStatisticsState.LoadedState) {
+              if (state is profile_statics_admin_state.LoadedState) {
                 return Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Row(
@@ -460,7 +461,11 @@ class _HomeSellerAdminPageState extends State<HomeSellerAdminPage> {
                       itemBuilder: (context, index) {
                         return InkWell(
                           onTap: () {
-                            Get.to(NewsScreen(news: state.newsSeelerModel[index]));
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (_) => NewsScreen(news: state.newsSeelerModel[index]),
+                              ),
+                            );
                           },
                           child: Container(
                             margin: const EdgeInsets.only(bottom: 10),

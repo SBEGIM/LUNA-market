@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:get/route_manager.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/src/feature/product/cubit/product_cubit.dart';
 import 'package:haji_market/src/feature/product/provider/filter_provider.dart';
@@ -29,7 +28,7 @@ class _BrandsPageState extends State<BrandsPage> {
         centerTitle: true,
         leading: InkWell(
           onTap: () {
-            Get.back(result: subCatName);
+            Navigator.of(context).pop(subCatName);
           },
           child: const Icon(Icons.arrow_back_ios, color: AppColors.kPrimaryColor),
         ),
@@ -117,7 +116,7 @@ class _BrandsPageState extends State<BrandsPage> {
         padding: const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 26),
         child: InkWell(
           onTap: () {
-            Get.back(result: subCatName);
+            Navigator.of(context).pop(subCatName);
           },
           child: Container(
             decoration: BoxDecoration(

@@ -111,8 +111,8 @@ class _AddressPageState extends State<AddressPage> {
       return ListView.separated(
         padding: const EdgeInsets.fromLTRB(16, 16, 16, 88), // 88 = запас под кнопку
         itemCount: 6,
-        separatorBuilder: (_, __) => const SizedBox(height: 12),
-        itemBuilder: (_, __) => _ShimmerTile(),
+        separatorBuilder: (_, _) => const SizedBox(height: 12),
+        itemBuilder: (_, _) => _ShimmerTile(),
       );
     }
 
@@ -255,6 +255,9 @@ class _AddressPageState extends State<AddressPage> {
                             primaryText: 'Да',
                             primaryColor: Colors.red,
                           );
+
+                          if(!context.mounted) return;
+                          
                           if (ok == true) {
                             context.read<AddressCubit>().delete(context, a.id!);
                           }

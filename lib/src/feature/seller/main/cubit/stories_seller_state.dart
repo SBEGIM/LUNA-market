@@ -1,19 +1,35 @@
+import 'package:equatable/equatable.dart';
 import 'package:haji_market/src/feature/seller/main/data/model/stories_seller_model.dart';
 
-abstract class StoriesSellerState {}
+sealed class StoriesSellerState extends Equatable {
+  const StoriesSellerState();
 
-class InitState extends StoriesSellerState {}
-
-class LoadingState extends StoriesSellerState {}
-
-class LoadedState extends StoriesSellerState {
-  List<SellerStoriesModel> storiesSeelerModel;
-
-  LoadedState({required this.storiesSeelerModel});
+  @override
+  List<Object?> get props => [];
 }
 
-class ErrorState extends StoriesSellerState {
-  String message;
+class StoriesSellerStateInitial extends StoriesSellerState {
+  const StoriesSellerStateInitial();
+}
 
-  ErrorState({required this.message});
+class StoriesSellerStateLoading extends StoriesSellerState {
+  const StoriesSellerStateLoading();
+}
+
+class StoriesSellerStateLoaded extends StoriesSellerState {
+  final List<SellerStoriesModel> storiesSeelerModel;
+
+  const StoriesSellerStateLoaded({required this.storiesSeelerModel});
+
+  @override
+  List<Object?> get props => [storiesSeelerModel];
+}
+
+class StoriesSellerStateError extends StoriesSellerState {
+  final String message;
+
+  const StoriesSellerStateError({required this.message});
+
+  @override
+  List<Object?> get props => [message];
 }

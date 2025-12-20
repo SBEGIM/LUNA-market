@@ -1,7 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/route_manager.dart';
 import 'package:haji_market/src/feature/seller/order/bloc/order_status_seller_cubit.dart';
 import 'package:haji_market/src/feature/seller/order/data/models/basket_order_seller_model.dart';
 import 'package:haji_market/src/feature/seller/order/presentation/widgets/delivery_note_seller_widget.dart';
@@ -13,7 +12,7 @@ import '../../bloc/basket_seller_cubit.dart';
 @RoutePage()
 class DetailOrderSellerPage extends StatefulWidget implements AutoRouteWrapper {
   final BasketOrderSellerModel basket;
-  const DetailOrderSellerPage({required this.basket, Key? key}) : super(key: key);
+  const DetailOrderSellerPage({required this.basket, super.key});
 
   @override
   Widget wrappedRoute(BuildContext context) {
@@ -373,7 +372,9 @@ class _DetailOrderSellerPageState extends State<DetailOrderSellerPage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "${widget.basket.preorder == 1 ? 'Статус заказа предзаказа' : 'Статус заказа'}",
+                              widget.basket.preorder == 1
+                                  ? 'Статус заказа предзаказа'
+                                  : 'Статус заказа',
                               style: AppTextStyles.size14Weight500.copyWith(
                                 color: Color(0xff8E8E93),
                               ),
@@ -548,18 +549,19 @@ class _DetailOrderSellerPageState extends State<DetailOrderSellerPage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  '${widget.basket.user!.fullName}',
+                                  '${widget.basket.user?.fullName}',
                                   style: AppTextStyles.defaultButtonTextStyle,
                                 ),
                                 const SizedBox(height: 10),
                                 InkWell(
                                   onTap: () {
-                                    Get.to(
-                                      MessageSeller(
-                                        userId: widget.basket.user!.id,
-                                        userName: widget.basket.user!.fullName,
-                                        // avatar: state.tapeModel[index].shop!.image,
-                                        chatId: widget.basket.chatId,
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (_) => MessageSeller(
+                                          userId: widget.basket.user!.id,
+                                          userName: widget.basket.user!.fullName,
+                                          chatId: widget.basket.chatId,
+                                        ),
                                       ),
                                     );
                                   },
@@ -593,7 +595,11 @@ class _DetailOrderSellerPageState extends State<DetailOrderSellerPage> {
                 ),
                 GestureDetector(
                   onTap: () {
-                    Get.to(DeliveryNoteSellerPage(basketOrder: widget.basket));
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (_) => DeliveryNoteSellerPage(basketOrder: widget.basket),
+                      ),
+                    );
                   },
                   child: SizedBox(
                     height: 35,
@@ -622,7 +628,9 @@ class _DetailOrderSellerPageState extends State<DetailOrderSellerPage> {
                       BlocProvider.of<BasketSellerCubit>(context).basketOrderShow('fbs');
                       Navigator.pop(context);
                     } else if (state is ErrorState) {
-                      Get.snackbar('Ошибка', state.message, backgroundColor: Colors.redAccent);
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text(state.message), backgroundColor: Colors.redAccent),
+                      );
                     }
                   },
                   builder: (context, state) {
@@ -646,12 +654,13 @@ class _DetailOrderSellerPageState extends State<DetailOrderSellerPage> {
                                   context,
                                 ).basketOrderRealFBSshow('realFBS');
 
-                                Get.back();
+                                Navigator.of(context).pop();
                               } else {
-                                Get.snackbar(
-                                  'Заказ',
-                                  'Невозможно изменить статус',
-                                  backgroundColor: Colors.orangeAccent,
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text('Невозможно изменить статус'),
+                                    backgroundColor: Colors.orangeAccent,
+                                  ),
                                 );
                               }
                             },
@@ -681,12 +690,13 @@ class _DetailOrderSellerPageState extends State<DetailOrderSellerPage> {
                                   context,
                                 ).basketOrderRealFBSshow('fbs');
 
-                                Get.back();
+                                Navigator.of(context).pop();
                               } else {
-                                Get.snackbar(
-                                  'Заказ',
-                                  'Невозможно изменить статус',
-                                  backgroundColor: Colors.orangeAccent,
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text('Невозможно изменить статус'),
+                                    backgroundColor: Colors.orangeAccent,
+                                  ),
                                 );
                               }
                             },

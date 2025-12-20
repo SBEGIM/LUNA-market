@@ -2,7 +2,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/route_manager.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
@@ -32,11 +31,11 @@ import 'package:haji_market/src/feature/seller/main/cubit/stories_seller_cubit.d
 import 'package:haji_market/src/feature/seller/main/cubit/stories_seller_state.dart';
 import 'package:haji_market/src/feature/seller/main/presentation/widget/stories_card_widget.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import '../../../product/cubit/product_cubit.dart' as productCubit;
+import '../../../product/cubit/product_cubit.dart';
 import '../../../product/cubit/product_state.dart' as productState;
 import '../../../drawer/bloc/sub_cats_cubit.dart' as subCatCubit;
 import '../../../product/presentation/widgets/product_ad_card.dart';
-import '../../bloc/cats_cubit.dart' as catCubit;
+import '../../bloc/cats_cubit.dart';
 import '../../bloc/popular_shops_cubit.dart' as popShopsCubit;
 import '../../bloc/popular_shops_state.dart' as popShopsState;
 
@@ -97,7 +96,7 @@ class _HomePageState extends State<HomePage> {
       }
 
       // Stories
-      if (BlocProvider.of<StoriesSellerCubit>(context).state is! LoadedState) {
+      if (BlocProvider.of<StoriesSellerCubit>(context).state is! StoriesSellerStateLoaded) {
         BlocProvider.of<StoriesSellerCubit>(context).news();
       }
 
@@ -128,9 +127,9 @@ class _HomePageState extends State<HomePage> {
       }
 
       // Products
-      if (BlocProvider.of<productCubit.ProductCubit>(context).state is! productState.LoadedState) {
+      if (BlocProvider.of<ProductCubit>(context).state is! productState.LoadedState) {
         filters.resetAll(); // safe now, after first frame
-        BlocProvider.of<productCubit.ProductCubit>(context).products(filters);
+        BlocProvider.of<ProductCubit>(context).products(filters);
       }
 
       // Ad products
@@ -157,10 +156,10 @@ class _HomePageState extends State<HomePage> {
           final filters = context.read<FilterProvider>();
 
           Future.wait([
-            BlocProvider.of<productCubit.ProductCubit>(context).products(filters),
+            BlocProvider.of<ProductCubit>(context).products(filters),
             BlocProvider.of<partnerCubit.PartnerCubit>(context).partners(),
             BlocProvider.of<popShopsCubit.PopularShopsCubit>(context).popShops(),
-            BlocProvider.of<catCubit.CatsCubit>(context).cats(),
+            BlocProvider.of<CatsCubit>(context).cats(),
             BlocProvider.of<bannerCubit.BannersCubit>(context).banners(),
             BlocProvider.of<StoriesSellerCubit>(context).news(),
           ]);
@@ -214,7 +213,7 @@ class _HomePageState extends State<HomePage> {
                   SizedBox(height: 15),
                   BlocBuilder<StoriesSellerCubit, StoriesSellerState>(
                     builder: (context, state) {
-                      if (state is ErrorState) {
+                      if (state is StoriesSellerStateError) {
                         return Center(
                           child: Text(
                             state.message,
@@ -222,7 +221,7 @@ class _HomePageState extends State<HomePage> {
                           ),
                         );
                       }
-                      if (state is LoadedState) {
+                      if (state is StoriesSellerStateLoaded) {
                         return SizedBox(
                           height: 102,
                           child: ListView.builder(
@@ -231,8 +230,12 @@ class _HomePageState extends State<HomePage> {
                             itemCount: state.storiesSeelerModel.length,
                             itemBuilder: (context, index) {
                               return InkWell(
-                                onTap: () => Get.to(
-                                  StoryScreen(stories: state.storiesSeelerModel[index].stories),
+                                onTap: () => Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (_) => StoryScreen(
+                                      stories: state.storiesSeelerModel[index].stories,
+                                    ),
+                                  ),
                                 ),
                                 child: Padding(
                                   padding: EdgeInsets.only(

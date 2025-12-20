@@ -2,11 +2,9 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
-import 'package:haji_market/src/feature/tape/bloc/tape_cubit.dart' as tapeAdmin;
-import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/feature/tape/bloc/tape_cubit.dart';
+import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/feature/tape/data/repository/tape_repository.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:shimmer_animation/shimmer_animation.dart';
@@ -25,16 +23,16 @@ class ProfileBloggerTapePage extends StatefulWidget implements AutoRouteWrapper 
   final String bloggerAvatar;
   final bool inSubscribe;
   final Function(bool)? onSubChanged;
-  
-  ProfileBloggerTapePage({
+
+  const ProfileBloggerTapePage({
     required this.bloggerId,
     required this.bloggerCreatedAt,
     required this.bloggerName,
     required this.bloggerAvatar,
-    Key? key,
+    super.key,
     required this.inSubscribe,
     this.onSubChanged,
-  }) : super(key: key);
+  });
 
   @override
   State<ProfileBloggerTapePage> createState() => _ProfileBloggerTapePageState();
@@ -49,8 +47,6 @@ class ProfileBloggerTapePage extends StatefulWidget implements AutoRouteWrapper 
 }
 
 class _ProfileBloggerTapePageState extends State<ProfileBloggerTapePage> {
-  final _box = GetStorage();
-
   bool inSub = false;
   RefreshController refreshController = RefreshController();
 
@@ -64,8 +60,7 @@ class _ProfileBloggerTapePageState extends State<ProfileBloggerTapePage> {
   void initState() {
     inSub = widget.inSubscribe;
     BlocProvider.of<ProfileStaticsBloggerCubit>(context).statics(widget.bloggerId);
-    BlocProvider.of<tapeAdmin.TapeCubit>(context).tapes(false, false, '', widget.bloggerId);
-    // BlocProvider.of<tapeAdmin.TapeCubit>(context).toBloggerLoadedState();
+    BlocProvider.of<TapeCubit>(context).tapes(false, false, '', widget.bloggerId);
     super.initState();
   }
 
@@ -86,12 +81,7 @@ class _ProfileBloggerTapePageState extends State<ProfileBloggerTapePage> {
           icon: Image.asset(Assets.icons.defaultBackIcon.path, scale: 1.9),
         ),
         centerTitle: true,
-        title: Text('${widget.bloggerName}', style: AppTextStyles.size18Weight600),
-        // actions: [
-        //   Padding(
-        //       padding: const EdgeInsets.only(right: 16.0),
-        //       child: SvgPicture.asset('assets/icons/notification.svg'))
-        // ],
+        title: Text(widget.bloggerName, style: AppTextStyles.size18Weight600),
       ),
       body: Padding(
         padding: const EdgeInsets.only(top: 12),
@@ -120,7 +110,7 @@ class _ProfileBloggerTapePageState extends State<ProfileBloggerTapePage> {
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(60),
                           image: DecorationImage(
-                            image: widget.bloggerAvatar != null
+                            image: widget.bloggerAvatar.isNotEmpty
                                 ? NetworkImage(
                                     "https://lunamarket.ru/storage/${widget.bloggerAvatar}",
                                   )
@@ -168,7 +158,7 @@ class _ProfileBloggerTapePageState extends State<ProfileBloggerTapePage> {
                       decoration: BoxDecoration(
                         color: inSub != true
                             ? AppColors.mainPurpleColor
-                            : AppColors.mainPurpleColor.withOpacity(0.5),
+                            : AppColors.mainPurpleColor.withValues(alpha: .5),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       alignment: Alignment.center,
@@ -295,7 +285,7 @@ class _ProfileBloggerTapePageState extends State<ProfileBloggerTapePage> {
               // height: 200,
               child: Padding(
                 padding: const EdgeInsets.only(top: 12),
-                child: BlocBuilder<tapeAdmin.TapeCubit, tapeState.TapeState>(
+                child: BlocBuilder<TapeCubit, tapeState.TapeState>(
                   builder: (context, state) {
                     if (state is tapeState.BloggerLoadedState) {
                       return SmartRefresher(
@@ -333,7 +323,7 @@ class _ProfileBloggerTapePageState extends State<ProfileBloggerTapePage> {
                               child: Container(
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(12),
-                                  color: Colors.grey.withOpacity(0.6),
+                                  color: Colors.grey.withValues(alpha: .6),
                                 ),
                                 child: TapeCardWidget(
                                   tape: state.tapeModel[index],

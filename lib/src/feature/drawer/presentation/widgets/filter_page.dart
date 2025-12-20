@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/route_manager.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/feature/home/data/model/characteristic_model.dart';
@@ -208,7 +207,9 @@ class _FilterPageState extends State<FilterPage> {
                           subList.length >= 6
                               ? GestureDetector(
                                   onTap: (() {
-                                    Get.to(() => const BrandsPage());
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(builder: (_) => const BrandsPage()),
+                                    );
                                   }),
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,

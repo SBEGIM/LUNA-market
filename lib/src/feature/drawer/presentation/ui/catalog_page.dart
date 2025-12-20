@@ -133,7 +133,7 @@ class _CatalogPageState extends State<CatalogPage> {
             child: BlocConsumer<CatsCubit, CatsState>(
               listener: (context, state) {},
               builder: (context, state) {
-                if (state is ErrorState) {
+                if (state is CatsStateError) {
                   return Center(
                     child: Text(
                       state.message,
@@ -141,11 +141,11 @@ class _CatalogPageState extends State<CatalogPage> {
                     ),
                   );
                 }
-                if (state is LoadingState) {
+                if (state is CatsStateLoading) {
                   return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
                 }
 
-                if (state is NoDataState) {
+                if (state is CatsStateNoData) {
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -162,7 +162,7 @@ class _CatalogPageState extends State<CatalogPage> {
                   );
                 }
 
-                if (state is LoadedState) {
+                if (state is CatsStateLoaded) {
                   return ListView(
                     children: [
                       Container(

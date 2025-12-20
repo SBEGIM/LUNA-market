@@ -52,7 +52,7 @@ class _CatsSellerPageState extends State<CatsSellerPage> {
             child: BlocConsumer<CatsCubit, CatsState>(
               listener: (context, state) {},
               builder: (context, state) {
-                if (state is ErrorState) {
+                if (state is CatsStateError) {
                   return Center(
                     child: Text(
                       state.message,
@@ -60,10 +60,10 @@ class _CatsSellerPageState extends State<CatsSellerPage> {
                     ),
                   );
                 }
-                if (state is LoadingState) {
+                if (state is CatsStateLoading) {
                   return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
                 }
-                if (state is LoadedState) {
+                if (state is CatsStateLoaded) {
                   return Column(
                     children: [
                       Divider(color: Colors.grey.shade400),
