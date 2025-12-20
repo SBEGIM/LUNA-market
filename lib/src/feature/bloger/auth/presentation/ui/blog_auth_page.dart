@@ -95,17 +95,6 @@ class _BlogAuthPageState extends State<BlogAuthPage> {
             const AppEvent.chageState(state: AppState.inAppBlogerState(index: 0)),
           );
           router.replaceAll([const LauncherRoute()]);
-
-          // Get.to(() => ());
-
-          // Get.to(() => const BaseBlogger(
-          //       index: 0,
-          //     ));
-
-          // Navigator.push(
-          //   context,
-          //   MaterialPageRoute(builder: (context) => const Base()),
-          // );
         }
       },
       builder: (context, state) {
@@ -321,7 +310,6 @@ class _BlogAuthPageState extends State<BlogAuthPage> {
                     InkWell(
                       onTap: () {
                         context.pushRoute(BlogRegisterRoute());
-                        // Get.to(BlogRegisterPage());
                       },
                       child: Text(
                         'Зарегистрироваться',

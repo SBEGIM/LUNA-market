@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:get/route_manager.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/feature/bloger/profile/presentation/widgets/reqirect_profile_page.dart';
-import '../../../../../core/constant/generated/assets.gen.dart';
+import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 
 class EditProfileBloggerPage extends StatefulWidget {
-  const EditProfileBloggerPage({Key? key}) : super(key: key);
+  const EditProfileBloggerPage({super.key});
 
   @override
   State<EditProfileBloggerPage> createState() => _EditProfileBloggerPageState();
@@ -28,7 +27,7 @@ class _EditProfileBloggerPageState extends State<EditProfileBloggerPage> {
         title: const Text('Мои данные', style: AppTextStyles.size18Weight600),
         leading: InkWell(
           onTap: () {
-            Get.back(result: 'ok');
+            Navigator.of(context).pop('ok');
           },
           child: Image.asset(Assets.icons.defaultBackIcon.path, height: 24, width: 24, scale: 1.9),
         ),
@@ -40,35 +39,55 @@ class _EditProfileBloggerPageState extends State<EditProfileBloggerPage> {
               iconPath: Assets.icons.jurIcon.path,
               title: 'Основная информация',
               onTap: () {
-                Get.to(ReqirectBloggerProfilePage(title: 'Основная информация'));
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (_) => ReqirectBloggerProfilePage(title: 'Основная информация'),
+                  ),
+                );
               },
             ),
             buildProfileItem(
               iconPath: Assets.icons.internet.path,
               title: 'Социальные сети',
               onTap: () {
-                Get.to(ReqirectBloggerProfilePage(title: 'Социальные сети'));
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (_) => ReqirectBloggerProfilePage(title: 'Социальные сети'),
+                  ),
+                );
               },
             ),
             buildProfileItem(
               iconPath: Assets.icons.jurIcon.path,
               title: 'Юридический статус',
               onTap: () {
-                Get.to(ReqirectBloggerProfilePage(title: 'Юридический статус'));
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (_) => ReqirectBloggerProfilePage(title: 'Юридический статус'),
+                  ),
+                );
               },
             ),
             buildProfileItem(
               iconPath: Assets.icons.phoneIcon.path,
               title: 'Контактные данные',
               onTap: () {
-                Get.to(ReqirectBloggerProfilePage(title: 'Контактные данные'));
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (_) => ReqirectBloggerProfilePage(title: 'Контактные данные'),
+                  ),
+                );
               },
             ),
             buildProfileItem(
               iconPath: Assets.icons.propsIcon.path,
               title: 'Реквизиты банка',
               onTap: () {
-                Get.to(ReqirectBloggerProfilePage(title: 'Реквизиты банка'));
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (_) => ReqirectBloggerProfilePage(title: 'Реквизиты банка'),
+                  ),
+                );
               },
             ),
           ],

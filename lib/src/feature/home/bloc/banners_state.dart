@@ -1,17 +1,32 @@
+import 'package:equatable/equatable.dart';
+
 import '../data/model/banner_model.dart';
 
-abstract class BannersState {}
+sealed class BannersState extends Equatable {
+  const BannersState();
 
-class InitState extends BannersState {}
-
-class LoadingState extends BannersState {}
-
-class LoadedState extends BannersState {
-  List<BannerModel> banners;
-  LoadedState(this.banners);
+  @override
+  List<Object?> get props => [];
 }
 
-class ErrorState extends BannersState {
-  String message;
-  ErrorState({required this.message});
+class BannerStateInitial extends BannersState {
+  const BannerStateInitial();
+}
+
+class BannersStateLoading extends BannersState {}
+
+class BannersStateLoaded extends BannersState {
+  final List<BannerModel> banners;
+  const BannersStateLoaded(this.banners);
+
+  @override
+  List<Object?> get props => [banners];
+}
+
+class BannersStateError extends BannersState {
+  final String message;
+  const BannersStateError({required this.message});
+
+  @override
+  List<Object?> get props => [message];
 }

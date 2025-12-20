@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_masked_text2/flutter_masked_text2.dart';
-import 'package:get/route_manager.dart';
 import 'package:haji_market/src/feature/app/widgets/app_snack_bar.dart';
 import 'package:haji_market/src/feature/seller/auth/data/DTO/contry_seller_dto.dart';
 import 'package:haji_market/src/feature/seller/auth/data/DTO/register_seller_dto.dart';
@@ -239,7 +238,9 @@ class _CoopRequestPageState extends State<RegisterSellerPage> {
                             arrow: true,
                             // controller: catController,
                             onPressed: () async {
-                              final data = await Get.to(const CatsSellerPage());
+                              final data = await Navigator.of(context).push(
+                                MaterialPageRoute(builder: (_) => const CatsSellerPage()),
+                              );
                               if (data != null) {
                                 final CatsModel cat = data;
 
@@ -690,10 +691,12 @@ class _CoopRequestPageState extends State<RegisterSellerPage> {
                                                 ),
                                                 TextSpan(
                                                   recognizer: TapGestureRecognizer()
-                                                    ..onTap = () => Get.to(
-                                                      () => MetasPage(
-                                                        title: metas[2],
-                                                        body: metasBody[2],
+                                                    ..onTap = () => Navigator.of(context).push(
+                                                      MaterialPageRoute(
+                                                        builder: (_) => MetasPage(
+                                                          title: metas[2],
+                                                          body: metasBody[2],
+                                                        ),
                                                       ),
                                                     ),
                                                   text: ' политику конфиденциаль- \nности и',
@@ -705,10 +708,12 @@ class _CoopRequestPageState extends State<RegisterSellerPage> {
                                                 ),
                                                 TextSpan(
                                                   recognizer: TapGestureRecognizer()
-                                                    ..onTap = () => Get.to(
-                                                      () => MetasPage(
-                                                        title: metas[0],
-                                                        body: metasBody[0],
+                                                    ..onTap = () => Navigator.of(context).push(
+                                                      MaterialPageRoute(
+                                                        builder: (_) => MetasPage(
+                                                          title: metas[0],
+                                                          body: metasBody[0],
+                                                        ),
                                                       ),
                                                     ),
                                                   text: ' условия использования',

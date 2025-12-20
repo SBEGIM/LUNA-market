@@ -19,7 +19,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:get/route_manager.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/feature/basket/bloc/basket_cubit.dart';
 import 'package:haji_market/src/feature/drawer/bloc/review_cubit.dart' as review_product_cubit;
@@ -231,18 +230,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                                   child: VideoPlayer(_controller!),
                                 ),
                               ),
-                              // Container(
-                              //   height: 358,
-                              //   alignment: Alignment.bottomCenter,
-                              //   padding: EdgeInsets.only(
-                              //     bottom:
-                              //         MediaQuery.of(context).size.height * 0.01,
-                              //   ),
-                              //   child: VideoProgressIndicator(
-                              //     _controller!,
-                              //     allowScrubbing: true,
-                              //   ),
-                              // ),
+
                               if (icon)
                                 Center(
                                   child: Image.asset(
@@ -278,10 +266,13 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                               right: 20,
                               child: GestureDetector(
                                 onTap: (() {
-                                  Get.to(
-                                    () => ProductImages(
-                                      images: widget.product.path,
-                                      video: widget.product.video,
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => ProductImages(
+                                        images: widget.product.path,
+                                        video: widget.product.video,
+                                      ),
                                     ),
                                   );
                                 }),
@@ -479,6 +470,8 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                           inFavorite = !inFavorite;
                         });
 
+                        if (!context.mounted) return;
+
                         final filters = context.read<FilterProvider>();
 
                         BlocProvider.of<ProductCubit>(context).products(filters);
@@ -640,309 +633,10 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                       ),
                     ],
                   ),
-
                 const SizedBox(height: 24),
-                // Stack(children: [
-                //   Container(
-                //     transform: Matrix4.translationValues(-16.0, 0.0, 00.0),
-                //     height: 8,
-                //     color: const Color(0xFFf1f1f1),
-                //   ),
-                //   Container(
-                //     transform: Matrix4.translationValues(16.0, 0.0, 00.0),
-                //     height: 8,
-                //     color: const Color(0xFFf1f1f1),
-                //   ),
-                // ]),
-                // BlocBuilder<profitCubit.ProfitCubit, profitState.ProfitState>(
-                //     builder: (context, state) {
-                //   if (state is profitState.ErrorState) {
-                //     return Center(
-                //       child: Text(
-                //         state.message,
-                //         style:
-                //             const TextStyle(fontSize: 20.0, color: Colors.grey),
-                //       ),
-                //     );
-                //   }
-                //   if (state is profitState.LoadedState) {
-                //     return Container(
-                //         height: 150,
-                //         width: double.infinity,
-                //         padding: EdgeInsets.zero,
-                //         child: Image.network(
-                //           'https://lunamarket.ru/storage/${state.path}',
-                //           fit: BoxFit.cover,
-                //         ));
-                //   } else {
-                //     return const Center(
-                //         child: CircularProgressIndicator(
-                //             color: Colors.indigoAccent));
-                //   }
-                // }),
-
-                // Row(
-                //   children: [
-                // count < 1
-                //     ? SizedBox()
-                //:
-                // count >= 1
-                //     ? const SizedBox()
-                //     : GestureDetector(
-                //         onTap: () {
-                //           // BlocProvider.of<BasketCubit>(context)
-                //           //     .basketAdd(widget.product.id.toString(), '1');
-                //           setState(() {
-                //             count += 1;
-                //             if (count == 0) {
-                //               isvisible = false;
-                //             } else {
-                //               isvisible = true;
-                //             }
-                //           });
-                //         },
-                //         child: Container(
-                //           width: 99,
-                //           height: 32,
-                //           decoration: BoxDecoration(
-                //             color: const Color(0xFF1DC4CF),
-                //             borderRadius: BorderRadius.circular(10),
-                //           ),
-                //           alignment: Alignment.center,
-                //           child: const Text(
-                //             'В корзину',
-                //             // textAlign: TextAlign.center,
-                //             style: TextStyle(
-                //                 fontSize: 14,
-                //                 color: Colors.white,
-                //                 fontWeight: FontWeight.w600),
-                //           ),
-                //         ),
-                //       ),
-                //   ],
-                // ),
-                // Container(
-                //   //padding: const EdgeInsets.all(16),
-                //   // color: Colors.grey,
-                //   child: Column(
-                //     crossAxisAlignment: CrossAxisAlignment.start,
-                //     children: [
-                //       Row(
-                //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //         children: [
-                //           const Text(
-                //             'В рассрочку',
-                //             style: TextStyle(
-                //                 fontWeight: FontWeight.w600, fontSize: 14),
-                //           ),
-                //           SizedBox(
-                //             width: MediaQuery.of(context).size.width *
-                //                 0.585, // 229,
-                //             height: 32,
-                //             child: ListView.builder(
-                //               itemCount: textInst.length,
-                //               shrinkWrap: true,
-                //               physics: const NeverScrollableScrollPhysics(),
-                //               scrollDirection: Axis.horizontal,
-                //               itemBuilder: (context, index) {
-                //                 return InkWell(
-                //                   onTap: () {
-                //                     if (index == 0) {
-                //                       selectedIndexMonth = 3;
-                //                     } else if (index == 1) {
-                //                       selectedIndexMonth = 6;
-                //                     } else if (index == 2) {
-                //                       selectedIndexMonth = 12;
-                //                     } else if (index == 3) {
-                //                       selectedIndexMonth = 24;
-                //                     } else {
-                //                       selectedIndexMonth = 3;
-                //                     }
-
-                //                     setState(() {
-                //                       selectedIndex2 = index;
-                //                     });
-                //                   },
-                //                   child: Padding(
-                //                     padding: const EdgeInsets.only(right: 4.0),
-                //                     child: Container(
-                //                       width: 54,
-                //                       decoration: BoxDecoration(
-                //                         color: selectedIndex2 == index
-                //                             ? const Color(0xFFFFD54F)
-                //                             : Colors.white,
-                //                         borderRadius: BorderRadius.circular(8),
-                //                       ),
-                //                       padding: const EdgeInsets.only(
-                //                         top: 8,
-                //                         bottom: 8,
-                //                       ),
-                //                       child: Text(
-                //                         textInst[index],
-                //                         textAlign: TextAlign.center,
-                //                         style: const TextStyle(
-                //                             color: AppColors.kGray900,
-                //                             fontSize: 14,
-                //                             fontWeight: FontWeight.w400),
-                //                       ),
-                //                     ),
-                //                   ),
-                //                 );
-                //               },
-                //             ),
-                //           ),
-                //         ],
-                //       ),
-                //       Row(
-                //         children: [
-                //           Container(
-                //             width: 55,
-                //             padding: const EdgeInsets.all(8),
-                //             decoration: BoxDecoration(
-                //               color: const Color(0xFFFFD54F),
-                //               borderRadius: BorderRadius.circular(8),
-                //             ),
-                //             alignment: Alignment.center,
-                //             child: Text(
-                //               '${widget.product.price!.toInt() ~/ selectedIndexMonth!.toInt()}',
-                //               style: const TextStyle(
-                //                   color: AppColors.kGray900,
-                //                   fontSize: 14,
-                //                   fontWeight: FontWeight.w500),
-                //             ),
-                //           ),
-                //           Text(
-                //             ' x$selectedIndexMonth',
-                //             style: const TextStyle(
-                //                 fontSize: 14, fontWeight: FontWeight.w400),
-                //           ),
-                //         ],
-                //       ),
-                //     ],
-                //   ),
-                // ),
-                // const SizedBox(height: 8),
-                // const SizedBox(
-                //   height: 20,
-                // ),
               ],
             ),
           ),
-
-          // const SizedBox(height: 8),
-          // Container(
-          //   padding: const EdgeInsets.all(16),
-          //   color: Colors.white,
-          //   child: Column(
-          //     crossAxisAlignment: CrossAxisAlignment.start,
-          //     children: [
-          //       Row(
-          //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //         children: [
-          //           const Text(
-          //             'В рассрочку',
-          //             style:
-          //                 TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
-          //           ),
-          //           SizedBox(
-          //             width: MediaQuery.of(context).size.width * 0.585, // 229,
-          //             height: 32,
-          //             child: ListView.builder(
-          //               itemCount: textInst.length,
-          //               shrinkWrap: true,
-          //               physics: const NeverScrollableScrollPhysics(),
-          //               scrollDirection: Axis.horizontal,
-          //               itemBuilder: (context, index) {
-          //                 return InkWell(
-          //                   onTap: () {
-          //                     if (index == 0) {
-          //                       selectedIndexMonth = 3;
-          //                     } else if (index == 1) {
-          //                       selectedIndexMonth = 6;
-          //                     } else if (index == 2) {
-          //                       selectedIndexMonth = 12;
-          //                     } else if (index == 3) {
-          //                       selectedIndexMonth = 24;
-          //                     } else {
-          //                       selectedIndexMonth = 3;
-          //                     }
-
-          //                     setState(() {
-          //                       selectedIndex2 = index;
-          //                     });
-          //                   },
-          //                   child: Padding(
-          //                     padding: const EdgeInsets.only(right: 4.0),
-          //                     child: Container(
-          //                       width: 54,
-          //                       decoration: BoxDecoration(
-          //                         color: selectedIndex2 == index
-          //                             ? Color(0xFFFFD54F)
-          //                             : Colors.white,
-          //                         borderRadius: BorderRadius.circular(8),
-          //                       ),
-          //                       padding: const EdgeInsets.only(
-          //                         top: 8,
-          //                         bottom: 8,
-          //                       ),
-          //                       child: Text(
-          //                         textInst[index],
-          //                         textAlign: TextAlign.center,
-          //                         style: const TextStyle(
-          //                             color: AppColors.kGray900,
-          //                             fontSize: 14,
-          //                             fontWeight: FontWeight.w400),
-          //                       ),
-          //                     ),
-          //                   ),
-          //                 );
-          //               },
-          //             ),
-          //           ),
-          //         ],
-          //       ),
-          //       Row(
-          //         children: [
-          //           Container(
-          //             width: 55,
-          //             padding: const EdgeInsets.all(8),
-          //             decoration: BoxDecoration(
-          //               color: Color(0xFFFFD54F),
-          //               borderRadius: BorderRadius.circular(8),
-          //             ),
-          //             alignment: Alignment.center,
-          //             child: Text(
-          //               '${(widget.product.price!.toInt() / selectedIndexMonth!.toInt()).toInt()}',
-          //               style: const TextStyle(
-          //                   color: AppColors.kGray900,
-          //                   fontSize: 14,
-          //                   fontWeight: FontWeight.w500),
-          //             ),
-          //           ),
-          //           Text(
-          //             ' x$selectedIndexMonth',
-          //             style: const TextStyle(
-          //                 fontSize: 14, fontWeight: FontWeight.w400),
-          //           ),
-          //         ],
-          //       ),
-          //     ],
-          //   ),
-          // ),
-          //const SizedBox(height: 8),
-          // Container(
-          //   padding: const EdgeInsets.only(top: 16, left: 16),
-          //   color: Colors.white,
-          //   alignment: Alignment.centerLeft,
-          //   child: const Text(
-          //     'Продавцы',
-          //     style: TextStyle(
-          //       color: AppColors.kGray900,
-          //       fontWeight: FontWeight.w700,
-          //       fontSize: 16,
-          //     ),
-          //   ),
-          // ),
           Container(
             padding: EdgeInsets.symmetric(horizontal: 16),
             color: Colors.white,
@@ -955,69 +649,6 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                 ),
                 SizedBox(width: 23),
                 Flexible(child: SizedBox(width: 300, height: 28, child: MonthSelector())),
-                //   height: 28,
-                //   child: ListView.builder(
-                //     itemCount: textInst.length,
-                //     shrinkWrap: true,
-                //     physics: const NeverScrollableScrollPhysics(),
-                //     scrollDirection: Axis.horizontal,
-                //     itemBuilder: (context, index) {
-                //       BorderRadius radius = BorderRadius.zero;
-                //       if (index == 0) {
-                //         radius = const BorderRadius.only(
-                //           topLeft: Radius.circular(10),
-                //           bottomLeft: Radius.circular(10),
-                //         );
-                //       } else if (index == textInst.length - 1) {
-                //         radius = const BorderRadius.only(
-                //           topRight: Radius.circular(10),
-                //           bottomRight: Radius.circular(10),
-                //         );
-                //       }
-                //       return InkWell(
-                //         onTap: () {
-                //           if (index == 0) {
-                //             selectedIndexMonth = 3;
-                //           } else if (index == 1) {
-                //             selectedIndexMonth = 6;
-                //           } else if (index == 2) {
-                //             selectedIndexMonth = 9;
-                //           } else if (index == 3) {
-                //             selectedIndexMonth = 12;
-                //           } else {
-                //             selectedIndexMonth = 3;
-                //           }
-
-                //           setState(() {
-                //             selectedIndex2 = index;
-                //           });
-                //         },
-                //         child: Container(
-                //           width: 61,
-                //           alignment: Alignment.center,
-                //           decoration: BoxDecoration(
-                //             color: selectedIndex2 == index
-                //                 ? AppColors.kYellowDark
-                //                 : Colors.white,
-                //             borderRadius: radius,
-                //             border: Border(
-                //               top: BorderSide(color: AppColors.kYellowDark),
-                //               bottom: BorderSide(color: AppColors.kYellowDark),
-                //               left: index == 0
-                //                   ? BorderSide(color: AppColors.kYellowDark)
-                //                   : BorderSide.none,
-                //               right: BorderSide(color: AppColors.kYellowDark),
-                //             ),
-                //           ),
-                //           child: Text(
-                //             textInst[index],
-                //             style: AppTextStyles.size14w,
-                //           ),
-                //         ),
-                //       );
-                //     },
-                //   ),
-                // ),
               ],
             ),
           ),
@@ -1078,7 +709,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                                 if (widget.product.shops![index].inBasket == false) {
                                   showBasketBottomSheetOptions(
                                     context,
-                                    '${widget.product.shops![index].shop?.name ?? ''}',
+                                    widget.product.shops?[index].shop?.name ?? '',
                                     optom,
                                     widget.product,
                                     (int callBackCount, int callBackPrice, bool callBackOptom) {
@@ -1498,7 +1129,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                           shrinkWrap: true,
                           physics: const NeverScrollableScrollPhysics(),
                           itemCount: preview.length,
-                          separatorBuilder: (_, __) => const SizedBox(height: 8),
+                          separatorBuilder: (_, _) => const SizedBox(height: 8),
                           itemBuilder: (_, i) {
                             final it = preview[i];
                             return Row(
@@ -1710,7 +1341,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
 
                   // список отзывов из блока
                   BlocConsumer<review_product_cubit.ReviewCubit, review_product_state.ReviewState>(
-                    listener: (_, __) {},
+                    listener: (_, _) {},
                     builder: (context, state) {
                       if (state is review_product_state.ErrorState) {
                         return Padding(
@@ -1737,7 +1368,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                           shrinkWrap: true,
                           physics: const NeverScrollableScrollPhysics(),
                           itemCount: reviews.length,
-                          separatorBuilder: (_, __) =>
+                          separatorBuilder: (_, _) =>
                               const Divider(height: 16, thickness: 0.35, color: Color(0xffC7C7CC)),
                           itemBuilder: (_, index) {
                             final r = reviews[index];
@@ -1851,8 +1482,6 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
 
           SizedBox(height: 16),
 
-          // textBloc == '111'
-          // ?
           Container(
             height: 190,
             padding: EdgeInsets.only(top: 8),
@@ -1869,6 +1498,8 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                     final CatsModel catsModel = await BlocProvider.of<CatsCubit>(
                       context,
                     ).catById(widget.product.catId.toString());
+
+                    if (!context.mounted) return;
 
                     if (index == 0) {
                       context.router.push(
@@ -2170,101 +1801,6 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                     ),
             ),
           ),
-
-          //  Row(
-          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //   children: [
-          // InkWell(
-          //   onTap: () async {
-          //     if (widget.product.product_count == 0 &&
-          //         widget.product.pre_order == 1) {
-          //       showCupertinoModalPopup<void>(
-          //         context: context,
-          //         builder: (context) => PreOrderDialog(
-          //           onYesTap: () {
-          //             Navigator.pop(context);
-          //             Future.wait<void>([
-          //               BlocProvider.of<BasketCubit>(context).basketAdd(
-          //                   widget.product.id.toString(),
-          //                   '1',
-          //                   0,
-          //                   sizeValue,
-          //                   colorValue),
-          //             ]);
-
-          //             if (BlocProvider.of<BasketCubit>(context).state
-          //                 is! LoadedState) {
-          //               Future.wait<void>([
-          //                 BlocProvider.of<BasketCubit>(context)
-          //                     .basketShow('fbs'),
-          //               ]);
-          //             }
-
-          //             Future.wait<void>([
-          //               BlocProvider.of<ProductCubit>(context).products()
-          //             ]);
-          //             this.context.router.push(BasketOrderAddressRoute(
-          //                   fulfillment: 'fbs',
-          //                 ));
-          //           },
-          //         ),
-          //       );
-          //       return;
-          //     }
-          //     if (count == 0) {
-          //       Future.wait<void>([
-          //         BlocProvider.of<BasketCubit>(context).basketAdd(
-          //             widget.product.id.toString(),
-          //             '1',
-          //             0,
-          //             sizeValue,
-          //             colorValue),
-          //       ]);
-          //     }
-
-          //     if (BlocProvider.of<BasketCubit>(context).state
-          //         is! LoadedState) {
-          //       Future.wait<void>([
-          //         BlocProvider.of<BasketCubit>(context).basketShow('fbs'),
-          //       ]);
-          //     }
-
-          //     context.router.push(BasketOrderAddressRoute(
-          //       fulfillment: 'fbs',
-          //     ));
-
-          //     await Future.wait<void>(
-          //         [BlocProvider.of<ProductCubit>(context).products()]);
-
-          //     // Navigator.popUntil(context, (route) => route.isFirst);
-          //     // BlocProvider.of<NavigationCubit>(context)
-          //     //     .getNavBarItem(const NavigationState.basket());
-          //     // setState(() {
-          //     //   isvisible = true;
-          //     // });
-
-          //     //    Get.to(() => BasketOrderPage(fbs: false));
-          //   },
-          //   child: Container(
-          //       height: 46,
-          //       decoration: BoxDecoration(
-          //         borderRadius: BorderRadius.circular(10),
-          //         color: AppColors.mainPurpleColor,
-          //       ),
-          //       width: MediaQuery.of(context).size.width * 0.440,
-          //       padding: const EdgeInsets.only(
-          //           left: 15, right: 15, top: 15, bottom: 15),
-          //       child: const Text(
-          //         'Оформить сейчас',
-          //         style: TextStyle(
-          //             color: Colors.white,
-          //             fontWeight: FontWeight.w400,
-          //             fontSize: 14),
-          //         textAlign: TextAlign.center,
-          //       )),
-          // ),
-          //   ],
-          // ),
         ),
       ),
     );
@@ -2360,8 +1896,8 @@ class SelectColor extends StatefulWidget {
   // final Function ontileSelected;
   const SelectColor({
     // required this.ontileSelected,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   State<SelectColor> createState() => _SelectColorState();
@@ -2379,7 +1915,7 @@ class _SelectColorState extends State<SelectColor> {
   bool _isSelected = false;
   set isSelected(bool value) {
     _isSelected = value;
-    print("set is selected to $_isSelected");
+    debugPrint("set is selected to $_isSelected");
   }
 
   void changeSelection() {

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_masked_text2/flutter_masked_text2.dart';
-import 'package:get/route_manager.dart';
 import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/feature/app/router/app_router.dart';
 import 'package:haji_market/src/feature/app/widgets/app_snack_bar.dart';
@@ -847,8 +846,11 @@ class _BlogRegisterPageState extends State<BlogRegisterPage> {
                                       ]);
                                       return GestureDetector(
                                         onTap: () {
-                                          Get.to(
-                                            () => MetasPage(title: metas[4], body: metasBody[4]),
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) => MetasPage(title: metas[4], body: metasBody[4]),
+                                            ),
                                           );
                                         },
                                         child: Container(

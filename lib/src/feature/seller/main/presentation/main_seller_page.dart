@@ -551,62 +551,6 @@ class _HomeSellerAdminPageState extends State<HomeSellerAdminPage> {
               }
             },
           ),
-          // Padding(
-          //   padding: const EdgeInsets.all(5.0),
-          //   child: SizedBox(
-          //     height: 400,
-          //     child: ListView.builder(
-          //         scrollDirection: Axis.vertical,
-          //         itemCount: news.length,
-          //         itemBuilder: (context, index) {
-          //           return InkWell(
-          //             onTap: () {
-          //               Get.to(NewsScreen());
-          //             },
-          //             child: Container(
-          //                 margin: const EdgeInsets.only(left: 5, bottom: 5),
-          //                 padding: const EdgeInsets.all(1),
-          //                 height: 148,
-          //                 decoration: BoxDecoration(
-          //                   gradient: LinearGradient(
-          //                     begin: Alignment.topLeft,
-          //                     end: Alignment.bottomRight,
-          //                     transform: const GradientRotation(
-          //                         4.2373), // 242.73 degrees in radians
-          //                     colors: [
-          //                       Color(0xFFAD32F8), // #AD32F8
-          //                       Color(0xFF3275F8), // #3275F8
-          //                     ],
-          //                   ),
-          //                   borderRadius: BorderRadius.circular(14),
-          //                 ),
-          //                 child: Padding(
-          //                   padding: const EdgeInsets.all(4.0),
-          //                   child: Column(
-          //                     children: [
-          //                       Padding(
-          //                         padding: const EdgeInsets.all(4.0),
-          //                         child: Text(
-          //                           news[index].name!,
-          //                           style: AppTextStyles
-          //                               .defaultAppBarTextStyle
-          //                               .copyWith(
-          //                                   color:
-          //                                       AppColors.kBackgroundColor),
-          //                         ),
-          //                       ),
-          //                       Text(
-          //                         news[index].createdAt!,
-          //                         style: AppTextStyles.statisticsTextStyle
-          //                             .copyWith(color: AppColors.kGray300),
-          //                       )
-          //                     ],
-          //                   ),
-          //                 )),
-          //           );
-          //         }),
-          //   ),
-          // ),
         ],
       ),
     );

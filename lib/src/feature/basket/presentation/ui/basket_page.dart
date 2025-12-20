@@ -18,7 +18,7 @@ import '../../bloc/basket_state.dart';
 
 @RoutePage()
 class BasketPage extends StatefulWidget {
-  const BasketPage({Key? key}) : super(key: key);
+  const BasketPage({super.key});
 
   @override
   State<BasketPage> createState() => _BasketPageState();
@@ -104,7 +104,7 @@ class _BasketPageState extends State<BasketPage> {
       deleveryDay = element.deliveryDay != null ? element.deliveryDay.toString() : '';
 
       productNames =
-          "${productNames != null ? "${productNames} ," : ''}  $kDeepLinkUrl/?product_id\u003d${element.product!.id}";
+          "${productNames != null ? "$productNames ," : ''}  $kDeepLinkUrl/?product_id\u003d${element.product!.id}";
     }
 
     GetStorage().write('bottomCount', count);
@@ -254,6 +254,8 @@ class _BasketPageState extends State<BasketPage> {
                               primaryText: 'Да',
                               primaryColor: Colors.red,
                             );
+
+                            if(!context.mounted) return;
 
                             if (ok == true) {
                               await BlocProvider.of<BasketCubit>(
@@ -568,19 +570,11 @@ class _BasketPageState extends State<BasketPage> {
                             context,
                           ).basketSelectProducts(isChecked.toList());
 
+                          if (!context.mounted) return;
+
                           context.router.push(BasketOrderAddressRoute(deleveryDay: deleveryDay));
 
                           isChecked.clear();
-                          // if (fulfillment != 'realFBS') {
-                          //   context.router.push(BasketOrderAddressRoute(
-                          //       deleveryDay: deleveryDay));
-                          // } else {
-                          //   context.router.push(BasketOrderRoute(
-                          //       fbs: fulfillment == 'FBS' ? true : false,
-                          //       address: '',
-                          //       fulfillment: fulfillment));
-                          // }
-                          // Get.to(const BasketOrderAddressPage())
                         } else {
                           AppSnackBar.show(
                             context,

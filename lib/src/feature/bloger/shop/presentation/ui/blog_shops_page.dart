@@ -326,14 +326,12 @@ class _BlogShopsPageState extends State<BlogShopsPage> {
                             id: state.popularShops[index].id!,
                           ),
                         );
-                        // Get.to(() => );
                       },
                       child: Container(
                         decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(16),
                         ),
-                        // margin: EdgeInsets.only(right: 5, left: 5),
                         padding: const EdgeInsets.only(right: 0, left: 16, top: 8, bottom: 10),
                         margin: EdgeInsets.only(top: 10),
                         height: 130,

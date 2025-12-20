@@ -1,7 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/route_manager.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/feature/app/bloc/app_bloc.dart';
@@ -79,7 +78,12 @@ void showBlogerTapeOptions(BuildContext context, int id, TapeBloggerModel tape) 
                   onTap: () {
                     Navigator.of(sheetContext).pop();
 
-                    Get.to(TapeStatisticsPage(tape: tape));
+                    Navigator.push(
+                      rootContext,
+                      MaterialPageRoute(
+                        builder: (context) => TapeStatisticsPage(tape: tape),
+                      ),
+                    );
                   },
                   child: Container(
                     height: 52,

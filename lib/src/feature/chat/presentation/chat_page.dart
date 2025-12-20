@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
 import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/feature/chat/data/cubit/chat_cubit.dart';
 import 'package:haji_market/src/feature/chat/data/cubit/chat_state.dart';
@@ -17,11 +16,9 @@ class ChatPage extends StatefulWidget {
 }
 
 class _ChatPageState extends State<ChatPage> {
-  RefreshController _refreshController = RefreshController(initialRefresh: false);
-
+  final RefreshController _refreshController = RefreshController(initialRefresh: false);
   TextEditingController searchController = TextEditingController();
 
-  TextEditingController _chatTextController = TextEditingController();
 
   parseDate(date) {
     final dateTimeString = date;
@@ -145,12 +142,15 @@ class _ChatPageState extends State<ChatPage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             GestureDetector(
-                              onTap: () => Get.to(
-                                MessagePage(
-                                  userId: state.chat[index].userId,
-                                  name: state.chat[index].name!,
-                                  avatar: state.chat[index].avatar,
-                                  chatId: state.chat[index].chatId,
+                              onTap: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => MessagePage(
+                                    userId: state.chat[index].userId,
+                                    name: state.chat[index].name!,
+                                    avatar: state.chat[index].avatar,
+                                    chatId: state.chat[index].chatId,
+                                  ),
                                 ),
                               ),
                               child: Container(

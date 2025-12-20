@@ -2,11 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_masked_text2/flutter_masked_text2.dart';
-import 'package:get/route_manager.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
-import 'package:haji_market/src/feature/app/widgets/app_snack_bar.dart';
 import 'package:haji_market/src/feature/bloger/auth/bloc/edit_blogger_cubit.dart';
 import 'package:haji_market/src/feature/bloger/auth/bloc/edit_blogger_statet.dart';
 import 'package:haji_market/src/feature/bloger/auth/data/DTO/blogger_dto.dart';
@@ -14,12 +12,10 @@ import 'package:haji_market/src/feature/bloger/profile/presentation/widgets/show
 import 'package:haji_market/src/feature/seller/auth/data/DTO/contry_seller_dto.dart';
 import 'package:haji_market/src/feature/seller/auth/presentation/widget/show_seller_login_phone_widget.dart';
 import 'package:shimmer_animation/shimmer_animation.dart';
-// import '../../auth/bloc/edit_blogger_cubit.dart';
-// import '../../auth/bloc/edit_blogger_statet.dart';
 
 class ReqirectBloggerProfilePage extends StatefulWidget {
   final String title;
-  ReqirectBloggerProfilePage({required this.title, Key? key}) : super(key: key);
+  const ReqirectBloggerProfilePage({required this.title, super.key});
 
   @override
   State<ReqirectBloggerProfilePage> createState() => _ReqirectProfilePageState();
@@ -46,8 +42,6 @@ class _ReqirectProfilePageState extends State<ReqirectBloggerProfilePage> {
 
   final _box = GetStorage();
   bool change = false;
-  bool _obscureText = true;
-  bool _obscureTextRepeat = true;
   String legalStatus = '';
 
   CountrySellerDto? countrySellerDto;
@@ -89,36 +83,6 @@ class _ReqirectProfilePageState extends State<ReqirectBloggerProfilePage> {
     }
   }
 
-  String? _validateError() {
-    final rawDigits = phoneController.text.replaceAll(RegExp(r'[^0-9]'), '');
-    if (rawDigits.length != 10) return 'Введите корректный номер телефона';
-
-    final pass = passwordController.text;
-    if (pass.isEmpty) return 'Введите пароль';
-
-    return null;
-  }
-
-  void _validateFields() {
-    final phone = phoneController.text.replaceAll(RegExp(r'[^0-9]'), '');
-    final pass = passwordController.text;
-
-    setState(() {
-      fieldErrors['phone'] = phone.length != 10 ? 'Введите корректный номер телефона' : null;
-
-      fieldErrors['password'] = pass.isEmpty ? 'Введите пароль' : null;
-    });
-  }
-
-  bool _ensureValid() {
-    final msg = _validateError();
-    if (msg != null) {
-      AppSnackBar.show(context, msg, type: AppSnackType.error);
-      return false;
-    }
-    return true;
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -128,12 +92,12 @@ class _ReqirectProfilePageState extends State<ReqirectBloggerProfilePage> {
         backgroundColor: AppColors.kWhite,
         elevation: 0,
         centerTitle: true,
-        title: Text('${widget.title}', style: AppTextStyles.appBarTextStyle),
+        title: Text(widget.title, style: AppTextStyles.appBarTextStyle),
       ),
       body: BlocConsumer<EditBloggerCubit, EditBloggerState>(
         listener: (context, state) {
           if (state is LoadedState) {
-            Get.back(result: 'ok');
+            Navigator.of(context).pop('ok');
           }
         },
         builder: (context, state) {
@@ -273,7 +237,7 @@ class _ReqirectProfilePageState extends State<ReqirectBloggerProfilePage> {
                                             ),
                                             SizedBox(width: 8),
                                             Text(
-                                              '${countrySellerDto!.code}',
+                                              '${countrySellerDto?.code}',
                                               style: AppTextStyles.size16Weight400,
                                             ),
                                           ],
@@ -316,26 +280,6 @@ class _ReqirectProfilePageState extends State<ReqirectBloggerProfilePage> {
                                 label: 'Email',
                                 keyboardType: TextInputType.emailAddress,
                               ),
-                              // _buildPasswordField(
-                              //   controller: passwordController,
-                              //   label: 'Пароль',
-                              //   obscureText: _obscureText,
-                              //   onToggle: () {
-                              //     setState(() {
-                              //       _obscureText = !_obscureText;
-                              //     });
-                              //   },
-                              // ),
-                              // _buildPasswordField(
-                              //   controller: reapatPasswordController,
-                              //   label: 'Подтвердите пароль',
-                              //   obscureText: _obscureTextRepeat,
-                              //   onToggle: () {
-                              //     setState(() {
-                              //       _obscureTextRepeat = !_obscureTextRepeat;
-                              //     });
-                              //   },
-                              // ),
                             ],
                           ),
                         ),
@@ -442,51 +386,6 @@ class _ReqirectProfilePageState extends State<ReqirectBloggerProfilePage> {
                   if (showArrow) const Icon(Icons.arrow_forward_ios, size: 16, color: Colors.grey),
                 ],
               ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildPasswordField({
-    required TextEditingController controller,
-    required String label,
-    required bool obscureText,
-    required VoidCallback onToggle,
-  }) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(label, style: const TextStyle(fontSize: 14, color: Colors.grey)),
-          const SizedBox(height: 8),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            decoration: BoxDecoration(
-              color: Colors.grey.shade200,
-              borderRadius: BorderRadius.circular(16),
-            ),
-            child: Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    controller: controller,
-                    obscureText: obscureText,
-                    decoration: const InputDecoration(border: InputBorder.none),
-                    style: const TextStyle(fontSize: 16),
-                  ),
-                ),
-                IconButton(
-                  icon: Icon(
-                    obscureText ? Icons.visibility_off : Icons.visibility,
-                    color: Colors.grey,
-                    size: 20,
-                  ),
-                  onPressed: onToggle,
-                ),
-              ],
             ),
           ),
         ],

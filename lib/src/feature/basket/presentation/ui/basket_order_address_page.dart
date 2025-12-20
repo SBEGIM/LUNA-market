@@ -1,7 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/route_manager.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/core/presentation/widgets/other/custom_switch_button.dart';
@@ -305,7 +304,6 @@ class _BasketOrderAddressPageState extends State<BasketOrderAddressPage> {
             BlocProvider.of<navCubit.NavigationCubit>(
               context,
             ).getNavBarItem(const navCubit.NavigationState.home());
-            // Get.to(const Base(index: 1));
             context.router.popUntil((route) => route.settings.name == LauncherRoute.name);
           }
         },
@@ -920,7 +918,12 @@ class _BasketOrderAddressPageState extends State<BasketOrderAddressPage> {
                             ]);
                             return GestureDetector(
                               onTap: () {
-                                Get.to(() => MetasPage(title: metas[3], body: metasBody[3]));
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => MetasPage(title: metas[3], body: metasBody[3]),
+                                  ),
+                                );
                               },
                               child: RichText(
                                 textAlign: TextAlign.left,

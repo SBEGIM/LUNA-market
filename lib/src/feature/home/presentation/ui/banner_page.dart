@@ -25,12 +25,12 @@ class _BannerPageState extends State<BannerPage> {
   Widget build(BuildContext context) {
     return BlocBuilder<BannersCubit, BannersState>(
       builder: (context, state) {
-        if (state is ErrorState) {
+        if (state is BannersStateError) {
           return Center(
             child: Text(state.message, style: const TextStyle(fontSize: 20.0, color: Colors.grey)),
           );
         }
-        if (state is LoadedState) {
+        if (state is BannersStateLoaded) {
           return Column(
             children: [
               Container(

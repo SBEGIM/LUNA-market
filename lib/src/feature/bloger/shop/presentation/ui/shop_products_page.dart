@@ -15,7 +15,7 @@ import 'blogger_products_card_widget.dart';
 class ShopProductsBloggerPage extends StatefulWidget {
   final String title;
   final int id;
-  const ShopProductsBloggerPage({required this.title, required this.id, Key? key}) : super(key: key);
+  const ShopProductsBloggerPage({required this.title, required this.id, super.key});
 
   @override
   State<ShopProductsBloggerPage> createState() => _ShopProductsBloggerPageState();
@@ -203,67 +203,6 @@ class _ShopProductsBloggerPageState extends State<ShopProductsBloggerPage> {
                     ),
                   ),
                 );
-                //   Expanded(
-                //     child: Container(
-                //       color: Colors.white,
-                //       padding: const EdgeInsets.only(
-                //         left: 16,
-                //         right: 16,
-                //       ),
-                //       child: GridView.builder(
-                //           padding: const EdgeInsets.only(
-                //               top: 16, left: 0, right: 0, bottom: 0),
-                //           gridDelegate:
-                //               const SliverGridDelegateWithMaxCrossAxisExtent(
-                //                   maxCrossAxisExtent: 190,
-                //                   childAspectRatio: 2 / 3.2,
-                //                   crossAxisSpacing: 8,
-                //                   mainAxisSpacing: 16),
-                //           itemCount: state.productModel.length,
-                //           itemBuilder: (BuildContext ctx, index) {
-                //             return Stack(
-                //               children: [
-                //                 GestureDetector(
-                //                   onTap: (() => Get.to(() =>
-                //                       UploadProductVideoPage(
-                //                           id: state.productModel[index].id ??
-                //                               0))),
-                //                   child: title == 'Мои видео обзоры'
-                //                       ? ProductDetail(
-                //                           product: state.productModel[index])
-                //                       : ProductVideo(
-                //                           product: state.productModel[index],
-                //                         ),
-                //                 ),
-                //                 // Container(
-                //                 //   decoration: BoxDecoration(
-                //                 //       borderRadius: BorderRadius.circular(10)),
-                //                 // ),
-                //                 // InkWell(
-                //                 //   onTap: () {
-                //                 //     showAlertStaticticsWidget(
-                //                 //         context, state.productModel[index]);
-                //                 //   },
-                //                 //   child: Container(
-                //                 //     height: 28,
-                //                 //     width: 28,
-                //                 //     margin: const EdgeInsets.only(
-                //                 //         top: 8.0, right: 8.0, left: 135),
-                //                 //     alignment: Alignment.center,
-                //                 //     decoration: BoxDecoration(
-                //                 //         color: Colors.white,
-                //                 //         borderRadius: BorderRadius.circular(8)),
-                //                 //     child: const Icon(
-                //                 //       Icons.more_vert_rounded,
-                //                 //       color: AppColors.kPrimaryColor,
-                //                 //     ),
-                //                 //   ),
-                //                 // ),
-                //               ],
-                //             );
-                //           }),
-                //     ),
-                //   );
               } else {
                 return Expanded(
                   child: SmartRefresher(
@@ -303,9 +242,8 @@ class _ShopProductsBloggerPageState extends State<ShopProductsBloggerPage> {
           onTap: () async {
             if (selectedIndex != 0) {
               context.pushRoute(UploadProductVideoRoute(id: selectedIndex));
-              // Get.to(() => UploadProductVideoPage(id: selectedIndex));
 
-              print('select id $selectedIndex');
+              debugPrint('select id $selectedIndex');
               // selectedIndex = 0;
               setState(() {});
             } else {
@@ -321,7 +259,7 @@ class _ShopProductsBloggerPageState extends State<ShopProductsBloggerPage> {
             decoration: BoxDecoration(
               color: selectedIndex != 0
                   ? AppColors.mainPurpleColor
-                  : AppColors.mainPurpleColor.withOpacity(0.3),
+                  : AppColors.mainPurpleColor.withValues(alpha: .3),
               borderRadius: BorderRadius.circular(16),
             ),
             alignment: Alignment.center,

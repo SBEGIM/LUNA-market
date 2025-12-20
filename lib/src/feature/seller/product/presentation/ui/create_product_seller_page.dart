@@ -3,7 +3,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/route_manager.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/feature/app/router/app_router.dart';
@@ -1096,7 +1095,11 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
                           ]);
                           return GestureDetector(
                             onTap: () {
-                              Get.to(() => MetasPage(title: metas[3], body: metasBody[3]));
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (_) => MetasPage(title: metas[3], body: metasBody[3]),
+                                ),
+                              );
                             },
                             child: SizedBox(
                               child: RichText(
@@ -1342,10 +1345,11 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
                           optomTotalController.text = value.total;
 
                           if (GetStorage().read('seller_partner') != '1') {
-                            Get.snackbar(
-                              'Ошибка оптом',
-                              'У вас нет партнерство',
-                              backgroundColor: Colors.redAccent,
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('У вас нет партнерство'),
+                                backgroundColor: Colors.redAccent,
+                              ),
                             );
 
                             optomPriceController.clear();
@@ -1376,21 +1380,22 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
 
                               setState(() {});
                             } else {
-                              // Get.to(() => {})
-                              Get.snackbar(
-                                'Ошибка',
-                                'Данные уже имеется!',
-                                backgroundColor: Colors.redAccent,
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text('Данные уже имеется!'),
+                                  backgroundColor: Colors.redAccent,
+                                ),
                               );
                               optomPriceController.clear();
                               optomCountController.clear();
                               optomTotalController.clear();
                             }
                           } else {
-                            Get.snackbar(
-                              'Ошибка',
-                              'Нет данных!',
-                              backgroundColor: Colors.redAccent,
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('Нет данных!'),
+                                backgroundColor: Colors.redAccent,
+                              ),
                             );
                             optomPriceController.clear();
                             optomCountController.clear();
@@ -2089,7 +2094,11 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
                             });
                           });
                         } else {
-                          Get.to(MapSellerPickerPage(lat: 43.238949, long: 76.889709));
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (_) => const MapSellerPickerPage(lat: 43.238949, long: 76.889709),
+                            ),
+                          );
                         }
                       },
                       textInputNumber: false,
@@ -2143,10 +2152,11 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
                           massaController.text.isEmpty) {
                         filledCount--;
                         setState(() {});
-                        Get.snackbar(
-                          "Ошибка Доставка",
-                          "Заполните данные для доставки",
-                          backgroundColor: Colors.orangeAccent,
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Заполните данные для доставки'),
+                            backgroundColor: Colors.orangeAccent,
+                          ),
                         );
                         return;
                       }
@@ -2181,10 +2191,11 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
                   } else {
                     filledCount--;
                     setState(() {});
-                    Get.snackbar(
-                      "Ошибка",
-                      "Заполните данные",
-                      backgroundColor: Colors.orangeAccent,
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Заполните данные'),
+                        backgroundColor: Colors.orangeAccent,
+                      ),
                     );
                   }
                 }

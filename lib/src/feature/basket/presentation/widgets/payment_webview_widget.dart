@@ -64,29 +64,6 @@ class _PaymentWebviewPageState extends State<PaymentWebviewPage> {
             router.replaceAll([const LauncherRoute()]);
 
             BlocProvider.of<BasketCubit>(context).basketShow();
-            // context.router.pushAndPopUntil(
-            //   const LauncherRoute(
-            //     children: [BasketRoute()],
-            //   ),
-            //   predicate: (_) => false,
-            // );
-            // Navigator.pop(context);
-
-            // FIXME: Убрать getx
-            // Get.back();
-            // TODO: этот виджет для магазина,блогера и клиента
-            // context.router.pushAndPopUntil(
-            //   const LauncherRoute(
-            //     children: [BasketRoute()],
-            //   ),
-            //   predicate: (_) => false,
-            // );
-            //  Navigator.pop(context);
-            // if (widget.role == 'shop') {
-            //   Get.to(const BaseAdmin(index: 1));
-            // } else {
-            //   Get.to(const Base(index: 1));
-            // }
           },
         ),
       ),

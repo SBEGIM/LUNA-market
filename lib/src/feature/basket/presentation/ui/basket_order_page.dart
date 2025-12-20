@@ -2,7 +2,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:get/route_manager.dart';
 import 'package:haji_market/src/feature/app/router/app_router.dart';
 import 'package:haji_market/src/feature/drawer/bloc/order_cubit.dart' as order_cubit;
 import 'package:haji_market/src/feature/drawer/presentation/widgets/metas_webview.dart';
@@ -64,10 +63,11 @@ class _BasketOrderPageState extends State<BasketOrderPage> {
         });
       }
     } else {
-      Get.snackbar(
-        'Ошибка',
-        'У вас нет бонусов от этого магазина',
-        backgroundColor: Colors.blueAccent,
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('У вас нет бонусов от этого магазина'),
+          backgroundColor: Colors.blueAccent,
+        ),
       );
     }
   }
@@ -150,7 +150,6 @@ class _BasketOrderPageState extends State<BasketOrderPage> {
               context,
             ).getNavBarItem(const nav_cubit.NavigationState.home());
             context.router.popUntil((route) => route.settings.name == LauncherRoute.name);
-            // Get.to(const Base(index: 1));
           }
         },
         builder: (context, state) {
@@ -240,50 +239,6 @@ class _BasketOrderPageState extends State<BasketOrderPage> {
                     ),
                   ),
                   const SizedBox(height: 1),
-
-                  // Container(
-                  //     alignment: Alignment.center,
-                  //     color: Colors.white,
-                  //     height: 55,
-                  //     child: Row(
-                  //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //       children: [
-                  //         Row(
-                  //           children: [
-                  //             Checkbox(
-                  //               shape: RoundedRectangleBorder(
-                  //                   borderRadius: BorderRadius.circular(4)),
-                  //               checkColor: Colors.white,
-                  //               activeColor: AppColors.kPrimaryColor,
-                  //               value: isCheckedBS,
-                  //               onChanged: (bool? value) {
-                  //                 setState(() {
-                  //                   isCheckedBS = value!;
-                  //                   value == true ? price += bs : price -= bs;
-                  //                 });
-                  //               },
-                  //             ),
-                  //             const Text(
-                  //               'Безопасная сделка',
-                  //               style: TextStyle(
-                  //                 fontSize: 16,
-                  //                 fontWeight: FontWeight.w400,
-                  //               ),
-                  //             ),
-                  //           ],
-                  //         ),
-                  //         Container(
-                  //           padding: const EdgeInsets.only(right: 16),
-                  //           child: Text(
-                  //             '${bs} ₸',
-                  //             style: const TextStyle(
-                  //               fontSize: 16,
-                  //               fontWeight: FontWeight.w500,
-                  //             ),
-                  //           ),
-                  //         ),
-                  //       ],
-                  //     )),
                   const SizedBox(height: 1),
                   Container(
                     padding: const EdgeInsets.only(left: 5),
@@ -303,7 +258,7 @@ class _BasketOrderPageState extends State<BasketOrderPage> {
                                 child: Switch(
                                   onChanged: toggleSwitch,
                                   value: isSwitched,
-                                  activeColor: AppColors.kPrimaryColor,
+                                  activeThumbColor: AppColors.kPrimaryColor,
                                   activeTrackColor: AppColors.kPrimaryColor,
                                   inactiveThumbColor: const Color.fromRGBO(245, 245, 245, 1),
                                   inactiveTrackColor: const Color.fromRGBO(237, 237, 237, 1),
@@ -371,219 +326,6 @@ class _BasketOrderPageState extends State<BasketOrderPage> {
                       ],
                     ),
                   ),
-                  // const SizedBox(
-                  //   height: 1,
-                  // ),
-                  // Container(
-                  //     padding: const EdgeInsets.only(left: 16, right: 16),
-                  //     alignment: Alignment.center,
-                  //     color: Colors.white,
-                  //     height: 55,
-                  //     child: Row(
-                  //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //       children: const [
-                  //         Text(
-                  //           'Способы оплаты',
-                  //           style: TextStyle(
-                  //             fontSize: 16,
-                  //             fontWeight: FontWeight.w400,
-                  //           ),
-                  //         ),
-                  //         Text(
-                  //           'Добавить новую карту',
-                  //           style: TextStyle(
-                  //             color: AppColors.kPrimaryColor,
-                  //             fontSize: 16,
-                  //             fontWeight: FontWeight.w400,
-                  //           ),
-                  //         ),
-                  //       ],
-                  //     )),
-                  // const SizedBox(
-                  //   height: 1,
-                  // ),
-                  // Container(
-                  //     padding: const EdgeInsets.only(left: 16, top: 16),
-                  //     alignment: Alignment.topLeft,
-                  //     color: Colors.white,
-                  //     height: 60,
-                  //     child: Row(
-                  //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //       children: [
-                  //         Container(
-                  //             child: Row(
-                  //           children: [
-                  //             Checkbox(
-                  //               shape: RoundedRectangleBorder(
-                  //                   borderRadius: BorderRadius.circular(4)),
-                  //               checkColor: Colors.white,
-                  //               activeColor: AppColors.kPrimaryColor,
-                  //               value: isCheckedKaspi,
-                  //               onChanged: (bool? value) {
-                  //                 setState(() {
-                  //                   isCheckedKaspi = value!;
-                  //                 });
-                  //               },
-                  //             ),
-                  //             const Text(
-                  //               'Kaspi Gold',
-                  //               style: TextStyle(
-                  //                 fontSize: 16,
-                  //                 fontWeight: FontWeight.w400,
-                  //               ),
-                  //             ),
-                  //           ],
-                  //         )),
-                  //         Container(
-                  //           padding: const EdgeInsets.only(right: 16),
-                  //           child: Text(
-                  //             ' ${isSwitched == true ? (courier + price - bonus) : (courier + price)} ₸',
-                  //             style: const TextStyle(
-                  //               fontSize: 16,
-                  //               fontWeight: FontWeight.w500,
-                  //             ),
-                  //           ),
-                  //         ),
-                  //       ],
-                  //     )),
-                  const SizedBox(height: 1),
-
-                  // Container(
-                  //     // padding: const EdgeInsets.only(left: 16),
-                  //     alignment: Alignment.center,
-                  //     color: Colors.white,
-                  //     height: 45,
-                  //     child: Row(
-                  //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //       children: [
-                  //         Row(
-                  //           children: [
-                  //             Checkbox(
-                  //               shape: RoundedRectangleBorder(
-                  //                   borderRadius: BorderRadius.circular(4)),
-                  //               checkColor: Colors.white,
-                  //               activeColor: AppColors.kPrimaryColor,
-                  //               value: isCheckedCredit,
-                  //               onChanged: (bool? value) {
-                  //                 setState(() {
-                  //                   isCheckedCredit = value!;
-                  //                 });
-                  //               },
-                  //             ),
-                  //             const Text(
-                  //               'В рассрочку',
-                  //               style: TextStyle(
-                  //                 fontSize: 16,
-                  //                 fontWeight: FontWeight.w400,
-                  //               ),
-                  //             ),
-                  //           ],
-                  //         )
-                  //       ],
-                  //     )),
-                  // Container(
-                  //   padding: const EdgeInsets.only(left: 44, top: 14),
-                  //   alignment: Alignment.topLeft,
-                  //   color: Colors.white,
-                  //   height: 45,
-                  //   child: SizedBox(
-                  //     width: MediaQuery.of(context).size.width * 0.595, // 229,
-                  //     height: 32,
-                  //     child: ListView.builder(
-                  //       itemCount: textInst.length,
-                  //       shrinkWrap: true,
-                  //       physics: const NeverScrollableScrollPhysics(),
-                  //       scrollDirection: Axis.horizontal,
-                  //       itemBuilder: (context, index) {
-                  //         return InkWell(
-                  //           onTap: () {
-                  //             setState(() {
-                  //               if (index == 0) {
-                  //                 setState(() {
-                  //                   creditMonth = 3;
-                  //                 });
-                  //               }
-                  //               if (index == 1) {
-                  //                 setState(() {
-                  //                   creditMonth = 6;
-                  //                 });
-                  //               }
-                  //               if (index == 2) {
-                  //                 setState(() {
-                  //                   creditMonth = 12;
-                  //                 });
-                  //               }
-                  //               if (index == 3) {
-                  //                 setState(() {
-                  //                   creditMonth = 24;
-                  //                 });
-                  //               }
-                  //               selectedIndex2 = index;
-                  //             });
-                  //           },
-                  //           child: Container(
-                  //             // margin: EdgeInsets.only(right: 2),
-                  //             width: 58,
-                  //             alignment: Alignment.center,
-                  //             decoration: BoxDecoration(
-                  //               color: selectedIndex2 == index
-                  //                   ? AppColors.kPrimaryColor
-                  //                   : Colors.white,
-                  //               border: Border.all(
-                  //                 color: AppColors.kPrimaryColor,
-                  //                 width: 0.4,
-                  //               ),
-                  //               borderRadius: BorderRadius.circular(0),
-                  //             ),
-                  //             // padding: const EdgeInsets.only(
-                  //             //   top: 8,
-                  //             //   bottom: 8,
-                  //             // ),
-                  //             child: Text(
-                  //               textInst[index],
-                  //               textAlign: TextAlign.center,
-                  //               style: TextStyle(
-                  //                   color: selectedIndex2 == index
-                  //                       ? Colors.white
-                  //                       : AppColors.kGray900,
-                  //                   fontSize: 14,
-                  //                   fontWeight: FontWeight.w400),
-                  //             ),
-                  //           ),
-                  //         );
-                  //       },
-                  //     ),
-                  //   ),
-                  // ),
-                  // Container(
-                  //     padding: const EdgeInsets.only(left: 44, top: 14),
-                  //     alignment: Alignment.topLeft,
-                  //     color: Colors.white,
-                  //     child: Row(
-                  //       children: [
-                  //         const Text('Платеж в месяц: '),
-                  //         Container(
-                  //           height: 28,
-                  //           decoration: BoxDecoration(
-                  //             color: AppColors.kYellowLight,
-                  //             borderRadius: BorderRadius.circular(3),
-                  //           ),
-                  //           alignment: Alignment.center,
-                  //           child: Text(
-                  //             ' ${isSwitched == true ? ((courier + price - bonus) / (isCheckedCredit == true ? creditMonth : 1)).toInt() : ((courier + price) / (isCheckedCredit == true ? creditMonth : 1)).toInt()}',
-                  //             style: const TextStyle(
-                  //               fontSize: 14,
-                  //               fontWeight: FontWeight.w500,
-                  //             ),
-                  //           ),
-                  //         ),
-                  //       ],
-                  //     )),
-                  // Container(
-                  //   color: Colors.white,
-                  //   height: 10,
-                  // ),
-                  //const SizedBox(height: 1),
                   Container(
                     padding: const EdgeInsets.only(left: 16, right: 16),
                     alignment: Alignment.center,
@@ -615,177 +357,6 @@ class _BasketOrderPageState extends State<BasketOrderPage> {
                     ),
                   ),
                   const SizedBox(height: 1),
-
-                  // Container(
-                  //     padding: const EdgeInsets.only(left: 16, right: 16),
-                  //     alignment: Alignment.center,
-                  //     color: Colors.white,
-                  //     height: 55,
-                  //     child: Row(
-                  //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //       children: [
-                  //         const Text(
-                  //           'Наличными',
-                  //           style: TextStyle(
-                  //             fontSize: 16,
-                  //             fontWeight: FontWeight.w400,
-                  //           ),
-                  //         ),
-                  //         Checkbox(
-                  //           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
-                  //           checkColor: Colors.white,
-                  //           activeColor: AppColors.kPrimaryColor,
-                  //           value: isCheckedCash,
-                  //           onChanged: (bool? value) {
-                  //             setState(() {
-                  //               isCheckedTinkoff = false;
-                  //               isCheckedOnline = false;
-                  //               isCheckedCash = value!;
-                  //               isCheckedPart = false;
-                  //               isCheckedHalal = false;
-                  //             });
-                  //           },
-                  //         ),
-                  //       ],
-                  //     )),
-                  // const SizedBox(height: 1),
-
-                  // Container(
-                  //     padding: const EdgeInsets.only(left: 16, right: 16),
-                  //     alignment: Alignment.center,
-                  //     color: Colors.white,
-                  //     height: 55,
-                  //     child: Row(
-                  //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //       children: [
-                  //         Row(
-                  //           children: [
-                  //             Image.asset(
-                  //               'assets/icons/tinkoff2.png',
-                  //               height: 34,
-                  //               width: 34,
-                  //             ),
-                  //             const SizedBox(width: 8),
-                  //             const Text(
-                  //               'Рассрочка Тинькофф',
-                  //               style: TextStyle(
-                  //                 fontSize: 16,
-                  //                 fontWeight: FontWeight.w400,
-                  //               ),
-                  //             ),
-                  //           ],
-                  //         ),
-                  //         Checkbox(
-                  //           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
-                  //           checkColor: Colors.white,
-                  //           activeColor: AppColors.kPrimaryColor,
-                  //           value: isCheckedTinkoff,
-                  //           onChanged: (bool? value) {
-                  //             Get.snackbar('Нет доступа', 'данная оплата пока недоступно...',
-                  //                 backgroundColor: Colors.orangeAccent);
-                  //             // setState(() {
-                  //             //   isCheckedTinkoff = value!;
-                  //             //   isCheckedPart = false;
-                  //             //   isCheckedHalal = false;
-                  //             // });
-                  //           },
-                  //         ),
-                  //       ],
-                  //     )),
-                  // const SizedBox(height: 1),
-
-                  // Container(
-                  //     padding: const EdgeInsets.only(left: 16, right: 16),
-                  //     alignment: Alignment.center,
-                  //     color: Colors.white,
-                  //     height: 55,
-                  //     child: Row(
-                  //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //       children: [
-                  //         Row(
-                  //           children: [
-                  //             Image.asset(
-                  //               'assets/icons/part.png',
-                  //               height: 34,
-                  //               width: 34,
-                  //             ),
-                  //             const SizedBox(width: 8),
-                  //             const Text(
-                  //               'Долями',
-                  //               style: TextStyle(
-                  //                 fontSize: 16,
-                  //                 fontWeight: FontWeight.w400,
-                  //               ),
-                  //             ),
-                  //           ],
-                  //         ),
-                  //         Checkbox(
-                  //           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
-                  //           checkColor: Colors.white,
-                  //           activeColor: AppColors.kPrimaryColor,
-                  //           value: isCheckedPart,
-                  //           onChanged: (bool? value) {
-                  //             Get.snackbar('Нет доступа', 'данная оплата пока недоступно...',
-                  //                 backgroundColor: Colors.orangeAccent);
-
-                  //             // setState(() {
-                  //             //   isCheckedTinkoff = false;
-                  //             //   isCheckedPart = value!;
-                  //             //   isCheckedHalal = false;
-                  //             // });
-                  //           },
-                  //         ),
-                  //       ],
-                  //     )),
-                  // const SizedBox(height: 1),
-                  // Container(
-                  //     padding: const EdgeInsets.only(left: 16, right: 16),
-                  //     alignment: Alignment.center,
-                  //     color: Colors.white,
-                  //     height: 55,
-                  //     child: Row(
-                  //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //       children: [
-                  //         Row(
-                  //           children: [
-                  //             Image.asset(
-                  //               'assets/icons/halal_installment plan.png',
-                  //               height: 34,
-                  //               width: 34,
-                  //             ),
-                  //             const SizedBox(width: 8),
-                  //             const Text(
-                  //               'Рассрочка Halal',
-                  //               style: TextStyle(
-                  //                 fontSize: 16,
-                  //                 fontWeight: FontWeight.w400,
-                  //               ),
-                  //             ),
-                  //           ],
-                  //         ),
-                  //         Checkbox(
-                  //           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
-                  //           checkColor: Colors.white,
-                  //           activeColor: AppColors.kPrimaryColor,
-                  //           value: isCheckedHalal,
-                  //           onChanged: (bool? value) {
-                  //             // Get.snackbar('Нет доступа',
-                  //             //     'данная оплата пока недоступно...',
-                  //             //     backgroundColor: Colors.orangeAccent);
-
-                  //             setState(() {
-                  //               isCheckedTinkoff = false;
-                  //               isCheckedOnline = false;
-                  //               isCheckedCash = false;
-                  //               isCheckedPart = false;
-                  //               isCheckedHalal = value!;
-                  //             });
-                  //           },
-                  //         ),
-                  //       ],
-                  //     )),
-
-                  // const SizedBox(height: 1),
                   BlocBuilder<meta_cubit.MetaCubit, meta_state.MetaState>(
                     builder: (context, state) {
                       if (state is meta_state.MetaStateLoaded) {
@@ -798,7 +369,12 @@ class _BasketOrderPageState extends State<BasketOrderPage> {
                         ]);
                         return GestureDetector(
                           onTap: () {
-                            Get.to(() => MetasPage(title: metas[3], body: metasBody[3]));
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => MetasPage(title: metas[3], body: metasBody[3]),
+                              ),
+                            );
                           },
                           child: Container(
                             padding: const EdgeInsets.only(top: 8, left: 16),
@@ -849,7 +425,12 @@ class _BasketOrderPageState extends State<BasketOrderPage> {
             child: InkWell(
               onTap: () async {
                 if (isCheckedHalal == true) {
-                  Get.to(CreditInfoDetailPage(title: 'Рассрочка Halal'));
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => CreditInfoDetailPage(title: 'Рассрочка Halal'),
+                    ),
+                  );
                 } else if (isCheckedOnline == true) {
                   BlocProvider.of<order_cubit.OrderCubit>(context).payment(
                     context: context,
@@ -861,10 +442,11 @@ class _BasketOrderPageState extends State<BasketOrderPage> {
                     fulfillment: widget.fulfillment,
                   );
                 } else {
-                  Get.snackbar(
-                    'Ошибка',
-                    'Выберите способ оплаты',
-                    backgroundColor: Colors.redAccent,
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Выберите способ оплаты'),
+                      backgroundColor: Colors.redAccent,
+                    ),
                   );
                 }
 

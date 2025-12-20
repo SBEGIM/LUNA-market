@@ -1,7 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
 import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/feature/bloger/chat/presentation/message_blogger_page.dart';
 import 'package:intl/intl.dart';
@@ -177,11 +176,14 @@ class _ChatBloggerPageState extends State<ChatBloggerPage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             GestureDetector(
-                              onTap: () => Get.to(
-                                MessageBlogger(
-                                  chatId: state.chat[index].chatId,
-                                  userId: state.chat[index].userId,
-                                  userName: state.chat[index].name,
+                              onTap: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => MessageBlogger(
+                                    chatId: state.chat[index].chatId,
+                                    userId: state.chat[index].userId,
+                                    userName: state.chat[index].name,
+                                  ),
                                 ),
                               ),
                               child: Container(

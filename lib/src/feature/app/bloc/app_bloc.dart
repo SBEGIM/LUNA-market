@@ -46,29 +46,6 @@ class AppBloc extends Bloc<AppEvent, AppState> {
 
     if (!exists && !guest) {
       Get.to(LocationPage());
-
-      // Get.showSnackbar(
-
-      // Get.snackbar(
-      //   'СДЕК',
-      //   city != null
-      //       ? 'Ваш город $city?'
-      //       : 'Ваш город неизвестен для доставки!',
-      //   icon: const Icon(Icons.add_location_sharp),
-      //   duration: const Duration(seconds: 30),
-      //   backgroundColor: Colors.orangeAccent,
-      //   onTap: (snack) {
-      //     Get.closeCurrentSnackbar();
-
-      //     Future.wait(
-      //         [BlocProvider.of<countryCubit.CountryCubit>(context).country()]);
-      //     showAlertCountryWidget(context, () {
-      //       // context.router.pop();
-      //       //  setState(() {});
-      //     }, false);
-      //   },
-      // );
-      // //  / );
     }
     if (token) {
       emit(const AppState.inAppUserState());
@@ -77,7 +54,6 @@ class AppBloc extends Bloc<AppEvent, AppState> {
 
   Future<void> _checkAuth(_CheckAuth event, Emitter<AppState> emit) async {
     if (token) {
-      print(true);
       emit(const AppState.inAppUserState());
     } else {
       emit(const AppState.notAuthorizedState());

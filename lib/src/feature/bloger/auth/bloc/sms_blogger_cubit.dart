@@ -87,7 +87,6 @@ class SmsBloggerCubit extends Cubit<SmsBloggerState> {
       if (data == 200) {
         AppSnackBar.show(context, 'Код отправлен на ваш номер!', type: AppSnackType.success);
         emit(LoadedState());
-        // Get.to(PasswordResetPage(phone: phone));
       }
       if (data == 400) {
         emit(InitState());
