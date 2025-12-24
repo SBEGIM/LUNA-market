@@ -557,7 +557,7 @@ class _DetailOrderSellerPageState extends State<DetailOrderSellerPage> {
                                   onTap: () {
                                     Navigator.of(context).push(
                                       MaterialPageRoute(
-                                        builder: (_) => MessageSeller(
+                                        builder: (_) => MessageSellerPage(
                                           userId: widget.basket.user!.id,
                                           userName: widget.basket.user!.fullName,
                                           chatId: widget.basket.chatId,

@@ -144,7 +144,7 @@ class _ChatSellerPageState extends State<ChatSellerPage> {
                               onTap: () => Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => MessageSeller(
+                                  builder: (context) => MessageSellerPage(
                                     chatId: state.chat[index].chatId,
                                     userId: state.chat[index].userId,
                                     userName: state.chat[index].name,

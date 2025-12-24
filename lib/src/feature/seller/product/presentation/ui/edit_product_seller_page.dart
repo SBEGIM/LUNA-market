@@ -3,7 +3,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:get/route_manager.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/feature/auth/presentation/widgets/default_button.dart';
@@ -295,12 +294,6 @@ class _EditProductSellerPageState extends State<EditProductSellerPage> {
       BlocProvider.of<CityCubit>(context).citiesCdek('RU');
     }
 
-    // WidgetsBinding.instance.addPostFrameCallback((_) {
-    //   if (!mounted) return;
-    //   // Если действительно нужно подгружать продукты – делаем это после первого кадра,
-    //   // чтобы не сработали глобальные слушатели во время построения.
-    //   context.read<ProductSellerCubit>().products('');
-    // });
     getCategoryById();
     _sizeArray();
     _charactisticsArray();
@@ -829,7 +822,7 @@ class _EditProductSellerPageState extends State<EditProductSellerPage> {
             if (filledCount == 1)
               GestureDetector(
                 onTap: () {
-                  Get.to(const BloggerAd());
+                  Navigator.of(context).push(MaterialPageRoute(builder: (_) => const BloggerAd()));
                 },
                 child: SizedBox(
                   child: RichText(
@@ -1105,10 +1098,11 @@ class _EditProductSellerPageState extends State<EditProductSellerPage> {
                     optomTotalController.text = value.total;
 
                     if (GetStorage().read('seller_partner') != '1') {
-                      Get.snackbar(
-                        'Ошибка оптом',
-                        'У вас нет партнерство',
-                        backgroundColor: Colors.redAccent,
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('У вас нет партнерство'),
+                          backgroundColor: Colors.redAccent,
+                        ),
                       );
 
                       optomPriceController.clear();
@@ -1139,18 +1133,23 @@ class _EditProductSellerPageState extends State<EditProductSellerPage> {
 
                         setState(() {});
                       } else {
-                        // Get.to(() => {})
-                        Get.snackbar(
-                          'Ошибка',
-                          'Данные уже имеется!',
-                          backgroundColor: Colors.redAccent,
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Данные уже имеется!'),
+                            backgroundColor: Colors.redAccent,
+                          ),
                         );
                         optomPriceController.clear();
                         optomCountController.clear();
                         optomTotalController.clear();
                       }
                     } else {
-                      Get.snackbar('Ошибка', 'Нет данных!', backgroundColor: Colors.redAccent);
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Нет данных!'),
+                          backgroundColor: Colors.redAccent,
+                        ),
+                      );
                       optomPriceController.clear();
                       optomCountController.clear();
                       optomTotalController.clear();
@@ -1337,25 +1336,36 @@ class _EditProductSellerPageState extends State<EditProductSellerPage> {
                         children: [
                           GestureDetector(
                             onTap: () {
-                              Get.defaultDialog(
-                                title: "Изменить фото",
-                                middleText: '',
-                                textConfirm: 'Камера',
-                                textCancel: 'Фото',
-                                titlePadding: const EdgeInsets.only(top: 40),
-                                onConfirm: () {
-                                  change = true;
-                                  setState(() {
-                                    change;
-                                  });
-                                  _getImage();
-                                },
-                                onCancel: () {
-                                  change = false;
-                                  setState(() {
-                                    change;
-                                  });
-                                  _getImage();
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: const Text('Изменить фото'),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                          change = false;
+                                          setState(() {
+                                            change;
+                                          });
+                                          _getImage();
+                                        },
+                                        child: const Text('Фото'),
+                                      ),
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                          change = true;
+                                          setState(() {
+                                            change;
+                                          });
+                                          _getImage();
+                                        },
+                                        child: const Text('Камера'),
+                                      ),
+                                    ],
+                                  );
                                 },
                               );
                             },
@@ -1511,25 +1521,36 @@ class _EditProductSellerPageState extends State<EditProductSellerPage> {
                       children: [
                         GestureDetector(
                           onTap: () {
-                            Get.defaultDialog(
-                              title: "Изменить видео",
-                              middleText: '',
-                              textConfirm: 'Камера',
-                              textCancel: 'Видео',
-                              titlePadding: const EdgeInsets.only(top: 40),
-                              onConfirm: () {
-                                change = true;
-                                setState(() {
-                                  change;
-                                });
-                                _getVideo();
-                              },
-                              onCancel: () {
-                                change = false;
-                                setState(() {
-                                  change;
-                                });
-                                _getVideo();
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: const Text('Изменить видео'),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                        change = false;
+                                        setState(() {
+                                          change;
+                                        });
+                                        _getVideo();
+                                      },
+                                      child: const Text('Видео'),
+                                    ),
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                        change = true;
+                                        setState(() {
+                                          change;
+                                        });
+                                        _getVideo();
+                                      },
+                                      child: const Text('Камера'),
+                                    ),
+                                  ],
+                                );
                               },
                             );
                           },
@@ -1828,7 +1849,11 @@ class _EditProductSellerPageState extends State<EditProductSellerPage> {
                       });
                     });
                   } else {
-                    Get.to(MapSellerPickerPage(lat: 43.238949, long: 76.889709));
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (_) => const MapSellerPickerPage(lat: 43.238949, long: 76.889709),
+                      ),
+                    );
                   }
                 },
                 controller: massaController,
@@ -1842,7 +1867,9 @@ class _EditProductSellerPageState extends State<EditProductSellerPage> {
                 star: true,
                 arrow: true,
                 onPressed: () async {
-                  final data = await Get.to(const ColorsSellerPage());
+                  final data = await Navigator.of(
+                    context,
+                  ).push(MaterialPageRoute(builder: (_) => const ColorsSellerPage()));
                   if (data != null) {
                     final CatsModel cat = data;
                     colorId = cat.id ?? 0;
@@ -1972,18 +1999,19 @@ class _EditProductSellerPageState extends State<EditProductSellerPage> {
 
                                 setState(() {});
                               } else {
-                                // Get.to(() => {})
-                                Get.snackbar(
-                                  'Ошибка',
-                                  'Данные уже имеется!',
-                                  backgroundColor: Colors.redAccent,
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text('Данные уже имеются!'),
+                                    backgroundColor: Colors.redAccent,
+                                  ),
                                 );
                               }
                             } else {
-                              Get.snackbar(
-                                'Ошибка',
-                                'Нет данных!',
-                                backgroundColor: Colors.redAccent,
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text('Нет данных!'),
+                                  backgroundColor: Colors.redAccent,
+                                ),
                               );
                             }
                           },
@@ -2253,18 +2281,19 @@ class _EditProductSellerPageState extends State<EditProductSellerPage> {
 
                                 setState(() {});
                               } else {
-                                // Get.to(() => {})
-                                Get.snackbar(
-                                  'Ошибка',
-                                  'Данные уже имеется!',
-                                  backgroundColor: Colors.redAccent,
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text('Данные уже имеется!'),
+                                    backgroundColor: Colors.redAccent,
+                                  ),
                                 );
                               }
                             } else {
-                              Get.snackbar(
-                                'Ошибка',
-                                'Нет данных!',
-                                backgroundColor: Colors.redAccent,
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text('Нет данных!'),
+                                  backgroundColor: Colors.redAccent,
+                                ),
                               );
                             }
                           },
@@ -2618,10 +2647,11 @@ class _EditProductSellerPageState extends State<EditProductSellerPage> {
                         GestureDetector(
                           onTap: () {
                             if (GetStorage().read('seller_partner') != '1') {
-                              Get.snackbar(
-                                'Ошибка оптом',
-                                'У вас нет партнерство',
-                                backgroundColor: Colors.redAccent,
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text('У вас нет партнерство'),
+                                  backgroundColor: Colors.redAccent,
+                                ),
                               );
                               return;
                             }
@@ -2651,18 +2681,19 @@ class _EditProductSellerPageState extends State<EditProductSellerPage> {
 
                                 setState(() {});
                               } else {
-                                // Get.to(() => {})
-                                Get.snackbar(
-                                  'Ошибка',
-                                  'Данные уже имеется!',
-                                  backgroundColor: Colors.redAccent,
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text('Данные уже имеется!'),
+                                    backgroundColor: Colors.redAccent,
+                                  ),
                                 );
                               }
                             } else {
-                              Get.snackbar(
-                                'Ошибка',
-                                'Нет данных!',
-                                backgroundColor: Colors.redAccent,
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text('Нет данных!'),
+                                  backgroundColor: Colors.redAccent,
+                                ),
                               );
                             }
                           },
@@ -2867,25 +2898,36 @@ class _EditProductSellerPageState extends State<EditProductSellerPage> {
                           const SizedBox(height: 10),
                           GestureDetector(
                             onTap: () {
-                              Get.defaultDialog(
-                                title: "Изменить фото",
-                                middleText: '',
-                                textConfirm: 'Камера',
-                                textCancel: 'Фото',
-                                titlePadding: const EdgeInsets.only(top: 40),
-                                onConfirm: () {
-                                  change = true;
-                                  setState(() {
-                                    change;
-                                  });
-                                  _getImage();
-                                },
-                                onCancel: () {
-                                  change = false;
-                                  setState(() {
-                                    change;
-                                  });
-                                  _getImage();
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: const Text('Изменить фото'),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                          change = false;
+                                          setState(() {
+                                            change;
+                                          });
+                                          _getImage();
+                                        },
+                                        child: const Text('Фото'),
+                                      ),
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                          change = true;
+                                          setState(() {
+                                            change;
+                                          });
+                                          _getImage();
+                                        },
+                                        child: const Text('Камера'),
+                                      ),
+                                    ],
+                                  );
                                 },
                               );
                             },
@@ -2973,25 +3015,36 @@ class _EditProductSellerPageState extends State<EditProductSellerPage> {
                     const SizedBox(height: 10),
                     GestureDetector(
                       onTap: () {
-                        Get.defaultDialog(
-                          title: "Изменить видео",
-                          middleText: '',
-                          textConfirm: 'Камера',
-                          textCancel: 'Фото',
-                          titlePadding: const EdgeInsets.only(top: 40),
-                          onConfirm: () {
-                            change = true;
-                            setState(() {
-                              change;
-                            });
-                            _getVideo();
-                          },
-                          onCancel: () {
-                            change = false;
-                            setState(() {
-                              change;
-                            });
-                            _getVideo();
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: const Text('Изменить видео'),
+                              actions: [
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                    change = false;
+                                    setState(() {
+                                      change;
+                                    });
+                                    _getVideo();
+                                  },
+                                  child: const Text('Фото'),
+                                ),
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                    change = true;
+                                    setState(() {
+                                      change;
+                                    });
+                                    _getVideo();
+                                  },
+                                  child: const Text('Камера'),
+                                ),
+                              ],
+                            );
                           },
                         );
                       },
@@ -3092,10 +3145,11 @@ class _EditProductSellerPageState extends State<EditProductSellerPage> {
                           heightController.text.isEmpty ||
                           deepController.text.isEmpty ||
                           massaController.text.isEmpty) {
-                        Get.snackbar(
-                          "Ошибка Доставка",
-                          "Заполните данные для доставки",
-                          backgroundColor: Colors.orangeAccent,
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Заполните данные для доставки'),
+                            backgroundColor: Colors.orangeAccent,
+                          ),
                         );
                         return;
                       }

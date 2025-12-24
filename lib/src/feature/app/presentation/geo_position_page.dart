@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/route_manager.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:haji_market/src/core/common/constants.dart';
-import 'package:haji_market/src/feature/app/presentation/guest_user_page.dart';
 import 'package:haji_market/src/feature/app/widget/show_city_widget.dart';
 import 'package:haji_market/src/feature/auth/presentation/widgets/default_button.dart';
 import 'package:haji_market/src/feature/drawer/bloc/city_cubit.dart';
 import 'package:haji_market/src/feature/home/data/model/city_model.dart';
+import 'package:haji_market/src/feature/app/router/app_router.dart';
 import '../../../core/constant/generated/assets.gen.dart';
 
+@RoutePage()
 class GeoPositionPage extends StatefulWidget {
   final int contryId;
   final String countryCode;
@@ -73,9 +74,7 @@ class _GeoPositionPageState extends State<GeoPositionPage> {
             DefaultButton(
               text: 'Продолжить',
               press: () {
-                Get.off(GuestUserPage());
-                // BlocProvider.of<AppBloc>(context)
-                //     .add(const AppEvent.checkAuth());
+                context.router.replace(GuestUserRoute());
               },
               color: AppColors.kWhite,
               backgroundColor: AppColors.mainPurpleColor,

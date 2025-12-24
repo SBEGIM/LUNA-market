@@ -2,9 +2,7 @@ import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:get/route_manager.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:haji_market/src/feature/app/presentation/location_page.dart';
 
 part 'app_bloc.freezed.dart';
 
@@ -33,22 +31,19 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     emit(const AppState.inAppUserState());
   }
 
-  // CityModel? loadCity() {
-  //   final data = GetStorage().read('city');
-  //   if (data == null) return null;
-  //   return CityModel.fromJson(Map<String, dynamic>.from(data));
-  // }
-
   Future<void> _location(_Location event, Emitter<AppState> emit) async {
     bool exists = GetStorage().hasData('user_location_code');
-    // CityModel? city = loadCity();
     bool guest = GetStorage().hasData('user_guest');
 
     if (!exists && !guest) {
-      Get.to(LocationPage());
+      emit(const AppState.locationRequiredState());
+      return;
     }
+
     if (token) {
       emit(const AppState.inAppUserState());
+    } else {
+      emit(const AppState.notAuthorizedState());
     }
   }
 
@@ -102,6 +97,8 @@ class AppState with _$AppState {
   const factory AppState.loadingState() = _LoadingState;
 
   const factory AppState.notAuthorizedState({bool? button}) = _NotAuthorizedState;
+
+  const factory AppState.locationRequiredState() = _LocationRequiredState;
 
   const factory AppState.inAppUserState({int? index}) = _InAppUserState;
   const factory AppState.inAppBlogerState({int? index}) = _InAppBlogerState;

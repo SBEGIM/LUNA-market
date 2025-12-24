@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:haji_market/src/feature/seller/chat/cubit/chat_seller_cubit.dart';
@@ -17,25 +16,26 @@ import '../../../chat/data/cubit/message_cubit.dart';
 import '../data/DTO/message_seller_dto.dart';
 import '../cubit/message_seller_cubit.dart';
 import '../cubit/message_seller_state.dart';
+import 'package:auto_route/auto_route.dart';
 
-class MessageSeller extends StatefulWidget {
-  int? chatId;
-  int? userId;
-  String? userName;
+@RoutePage()
+class MessageSellerPage extends StatefulWidget {
+  final int? chatId;
+  final int? userId;
+  final String? userName;
 
-  MessageSeller({this.chatId, this.userId, this.userName, super.key});
+  const MessageSellerPage({this.chatId, this.userId, this.userName, super.key});
 
   @override
-  State<MessageSeller> createState() => _MessageSellerState();
+  State<MessageSellerPage> createState() => _MessageSellerPageState();
 }
 
-class _MessageSellerState extends State<MessageSeller> {
+class _MessageSellerPageState extends State<MessageSellerPage> {
   XFile? _image;
   final ImagePicker _picker = ImagePicker();
-  bool change = false;
 
-  Future<void> _getImage() async {
-    _image = change == true
+  Future<void> _getImage({bool fromGallery = false}) async {
+    _image = fromGallery
         ? await _picker.pickImage(source: ImageSource.camera)
         : await _picker.pickImage(source: ImageSource.gallery);
 
@@ -156,7 +156,7 @@ class _MessageSellerState extends State<MessageSeller> {
         leading: GestureDetector(
           onTap: () {
             BlocProvider.of<ChatSellerCubit>(context).chat();
-            Get.back();
+            context.router.pop();
           },
           child: const Icon(Icons.arrow_back, color: AppColors.kLightBlackColor, size: 25),
         ),
@@ -306,26 +306,33 @@ class _MessageSellerState extends State<MessageSeller> {
                                 // SendData();123123121
 
                                 if (_image == null) {
-                                  Get.defaultDialog(
-                                    title: "Отправить фото",
-                                    middleText: '',
-                                    textConfirm: 'Камера',
-                                    textCancel: 'Фото',
-                                    titlePadding: const EdgeInsets.only(top: 40),
-                                    onConfirm: () {
-                                      change = true;
-                                      setState(() {
-                                        change;
-                                      });
-                                      _getImage();
-                                    },
-                                    onCancel: () {
-                                      change = false;
-                                      setState(() {
-                                        change;
-                                      });
-                                      _getImage();
-                                    },
+                                  showDialog<void>(
+                                    context: context,
+                                    builder: (ctx) => AlertDialog(
+                                      title: const Text('Отправить фото'),
+                                      actionsPadding: const EdgeInsets.symmetric(
+                                        horizontal: 16,
+                                        vertical: 8,
+                                      ),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () {
+                                            setState(() {});
+                                            Navigator.of(ctx).pop();
+                                            _getImage();
+                                          },
+                                          child: const Text('Камера'),
+                                        ),
+                                        TextButton(
+                                          onPressed: () {
+                                            setState(() {});
+                                            Navigator.of(ctx).pop();
+                                            _getImage(fromGallery: true);
+                                          },
+                                          child: const Text('Фото'),
+                                        ),
+                                      ],
+                                    ),
                                   );
                                 }
                               },
