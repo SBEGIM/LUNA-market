@@ -3,7 +3,7 @@ import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
-Future<bool?> showModuleOrderSeller(
+Future<bool?> showModuleOrderUser(
   BuildContext context,
   String appText,
   String title,
@@ -21,7 +21,7 @@ Future<bool?> showModuleOrderSeller(
       return StatefulBuilder(
         builder: (ctx, setState) {
           return SizedBox(
-            height: 488,
+            height: 342,
             child: Column(
               mainAxisSize: MainAxisSize.max,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -36,36 +36,6 @@ Future<bool?> showModuleOrderSeller(
                     ),
                   ),
                 ),
-                Container(
-                  height: title.length <= 25 ? 124 : 148,
-                  width: double.infinity,
-                  margin: const EdgeInsets.symmetric(horizontal: 12),
-                  padding: EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      SizedBox(
-                        height: 56,
-                        width: 56,
-                        child: Image.asset(Assets.icons.successChangeStatusIcon.path),
-                      ),
-                      SizedBox(height: 4),
-                      Flexible(
-                        child: Text(
-                          title,
-                          style: AppTextStyles.size18Weight700,
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(height: 12),
                 Flexible(
                   child: Container(
                     width: double.infinity,
@@ -76,11 +46,23 @@ Future<bool?> showModuleOrderSeller(
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Text('Что делать дальше:', style: AppTextStyles.size18Weight700),
-                        SizedBox(height: 16),
+                        SizedBox(
+                          height: 56,
+                          width: 56,
+                          child: Image.asset(Assets.icons.successChangeStatusIcon.path),
+                        ),
+                        SizedBox(height: 4),
+                        Flexible(
+                          child: Text(
+                            title,
+                            style: AppTextStyles.size18Weight700,
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+
                         Text(
                           description,
                           style: AppTextStyles.size16Weight400.copyWith(color: Color(0xff636366)),
@@ -90,7 +72,7 @@ Future<bool?> showModuleOrderSeller(
                     ),
                   ),
                 ),
-
+                SizedBox(height: 12),
                 InkWell(
                   onTap: () {
                     Navigator.of(ctx).pop(true);

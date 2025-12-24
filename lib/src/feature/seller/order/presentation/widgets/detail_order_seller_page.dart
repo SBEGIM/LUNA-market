@@ -701,6 +701,7 @@ class _DetailOrderSellerPageState extends State<DetailOrderSellerPage> {
                                       'Заказ №${_basketOrder.id}',
                                       statusFBS,
                                       reasonPrimaryFBS,
+                                      'Понятно',
                                     );
                                     return;
                                   }
@@ -712,6 +713,7 @@ class _DetailOrderSellerPageState extends State<DetailOrderSellerPage> {
                                       'Заказ №${_basketOrder.id}',
                                       shopStepText,
                                       shopStepsFBS,
+                                      'Понятно',
                                     );
                                   }
 
@@ -764,6 +766,7 @@ class _DetailOrderSellerPageState extends State<DetailOrderSellerPage> {
                                             'Заказ №${_basketOrder.id}',
                                             statusFBS,
                                             reasonPrimaryFBS,
+                                            'Понятно',
                                           );
                                           return;
                                         }
@@ -784,6 +787,7 @@ class _DetailOrderSellerPageState extends State<DetailOrderSellerPage> {
                                             'Заказ №${_basketOrder.id}',
                                             shopStepText,
                                             shopStepsFBS,
+                                            'Понятно',
                                           );
                                         }
                                       },

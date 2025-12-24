@@ -11,12 +11,14 @@ import 'package:haji_market/src/feature/basket/data/models/basket_order_model.da
 import 'package:haji_market/src/feature/drawer/presentation/widgets/pre_order_dialog.dart';
 import 'package:haji_market/src/feature/drawer/presentation/widgets/show_basket_bottom_sheet_widget.dart';
 import 'package:haji_market/src/feature/home/presentation/widgets/product_watching_card.dart';
+import 'package:haji_market/src/feature/my_order/presentation/widget/show_module_order_seller_widget.dart';
 import 'package:haji_market/src/feature/my_order/presentation/widget/show_order_cancel_widget.dart';
 import 'package:haji_market/src/feature/my_order/presentation/widget/show_order_uncancel_widget.dart';
 import 'package:haji_market/src/feature/product/cubit/product_cubit.dart' as product_cubit;
 import 'package:haji_market/src/feature/product/cubit/product_state.dart' as product_state;
 import 'package:haji_market/src/feature/product/data/model/product_model.dart';
 import 'package:haji_market/src/feature/product/provider/filter_provider.dart';
+import 'package:haji_market/src/feature/seller/order/presentation/widgets/show_module_order_seller_widget.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:timeline_tile/timeline_tile.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -238,6 +240,7 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                                 );
                                                 timeline[timeline.length - 1] = timeline.last
                                                     .copyWith(isDone: true);
+
                                                 String sendStatus = '';
                                                 if (_basketOrder.status == 'ready_for_pickup') {
                                                   sendStatus = 'taken';
@@ -247,41 +250,75 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                                   sendStatus = 'end';
                                                 }
 
-                                                // if (_basketOrder.basketStatusTimeline!.last.isDone ==
-                                                //     true) {
-                                                BlocProvider.of<OrderStatusSellerCubit>(
-                                                  context,
-                                                ).basketStatus(
-                                                  sendStatus,
-                                                  _basketOrder.id.toString(),
-                                                  _basketOrder.product!.first.id.toString(),
-                                                  'fbs',
-                                                );
-
-                                                BlocProvider.of<BasketCubit>(
-                                                  context,
-                                                ).updateProductByIndex(
-                                                  index: widget.index,
-                                                  updatedOrder: _basketOrder.copyWith(
-                                                    status: sendStatus,
-                                                    basketStatusTimeline: timeline,
-                                                  ),
-                                                );
-
-                                                setState(() {
-                                                  _basketOrder = _basketOrder.copyWith(
-                                                    status: sendStatus,
-                                                    basketStatusTimeline: timeline,
+                                                if (sendStatus == 'taken') {
+                                                  BlocProvider.of<OrderStatusSellerCubit>(
+                                                    context,
+                                                  ).basketStatus(
+                                                    sendStatus,
+                                                    _basketOrder.id.toString(),
+                                                    _basketOrder.product!.first.id.toString(),
+                                                    'fbs',
                                                   );
-                                                });
 
-                                                AppSnackBar.show(
+                                                  BlocProvider.of<BasketCubit>(
+                                                    context,
+                                                  ).updateProductByIndex(
+                                                    index: widget.index,
+                                                    updatedOrder: _basketOrder.copyWith(
+                                                      status: sendStatus,
+                                                      basketStatusTimeline: timeline,
+                                                    ),
+                                                  );
+
+                                                  setState(() {
+                                                    _basketOrder = _basketOrder.copyWith(
+                                                      status: sendStatus,
+                                                      basketStatusTimeline: timeline,
+                                                    );
+                                                  });
+
+                                                  AppSnackBar.show(
+                                                    context,
+                                                    'Заказ выдан',
+                                                    type: AppSnackType.success,
+                                                  );
+                                                }
+
+                                                final value = await showModuleOrderUser(
                                                   context,
-                                                  sendStatus == 'taken'
-                                                      ? 'Заказ забран'
-                                                      : 'Заказ выдан',
-                                                  type: AppSnackType.success,
+                                                  'Заказ №${_basketOrder.id}',
+                                                  'Подтвердить получение',
+                                                  'Нажимая «Подтвердить», вы подтверждаете\nполучение заказа и отсутствие претензий',
+                                                  'Подтвердить',
                                                 );
+
+                                                if (value == true) {
+                                                  BlocProvider.of<OrderStatusSellerCubit>(
+                                                    context,
+                                                  ).basketStatus(
+                                                    'end',
+                                                    _basketOrder.id.toString(),
+                                                    _basketOrder.product!.first.id.toString(),
+                                                    'fbs',
+                                                  );
+
+                                                  BlocProvider.of<BasketCubit>(
+                                                    context,
+                                                  ).updateProductByIndex(
+                                                    index: widget.index,
+                                                    updatedOrder: _basketOrder.copyWith(
+                                                      status: 'end',
+                                                      basketStatusTimeline: timeline,
+                                                    ),
+                                                  );
+
+                                                  setState(() {
+                                                    _basketOrder = _basketOrder.copyWith(
+                                                      status: 'end',
+                                                      basketStatusTimeline: timeline,
+                                                    );
+                                                  });
+                                                }
                                               } else {
                                                 AppSnackBar.show(
                                                   context,
@@ -304,7 +341,7 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                                                 .isDone ==
                                                             false &&
                                                         _basketOrder.status != 'ready_for_pickup' &&
-                                                        _basketOrder.status != 'delivered'
+                                                        _basketOrder.status != 'taken'
                                                     ? AppColors.mainPurpleColor.withValues(
                                                         alpha: 0.5,
                                                       )
@@ -316,9 +353,9 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                                       strokeWidth: 2,
                                                     )
                                                   : Text(
-                                                      _basketOrder.status == 'ready_for_pickup'
-                                                          ? 'Забрать заказ'
-                                                          : 'Подтвердить',
+                                                      _basketOrder.status == 'taken'
+                                                          ? 'Подтвердить'
+                                                          : 'Забрать заказ',
                                                       textAlign: TextAlign.center,
                                                       style: AppTextStyles.size13Weight500.copyWith(
                                                         color: AppColors.kWhite,
@@ -450,7 +487,15 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                             _basketOrder = _basketOrder.copyWith(status: 'cancel');
                           });
 
-                          context.router.push(SuccessCancelRoute());
+                          showModuleOrderUser(
+                            context,
+                            'Оформить возврат',
+                            'Возврат оформлен',
+                            'Ваш запрос на возврат принят. Менеджер скоро с вами свяжется.  Деньги будут возвращены в течение 3–5 рабочих дней после приема товара',
+                            'Понятно',
+                          );
+
+                          // context.router.push(SuccessCancelRoute());
                         });
                         // Navigator.push(
                         //   context,

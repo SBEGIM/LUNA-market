@@ -50,7 +50,8 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
 
   int? selectedIndex = 0;
   int? selectedIndex2 = 0;
-  int? selectedIndexMonth = 3;
+  int selectedIndexMonth = 3;
+  int selectedMonths = 3;
 
   int? selectedIndex3 = -1;
   int? selectedIndex4 = 0;
@@ -812,7 +813,20 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                   style: AppTextStyles.size14Weight400.copyWith(color: Color(0xff636366)),
                 ),
                 SizedBox(width: 23),
-                Flexible(child: SizedBox(width: 300, height: 28, child: MonthSelector())),
+                Flexible(
+                  child: SizedBox(
+                    width: 300,
+                    height: 28,
+                    child: MonthSelector(
+                      value: selectedMonths,
+                      onChanged: (value) {
+                        setState(() {
+                          selectedMonths = value;
+                        });
+                      },
+                    ),
+                  ),
+                ),
               ],
             ),
           ),
@@ -1082,7 +1096,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                                             borderRadius: BorderRadius.circular(12),
                                           ),
                                           child: Text(
-                                            '${((widget.product.price! * (100 - (widget.product.compound ?? 0))) ~/ 100.toInt() / 3).round()} ₽',
+                                            '${((widget.product.price! * (100 - (widget.product.compound ?? 0))) ~/ 100.toInt() / selectedMonths).round()} ₽',
                                             style: const TextStyle(
                                               color: AppColors.kLightBlackColor,
                                               fontSize: 14,
@@ -1091,7 +1105,10 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                                           ),
                                         ),
                                         const SizedBox(width: 4),
-                                        Text('х3 мес', style: AppTextStyles.size13Weight400),
+                                        Text(
+                                          'х$selectedMonths мес',
+                                          style: AppTextStyles.size13Weight400,
+                                        ),
                                       ],
                                     ),
                                   ],

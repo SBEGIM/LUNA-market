@@ -264,7 +264,7 @@ class _ProfileBloggerTapePageState extends State<ProfileSellerTapePage> {
                             ),
                             alignment: Alignment.center,
                             child: Text(
-                              'В магазин',
+                              'Товары',
                               style: AppTextStyles.size14Weight600.copyWith(
                                 color: Color(0xFF636366),
                               ),

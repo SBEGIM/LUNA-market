@@ -389,7 +389,7 @@ class _HomePageState extends State<HomePage> {
             SizedBox(
               // color: Colors.white,
               child: Padding(
-                padding: const EdgeInsets.all(16.0),
+                padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -522,7 +522,7 @@ class _HomePageState extends State<HomePage> {
             SizedBox(
               // color: Colors.white,
               child: Padding(
-                padding: const EdgeInsets.all(16.0),
+                padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
