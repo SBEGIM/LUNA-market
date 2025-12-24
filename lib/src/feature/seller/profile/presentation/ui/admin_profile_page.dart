@@ -298,10 +298,13 @@ class _ProfileAdminPageState extends State<ProfileAdminPage> {
                         child: Image.asset(Assets.icons.frameVideoReview.path, scale: 2),
                       ),
                     ),
-                    SizedBox(
-                      height: 82,
-                      width: 175,
-                      child: Image.asset(Assets.icons.framePromotion.path, scale: 2),
+                    InkWell(
+                      onTap: () => context.pushRoute(const SellerPromotionsRoute()),
+                      child: SizedBox(
+                        height: 82,
+                        width: 175,
+                        child: Image.asset(Assets.icons.framePromotion.path, scale: 2),
+                      ),
                     ),
                   ],
                 ),
