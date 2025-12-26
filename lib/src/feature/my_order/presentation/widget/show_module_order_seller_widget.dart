@@ -62,11 +62,10 @@ Future<bool?> showModuleOrderUser(
                             textAlign: TextAlign.center,
                           ),
                         ),
-
                         Text(
                           description,
                           style: AppTextStyles.size16Weight400.copyWith(color: Color(0xff636366)),
-                          textAlign: TextAlign.start,
+                          textAlign: TextAlign.center,
                         ),
                       ],
                     ),

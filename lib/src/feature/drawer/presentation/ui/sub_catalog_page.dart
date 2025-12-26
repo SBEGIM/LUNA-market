@@ -46,9 +46,7 @@ class _SubCatalogPageState extends State<SubCatalogPage> {
   }
 
   Future<void> brandList() async {
-    final List<CatsModel> data = await BlocProvider.of<BrandCubit>(
-      context,
-    ).brandsList();
+    final List<CatsModel> data = await BlocProvider.of<BrandCubit>(context).brandsList();
     brands.addAll(data);
     setState(() {});
   }
@@ -94,7 +92,7 @@ class _SubCatalogPageState extends State<SubCatalogPage> {
               children: [
                 Container(
                   margin: EdgeInsets.only(bottom: 10),
-                  padding: EdgeInsets.only(left: 16, top: 16, bottom: 16),
+                  padding: EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 16),
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.only(
@@ -134,7 +132,9 @@ class _SubCatalogPageState extends State<SubCatalogPage> {
                                       }
                                     },
                                     child: Container(
-                                      width: 120,
+                                      width:
+                                          (MediaQuery.of(context).size.width - 32) /
+                                          (widget.catChapters?.length ?? 1),
                                       alignment: Alignment.center,
                                       decoration: BoxDecoration(
                                         color: _selectedChapter == index

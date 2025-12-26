@@ -120,6 +120,12 @@ class FilterProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void resetBrands() {
+    brandIds.clear();
+    _box.remove('brandFilterId');
+    notifyListeners();
+  }
+
   void resetChar() {
     characteristicIds.clear();
     _box.remove('charFilterId');

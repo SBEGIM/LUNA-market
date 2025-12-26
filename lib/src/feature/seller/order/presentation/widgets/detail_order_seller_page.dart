@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/route_manager.dart';
+import 'package:haji_market/src/feature/my_order/presentation/widget/show_module_order_seller_widget.dart';
 import 'package:haji_market/src/feature/seller/order/bloc/order_status_seller_cubit.dart';
 import 'package:haji_market/src/feature/seller/order/data/models/basket_order_seller_model.dart';
 import 'package:haji_market/src/feature/seller/order/presentation/widgets/delivery_note_seller_widget.dart';
@@ -181,11 +182,21 @@ class _DetailOrderSellerPageState extends State<DetailOrderSellerPage> {
       case 'return':
         {
           statusFBS = 'Возврат заказа';
-          postStatusFBS = 'end';
-          postSecondStatusFBS = 'end';
+          postStatusFBS = 'rejected';
+          postSecondStatusFBS = 'success';
+          textSnackBar = '';
+          buttonTextFBS = 'Отклонить возврат';
+          buttonSecondTextFBS = 'Одобрить возврат';
 
-          buttonTextFBS = 'Завершить';
-          buttonSecondTextFBS = 'Завершить';
+          reasonPrimaryFBS = '';
+          reasonSecondFBS = '';
+
+          shopStepText = 'Рассмотрите заявку на возврат';
+          shopStepsFBS =
+              '1. Проверьте причину возврата и комментарий покупателя.'
+              '2. Одобрите или отклоните возврат (если отказ предусмотрен правилами).'
+              '3. После одобрения ожидайте, когда покупатель сдаст товар в ПВЗ — статус обновится автоматически\nпосле сканирования возврата в пункте выдачи.';
+          ;
         }
         break;
 
@@ -247,12 +258,19 @@ class _DetailOrderSellerPageState extends State<DetailOrderSellerPage> {
 
       case 'success':
         {
-          statusFBS = 'Заказ оформлен';
-          postStatusFBS = 'courier';
-          postSecondStatusFBS = 'rejected';
+          statusFBS = 'Ожидаем сдачу товара в ПВЗ';
 
-          buttonTextFBS = 'Передать курьеру';
-          buttonSecondTextFBS = 'Отклонить';
+          buttonTextFBS = 'Ожидаем сдачу товара в ПВЗ';
+          buttonSecondTextFBS = '';
+
+          shopStepsFBS =
+              '1.Покупатель должен принести товар в ПВЗ в течение N дней\n'
+              '2.Этап не переводится вручную. Статус изменится автоматически после приема возврата в ПВЗ.';
+
+          postStatusFBS = '';
+          postSecondStatusFBS = '';
+          reasonPrimaryFBS = 'Нет доступных действий для текущего статуса.';
+          reasonSecondFBS = '';
         }
         break;
 
@@ -696,7 +714,7 @@ class _DetailOrderSellerPageState extends State<DetailOrderSellerPage> {
                               child: GestureDetector(
                                 onTap: () async {
                                   if (reasonPrimaryFBS.isNotEmpty) {
-                                    showModuleOrderSeller(
+                                    showModuleOrderUser(
                                       context,
                                       'Заказ №${_basketOrder.id}',
                                       statusFBS,
@@ -755,7 +773,8 @@ class _DetailOrderSellerPageState extends State<DetailOrderSellerPage> {
 
                             _basketOrder.status == 'accepted' ||
                                     _basketOrder.status == 'ready_for_pickup' ||
-                                    _basketOrder.status == 'end'
+                                    _basketOrder.status == 'end' ||
+                                    _basketOrder.status == 'success'
                                 ? SizedBox.shrink()
                                 : Expanded(
                                     child: GestureDetector(

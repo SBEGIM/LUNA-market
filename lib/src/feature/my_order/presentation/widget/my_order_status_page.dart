@@ -458,7 +458,9 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                     _basketOrder.status != 'return')
                   GestureDetector(
                     onTap: () {
-                      if (_basketOrder.status != 'courier' && _basketOrder.status != 'cancel') {
+                      if (_basketOrder.status != 'courier' &&
+                          _basketOrder.status != 'ready_for_pickup' &&
+                          _basketOrder.status != 'cancel') {
                         final List<String> cancelReasons = [
                           'Передумал покупать',
                           'Сроки доставки изменились',
@@ -504,8 +506,9 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                         //         CancelOrderWidget(id: widget.basketOrder.id.toString()),
                         //   ),
                         // );
-                      } else if (_basketOrder.status == 'courier' &&
-                          _basketOrder.status != 'cancel') {
+                      } else if (_basketOrder.status == 'courier' ||
+                          _basketOrder.status == 'ready_for_pickup' &&
+                              _basketOrder.status != 'cancel') {
                         showOrderUncancel(context, 'Отменить заказ', [], (String reason) {});
                       }
                     },
@@ -545,7 +548,7 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                   Container(
                     height: _basketOrder.status == 'cancel' || _basketOrder.status == 'return'
                         ? 40
-                        : 100,
+                        : 80,
                     margin: const EdgeInsets.only(left: 16, right: 16, top: 12),
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     width: double.infinity,
@@ -643,28 +646,39 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
 
                         if (_basketOrder.status != 'cancel' && _basketOrder.status != 'return')
                           InkWell(
-                            onTap: () {
-                              if (_basketOrder.status != 'courier' &&
-                                  _basketOrder.status != 'cancel') {
-                                final List<String> cancelReasons = [
-                                  'Товар или упаковка повреждены',
-                                  'Товар с браком / Не работает',
-                                  'Заказал не тот товар',
-                                  'В комплекте не хватает деталей или/\nчасти товара',
-                                  'Подделка',
-                                ];
+                            onTap: () async {
+                              final status = _basketOrder.status;
+                              if (status == 'courier' || status == 'cancel') return;
 
-                                showOrderCancel(context, 'Причина возврата', cancelReasons, (
-                                  String reason,
-                                ) {
-                                  context.read<OrderStatusSellerCubit>().returnOrder(
+                              const cancelReasons = <String>[
+                                'Товар или упаковка повреждены',
+                                'Товар с браком / Не работает',
+                                'Заказал не тот товар',
+                                'В комплекте не хватает деталей или части товара',
+                                'Подделка',
+                              ];
+
+                              showOrderCancel(context, 'Причина возврата', cancelReasons, (
+                                String reason,
+                              ) async {
+                                // Close the dialog first
+                                // Navigator.of(context).pop();
+
+                                try {
+                                  // IMPORTANT: wait for backend confirmation
+                                  await context.read<OrderStatusSellerCubit>().returnOrder(
                                     _basketOrder.id.toString(),
                                     'return',
                                     reason,
                                   );
 
-                                  BlocProvider.of<BasketCubit>(context).updateProductByIndex(
-                                    index: _basketOrder.id!,
+                                  if (!context.mounted) return;
+
+                                  // Use the correct list index here (NOT order id)
+                                  final int orderIndex = widget.index;
+
+                                  context.read<BasketCubit>().updateProductByIndex(
+                                    index: orderIndex,
                                     updatedOrder: _basketOrder.copyWith(status: 'return'),
                                   );
 
@@ -672,26 +686,46 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                     _basketOrder = _basketOrder.copyWith(status: 'return');
                                   });
 
-                                  context.router.push(SuccessCancelRoute());
-                                });
-                              }
+                                  showModuleOrderUser(
+                                    context,
+                                    'Заказ №${_basketOrder.id}',
+                                    'Возврат оформлен',
+                                    'Ваш запрос на возврат принят. Менеджер скоро с вами свяжется. Деньги будут возвращены в течение 3–5 рабочих дней после приема товара',
+                                    'Понятно',
+                                  );
+                                } catch (e) {
+                                  if (!context.mounted) return;
+
+                                  // Replace with your preferred error UI
+                                  showModuleOrderUser(
+                                    context,
+                                    'Заказ №${_basketOrder.id}',
+                                    'Не удалось оформить возврат',
+                                    'Попробуйте еще раз позже или обратитесь в поддержку.',
+                                    'Понятно',
+                                  );
+                                }
+                              });
                             },
+
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text('Оформить возврат', style: AppTextStyles.size18Weight500),
-                                    Text(
-                                      'Можно вернуть в течение 14 дней',
-                                      style: AppTextStyles.size13Weight400.copyWith(
-                                        color: Color(0xff8E8E93),
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                                Text('Оформить возврат', style: AppTextStyles.size18Weight500),
+
+                                // Column(
+                                //   crossAxisAlignment: CrossAxisAlignment.start,
+                                //   children: [
+                                //     Text('Оформить возврат', style: AppTextStyles.size18Weight500),
+                                //     // Text(
+                                //     //   'Можно вернуть в течение 14 дней',
+                                //     //   style: AppTextStyles.size13Weight400.copyWith(
+                                //     //     color: Color(0xff8E8E93),
+                                //     //   ),
+                                //     // ),
+                                //   ],
+                                // ),
                                 Image.asset(
                                   Assets.icons.defaultArrowForwardIcon.path,
                                   color: AppColors.kNeutralBlackColor,
