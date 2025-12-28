@@ -183,7 +183,7 @@ class _ProductsPageState extends State<ProductsPage> {
               surfaceTintColor: Colors.transparent,
               toolbarHeight: 100,
               automaticallyImplyLeading: false,
-              expandedHeight: 300,
+              expandedHeight: 140,
               systemOverlayStyle: SystemUiOverlayStyle.dark,
               shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.vertical(bottom: Radius.circular(16)),
@@ -203,529 +203,663 @@ class _ProductsPageState extends State<ProductsPage> {
                     child: Column(
                       mainAxisSize: MainAxisSize.min, // <-- важно
                       children: [
-                        SizedBox(height: 12),
-                        Container(
-                          margin: EdgeInsets.symmetric(horizontal: 16),
-                          height: 80,
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              begin: Alignment.bottomRight,
-                              end: Alignment.topLeft,
-                              transform: const GradientRotation(
-                                128.49 * 3.1415926535 / 180,
-                              ), // 128.49° в радианы
-                              colors: [
-                                const Color(
-                                  0xFF7D2DFF,
-                                ).withValues(alpha: .2), // rgba(125, 45, 255, 0.2)
-                                const Color(
-                                  0xFF41DDFF,
-                                ).withValues(alpha: .2), // rgba(65, 221, 255, 0.2)
-                              ],
-                              stops: const [0.2685, 1.0], // 26.85% и 100%
-                            ),
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(left: 16.0),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      '${widget.cats.name}',
-                                      style: AppTextStyles.size16Weight600,
-                                    ),
-                                    Text(
-                                      '${widget.cats.text}',
-                                      style: AppTextStyles.size14Weight400,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Container(
-                                margin: const EdgeInsets.only(right: 10.0),
-                                child: Image.network(
-                                  "https://lunamarket.ru/storage/${widget.cats.image}",
-                                  fit: BoxFit.cover,
-                                  loadingBuilder: (context, child, loadingProgress) {
-                                    if (loadingProgress == null) return child;
-                                    return Center(
-                                      child: SizedBox(
-                                        width: 24,
-                                        height: 24,
-                                        child: CircularProgressIndicator(
-                                          strokeWidth: 2,
-                                          value: loadingProgress.expectedTotalBytes != null
-                                              ? loadingProgress.cumulativeBytesLoaded /
-                                                    loadingProgress.expectedTotalBytes!
-                                              : null,
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                  errorBuilder: (context, error, stackTrace) => Container(
-                                    color: Colors.grey[200],
-                                    alignment: Alignment.center,
-                                    child: const Icon(
-                                      Icons.broken_image,
-                                      color: Colors.grey,
-                                      size: 48,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(height: 16),
+                        // SizedBox(height: 12),
+                        // Container(
+                        //   margin: EdgeInsets.symmetric(horizontal: 16),
+                        //   height: 80,
+                        //   decoration: BoxDecoration(
+                        //     gradient: LinearGradient(
+                        //       begin: Alignment.bottomRight,
+                        //       end: Alignment.topLeft,
+                        //       transform: const GradientRotation(
+                        //         128.49 * 3.1415926535 / 180,
+                        //       ), // 128.49° в радианы
+                        //       colors: [
+                        //         const Color(
+                        //           0xFF7D2DFF,
+                        //         ).withValues(alpha: .2), // rgba(125, 45, 255, 0.2)
+                        //         const Color(
+                        //           0xFF41DDFF,
+                        //         ).withValues(alpha: .2), // rgba(65, 221, 255, 0.2)
+                        //       ],
+                        //       stops: const [0.2685, 1.0], // 26.85% и 100%
+                        //     ),
+                        //     borderRadius: BorderRadius.circular(12),
+                        //   ),
+                        //   child: Row(
+                        //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        //     crossAxisAlignment: CrossAxisAlignment.center,
+                        //     children: [
+                        //       Padding(
+                        //         padding: const EdgeInsets.only(left: 16.0),
+                        //         child: Column(
+                        //           mainAxisAlignment: MainAxisAlignment.center,
+                        //           crossAxisAlignment: CrossAxisAlignment.start,
+                        //           children: [
+                        //             Text(
+                        //               '${widget.cats.name}',
+                        //               style: AppTextStyles.size16Weight600,
+                        //             ),
+                        //             Text(
+                        //               '${widget.cats.text}',
+                        //               style: AppTextStyles.size14Weight400,
+                        //             ),
+                        //           ],
+                        //         ),
+                        //       ),
+                        //       Container(
+                        //         margin: const EdgeInsets.only(right: 10.0),
+                        //         child: Image.network(
+                        //           "https://lunamarket.ru/storage/${widget.cats.image}",
+                        //           fit: BoxFit.cover,
+                        //           loadingBuilder: (context, child, loadingProgress) {
+                        //             if (loadingProgress == null) return child;
+                        //             return Center(
+                        //               child: SizedBox(
+                        //                 width: 24,
+                        //                 height: 24,
+                        //                 child: CircularProgressIndicator(
+                        //                   strokeWidth: 2,
+                        //                   value: loadingProgress.expectedTotalBytes != null
+                        //                       ? loadingProgress.cumulativeBytesLoaded /
+                        //                             loadingProgress.expectedTotalBytes!
+                        //                       : null,
+                        //                 ),
+                        //               ),
+                        //             );
+                        //           },
+                        //           errorBuilder: (context, error, stackTrace) => Container(
+                        //             color: Colors.grey[200],
+                        //             alignment: Alignment.center,
+                        //             child: const Icon(
+                        //               Icons.broken_image,
+                        //               color: Colors.grey,
+                        //               size: 48,
+                        //             ),
+                        //           ),
+                        //         ),
+                        //       ),
+                        //     ],
+                        //   ),
+                        // ),
+                        const SizedBox(height: 8),
                         SizedBox(
-                          height: 80,
+                          height: 124,
                           child: ListView.builder(
                             scrollDirection: Axis.horizontal,
-                            itemCount: brands.length,
+                            itemCount: subCats.length,
                             padding: const EdgeInsets.symmetric(horizontal: 16),
                             itemBuilder: (context, index) {
                               return GestureDetector(
                                 onTap: () {
                                   final filters = context.read<FilterProvider>();
 
-                                  if (brand?.id == brands[index].id) {
-                                    brand = null;
-                                    GetStorage().remove('brandFilterId');
-                                    BlocProvider.of<product_cubit.ProductCubit>(
-                                      context,
-                                    ).products(filters);
-                                    setState(() {});
-
-                                    return;
+                                  if (subCat?.id == subCats[index].id) {
+                                    subCat = null;
+                                    filters.resetSubCats();
+                                  } else {
+                                    filters.setSubCats([subCats[index].id!]);
+                                    subCat = subCats[index];
                                   }
 
-                                  List<int> ids = [];
-
-                                  ids.add(brands[index].id!);
-
-                                  GetStorage().write('brandFilterId', ids.toString());
                                   BlocProvider.of<product_cubit.ProductCubit>(
                                     context,
                                   ).products(filters);
-                                  brand = brands[index];
                                   setState(() {});
                                 },
                                 child: Padding(
                                   padding: const EdgeInsets.only(
-                                    right: 8,
+                                    right: 16,
                                   ), // Отступ между элементами
-                                  child: Stack(
-                                    children: [
-                                      Container(
-                                        height: 64,
-                                        width: 64,
-                                        alignment: Alignment.center,
-                                        decoration: BoxDecoration(
-                                          image: DecorationImage(
-                                            image: brands[index].icon != null
-                                                ? NetworkImage(
-                                                    "https://lunamarket.ru/storage/${brands[index].icon}",
-                                                  )
-                                                : const AssetImage('assets/icons/profile2.png')
-                                                      as ImageProvider,
-                                            fit: BoxFit.cover,
+                                  child: SizedBox(
+                                    width: 64,
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      children: [
+                                        Container(
+                                          height: 64,
+                                          width: 64,
+                                          alignment: Alignment.center,
+                                          decoration: BoxDecoration(
+                                            image: DecorationImage(
+                                              image: brands[index].icon != null
+                                                  ? NetworkImage(
+                                                      "https://lunamarket.ru/storage/${subCats[index].icon}",
+                                                    )
+                                                  : const AssetImage('assets/icons/profile2.png')
+                                                        as ImageProvider,
+                                              fit: BoxFit.cover,
+                                            ),
+                                            color: AppColors.mainBackgroundPurpleColor,
+                                            borderRadius: BorderRadius.circular(16),
+                                            border: Border.all(
+                                              // Добавляем границу
+                                              color: subCat?.id == subCats[index].id
+                                                  ? AppColors.mainPurpleColor
+                                                  : Colors.transparent, // Цвет границы
+                                              width: 1.0, // Толщина границы
+                                            ),
                                           ),
-                                          color: AppColors.mainBackgroundPurpleColor,
-                                          border: Border.all(
-                                            // Добавляем границу
-                                            color: brand?.id == brands[index].id
-                                                ? AppColors.mainPurpleColor
-                                                : AppColors.purpleBorder, // Цвет границы
-                                            width: 1.0, // Толщина границы
-                                          ),
-                                          shape: BoxShape
-                                              .circle, // Используем shape вместо borderRadius для идеального круга
                                         ),
-                                      ),
-                                      brand?.id == brands[index].id
-                                          ? Positioned(
-                                              bottom: 16,
-                                              right: 2,
-                                              child: Image.asset(
-                                                Assets.icons.brandSelectIcon.path,
-                                                height: 18,
-                                                width: 18,
-                                              ),
-                                            )
-                                          : SizedBox.shrink(),
-                                    ],
+                                        SizedBox(height: 8),
+                                        Text(
+                                          subCats[index].name ?? '',
+                                          maxLines: 2,
+                                          textAlign: TextAlign.center,
+                                          style: AppTextStyles.size13Weight500.copyWith(
+                                            color: subCat?.id == subCats[index].id
+                                                ? AppColors.mainPurpleColor
+                                                : Colors.black,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
                               );
                             },
                           ),
                         ),
-                        SizedBox(height: 6),
-                        InkWell(
-                          onTap: () {
-                            final filters = context.read<FilterProvider>();
-                            showListBrandsOptions(
-                              context,
-                              'Подкатегории',
-                              'params',
-                              subCats,
-                              subCat?.id ?? -1,
-                              (CatsModel value) {
-                                if (subCat?.name == value.name || value.id == 0) {
-                                  subCat = null;
-                                  filters.resetSubCats();
-                                } else {
-                                  filters.setSubCats([value.id!]);
-                                  subCat = value;
-                                }
-                                setState(() {});
 
-                                BlocProvider.of<product_cubit.ProductCubit>(
-                                  context,
-                                ).products(filters);
-                              },
-                            );
-                          },
-                          child: Container(
-                            margin: EdgeInsets.symmetric(horizontal: 16),
-                            height: 40,
-                            decoration: BoxDecoration(
-                              color: Color(0xffF7F7F7),
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                SizedBox(width: 8),
-                                Image.asset(Assets.icons.subListIcon.path, height: 20, width: 20),
-                                SizedBox(width: 8),
-                                Text(
-                                  subCat?.name ?? 'Подкатегории',
-                                  style: AppTextStyles.size16Weight500,
-                                ),
-                                Spacer(),
-                                Padding(
-                                  padding: const EdgeInsets.only(right: 10.0),
-                                  child: Icon(
-                                    Icons.arrow_forward_ios,
-                                    size: 16,
-                                    color: AppColors.kGray300,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        SizedBox(height: 16),
-                        Container(
-                          height: 40,
-                          alignment: Alignment.centerLeft,
-                          padding: const EdgeInsets.only(left: 16),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                          child: ListView(
-                            padding: EdgeInsets.zero,
-                            scrollDirection: Axis.horizontal,
-                            children: [
-                              InkWell(
-                                onTap: () {
-                                  final filters = context.read<FilterProvider>();
+                        // const SizedBox(height: 16),
+                        // SizedBox(
+                        //   height: 80,
+                        //   child: ListView.builder(
+                        //     scrollDirection: Axis.horizontal,
+                        //     itemCount: brands.length,
+                        //     padding: const EdgeInsets.symmetric(horizontal: 16),
+                        //     itemBuilder: (context, index) {
+                        //       return GestureDetector(
+                        //         onTap: () {
+                        //           final filters = context.read<FilterProvider>();
 
-                                  final List<CatsModel> sorts = [
-                                    CatsModel(id: 1, name: 'Популярные'),
-                                    CatsModel(id: 2, name: 'Новинки'),
-                                    CatsModel(id: 3, name: 'Сначала дешевые'),
-                                    CatsModel(id: 4, name: 'Сначала дорогие'),
-                                    CatsModel(id: 5, name: 'Высокий рейтинг'),
-                                  ];
+                        //           if (brand?.id == brands[index].id) {
+                        //             brand = null;
+                        //             GetStorage().remove('brandFilterId');
+                        //             BlocProvider.of<product_cubit.ProductCubit>(
+                        //               context,
+                        //             ).products(filters);
+                        //             setState(() {});
 
-                                  showListBrandsOptions(
-                                    context,
-                                    'Сортировка',
-                                    'params',
-                                    sorts,
-                                    selectedSortIndex,
-                                    (CatsModel value) {
-                                      if (value.id != 0) {
-                                        selectedSortIndex = value.id!;
-                                        String sortKey = '';
-                                        switch (value.name) {
-                                          case 'Популярные':
-                                            sortKey = 'orderByPopular';
+                        //             return;
+                        //           }
 
-                                            break;
-                                          case 'Новинки':
-                                            sortKey = 'orderByNew';
-                                            break;
-                                          case 'Сначала дешевые':
-                                            sortKey = 'priceAsc';
-                                            break;
-                                          case 'Сначала дорогие':
-                                            sortKey = 'priceDesc';
-                                            break;
-                                          case 'Высокий рейтинг':
-                                            sortKey = 'rating';
-                                            break;
-                                          default:
-                                            TalkerLoggerUtil.talker.error("число не равно 1, 2, 3");
-                                        }
+                        //           List<int> ids = [];
 
-                                        filters.setSort(sortKey);
-                                        sortIcon = true;
-                                      } else {
-                                        sortIcon = false;
-                                        selectedSortIndex = -1;
-                                      }
+                        //           ids.add(brands[index].id!);
 
-                                      setState(() {});
+                        //           GetStorage().write('brandFilterId', ids.toString());
+                        //           BlocProvider.of<product_cubit.ProductCubit>(
+                        //             context,
+                        //           ).products(filters);
+                        //           brand = brands[index];
+                        //           setState(() {});
+                        //         },
+                        //         child: Padding(
+                        //           padding: const EdgeInsets.only(
+                        //             right: 8,
+                        //           ), // Отступ между элементами
+                        //           child: Stack(
+                        //             children: [
+                        //               Container(
+                        //                 height: 64,
+                        //                 width: 64,
+                        //                 alignment: Alignment.center,
+                        //                 decoration: BoxDecoration(
+                        //                   image: DecorationImage(
+                        //                     image: brands[index].icon != null
+                        //                         ? NetworkImage(
+                        //                             "https://lunamarket.ru/storage/${brands[index].icon}",
+                        //                           )
+                        //                         : const AssetImage('assets/icons/profile2.png')
+                        //                               as ImageProvider,
+                        //                     fit: BoxFit.cover,
+                        //                   ),
+                        //                   color: AppColors.mainBackgroundPurpleColor,
+                        //                   border: Border.all(
+                        //                     // Добавляем границу
+                        //                     color: brand?.id == brands[index].id
+                        //                         ? AppColors.mainPurpleColor
+                        //                         : AppColors.purpleBorder, // Цвет границы
+                        //                     width: 1.0, // Толщина границы
+                        //                   ),
+                        //                   shape: BoxShape
+                        //                       .circle, // Используем shape вместо borderRadius для идеального круга
+                        //                 ),
+                        //               ),
+                        //               brand?.id == brands[index].id
+                        //                   ? Positioned(
+                        //                       bottom: 16,
+                        //                       right: 2,
+                        //                       child: Image.asset(
+                        //                         Assets.icons.brandSelectIcon.path,
+                        //                         height: 18,
+                        //                         width: 18,
+                        //                       ),
+                        //                     )
+                        //                   : SizedBox.shrink(),
+                        //             ],
+                        //           ),
+                        //         ),
+                        //       );
+                        //     },
+                        //   ),
+                        // ),
+                        // SizedBox(height: 6),
+                        // InkWell(
+                        //   onTap: () {
+                        //     final filters = context.read<FilterProvider>();
+                        //     showListBrandsOptions(
+                        //       context,
+                        //       'Подкатегории',
+                        //       'params',
+                        //       subCats,
+                        //       subCat?.id ?? -1,
+                        //       (CatsModel value) {
+                        //         if (subCat?.name == value.name || value.id == 0) {
+                        //           subCat = null;
+                        //           filters.resetSubCats();
+                        //         } else {
+                        //           filters.setSubCats([value.id!]);
+                        //           subCat = value;
+                        //         }
+                        //         setState(() {});
 
-                                      BlocProvider.of<product_cubit.ProductCubit>(
-                                        context,
-                                      ).products(filters);
-                                    },
-                                  );
-                                },
-                                child: Stack(
-                                  children: [
-                                    Container(
-                                      height: 36,
-                                      width: 40,
-                                      alignment: Alignment.center,
-                                      decoration: BoxDecoration(
-                                        color: AppColors.kGray1,
-                                        borderRadius: BorderRadius.circular(12),
-                                      ),
-                                      child: SizedBox(
-                                        height: 10,
-                                        width: 15,
-                                        child: Image.asset(
-                                          Assets.icons.upDownIcon.path,
-                                          height: 10,
-                                          width: 15,
-                                        ),
-                                      ),
-                                    ),
-                                    sortIcon == true
-                                        ? Positioned(
-                                            top: 10,
-                                            right: 10,
-                                            child: Icon(Icons.circle, size: 7, color: Colors.red),
-                                          )
-                                        : SizedBox.shrink(),
-                                  ],
-                                ),
-                              ),
-                              const SizedBox(width: 6),
-                              InkWell(
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => FilterPage(shopId: widget.shopId),
-                                    ),
-                                  );
-                                  filterIcon = true;
-                                  setState(() {});
-                                },
-                                child: Stack(
-                                  children: [
-                                    Container(
-                                      height: 36,
-                                      width: 40,
-                                      alignment: Alignment.center,
-                                      decoration: BoxDecoration(
-                                        color: AppColors.kGray1,
-                                        borderRadius: BorderRadius.circular(12),
-                                      ),
-                                      child: SizedBox(
-                                        height: 11.5,
-                                        width: 15,
-                                        child: Image.asset(
-                                          Assets.icons.filterBlackIcon.path,
-                                          color: Colors.black,
-                                          fit: BoxFit.cover,
-                                        ),
-                                      ),
-                                    ),
-                                    filterIcon == true
-                                        ? Positioned(
-                                            top: 10,
-                                            right: 10,
-                                            child: Icon(Icons.circle, size: 7, color: Colors.red),
-                                          )
-                                        : SizedBox.shrink(),
-                                  ],
-                                ),
-                              ),
-                              const SizedBox(width: 8),
-                              InkWell(
-                                onTap: () {
-                                  final filters = context.read<FilterProvider>();
-
-                                  final List<CatsModel> sorts = [
-                                    CatsModel(id: 1, name: 'Сегодня,завтра'),
-                                    CatsModel(id: 2, name: 'До 2 дней'),
-                                    CatsModel(id: 3, name: 'До 5 дней'),
-                                    CatsModel(id: 4, name: 'До 7 дней'),
-                                  ];
-
-                                  showListBrandsOptions(
-                                    context,
-                                    'Доставка',
-                                    'params',
-                                    sorts,
-                                    selectedDelliveryIndex,
-                                    (CatsModel value) {
-                                      selectedDelliveryIndex = value.id ?? -1;
-
-                                      String delliveryKey = '';
-
-                                      switch (value.name) {
-                                        case 'Сегодня,завтра':
-                                          delliveryKey = 'one_day';
-                                          selectedDelliveryText = 'Сегодня,завтра';
-
-                                          break;
-                                        case 'До 2 дней':
-                                          delliveryKey = 'two_day';
-                                          selectedDelliveryText = 'До 2 дней';
-
-                                          break;
-                                        case 'До 5 дней':
-                                          delliveryKey = 'three_day';
-                                          selectedDelliveryText = 'До 5 дней';
-                                          break;
-                                        case 'До 7 дней':
-                                          delliveryKey = 'seven_day';
-                                          selectedDelliveryText = 'До 7 дней';
-                                          break;
-
-                                        default:
-                                          delliveryKey = '';
-                                          selectedDelliveryText = null;
-                                      }
-
-                                      setState(() {});
-                                      filters.setDelivery(delliveryKey);
-                                      BlocProvider.of<product_cubit.ProductCubit>(
-                                        context,
-                                      ).products(filters);
-                                    },
-                                  );
-                                },
-                                child: Container(
-                                  height: 36,
-                                  alignment: Alignment.center,
-                                  decoration: BoxDecoration(
-                                    color: AppColors.kGray1,
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          selectedDelliveryText ?? 'Доставка',
-                                          style: AppTextStyles.size14Weight400.copyWith(
-                                            color: selectedDelliveryText != null
-                                                ? AppColors.mainPurpleColor
-                                                : null,
-                                            fontWeight: selectedDelliveryText != null
-                                                ? FontWeight.w500
-                                                : null,
-                                          ),
-                                        ),
-                                        SizedBox(width: 8),
-                                        SizedBox(
-                                          height: 6,
-                                          width: 12,
-                                          child: Image.asset(
-                                            Assets.icons.dropDownIcon.path,
-                                            color: selectedDelliveryText != null
-                                                ? AppColors.mainPurpleColor
-                                                : null,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(width: 8),
-                              InkWell(
-                                onTap: () {
-                                  final filters = context.read<FilterProvider>();
-                                  showFiltrPriceOptions(context, 'Цена,₸', (value) {
-                                    setState(() {
-                                      filterPriceLabel = value;
-                                    });
-                                    Navigator.pop(context);
-
-                                    BlocProvider.of<product_cubit.ProductCubit>(
-                                      context,
-                                    ).products(filters);
-                                  });
-                                },
-                                child: Container(
-                                  height: 36,
-                                  // width: 80,
-                                  alignment: Alignment.center,
-                                  decoration: BoxDecoration(
-                                    color: AppColors.kGray1,
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          filterPriceLabel ?? 'Цена',
-                                          style: AppTextStyles.size14Weight500.copyWith(
-                                            color: (filterPriceLabel != null)
-                                                ? AppColors.mainPurpleColor
-                                                : AppColors.kLightBlackColor,
-                                            fontWeight: (filterPriceLabel != null)
-                                                ? FontWeight.w500
-                                                : null,
-                                          ),
-                                        ),
-                                        SizedBox(width: 8),
-                                        SizedBox(
-                                          height: 6,
-                                          width: 12,
-                                          child: Image.asset(
-                                            Assets.icons.dropDownIcon.path,
-                                            color: (filterPriceLabel != null)
-                                                ? AppColors.mainPurpleColor
-                                                : null,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(width: 6),
-                            ],
-                          ),
-                        ),
+                        //         BlocProvider.of<product_cubit.ProductCubit>(
+                        //           context,
+                        //         ).products(filters);
+                        //       },
+                        //     );
+                        //   },
+                        //   child: Container(
+                        //     margin: EdgeInsets.symmetric(horizontal: 16),
+                        //     height: 40,
+                        //     decoration: BoxDecoration(
+                        //       color: Color(0xffF7F7F7),
+                        //       borderRadius: BorderRadius.circular(12),
+                        //     ),
+                        //     child: Row(
+                        //       crossAxisAlignment: CrossAxisAlignment.center,
+                        //       mainAxisAlignment: MainAxisAlignment.start,
+                        //       children: [
+                        //         SizedBox(width: 8),
+                        //         Image.asset(Assets.icons.subListIcon.path, height: 20, width: 20),
+                        //         SizedBox(width: 8),
+                        //         Text(
+                        //           subCat?.name ?? 'Подкатегории',
+                        //           style: AppTextStyles.size16Weight500,
+                        //         ),
+                        //         Spacer(),
+                        //         Padding(
+                        //           padding: const EdgeInsets.only(right: 10.0),
+                        //           child: Icon(
+                        //             Icons.arrow_forward_ios,
+                        //             size: 16,
+                        //             color: AppColors.kGray300,
+                        //           ),
+                        //         ),
+                        //       ],
+                        //     ),
+                        //   ),
+                        // ),
+                        // SizedBox(height: 16),
                       ],
                     ),
                   ),
                 ),
               ),
             ),
+            SliverToBoxAdapter(child: SizedBox(height: 16)),
+            SliverToBoxAdapter(
+              child: Container(
+                height: 68,
+                alignment: Alignment.centerLeft,
+                padding: const EdgeInsets.only(left: 16, top: 16, bottom: 16),
+                color: AppColors.kWhite,
+                child: ListView(
+                  padding: EdgeInsets.zero,
+                  scrollDirection: Axis.horizontal,
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        final filters = context.read<FilterProvider>();
+
+                        final List<CatsModel> sorts = [
+                          CatsModel(id: 1, name: 'Популярные'),
+                          CatsModel(id: 2, name: 'Новинки'),
+                          CatsModel(id: 3, name: 'Сначала дешевые'),
+                          CatsModel(id: 4, name: 'Сначала дорогие'),
+                          CatsModel(id: 5, name: 'Высокий рейтинг'),
+                        ];
+
+                        showListBrandsOptions(
+                          context,
+                          'Сортировка',
+                          'params',
+                          sorts,
+                          selectedSortIndex,
+                          (CatsModel value) {
+                            if (value.id != 0) {
+                              selectedSortIndex = value.id!;
+                              String sortKey = '';
+                              switch (value.name) {
+                                case 'Популярные':
+                                  sortKey = 'orderByPopular';
+
+                                  break;
+                                case 'Новинки':
+                                  sortKey = 'orderByNew';
+                                  break;
+                                case 'Сначала дешевые':
+                                  sortKey = 'priceAsc';
+                                  break;
+                                case 'Сначала дорогие':
+                                  sortKey = 'priceDesc';
+                                  break;
+                                case 'Высокий рейтинг':
+                                  sortKey = 'rating';
+                                  break;
+                                default:
+                                  TalkerLoggerUtil.talker.error("число не равно 1, 2, 3");
+                              }
+
+                              filters.setSort(sortKey);
+                              sortIcon = true;
+                            } else {
+                              sortIcon = false;
+                              selectedSortIndex = -1;
+                            }
+
+                            setState(() {});
+
+                            BlocProvider.of<product_cubit.ProductCubit>(context).products(filters);
+                          },
+                        );
+                      },
+                      child: Stack(
+                        children: [
+                          Container(
+                            height: 36,
+                            width: 40,
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                              color: AppColors.kGray1,
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: SizedBox(
+                              height: 10,
+                              width: 15,
+                              child: Image.asset(
+                                Assets.icons.upDownIcon.path,
+                                height: 10,
+                                width: 15,
+                              ),
+                            ),
+                          ),
+                          sortIcon == true
+                              ? Positioned(
+                                  top: 10,
+                                  right: 10,
+                                  child: Icon(Icons.circle, size: 7, color: Colors.red),
+                                )
+                              : SizedBox.shrink(),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(width: 6),
+                    InkWell(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => FilterPage(shopId: widget.shopId),
+                          ),
+                        );
+                        filterIcon = true;
+                        setState(() {});
+                      },
+                      child: Stack(
+                        children: [
+                          Container(
+                            height: 36,
+                            width: 40,
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                              color: AppColors.kGray1,
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: SizedBox(
+                              height: 11.5,
+                              width: 15,
+                              child: Image.asset(
+                                Assets.icons.filterBlackIcon.path,
+                                color: Colors.black,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                          filterIcon == true
+                              ? Positioned(
+                                  top: 10,
+                                  right: 10,
+                                  child: Icon(Icons.circle, size: 7, color: Colors.red),
+                                )
+                              : SizedBox.shrink(),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    InkWell(
+                      onTap: () {
+                        final filters = context.read<FilterProvider>();
+
+                        final List<CatsModel> sorts = [
+                          CatsModel(id: 1, name: 'Сегодня,завтра'),
+                          CatsModel(id: 2, name: 'До 2 дней'),
+                          CatsModel(id: 3, name: 'До 5 дней'),
+                          CatsModel(id: 4, name: 'До 7 дней'),
+                        ];
+
+                        showListBrandsOptions(
+                          context,
+                          'Доставка',
+                          'params',
+                          sorts,
+                          selectedDelliveryIndex,
+                          (CatsModel value) {
+                            selectedDelliveryIndex = value.id ?? -1;
+
+                            String delliveryKey = '';
+
+                            switch (value.name) {
+                              case 'Сегодня,завтра':
+                                delliveryKey = 'one_day';
+                                selectedDelliveryText = 'Сегодня,завтра';
+
+                                break;
+                              case 'До 2 дней':
+                                delliveryKey = 'two_day';
+                                selectedDelliveryText = 'До 2 дней';
+
+                                break;
+                              case 'До 5 дней':
+                                delliveryKey = 'three_day';
+                                selectedDelliveryText = 'До 5 дней';
+                                break;
+                              case 'До 7 дней':
+                                delliveryKey = 'seven_day';
+                                selectedDelliveryText = 'До 7 дней';
+                                break;
+
+                              default:
+                                delliveryKey = '';
+                                selectedDelliveryText = null;
+                            }
+
+                            setState(() {});
+                            filters.setDelivery(delliveryKey);
+                            BlocProvider.of<product_cubit.ProductCubit>(context).products(filters);
+                          },
+                        );
+                      },
+                      child: Container(
+                        height: 36,
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          color: AppColors.kGray1,
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                selectedDelliveryText ?? 'Доставка',
+                                style: AppTextStyles.size14Weight400.copyWith(
+                                  color: selectedDelliveryText != null
+                                      ? AppColors.mainPurpleColor
+                                      : null,
+                                  fontWeight: selectedDelliveryText != null
+                                      ? FontWeight.w500
+                                      : null,
+                                ),
+                              ),
+                              SizedBox(width: 8),
+                              SizedBox(
+                                height: 6,
+                                width: 12,
+                                child: Image.asset(
+                                  Assets.icons.dropDownIcon.path,
+                                  color: selectedDelliveryText != null
+                                      ? AppColors.mainPurpleColor
+                                      : null,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    InkWell(
+                      onTap: () {
+                        final filters = context.read<FilterProvider>();
+                        showFiltrPriceOptions(context, 'Цена,₸', (value) {
+                          setState(() {
+                            filterPriceLabel = value;
+                          });
+                          Navigator.pop(context);
+
+                          BlocProvider.of<product_cubit.ProductCubit>(context).products(filters);
+                        });
+                      },
+                      child: Container(
+                        height: 36,
+                        // width: 80,
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          color: AppColors.kGray1,
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                filterPriceLabel ?? 'Цена',
+                                style: AppTextStyles.size14Weight500.copyWith(
+                                  color: (filterPriceLabel != null)
+                                      ? AppColors.mainPurpleColor
+                                      : AppColors.kLightBlackColor,
+                                  fontWeight: (filterPriceLabel != null) ? FontWeight.w500 : null,
+                                ),
+                              ),
+                              SizedBox(width: 8),
+                              SizedBox(
+                                height: 6,
+                                width: 12,
+                                child: Image.asset(
+                                  Assets.icons.dropDownIcon.path,
+                                  color: (filterPriceLabel != null)
+                                      ? AppColors.mainPurpleColor
+                                      : null,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+
+                    const SizedBox(width: 6),
+                    InkWell(
+                      onTap: () {
+                        final filters = context.read<FilterProvider>();
+                        showListBrandsOptions(
+                          context,
+                          'Бренды',
+                          'params',
+                          brands,
+                          brand?.id ?? -1,
+                          (CatsModel value) {
+                            if (brand?.name == value.name || value.id == 0) {
+                              brand = null;
+                              filters.resetBrands();
+                            } else {
+                              filters.setBrands([value.id!]);
+                              brand = value;
+                            }
+                            setState(() {});
+
+                            BlocProvider.of<product_cubit.ProductCubit>(context).products(filters);
+                          },
+                        );
+                      },
+                      child: Container(
+                        height: 36,
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          color: AppColors.kGray1,
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                brand?.name ?? 'Бренд',
+                                style: AppTextStyles.size14Weight500.copyWith(
+                                  color: (filterPriceLabel != null)
+                                      ? AppColors.mainPurpleColor
+                                      : AppColors.kLightBlackColor,
+                                  fontWeight: (filterPriceLabel != null) ? FontWeight.w500 : null,
+                                ),
+                              ),
+                              SizedBox(width: 8),
+                              SizedBox(
+                                height: 6,
+                                width: 12,
+                                child: Image.asset(
+                                  Assets.icons.dropDownIcon.path,
+                                  color: (filterPriceLabel != null)
+                                      ? AppColors.mainPurpleColor
+                                      : null,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+
             const ProductWidget(),
           ],
         ),

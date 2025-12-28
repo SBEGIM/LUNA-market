@@ -9,8 +9,6 @@ void showOrderUncancel(
   List<String> options,
   Function(String) callback,
 ) {
-  int selectedIndex = -1;
-
   showMaterialModalBottomSheet(
     context: context,
     expand: false,
@@ -67,7 +65,6 @@ void showOrderUncancel(
                       SizedBox(height: 10),
                       Text('Этот заказ нельзя отменить', style: AppTextStyles.size18Weight700),
                       SizedBox(height: 2),
-
                       Flexible(
                         child: Text(
                           'Он уже в пути или передаётся в доставку. Вы можете не забирать покупки из пункта выдачи или у курьера. Обычно после отмены деньги зачисляются в течение 3 дней',
@@ -86,15 +83,10 @@ void showOrderUncancel(
                     width: double.infinity,
                     height: 52,
                     child: ElevatedButton(
-                      onPressed: selectedIndex == -1
-                          ? null
-                          : () {
-                              callback.call(options[selectedIndex]);
-                              Navigator.pop(ctx);
-                            },
+                      onPressed: () => Navigator.pop(ctx),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.mainPurpleColor,
-                        disabledBackgroundColor: AppColors.mainPurpleColor.withOpacity(0.5),
+                        disabledBackgroundColor: AppColors.mainPurpleColor,
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                         padding: EdgeInsets.zero,
                         tapTargetSize: MaterialTapTargetSize.shrinkWrap,
