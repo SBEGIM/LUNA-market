@@ -108,10 +108,7 @@ class ProfileEditAdminToApi {
     String? company_name,
     String? legal_address,
   ) async {
-    // seller_name = _box.read('seller_name').toString();
     final token = _box.read('seller_token').toString();
-
-    print('token ${token}');
 
     final body = {
       'token': token,

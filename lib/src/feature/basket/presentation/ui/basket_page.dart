@@ -6,11 +6,9 @@ import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/core/presentation/widgets/shimmer/shimmer_box.dart';
 import 'package:haji_market/src/feature/app/router/app_router.dart';
-import 'package:haji_market/src/feature/app/widgets/app_snack_bar.dart';
 import 'package:haji_market/src/feature/basket/data/models/basket_show_model.dart';
 import 'package:haji_market/src/feature/basket/presentation/widgets/basket_card_widget.dart';
 import 'package:haji_market/src/feature/basket/presentation/widgets/show_alert_basket_widget.dart';
-import 'package:haji_market/src/feature/tape/presentation/widgets/show_alert_report_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:share_plus/share_plus.dart';
@@ -256,7 +254,7 @@ class _BasketPageState extends State<BasketPage> {
                               primaryColor: Colors.red,
                             );
 
-                            if(!context.mounted) return;
+                            if (!context.mounted) return;
 
                             if (ok == true) {
                               await BlocProvider.of<BasketCubit>(
