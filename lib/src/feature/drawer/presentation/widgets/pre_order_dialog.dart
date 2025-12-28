@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/route_manager.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/feature/drawer/presentation/widgets/metas_webview.dart';
 import 'package:haji_market/src/feature/home/bloc/meta_cubit.dart';
@@ -56,7 +55,11 @@ class _PreOrderDialogState extends State<PreOrderDialog> {
                   ),
                   TextSpan(
                     recognizer: TapGestureRecognizer()
-                      ..onTap = () => Get.to(() => MetasPage(title: metas[3], body: metasBody[3])),
+                      ..onTap = () => Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (_) => MetasPage(title: metas[3], body: metasBody[3]),
+                            ),
+                          ),
                     text: 'типового договора купли продажи',
                     style: const TextStyle(
                       color: AppColors.kPrimaryColor,

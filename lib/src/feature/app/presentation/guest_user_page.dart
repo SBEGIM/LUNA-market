@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/feature/app/bloc/app_bloc.dart';
@@ -8,6 +9,7 @@ import 'package:haji_market/src/feature/auth/presentation/widgets/default_button
 import 'package:haji_market/src/feature/tape/bloc/tape_cubit.dart';
 import '../../../core/constant/generated/assets.gen.dart';
 
+@RoutePage()
 class GuestUserPage extends StatefulWidget {
   const GuestUserPage({super.key});
 
@@ -66,7 +68,7 @@ class _GuestUserPageState extends State<GuestUserPage> {
 
                 GetStorage().write('user_guest', false);
 
-                Navigator.pop(context);
+                context.router.pop();
 
                 context.read<AppBloc>().add(const AppEvent.switchState(key: false));
               },
@@ -90,7 +92,9 @@ class _GuestUserPageState extends State<GuestUserPage> {
                   login.lateAuth();
 
                   context.read<TapeCubit>().tapes(false, false, '', 0);
-                  Navigator.pop(context);
+                  if (context.mounted) {
+                    context.router.pop();
+                  }
                   context.read<AppBloc>().add(const AppEvent.switchState(key: true));
                 },
                 child: Text(

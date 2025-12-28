@@ -64,7 +64,6 @@ class _SubCatalogPageState extends State<SubCatalogPage> {
         leading: IconButton(
           onPressed: () {
             context.router.pop();
-            // Get.to(Base(index: 1));
           },
           icon: Icon(Icons.arrow_back_ios_new),
         ),

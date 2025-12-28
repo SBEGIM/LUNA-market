@@ -6,11 +6,9 @@ import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/core/presentation/widgets/shimmer/shimmer_box.dart';
 import 'package:haji_market/src/feature/app/router/app_router.dart';
-import 'package:haji_market/src/feature/app/widgets/app_snack_bar.dart';
 import 'package:haji_market/src/feature/basket/data/models/basket_show_model.dart';
 import 'package:haji_market/src/feature/basket/presentation/widgets/basket_card_widget.dart';
 import 'package:haji_market/src/feature/basket/presentation/widgets/show_alert_basket_widget.dart';
-import 'package:haji_market/src/feature/tape/presentation/widgets/show_alert_report_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:share_plus/share_plus.dart';
@@ -19,7 +17,7 @@ import '../../bloc/basket_state.dart';
 
 @RoutePage()
 class BasketPage extends StatefulWidget {
-  const BasketPage({Key? key}) : super(key: key);
+  const BasketPage({super.key});
 
   @override
   State<BasketPage> createState() => _BasketPageState();
@@ -105,7 +103,7 @@ class _BasketPageState extends State<BasketPage> {
       deleveryDay = element.deliveryDay != null ? element.deliveryDay.toString() : '';
 
       productNames =
-          "${productNames != null ? "${productNames} ," : ''}  $kDeepLinkUrl/?product_id\u003d${element.product!.id}";
+          "${productNames != null ? "$productNames ," : ''}  $kDeepLinkUrl/?product_id\u003d${element.product!.id}";
     }
 
     GetStorage().write('bottomCount', count);
@@ -255,6 +253,8 @@ class _BasketPageState extends State<BasketPage> {
                               primaryText: 'Да',
                               primaryColor: Colors.red,
                             );
+
+                            if (!context.mounted) return;
 
                             if (ok == true) {
                               await BlocProvider.of<BasketCubit>(
@@ -569,19 +569,11 @@ class _BasketPageState extends State<BasketPage> {
                             context,
                           ).basketSelectProducts(isChecked.toList());
 
+                          if (!context.mounted) return;
+
                           context.router.push(BasketOrderAddressRoute(deleveryDay: deleveryDay));
 
                           isChecked.clear();
-                          // if (fulfillment != 'realFBS') {
-                          //   context.router.push(BasketOrderAddressRoute(
-                          //       deleveryDay: deleveryDay));
-                          // } else {
-                          //   context.router.push(BasketOrderRoute(
-                          //       fbs: fulfillment == 'FBS' ? true : false,
-                          //       address: '',
-                          //       fulfillment: fulfillment));
-                          // }
-                          // Get.to(const BasketOrderAddressPage())
                         } else {
                           await showBasketAlert(
                             context,

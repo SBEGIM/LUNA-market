@@ -1,7 +1,6 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/route_manager.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/src/feature/basket/presentation/widgets/show_alert_country_widget.dart';
 import 'package:haji_market/src/feature/drawer/bloc/country_cubit.dart';
@@ -127,18 +126,17 @@ class _SellerServicePage extends State<SellerServicePage> {
         services[0]['status'] = "Подключен";
         setState(() {});
 
-        Get.snackbar('Успешно', 'Пуш обновлен', backgroundColor: Colors.blueAccent);
+        _showSnack('Пуш обновлен');
       }
     });
 
     disposeOrganizationTypeToken = _box.listenKey('seller_type_organization', (value) {
       if (mounted) {
-        print(value);
         services[2]['isLoading'] = false;
         services[2]['status'] = "Подключен";
         setState(() {});
 
-        Get.snackbar('Успешно', 'Бан обновлен на ООО', backgroundColor: Colors.blueAccent);
+        _showSnack('Банк обновлен на ООО');
       }
     });
 
@@ -149,14 +147,23 @@ class _SellerServicePage extends State<SellerServicePage> {
   void dispose() {
     disposeListen?.call();
     disposeListenDeviceToken?.call();
+    disposeOrganizationTypeToken?.call();
     super.dispose();
   }
 
-  void _cdeKService() {
+  void _showSnack(String message) {
+    if (!mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
+  }
+
+  Future<void> _cdeKService() async {
     services[1]['isLoading'] = true;
     services[1]['status'] = "В процессе";
     setState(() {});
-    Future.wait([BlocProvider.of<CountryCubit>(context).country()]);
+    await BlocProvider.of<CountryCubit>(context).country();
+
+    if (!mounted) return;
+
     showAlertCountryWidget(context, () {}, true);
   }
 
@@ -173,7 +180,7 @@ class _SellerServicePage extends State<SellerServicePage> {
     services[2]['status'] = "В процессе";
     setState(() {});
 
-    Get.to(BankPage());
+    await Navigator.of(context).push(MaterialPageRoute(builder: (_) => BankPage()));
   }
 
   @override

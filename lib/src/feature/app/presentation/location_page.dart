@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:get/route_manager.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:haji_market/src/core/common/constants.dart';
-import 'package:haji_market/src/feature/app/presentation/geo_position_page.dart';
 import 'package:haji_market/src/feature/auth/presentation/widgets/default_button.dart';
+import 'package:haji_market/src/feature/app/router/app_router.dart';
 import '../../../core/constant/generated/assets.gen.dart';
 
+@RoutePage()
 class LocationPage extends StatefulWidget {
   const LocationPage({super.key});
 
@@ -54,7 +55,7 @@ class _LocationPageState extends State<LocationPage> {
                 height: 646,
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: Colors.black.withOpacity(0.1),
+                  color: Colors.black.withValues(alpha: .1),
                   borderRadius: BorderRadius.circular(16),
                 ),
                 child: Column(
@@ -74,7 +75,7 @@ class _LocationPageState extends State<LocationPage> {
                     Text(
                       'Пожалуйста, выберите страну:',
                       style: AppTextStyles.catalogTextStyle.copyWith(
-                        color: AppColors.kGray1.withOpacity(0.7),
+                        color: AppColors.kGray1.withValues(alpha: 0.7),
                         fontSize: 16,
                         fontWeight: FontWeight.w400,
                       ),
@@ -108,7 +109,7 @@ class _LocationPageState extends State<LocationPage> {
                                 alignment: Alignment.center,
                                 padding: const EdgeInsets.only(left: 16, right: 16),
                                 decoration: BoxDecoration(
-                                  color: Color(0xFFEAECED).withOpacity(0.1),
+                                  color: Color(0xFFEAECED).withValues(alpha: 0.1),
                                   borderRadius: BorderRadius.circular(16),
                                 ),
                                 child: Row(
@@ -155,7 +156,7 @@ class _LocationPageState extends State<LocationPage> {
                 text: 'Продолжить',
                 press: () {
                   if (_select != -1) {
-                    Get.off(GeoPositionPage(contryId: contryId, countryCode: contryCode));
+                    context.router.push(GeoPositionRoute(contryId: contryId, countryCode: contryCode));
                   }
                 },
                 color: AppColors.kLightBlackColor,

@@ -18,7 +18,6 @@ import 'package:haji_market/src/feature/product/cubit/product_cubit.dart' as pro
 import 'package:haji_market/src/feature/product/cubit/product_state.dart' as product_state;
 import 'package:haji_market/src/feature/product/data/model/product_model.dart';
 import 'package:haji_market/src/feature/product/provider/filter_provider.dart';
-import 'package:haji_market/src/feature/seller/order/presentation/widgets/show_module_order_seller_widget.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:timeline_tile/timeline_tile.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -26,10 +25,10 @@ import '../../../seller/order/bloc/order_status_seller_cubit.dart';
 import '../../../basket/bloc/basket_cubit.dart';
 
 class MyOrderStatusPage extends StatefulWidget {
-  int index;
-  BasketOrderModel basketOrder;
+  final int index;
+  final BasketOrderModel basketOrder;
 
-  MyOrderStatusPage({required this.index, required this.basketOrder, super.key});
+  const MyOrderStatusPage({required this.index, required this.basketOrder, super.key});
 
   @override
   State<MyOrderStatusPage> createState() => _MyOrderStatusPageState();
@@ -45,8 +44,6 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
   int segmentValue = 0;
 
   int rating = 0;
-
-  // BlocProvider.of<BasketCubit>(context).basketOrderShowPaginate(status: '');
 
   @override
   void initState() {

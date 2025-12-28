@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/route_manager.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/feature/seller/profile/presentation/widgets/reqirect_profile_page.dart';
 import '../../../../../core/constant/generated/assets.gen.dart';
@@ -34,21 +33,33 @@ class _EditProfilePageState extends State<EditProfilePage> {
               iconPath: Assets.icons.jurIcon.path,
               title: 'Юридические данные',
               onTap: () {
-                Get.to(ReqirectProfilePage(title: 'Юридические данные'));
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (_) => ReqirectProfilePage(title: 'Юридические данные'),
+                  ),
+                );
               },
             ),
             buildProfileItem(
               iconPath: Assets.icons.propsIcon.path,
               title: 'Реквизиты банка',
               onTap: () {
-                Get.to(ReqirectProfilePage(title: 'Реквизиты банка'));
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (_) => ReqirectProfilePage(title: 'Реквизиты банка'),
+                  ),
+                );
               },
             ),
             buildProfileItem(
               iconPath: Assets.icons.phoneIcon.path,
               title: 'Контактные данные',
               onTap: () {
-                Get.to(ReqirectProfilePage(title: 'Контактные данные'));
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (_) => ReqirectProfilePage(title: 'Контактные данные'),
+                  ),
+                );
               },
             ),
           ],

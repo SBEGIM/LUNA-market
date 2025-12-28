@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/core/utils/url_util.dart';
 import 'package:haji_market/src/feature/drawer/presentation/widgets/metas_webview.dart';
@@ -11,11 +9,11 @@ import 'package:haji_market/src/feature/home/bloc/meta_state.dart';
 import 'package:haji_market/src/feature/home/data/repository/popular_shops_repository.dart';
 
 class AdvertBottomSheet extends StatefulWidget {
-  String? url;
-  String? urlAdmin;
-  String? description;
+  final String? url;
+  final String? urlAdmin;
+  final String? description;
 
-  AdvertBottomSheet({this.url, this.description, this.urlAdmin, super.key});
+  const AdvertBottomSheet({this.url, this.description, this.urlAdmin, super.key});
 
   @override
   State<AdvertBottomSheet> createState() => _AdvertBottomSheetState();
@@ -68,7 +66,11 @@ class _AdvertBottomSheetState extends State<AdvertBottomSheet> {
                         if (widget.urlAdmin != null) {
                           UrlUtil.launch(context, url: widget.urlAdmin ?? '');
                         } else {
-                          Get.to(() => MetasPage(title: metas[4], body: metasBody[4]));
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (_) => MetasPage(title: metas[4], body: metasBody[4]),
+                            ),
+                          );
                         }
                       },
                       child: Container(
@@ -93,13 +95,7 @@ class _AdvertBottomSheetState extends State<AdvertBottomSheet> {
                         ),
                       ),
                     ),
-                    // const Text(
-                    //   'Мы помогаем нашим продавцам рассказать об их товарах на LUNA market.Для этого у нас есть разные способы продвижения. Узнать больше о рекламе на LUNA market',
-                    //   style: TextStyle(
-                    //       fontSize: 12,
-                    //       fontWeight: FontWeight.w400),
-                    //   textAlign: TextAlign.center,
-                    // ),
+
                     const SizedBox(height: 16),
                     Row(
                       children: [

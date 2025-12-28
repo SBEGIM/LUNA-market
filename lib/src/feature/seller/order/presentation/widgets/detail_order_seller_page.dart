@@ -1,7 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/route_manager.dart';
 import 'package:haji_market/src/feature/my_order/presentation/widget/show_module_order_seller_widget.dart';
 import 'package:haji_market/src/feature/seller/order/bloc/order_status_seller_cubit.dart';
 import 'package:haji_market/src/feature/seller/order/data/models/basket_order_seller_model.dart';
@@ -16,7 +15,7 @@ import '../../bloc/basket_seller_cubit.dart';
 @RoutePage()
 class DetailOrderSellerPage extends StatefulWidget implements AutoRouteWrapper {
   final BasketOrderSellerModel basketOrder;
-  const DetailOrderSellerPage({required this.basketOrder, Key? key}) : super(key: key);
+  const DetailOrderSellerPage({required this.basketOrder, super.key});
 
   @override
   Widget wrappedRoute(BuildContext context) {
@@ -632,7 +631,7 @@ class _DetailOrderSellerPageState extends State<DetailOrderSellerPage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  '${_basketOrder.user?.fullName ?? ''}',
+                                  _basketOrder.user?.fullName ?? '',
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                   style: AppTextStyles.size16Weight600,
@@ -640,12 +639,14 @@ class _DetailOrderSellerPageState extends State<DetailOrderSellerPage> {
                                 const SizedBox(height: 2),
                                 InkWell(
                                   onTap: () {
-                                    Get.to(
-                                      MessageSeller(
-                                        userId: _basketOrder.user!.id,
-                                        userName: _basketOrder.user!.fullName,
-                                        chatId: _basketOrder.chatId,
-                                        role: 'user',
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (_) => MessageSellerPage(
+                                          userId: _basketOrder.user!.id,
+                                          userName: _basketOrder.user!.fullName,
+                                          chatId: _basketOrder.chatId,
+                                          role: 'user',
+                                        ),
                                       ),
                                     );
                                   },
@@ -676,7 +677,11 @@ class _DetailOrderSellerPageState extends State<DetailOrderSellerPage> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      Get.to(DeliveryNoteSellerPage(basketOrder: _basketOrder));
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (_) => DeliveryNoteSellerPage(basketOrder: _basketOrder),
+                        ),
+                      );
                     },
                     child: SizedBox(
                       height: 35,

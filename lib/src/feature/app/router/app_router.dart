@@ -46,6 +46,9 @@ import 'package:haji_market/src/feature/seller/product/presentation/ui/map_selle
 import 'package:haji_market/src/feature/seller/product/presentation/ui/product_promotion_page.dart';
 import 'package:haji_market/src/feature/seller/product/presentation/ui/products_seller_page.dart';
 import 'package:haji_market/src/feature/seller/product/presentation/ui/success_seller_product_store_page.dart';
+import 'package:haji_market/src/feature/seller/promotion/model/seller_promotion.dart';
+import 'package:haji_market/src/feature/seller/promotion/presentation/pages/seller_promotion_editor_page.dart';
+import 'package:haji_market/src/feature/seller/promotion/presentation/pages/seller_promotions_page.dart';
 import 'package:haji_market/src/feature/seller/profile/presentation/ui/admin_profile_page.dart';
 import 'package:haji_market/src/feature/seller/profile/presentation/ui/tape_seller_page.dart';
 import 'package:haji_market/src/feature/seller/tape_admin/presentation/ui/tape_admin_page.dart';
@@ -56,6 +59,10 @@ import 'package:haji_market/src/feature/bloger/profile/presentation/ui/blogger_p
 import 'package:haji_market/src/feature/bloger/profile/presentation/ui/blogger_tape_profile_page.dart';
 import 'package:haji_market/src/feature/bloger/shop/presentation/ui/blog_shops_page.dart';
 import 'package:haji_market/src/feature/bloger/tape/presentation/ui/tape_blogger_page.dart';
+import 'package:haji_market/src/feature/app/presentation/geo_position_page.dart';
+import 'package:haji_market/src/feature/app/presentation/guest_user_page.dart';
+import 'package:haji_market/src/feature/app/presentation/location_page.dart';
+import 'package:haji_market/src/feature/chat/presentation/message.dart';
 import 'package:haji_market/src/feature/auth/presentation/ui/change_password.dart';
 import 'package:haji_market/src/feature/basket/data/DTO/map_geo_dto.dart';
 import 'package:haji_market/src/feature/basket/presentation/ui/basket_order_address_page.dart';
@@ -78,6 +85,7 @@ import 'package:haji_market/src/feature/home/presentation/ui/home_page.dart';
 import 'package:haji_market/src/feature/tape/bloc/tape_cubit.dart';
 import 'package:haji_market/src/feature/tape/presentation/ui/seller_tape_profile_page.dart';
 import 'package:haji_market/src/feature/tape/presentation/ui/tape_page.dart';
+import 'package:haji_market/src/feature/seller/chat/presentation/message_seller_page.dart';
 import 'package:haji_market/src/feature/app/presentation/launcher.dart';
 import 'package:haji_market/src/feature/tape/presentation/ui/detail_tape_card_page.dart';
 import '../../auth/presentation/ui/forgot_password.dart';
@@ -129,6 +137,11 @@ class AppRouter extends RootStackRouter {
     AutoRoute(page: RegisterRoute.page),
     AutoRoute(page: BlogRegisterRoute.page),
 
+    /// Location / onboarding
+    AutoRoute(page: LocationRoute.page),
+    AutoRoute(page: GeoPositionRoute.page),
+    AutoRoute(page: GuestUserRoute.page),
+
     AutoRoute(page: AddressRoute.page),
     AutoRoute(page: AddressStoreRoute.page),
 
@@ -161,6 +174,9 @@ class AppRouter extends RootStackRouter {
     AutoRoute(page: MapPickerRoute.page),
     AutoRoute(page: SearchProductRoute.page),
     AutoRoute(page: DetailCardProductRoute.page),
+    AutoRoute(page: DetailOrderSellerRoute.page),
+    AutoRoute(page: MessageRoute.page),
+    AutoRoute(page: MessageSellerRoute.page),
     AutoRoute(page: SuccessCancelRoute.page),
 
     ///Auth Routes
@@ -187,6 +203,8 @@ class AppRouter extends RootStackRouter {
     AutoRoute(page: EditProductSellerRoute.page),
     AutoRoute(page: CreateProductSellerRoute.page),
     AutoRoute(page: ProductPromotionRoute.page),
+    AutoRoute(page: SellerPromotionsRoute.page),
+    AutoRoute(page: SellerPromotionEditorRoute.page),
     AutoRoute(page: SuccessSellerProductStoreRoute.page),
 
     //Blogger pages

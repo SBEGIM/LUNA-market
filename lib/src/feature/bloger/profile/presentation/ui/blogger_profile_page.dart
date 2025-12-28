@@ -4,7 +4,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:get/route_manager.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/feature/app/bloc/app_bloc.dart';
@@ -333,7 +332,10 @@ class _ProfileBloggerPageState extends State<ProfileBloggerPage> {
                 children: [
                   buildProfileItem(
                     onTap: () async {
-                      final data = await Get.to(EditProfileBloggerPage());
+                      final data = await Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => EditProfileBloggerPage()),
+                      );
 
                       if (data != null) {
                         setState(() {});

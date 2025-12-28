@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class CreditWebviewPage extends StatefulWidget {
-  String url;
-  String? title;
+  final String url;
+  final String? title;
 
-  CreditWebviewPage({this.title, required this.url, Key? key}) : super(key: key);
+  const CreditWebviewPage({this.title, required this.url, super.key});
 
   @override
   State<CreditWebviewPage> createState() => _CreditWebviewPageState();
@@ -35,7 +35,7 @@ class _CreditWebviewPageState extends State<CreditWebviewPage> {
           },
         ),
       )
-      ..loadRequest(Uri.parse('${widget.url}'));
+      ..loadRequest(Uri.parse(widget.url));
     super.initState();
   }
 

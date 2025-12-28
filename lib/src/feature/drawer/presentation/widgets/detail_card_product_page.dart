@@ -19,13 +19,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:get/route_manager.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/feature/basket/bloc/basket_cubit.dart';
 import 'package:haji_market/src/feature/drawer/bloc/review_cubit.dart' as review_product_cubit;
 import 'package:haji_market/src/feature/drawer/bloc/review_state.dart' as review_product_state;
 import 'package:haji_market/src/feature/product/data/model/product_model.dart';
-import 'package:haji_market/src/feature/drawer/presentation/widgets/product_imags_page.dart';
 import 'package:haji_market/src/feature/drawer/presentation/widgets/specifications_page.dart';
 import 'package:haji_market/src/feature/home/data/model/cat_model.dart';
 import 'package:share_plus/share_plus.dart';
@@ -398,18 +396,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                                   child: VideoPlayer(_controller!),
                                 ),
                               ),
-                              // Container(
-                              //   height: 358,
-                              //   alignment: Alignment.bottomCenter,
-                              //   padding: EdgeInsets.only(
-                              //     bottom:
-                              //         MediaQuery.of(context).size.height * 0.01,
-                              //   ),
-                              //   child: VideoProgressIndicator(
-                              //     _controller!,
-                              //     allowScrubbing: true,
-                              //   ),
-                              // ),
+
                               if (icon)
                                 Center(
                                   child: Image.asset(
@@ -636,6 +623,8 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                           inFavorite = !inFavorite;
                         });
 
+                        if (!context.mounted) return;
+
                         final filters = context.read<FilterProvider>();
 
                         BlocProvider.of<ProductCubit>(context).products(filters);
@@ -801,7 +790,6 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
               ],
             ),
           ),
-
           Container(
             padding: EdgeInsets.symmetric(horizontal: 16),
             color: Colors.white,
@@ -1339,7 +1327,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                           shrinkWrap: true,
                           physics: const NeverScrollableScrollPhysics(),
                           itemCount: preview.length,
-                          separatorBuilder: (_, __) => const SizedBox(height: 8),
+                          separatorBuilder: (_, _) => const SizedBox(height: 8),
                           itemBuilder: (_, i) {
                             final it = preview[i];
                             return Row(
@@ -1538,7 +1526,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
 
                   // список отзывов из блока
                   BlocConsumer<review_product_cubit.ReviewCubit, review_product_state.ReviewState>(
-                    listener: (_, __) {},
+                    listener: (_, _) {},
                     builder: (context, state) {
                       if (state is review_product_state.ErrorState) {
                         return Padding(
@@ -1565,7 +1553,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                           shrinkWrap: true,
                           physics: const NeverScrollableScrollPhysics(),
                           itemCount: reviews.length,
-                          separatorBuilder: (_, __) =>
+                          separatorBuilder: (_, _) =>
                               const Divider(height: 16, thickness: 0.35, color: Color(0xffC7C7CC)),
                           itemBuilder: (_, index) {
                             final r = reviews[index];
@@ -1679,8 +1667,6 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
 
           SizedBox(height: 16),
 
-          // textBloc == '111'
-          // ?
           Container(
             height: 190,
             padding: EdgeInsets.only(top: 8),
@@ -1697,6 +1683,8 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                     final CatsModel catsModel = await BlocProvider.of<CatsCubit>(
                       context,
                     ).catById(widget.product.catId.toString());
+
+                    if (!context.mounted) return;
 
                     if (index == 0) {
                       context.router.push(
@@ -1998,101 +1986,6 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                     ),
             ),
           ),
-
-          //  Row(
-          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //   children: [
-          // InkWell(
-          //   onTap: () async {
-          //     if (widget.product.product_count == 0 &&
-          //         widget.product.pre_order == 1) {
-          //       showCupertinoModalPopup<void>(
-          //         context: context,
-          //         builder: (context) => PreOrderDialog(
-          //           onYesTap: () {
-          //             Navigator.pop(context);
-          //             Future.wait<void>([
-          //               BlocProvider.of<BasketCubit>(context).basketAdd(
-          //                   widget.product.id.toString(),
-          //                   '1',
-          //                   0,
-          //                   sizeValue,
-          //                   colorValue),
-          //             ]);
-
-          //             if (BlocProvider.of<BasketCubit>(context).state
-          //                 is! LoadedState) {
-          //               Future.wait<void>([
-          //                 BlocProvider.of<BasketCubit>(context)
-          //                     .basketShow('fbs'),
-          //               ]);
-          //             }
-
-          //             Future.wait<void>([
-          //               BlocProvider.of<ProductCubit>(context).products()
-          //             ]);
-          //             this.context.router.push(BasketOrderAddressRoute(
-          //                   fulfillment: 'fbs',
-          //                 ));
-          //           },
-          //         ),
-          //       );
-          //       return;
-          //     }
-          //     if (count == 0) {
-          //       Future.wait<void>([
-          //         BlocProvider.of<BasketCubit>(context).basketAdd(
-          //             widget.product.id.toString(),
-          //             '1',
-          //             0,
-          //             sizeValue,
-          //             colorValue),
-          //       ]);
-          //     }
-
-          //     if (BlocProvider.of<BasketCubit>(context).state
-          //         is! LoadedState) {
-          //       Future.wait<void>([
-          //         BlocProvider.of<BasketCubit>(context).basketShow('fbs'),
-          //       ]);
-          //     }
-
-          //     context.router.push(BasketOrderAddressRoute(
-          //       fulfillment: 'fbs',
-          //     ));
-
-          //     await Future.wait<void>(
-          //         [BlocProvider.of<ProductCubit>(context).products()]);
-
-          //     // Navigator.popUntil(context, (route) => route.isFirst);
-          //     // BlocProvider.of<NavigationCubit>(context)
-          //     //     .getNavBarItem(const NavigationState.basket());
-          //     // setState(() {
-          //     //   isvisible = true;
-          //     // });
-
-          //     //    Get.to(() => BasketOrderPage(fbs: false));
-          //   },
-          //   child: Container(
-          //       height: 46,
-          //       decoration: BoxDecoration(
-          //         borderRadius: BorderRadius.circular(10),
-          //         color: AppColors.mainPurpleColor,
-          //       ),
-          //       width: MediaQuery.of(context).size.width * 0.440,
-          //       padding: const EdgeInsets.only(
-          //           left: 15, right: 15, top: 15, bottom: 15),
-          //       child: const Text(
-          //         'Оформить сейчас',
-          //         style: TextStyle(
-          //             color: Colors.white,
-          //             fontWeight: FontWeight.w400,
-          //             fontSize: 14),
-          //         textAlign: TextAlign.center,
-          //       )),
-          // ),
-          //   ],
-          // ),
         ),
       ),
     );
@@ -2188,8 +2081,8 @@ class SelectColor extends StatefulWidget {
   // final Function ontileSelected;
   const SelectColor({
     // required this.ontileSelected,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   State<SelectColor> createState() => _SelectColorState();
@@ -2207,7 +2100,7 @@ class _SelectColorState extends State<SelectColor> {
   bool _isSelected = false;
   set isSelected(bool value) {
     _isSelected = value;
-    print("set is selected to $_isSelected");
+    debugPrint("set is selected to $_isSelected");
   }
 
   void changeSelection() {

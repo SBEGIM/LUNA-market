@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/route_manager.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 import 'package:image_picker/image_picker.dart';
@@ -12,7 +11,8 @@ import '../../data/bloc/profile_edit_admin_cubit.dart';
 
 class ReqirectProfilePage extends StatefulWidget {
   final String title;
-  ReqirectProfilePage({required this.title, Key? key}) : super(key: key);
+
+  const ReqirectProfilePage({required this.title, super.key});
 
   @override
   State<ReqirectProfilePage> createState() => _ReqirectProfilePageState();
@@ -21,8 +21,6 @@ class ReqirectProfilePage extends StatefulWidget {
 class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
   final _box = GetStorage();
   XFile? _image;
-  final ImagePicker _picker = ImagePicker();
-  bool change = false;
   bool typeOrganization = false;
 
   // Controllers
@@ -148,16 +146,6 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
     }
   }
 
-  Future<void> _getImage() async {
-    final image = change == true
-        ? await _picker.pickImage(source: ImageSource.camera)
-        : await _picker.pickImage(source: ImageSource.gallery);
-
-    setState(() {
-      _image = image;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -198,82 +186,6 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
         ),
       ),
       bottomSheet: Material(color: Colors.white, elevation: 0, child: _buildSaveButton(context)),
-    );
-  }
-
-  Widget _buildProfileHeader() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-      child: Row(
-        children: [
-          GestureDetector(
-            onTap: () {
-              if (_image == null) {
-                Get.defaultDialog(
-                  title: "Изменить фото",
-                  middleText: '',
-                  textConfirm: 'Камера',
-                  textCancel: 'Галерея',
-                  titlePadding: const EdgeInsets.only(top: 40),
-                  onConfirm: () {
-                    change = true;
-                    _getImage();
-                  },
-                  onCancel: () {
-                    change = false;
-                    _getImage();
-                  },
-                );
-              }
-            },
-            child: Stack(
-              children: [
-                CircleAvatar(
-                  radius: 40,
-                  backgroundColor: AppColors.kGray200,
-                  backgroundImage: NetworkImage(
-                    'https://lunamarket.ru/storage/${GetStorage().read('seller_image')}',
-                  ),
-                ),
-                Positioned(
-                  bottom: 0,
-                  right: 0,
-                  child: Container(
-                    padding: const EdgeInsets.all(6),
-                    decoration: BoxDecoration(
-                      color: AppColors.kPrimaryColor,
-                      shape: BoxShape.circle,
-                      border: Border.all(color: Colors.white, width: 2),
-                    ),
-                    child: const Icon(Icons.camera_alt, size: 16, color: Colors.white),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(width: 16),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  '${GetStorage().read('seller_name')}',
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.kGray900,
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  '${GetStorage().read('seller_email')}',
-                  style: const TextStyle(fontSize: 14, color: AppColors.kGray500),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
     );
   }
 
@@ -324,38 +236,10 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
     );
   }
 
-  Widget _buildOrganizationTypeToggle() {
-    return ToggleButtons(
-      isSelected: [!typeOrganization, typeOrganization],
-      onPressed: (int index) {
-        setState(() {
-          typeOrganization = index == 1;
-        });
-      },
-      borderRadius: BorderRadius.circular(8),
-      selectedColor: Colors.white,
-      fillColor: AppColors.kPrimaryColor,
-      color: AppColors.kPrimaryColor,
-      constraints: const BoxConstraints(minHeight: 40, minWidth: 0),
-      children: const [
-        Padding(padding: EdgeInsets.symmetric(horizontal: 16), child: Text('ИП')),
-        Padding(padding: EdgeInsets.symmetric(horizontal: 16), child: Text('OOO')),
-      ],
-    );
-  }
-
   Widget _buildShopInfoSection() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // const Text(
-        //   'Реквизиты банка',
-        //   style: TextStyle(
-        //     fontSize: 16,
-        //     fontWeight: FontWeight.w600,
-        //     color: AppColors.kGray900,
-        //   ),
-        // ),
         _buildFormField(controller: shopNameController, label: 'Название Магазина'),
         _buildFormField(controller: checkController, label: 'Счёт'),
       ],
@@ -366,15 +250,6 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // const Text(
-        //   'Контактные данные',
-        //   style: TextStyle(
-        //     fontSize: 16,
-        //     fontWeight: FontWeight.w600,
-        //     color: AppColors.kGray900,
-        //   ),
-        // ),
-        // const SizedBox(height: 16),
         _buildFormField(controller: nameController, label: 'Контактное имя'),
         _buildFormField(
           controller: phoneController,
@@ -391,18 +266,26 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
           controller: countryController,
           label: 'Страна',
           onTap: () async {
-            final data = await Get.to(() => const CountryWidget());
-            countryController.text = data;
-            setState(() {});
+            final data = await Navigator.of(context).push<String>(
+              MaterialPageRoute(builder: (_) => const CountryWidget()),
+            );
+            if (data != null) {
+              countryController.text = data;
+              setState(() {});
+            }
           },
         ),
         _buildSelectableField(
           controller: cityController,
           label: 'Город',
           onTap: () async {
-            final data = await Get.to(() => const CityPage());
-            cityController.text = data;
-            setState(() {});
+            final data = await Navigator.of(context).push<String>(
+              MaterialPageRoute(builder: (_) => const CityPage()),
+            );
+            if (data != null) {
+              cityController.text = data;
+              setState(() {});
+            }
           },
         ),
         _buildFormField(controller: streetController, label: 'Улица'),
@@ -632,7 +515,7 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
             bankController.text,
             companyNameController.text,
           );
-          Get.back(result: 'ok');
+          Navigator.of(context).pop('ok');
         },
         child: const Text(
           'Сохранить',
@@ -640,5 +523,36 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    nameController.dispose();
+    phoneController.dispose();
+    passwordController.dispose();
+    passwordRepeatController.dispose();
+    countryController.dispose();
+    cityController.dispose();
+    streetController.dispose();
+    homeController.dispose();
+    addressController.dispose();
+    emailController.dispose();
+    companyNameController.dispose();
+    shopNameController.dispose();
+    iinController.dispose();
+    kppController.dispose();
+    ogrnController.dispose();
+    checkController.dispose();
+    okved.dispose();
+    taxAuthority.dispose();
+    dateRegister.dispose();
+    dateBirthday.dispose();
+    legalAddress.dispose();
+    founderController.dispose();
+    frOrganizations.dispose();
+    bankController.dispose();
+    citizenshipController.dispose();
+    generalDirectorController.dispose();
+    super.dispose();
   }
 }

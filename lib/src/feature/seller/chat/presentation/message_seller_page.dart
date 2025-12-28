@@ -2,13 +2,10 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
-import 'package:haji_market/src/feature/chat/data/DTO/messageDto.dart';
 import 'package:haji_market/src/feature/drawer/presentation/widgets/show_alert_account_widget.dart';
-import 'package:haji_market/src/feature/seller/chat/cubit/chat_seller_cubit.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/feature/chat/data/DTO/message_dto.dart';
 import 'package:image_picker/image_picker.dart';
@@ -21,23 +18,24 @@ import '../../../chat/data/cubit/message_cubit.dart';
 import '../data/DTO/message_seller_dto.dart';
 import '../cubit/message_seller_cubit.dart';
 import '../cubit/message_seller_state.dart';
+import 'package:auto_route/auto_route.dart';
 
-class MessageSeller extends StatefulWidget {
-  int? chatId;
-  int? userId;
-  String? userName;
-  String? role;
+@RoutePage()
+class MessageSellerPage extends StatefulWidget {
+  final int? chatId;
+  final int? userId;
+  final String? userName;
+  final String? role;
 
-  MessageSeller({this.chatId, this.userId, this.userName, required this.role, super.key});
+  const MessageSellerPage({this.chatId, this.userId, this.userName, super.key, this.role});
 
   @override
-  State<MessageSeller> createState() => _MessageSellerState();
+  State<MessageSellerPage> createState() => _MessageSellerPageState();
 }
 
-class _MessageSellerState extends State<MessageSeller> {
+class _MessageSellerPageState extends State<MessageSellerPage> {
   XFile? _image;
   final ImagePicker _picker = ImagePicker();
-  bool change = false;
 
   bool isFullScreen = false;
 
@@ -154,6 +152,8 @@ class _MessageSellerState extends State<MessageSeller> {
         channel.sink.add(text);
       }
 
+      if (!mounted) return;
+
       if (data['action'] == 'message' || data['action'] == 'file') {
         BlocProvider.of<MessageSellerCubit>(context).newMessage(MessageSellerDTO.fromJson(data));
       }
@@ -166,12 +166,11 @@ class _MessageSellerState extends State<MessageSeller> {
     if (p.isEmpty) return;
 
     final imageUrl = "https://lunamarket.ru/storage/$p";
-    final tc = TransformationController();
 
     showDialog(
       context: context,
       barrierDismissible: true,
-      barrierColor: Colors.black.withOpacity(0.9),
+      barrierColor: Colors.black.withValues(alpha: .9),
       builder: (dialogContext) {
         return Stack(
           children: [
@@ -229,7 +228,7 @@ class _MessageSellerState extends State<MessageSeller> {
             onPressed: () async {
               // await context.read<ChatCubit>().chat();
               // if (!context.mounted) return;
-              Get.back();
+              context.router.pop();
             },
             icon: Image.asset(Assets.icons.defaultBackIcon.path, fit: BoxFit.contain, scale: 2.1),
             tooltip: 'Back',
@@ -543,68 +542,6 @@ class _MessageSellerState extends State<MessageSeller> {
               return const Center(child: CircularProgressIndicator(color: Colors.red));
             }
           },
-        ),
-
-        // SizedBox(height: 20, child: Text(message)),
-        // bottomSheet: // floatingActionButton: FloatingActionButton(
-        //   backgroundColor: Colors.white,
-        //   child: Icon(
-        //     Icons.send,
-        //     color: Colors.black,
-        //   ),
-        //   onPressed: () {
-        //     SendData();
-        //     //_scrollController.position.maxScrollExtent;
-
-        //     // _scrollController.animateTo(
-        //     //   10 * 2.63 * (text.length).toDouble(),
-        //     //   curve: Curves.linear,
-        //     //   duration: const Duration(milliseconds: 20),
-        //     // );
-        //   },
-        // ),
-      ),
-    );
-  }
-
-  Widget _buildThumbnailImage(String imagePath) {
-    return Container(
-      height: 80,
-      width: 80,
-      decoration: BoxDecoration(
-        color: Colors.grey,
-        image: DecorationImage(
-          image: NetworkImage("https://lunamarket.ru/storage/$imagePath"),
-          fit: BoxFit.cover,
-        ),
-        borderRadius: BorderRadius.circular(12),
-      ),
-    );
-  }
-
-  // Helper method for full-screen image
-  Widget _buildFullScreenImage(String imagePath) {
-    return Dialog(
-      backgroundColor: Colors.transparent,
-      insetPadding: EdgeInsets.zero,
-      child: GestureDetector(
-        onTap: () {
-          setState(() {
-            isFullScreen = false; // Close full-screen on tap
-          });
-        },
-        child: InteractiveViewer(
-          // Allows pinch-to-zoom
-          child: Container(
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height,
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: NetworkImage("https://lunamarket.ru/storage/$imagePath"),
-                fit: BoxFit.contain,
-              ),
-            ),
-          ),
         ),
       ),
     );

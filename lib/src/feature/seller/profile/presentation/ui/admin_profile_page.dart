@@ -4,7 +4,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:get/route_manager.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/feature/app/router/app_router.dart';
@@ -38,12 +37,17 @@ class _ProfileAdminPageState extends State<ProfileAdminPage> {
   final ImagePicker _picker = ImagePicker();
   bool change = false;
 
-  Future<void> _getImage(context) async {
+  Future<void> _getImage(BuildContext context) async {
     final image = change == true
         ? await _picker.pickImage(source: ImageSource.camera)
         : await _picker.pickImage(source: ImageSource.gallery);
 
-    print(' ${image!.path}');
+    if (image == null) {
+      return;
+    }
+
+    if (!context.mounted) return;
+
     BlocProvider.of<edit_cubit.ProfileEditAdminCubit>(context).edit(
       '',
       '',
@@ -81,11 +85,9 @@ class _ProfileAdminPageState extends State<ProfileAdminPage> {
     });
   }
 
-  bool? switchValue;
   @override
   void initState() {
     BlocProvider.of<ProfileStaticsAdminCubit>(context).statics();
-    switchValue = true;
     super.initState();
   }
 
@@ -158,6 +160,8 @@ class _ProfileAdminPageState extends State<ProfileAdminPage> {
                                 primaryColor: Colors.red,
                               );
 
+                              if (!context.mounted) return;
+
                               if (ok == true) {
                                 change = true;
                                 _getImage(context);
@@ -219,23 +223,6 @@ class _ProfileAdminPageState extends State<ProfileAdminPage> {
                             ],
                           )
                         : const SizedBox(),
-
-                    // InkWell(
-                    //   onTap: () async {
-                    //     final data = await Get.to(ReqirectProfilePage());
-
-                    //     if (data != null) {
-                    //       setState(() {});
-                    //     }
-                    //   },
-                    //   child: const Text(
-                    //     'Редактирование',
-                    //     style: TextStyle(
-                    //         color: AppColors.kPrimaryColor,
-                    //         fontSize: 14,
-                    //         fontWeight: FontWeight.w400),
-                    //   ),
-                    // ),
                     SizedBox(height: 12),
                     InkWell(
                       onTap: () {
@@ -311,10 +298,13 @@ class _ProfileAdminPageState extends State<ProfileAdminPage> {
                         child: Image.asset(Assets.icons.frameVideoReview.path, scale: 2),
                       ),
                     ),
-                    SizedBox(
-                      height: 82,
-                      width: 175,
-                      child: Image.asset(Assets.icons.framePromotion.path, scale: 2),
+                    InkWell(
+                      onTap: () => context.pushRoute(const SellerPromotionsRoute()),
+                      child: SizedBox(
+                        height: 82,
+                        width: 175,
+                        child: Image.asset(Assets.icons.framePromotion.path, scale: 2),
+                      ),
                     ),
                   ],
                 ),
@@ -334,7 +324,9 @@ class _ProfileAdminPageState extends State<ProfileAdminPage> {
                   children: [
                     buildProfileItem(
                       onTap: () async {
-                        final data = await Get.to(EditProfilePage());
+                        final data = await Navigator.of(
+                          context,
+                        ).push(MaterialPageRoute(builder: (_) => EditProfilePage()));
                         if (data != null) {
                           setState(() {});
                         }
@@ -415,75 +407,6 @@ class _ProfileAdminPageState extends State<ProfileAdminPage> {
                   ],
                 ),
               ),
-
-              // InkWell(
-              //   onTap: () {
-              //     Navigator.push(
-              //       context,
-              //       MaterialPageRoute(
-              //           builder: (context) => AdminCardPage(
-              //                 check: _box.read('seller_check'),
-              //                 card: _box.read('seller_card'),
-              //               )),
-              //     );
-              //   },
-              //   child: Padding(
-              //     padding: EdgeInsets.only(top: 16.0, right: 15, left: 15),
-              //     child: Row(
-              //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //       children: [
-              //         Row(
-              //           children: [
-              //             Image.asset(
-              //               Assets.icons.sellerProfileDataIcon.path,
-              //               height: 40,
-              //               width: 40,
-              //             ),
-              //             SizedBox(width: 12),
-              //             Text(
-              //               'Способ оплаты',
-              //               style: TextStyle(
-              //                   color: AppColors.kGray900,
-              //                   fontSize: 16,
-              //                   fontWeight: FontWeight.w400),
-              //             ),
-              //           ],
-              //         ),
-              //         Icon(
-              //           Icons.arrow_forward_ios,
-              //           size: 14,
-              //           color: AppColors.arrowColor,
-              //         )
-              //       ],
-              //     ),
-              //   ),
-              // ),
-
-              // GestureDetector(
-              //   onTap: () {},
-              //   child: Container(
-              //     padding: const EdgeInsets.only(
-              //         left: 16, right: 16, top: 10, bottom: 10),
-              //     child: Row(
-              //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //       children: [
-              //         const Column(
-              //           crossAxisAlignment: CrossAxisAlignment.start,
-              //           children: [
-              //             Text(
-              //               'Выйти',
-              //               style: TextStyle(
-              //                   color: Color(0xffff3347c),
-              //                   fontSize: 16,
-              //                   fontWeight: FontWeight.w400),
-              //             ),
-              //           ],
-              //         ),
-              //         SvgPicture.asset('assets/icons/logout.svg')
-              //       ],
-              //     ),
-              //   ),
-              // ),
             ],
           ),
         ],

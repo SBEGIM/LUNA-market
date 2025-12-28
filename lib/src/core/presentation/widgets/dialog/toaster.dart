@@ -8,48 +8,36 @@ import 'package:haji_market/src/core/theme/resources.dart';
 class Toaster {
   const Toaster._();
 
+  static final FToast _fToast = FToast();
+
   static void showTopShortToast(
     BuildContext context, {
     required String message,
     double radius = 12,
-    EdgeInsetsGeometry? padding = const EdgeInsets.all(14),
+    EdgeInsetsGeometry? padding = const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
     Color? color,
+    Color? textColor,
     Widget? body,
     String? svgIconPath,
+    IconData? icon,
   }) {
-    FToast().removeQueuedCustomToasts();
+    _prepareToast(context);
 
-    final Widget toast = Container(
+    final Widget toast = _buildToast(
+      message: message,
       padding: padding,
-      margin: const EdgeInsets.symmetric(horizontal: 32),
-      // width: MediaQuery.of(context).size.width,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(radius),
-        color: color ?? Colors.white,
-        boxShadow: const [
-          BoxShadow(color: Color(0x28000000), blurRadius: 24),
-          BoxShadow(color: Color(0x14000000), blurRadius: 2),
-        ],
-      ),
-      child:
-          body ??
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Icon(Icons.done),
-              const SizedBox(width: 12),
-              Text(message, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
-            ],
-          ),
+      radius: radius,
+      backgroundColor: color ?? AppColors.base900.withOpacity(0.94),
+      textColor: textColor ?? AppColors.white,
+      body: body,
+      svgIconPath: svgIconPath,
+      icon: icon ?? Icons.check_circle_rounded,
     );
 
-    FToast().showToast(
-      child: toast,
-      gravity: ToastGravity.TOP,
-      toastDuration: const Duration(milliseconds: 1500),
-      positionedToastBuilder: (context, child, gravity) {
-        return Positioned(top: 50.0, left: 0, right: 0, child: child);
-      },
+    _showToast(
+      context,
+      toast: toast,
+      duration: const Duration(milliseconds: 1800),
     );
   }
 
@@ -57,55 +45,107 @@ class Toaster {
     BuildContext context,
     String message, {
     double radius = 12,
-    EdgeInsetsGeometry? padding = const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+    EdgeInsetsGeometry? padding = const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
     Color? color,
+    Color? textColor,
     Widget? body,
+    String? svgIconPath,
+    IconData? icon,
   }) {
-    FToast().removeQueuedCustomToasts();
+    _prepareToast(context);
 
-    final Widget toast = Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 32),
-      child: Container(
-        padding: padding,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(radius),
-          // border: Border.all(color: Colors.black, width: 0.5),
-          color: color ?? Colors.white,
-          boxShadow: const [
-            BoxShadow(offset: Offset(0, 1), color: Color.fromRGBO(12, 12, 13, 0.05), blurRadius: 4),
-            BoxShadow(offset: Offset(0, 1), color: Color.fromRGBO(12, 12, 13, 0.1), blurRadius: 4),
-          ],
-        ),
-        child:
-            body ??
-            Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                SvgPicture.asset(Assets.icons.accountPng.path, width: 22, height: 22),
-                const Gap(8),
-                Flexible(
-                  child: Text(
-                    message,
-                    maxLines: 3,
-                    overflow: TextOverflow.ellipsis,
-                    style: AppTextStyles.body14Medium,
-                  ),
-                ),
-              ],
-            ),
-      ),
+    final Widget toast = _buildToast(
+      message: message,
+      padding: padding,
+      radius: radius,
+      backgroundColor: color ?? AppColors.additionalRed,
+      textColor: textColor ?? AppColors.white,
+      body: body,
+      svgIconPath: svgIconPath,
+      icon: icon ?? Icons.error_outline_rounded,
     );
 
-    FToast().showToast(
+    _showToast(
+      context,
+      toast: toast,
+      duration: const Duration(milliseconds: 2200),
+    );
+  }
+
+  static Widget _buildToast({
+    required String message,
+    required EdgeInsetsGeometry? padding,
+    required double radius,
+    required Color backgroundColor,
+    required Color textColor,
+    Widget? body,
+    String? svgIconPath,
+    IconData? icon,
+  }) {
+    final Widget resolvedBody = body ??
+        Row(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            if (svgIconPath != null || icon != null) ...[
+              if (svgIconPath != null)
+                SvgPicture.asset(
+                  svgIconPath,
+                  width: 22,
+                  height: 22,
+                  colorFilter: ColorFilter.mode(textColor, BlendMode.srcIn),
+                )
+              else
+                Icon(icon, color: textColor, size: 22),
+              const SizedBox(width: 12),
+            ],
+            Flexible(
+              child: Text(
+                message,
+                maxLines: 3,
+                overflow: TextOverflow.ellipsis,
+                style: AppTextStyles.body14Semibold.copyWith(color: textColor),
+              ),
+            ),
+          ],
+        );
+
+    return Container(
+      padding: padding ?? const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      margin: const EdgeInsets.symmetric(horizontal: 16),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(radius),
+        color: backgroundColor,
+        boxShadow: const [
+          BoxShadow(color: Color(0x1A000000), blurRadius: 16, offset: Offset(0, 8)),
+          BoxShadow(color: Color(0x0F000000), blurRadius: 4, offset: Offset(0, 2)),
+        ],
+      ),
+      child: resolvedBody,
+    );
+  }
+
+  static void _prepareToast(BuildContext context) {
+    _fToast.init(context);
+    _fToast.removeQueuedCustomToasts();
+  }
+
+  static void _showToast(
+    BuildContext context, {
+    required Widget toast,
+    required Duration duration,
+  }) {
+    _fToast.showToast(
       child: toast,
       gravity: ToastGravity.TOP,
-      toastDuration: const Duration(milliseconds: 2005),
+      toastDuration: duration,
       positionedToastBuilder: (context, child, gravity) {
+        final double topOffset = MediaQuery.of(context).padding.top + 12;
+
         return Positioned(
-          top: 50.0,
+          top: topOffset,
           left: 0,
           right: 0,
-          // left: MediaQuery.of(context).size.width / 3,
           child: child,
         );
       },

@@ -1,10 +1,8 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:haji_market/src/core/common/constants.dart';
@@ -21,15 +19,17 @@ import 'package:sticky_grouped_list/sticky_grouped_list.dart';
 import 'package:web_socket_channel/io.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 import '../data/DTO/messageDto.dart';
+import 'package:auto_route/auto_route.dart';
 
+@RoutePage()
 class MessagePage extends StatefulWidget {
-  int? userId;
-  String? avatar;
-  int? chatId;
-  String? name;
-  String? role;
+  final int? userId;
+  final String? avatar;
+  final int? chatId;
+  final String? name;
+  final String? role;
 
-  MessagePage({
+  const MessagePage({
     required this.userId,
     this.name,
     required this.avatar,
@@ -172,12 +172,11 @@ class _MessagePageState extends State<MessagePage> {
     if (p.isEmpty) return;
 
     final imageUrl = "https://lunamarket.ru/storage/$p";
-    final tc = TransformationController();
 
     showDialog(
       context: context,
       barrierDismissible: true,
-      barrierColor: Colors.black.withOpacity(0.9),
+      barrierColor: Colors.black.withValues(alpha: 0.9),
       builder: (dialogContext) {
         return Stack(
           children: [
@@ -234,7 +233,7 @@ class _MessagePageState extends State<MessagePage> {
             onPressed: () async {
               await context.read<ChatCubit>().chat();
               if (!context.mounted) return;
-              Get.back();
+              context.router.pop();
             },
             icon: Image.asset(Assets.icons.defaultBackIcon.path, fit: BoxFit.contain, scale: 2.1),
             tooltip: 'Back',
@@ -242,7 +241,6 @@ class _MessagePageState extends State<MessagePage> {
           centerTitle: true,
           title: Text(widget.name ?? 'Чат', style: AppTextStyles.size18Weight600),
         ),
-
         bottomNavigationBar: Padding(
           padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
           child: SafeArea(

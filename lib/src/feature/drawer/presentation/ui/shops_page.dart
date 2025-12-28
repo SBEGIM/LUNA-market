@@ -11,7 +11,7 @@ import '../../../home/bloc/popular_shops_state.dart';
 
 @RoutePage()
 class ShopsPage extends StatefulWidget {
-  const ShopsPage({Key? key}) : super(key: key);
+  const ShopsPage({super.key});
 
   @override
   State<ShopsPage> createState() => _ShopsPageState();
@@ -166,8 +166,8 @@ class ShopsListTile extends StatelessWidget {
     required this.title,
     required this.bonus,
     required this.credit,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

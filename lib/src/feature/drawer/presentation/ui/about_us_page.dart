@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:get/route_manager.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/core/theme/resources.dart' show Assets;
 import 'package:haji_market/src/feature/drawer/presentation/widgets/metas_webview.dart';
@@ -37,26 +36,6 @@ class _AboutUsPageState extends State<AboutUsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.kBackgroundColor,
-      // appBar: AppBar(
-      //   backgroundColor: Colors.white,
-      //   elevation: 0,
-      //   title: const Text(
-      //     'О нас',
-      //     style: TextStyle(
-      //         color: AppColors.kGray900,
-      //         fontSize: 16,
-      //         fontWeight: FontWeight.w500),
-      //   ),
-      //   leading: IconButton(
-      //     onPressed: () {
-      //       Navigator.pop(context);
-      //     },
-      //     icon: const Icon(
-      //       Icons.arrow_back_ios,
-      //       color: AppColors.kPrimaryColor,
-      //     ),
-      //   ),
-      // ),
       body: ListView(
         padding: EdgeInsets.zero,
         children: [
@@ -249,7 +228,11 @@ class _AboutUsPageState extends State<AboutUsPage> {
                         itemBuilder: (context, index) {
                           return InkWell(
                             onTap: () {
-                              Get.to(() => MetasPage(title: metas[index], body: metasBody[index]));
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (_) => MetasPage(title: metas[index], body: metasBody[index]),
+                                ),
+                              );
                             },
                             child: Column(
                               mainAxisSize: MainAxisSize.min,

@@ -7,13 +7,13 @@ import 'package:haji_market/src/feature/seller/main/data/repository/stories_repo
 class StoriesSellerCubit extends Cubit<StoriesSellerState> {
   final StoriesSellerRepository storesSellerRepository;
 
-  StoriesSellerCubit({required this.storesSellerRepository}) : super(InitState());
+  StoriesSellerCubit({required this.storesSellerRepository}) : super(StoriesSellerStateInitial());
 
   Future<void> news() async {
     try {
-      emit(LoadingState());
+      emit(StoriesSellerStateLoading());
       final List<SellerStoriesModel> data = await storesSellerRepository.news();
-      emit(LoadedState(storiesSeelerModel: data));
+      emit(StoriesSellerStateLoaded(storiesSeelerModel: data));
     } catch (e) {
       log(e.toString());
       // emit(ErrorState(message: 'Ошибка'));

@@ -2,7 +2,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/route_manager.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
@@ -18,8 +17,8 @@ import 'package:haji_market/src/feature/product/cubit/recently_watched_product_c
     as productRecentlyWatchedCubit;
 import 'package:haji_market/src/feature/product/cubit/recently_watched_product_state.dart'
     as productRecentlyWatchedState;
-import 'package:haji_market/src/feature/home/bloc/banners_cubit.dart' as bannerCubit;
-import 'package:haji_market/src/feature/home/bloc/banners_state.dart' as bannerState;
+import 'package:haji_market/src/feature/home/bloc/banners_cubit.dart';
+import 'package:haji_market/src/feature/home/bloc/banners_state.dart';
 import 'package:haji_market/src/feature/home/bloc/partner_cubit.dart' as partnerCubit;
 import 'package:haji_market/src/feature/home/bloc/partner_state.dart' as partnerState;
 import 'package:haji_market/src/feature/home/bloc/meta_cubit.dart';
@@ -32,11 +31,11 @@ import 'package:haji_market/src/feature/seller/main/cubit/stories_seller_cubit.d
 import 'package:haji_market/src/feature/seller/main/cubit/stories_seller_state.dart';
 import 'package:haji_market/src/feature/seller/main/presentation/widget/stories_card_widget.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import '../../../product/cubit/product_cubit.dart' as productCubit;
+import '../../../product/cubit/product_cubit.dart';
 import '../../../product/cubit/product_state.dart' as productState;
 import '../../../drawer/bloc/sub_cats_cubit.dart' as subCatCubit;
 import '../../../product/presentation/widgets/product_ad_card.dart';
-import '../../bloc/cats_cubit.dart' as catCubit;
+import '../../bloc/cats_cubit.dart';
 import '../../bloc/popular_shops_cubit.dart' as popShopsCubit;
 import '../../bloc/popular_shops_state.dart' as popShopsState;
 
@@ -92,12 +91,12 @@ class _HomePageState extends State<HomePage> {
       if (!mounted) return;
 
       // Banners
-      if (BlocProvider.of<bannerCubit.BannersCubit>(context).state is! bannerState.LoadedState) {
-        BlocProvider.of<bannerCubit.BannersCubit>(context).banners();
+      if (BlocProvider.of<BannersCubit>(context).state is! BannersStateLoaded) {
+        BlocProvider.of<BannersCubit>(context).banners();
       }
 
       // Stories
-      if (BlocProvider.of<StoriesSellerCubit>(context).state is! LoadedState) {
+      if (BlocProvider.of<StoriesSellerCubit>(context).state is! StoriesSellerStateLoaded) {
         BlocProvider.of<StoriesSellerCubit>(context).news();
       }
 
@@ -128,9 +127,9 @@ class _HomePageState extends State<HomePage> {
       }
 
       // Products
-      if (BlocProvider.of<productCubit.ProductCubit>(context).state is! productState.LoadedState) {
+      if (BlocProvider.of<ProductCubit>(context).state is! productState.LoadedState) {
         filters.resetAll(); // safe now, after first frame
-        BlocProvider.of<productCubit.ProductCubit>(context).products(filters);
+        BlocProvider.of<ProductCubit>(context).products(filters);
       }
 
       // Ad products
@@ -157,11 +156,11 @@ class _HomePageState extends State<HomePage> {
           final filters = context.read<FilterProvider>();
 
           Future.wait([
-            BlocProvider.of<productCubit.ProductCubit>(context).products(filters),
+            BlocProvider.of<ProductCubit>(context).products(filters),
             BlocProvider.of<partnerCubit.PartnerCubit>(context).partners(),
             BlocProvider.of<popShopsCubit.PopularShopsCubit>(context).popShops(),
-            BlocProvider.of<catCubit.CatsCubit>(context).cats(),
-            BlocProvider.of<bannerCubit.BannersCubit>(context).banners(),
+            BlocProvider.of<CatsCubit>(context).cats(),
+            BlocProvider.of<BannersCubit>(context).banners(),
             BlocProvider.of<StoriesSellerCubit>(context).news(),
           ]);
           refreshController.refreshCompleted();
@@ -214,7 +213,7 @@ class _HomePageState extends State<HomePage> {
                   SizedBox(height: 15),
                   BlocBuilder<StoriesSellerCubit, StoriesSellerState>(
                     builder: (context, state) {
-                      if (state is ErrorState) {
+                      if (state is StoriesSellerStateError) {
                         return Center(
                           child: Text(
                             state.message,
@@ -222,7 +221,7 @@ class _HomePageState extends State<HomePage> {
                           ),
                         );
                       }
-                      if (state is LoadedState) {
+                      if (state is StoriesSellerStateLoaded) {
                         return SizedBox(
                           height: 102,
                           child: ListView.builder(
@@ -231,8 +230,12 @@ class _HomePageState extends State<HomePage> {
                             itemCount: state.storiesSeelerModel.length,
                             itemBuilder: (context, index) {
                               return InkWell(
-                                onTap: () => Get.to(
-                                  StoryScreen(stories: state.storiesSeelerModel[index].stories),
+                                onTap: () => Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (_) => StoryScreen(
+                                      stories: state.storiesSeelerModel[index].stories,
+                                    ),
+                                  ),
                                 ),
                                 child: Padding(
                                   padding: EdgeInsets.only(
@@ -497,22 +500,6 @@ class _HomePageState extends State<HomePage> {
                         }
                       },
                     ),
-                    // SingleChildScrollView(
-                    //     scrollDirection: Axis.horizontal,
-                    //     child: Column(children: [
-                    //       Row(
-                    //         children: const [
-                    //           BannerWatcehRecently(),
-                    //           BannerWatcehRecently(),
-                    //         ],
-                    //       ),
-                    //       Row(
-                    //         children: const [
-                    //           BannerWatcehRecently(),
-                    //           BannerWatcehRecently(),
-                    //         ],
-                    //       )
-                    //     ])),
                     const SizedBox(height: 20),
                   ],
                 ),
@@ -613,121 +600,6 @@ class _HomePageState extends State<HomePage> {
             ),
 
             const SizedBox(height: 100),
-            // BlocBuilder<metaCubit.MetaCubit, metaState.MetaState>(
-            //     builder: (context, state) {
-            //   if (state is metaState.LoadedState) {
-            //     metasBody.addAll([
-            //       state.metas.terms_of_use!,
-            //       state.metas.privacy_policy!,
-            //       state.metas.contract_offer!,
-            //       state.metas.shipping_payment!,
-            //       state.metas.TTN!,
-            //     ]);
-
-            //     return Container(
-            //       color: Colors.white,
-            //       child: Padding(
-            //         padding: const EdgeInsets.all(16.0),
-            //         child: Column(
-            //           crossAxisAlignment: CrossAxisAlignment.start,
-            //           children: [
-            //             const Text(
-            //               'Партнерам',
-            //               style: TextStyle(
-            //                   color: AppColors.kGray900,
-            //                   fontSize: 16,
-            //                   fontWeight: FontWeight.w700),
-            //             ),
-            //             // const SizedBox(
-            //             //   height: 20,
-            //             // ),
-            //             // const Text(
-            //             //   'Кабинет продавца',
-            //             //   style: AppTextStyles.kcolorPartnerTextStyle,
-            //             // ),
-            //             const SizedBox(
-            //               height: 20,
-            //             ),
-            //             SizedBox(
-            //               height: 150,
-            //               child: ListView.builder(
-            //                   itemCount: 5,
-            //                   itemBuilder: (context, index) {
-            //                     return GestureDetector(
-            //                       onTap: () {
-            //                         //  print(state.partner[index].url.toString());
-            //                         Get.to(() => MetasPage(
-            //                               title: metas[index],
-            //                               body: metasBody[index],
-            //                             ));
-            //                       },
-            //                       child: SizedBox(
-            //                         height: 24,
-            //                         child: Text(
-            //                           metas[index],
-            //                           style:
-            //                               AppTextStyles.kcolorPartnerTextStyle,
-            //                         ),
-            //                       ),
-            //                     );
-            //                   }),
-            //             ),
-
-            //             // const SizedBox(
-            //             //   height: 12,
-            //             // ),
-            //             // InkWell(
-            //             //   onTap: () {
-            //             //     Navigator.push(
-            //             //       context,
-            //             //       MaterialPageRoute(
-            //             //           builder: (context) =>
-            //             //               const UserAgreementPage()),
-            //             //     );
-            //             //   },
-            //             //   child: const Text(
-            //             //     'Пользовательское соглашение',
-            //             //     style: AppTextStyles.kcolorPartnerTextStyle,
-            //             //   ),
-            //             // ),
-            //             const SizedBox(
-            //               height: 8,
-            //             ),
-            //           ],
-            //         ),
-            //       ),
-            //     );
-            //   } else {
-            //     return Shimmer(
-            //       duration: const Duration(seconds: 3), //Default value
-            //       interval: const Duration(
-            //           microseconds: 1), //Default value: Duration(seconds: 0)
-            //       color: Colors.white, //Default value
-            //       colorOpacity: 0, //Default value
-            //       enabled: true, //Default value
-            //       direction: const ShimmerDirection.fromLTRB(), //Default Value
-            //       child: Container(
-            //         margin: const EdgeInsets.all(16),
-            //         decoration: BoxDecoration(
-            //           borderRadius: BorderRadius.circular(12),
-            //           color: Colors.grey.withOpacity(0.6),
-            //         ),
-            //         child: const Padding(
-            //           padding: EdgeInsets.symmetric(
-            //             vertical: 16,
-            //           ),
-            //           child: SizedBox(
-            //             height: 90,
-            //             width: 90,
-            //           ),
-            //         ),
-            //       ),
-            //     );
-            //   }
-            // }),
-            // const SizedBox(
-            //   height: 60,
-            // ),
           ],
         ),
       ),

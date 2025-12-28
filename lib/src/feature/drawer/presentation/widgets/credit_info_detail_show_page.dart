@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:get/route_manager.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/feature/drawer/bloc/credit_cubit.dart';
 import 'package:haji_market/src/feature/drawer/bloc/credit_state.dart';
 import 'package:haji_market/src/feature/drawer/presentation/widgets/credit_webview.dart';
 
 class CreditInfoDetailShowPage extends StatefulWidget {
-  int id;
-  String title;
+  final int id;
+  final String title;
 
-  CreditInfoDetailShowPage({required this.id, required this.title, Key? key}) : super(key: key);
+  const CreditInfoDetailShowPage({required this.id, required this.title, super.key});
 
   @override
   State<CreditInfoDetailShowPage> createState() => _CreditInfoDetailShowPageState();
@@ -83,8 +82,11 @@ class _CreditInfoDetailShowPageState extends State<CreditInfoDetailShowPage> {
                       itemBuilder: (BuildContext ctx, index) {
                         return GestureDetector(
                           onTap: () {
-                            Get.to(
-                              () => CreditWebviewPage(url: state.creditModel[index].url.toString()),
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (_) =>
+                                    CreditWebviewPage(url: state.creditModel[index].url.toString()),
+                              ),
                             );
                           },
                           child: Container(
@@ -155,7 +157,7 @@ class _CreditInfoDetailShowPageState extends State<CreditInfoDetailShowPage> {
 
 class DrawerListTile extends StatelessWidget {
   final String text;
-  const DrawerListTile({Key? key, required this.text}) : super(key: key);
+  const DrawerListTile({super.key, required this.text});
 
   @override
   Widget build(BuildContext context) {

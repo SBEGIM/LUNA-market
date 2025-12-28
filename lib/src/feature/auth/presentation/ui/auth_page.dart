@@ -295,23 +295,6 @@ class _AuthPageState extends State<AuthPage> {
                   SizedBox(height: 12),
                   InkWell(
                     onTap: () {
-                      // if (phoneControllerAuth.text.length == 17){
-                      //   showModalBottomSheet(
-                      //       shape: const RoundedRectangleBorder(
-                      //         borderRadius: BorderRadius.only(topLeft: Radius.circular(10.0),
-                      //             topRight: Radius.circular(10.0)),
-                      //       ),
-                      //       context: context,
-                      //       builder: (context) {
-                      //         return ForgotPasswordModalBottom(
-                      //           textEditingController: phoneControllerRegister.text,
-                      //           register: register,
-                      //         );
-                      //       });
-                      // }else{
-                      //   Get.snackbar('Заполните', 'Напишите полный номер' , backgroundColor: Colors.blueAccent);
-                      // }
-                      // Get.to(const ForgotPasswordPage());
                       context.router.push(const ForgotPasswordRoute());
                     },
                     child: Center(
@@ -323,143 +306,6 @@ class _AuthPageState extends State<AuthPage> {
                       ),
                     ),
                   ),
-                  // Column(
-                  //   children: [
-                  //     Container(
-                  //       decoration: BoxDecoration(
-                  //           color: Colors.white,
-                  //           borderRadius: BorderRadius.circular(8)),
-                  //       child: Column(
-                  //         children: [
-                  //           ListTile(
-                  //             horizontalTitleGap: 5,
-                  //             leading: SvgPicture.asset(
-                  //               'assets/icons/phone.svg',
-                  //               height: 24,
-                  //               width: 24,
-                  //             ),
-                  //             trailing: GestureDetector(
-                  //               onTap: () {
-                  //                 _visibleIconClear = false;
-                  //                 phoneControllerAuth.clear();
-                  //                 setState(() {
-                  //                   _visibleIconClear;
-                  //                 });
-                  //               },
-                  //               child: _visibleIconClear == true
-                  //                   ? SvgPicture.asset(
-                  //                       'assets/icons/delete_circle.svg',
-                  //                     )
-                  //                   : const SizedBox(
-                  //                       width: 5,
-                  //                     ),
-                  //             ),
-                  //             title: TextField(
-                  //               keyboardType: TextInputType.number,
-                  //               // inputFormatters: [maskFormatter],
-                  //               controller: phoneControllerAuth,
-                  //               onChanged: (value) {
-                  //                 _visibleIconClear = true;
-                  //                 if (phoneControllerAuth.text.length == 17) {
-                  //                   FocusScope.of(context)
-                  //                       .requestFocus(FocusNode());
-
-                  //                   setIsButtonEnabled(true);
-                  //                 } else {
-                  //                   setIsButtonEnabled(false);
-                  //                 }
-                  //               },
-                  //               decoration: const InputDecoration(
-                  //                 border: InputBorder.none,
-                  //                 hintText: 'Номер телефона',
-                  //                 enabledBorder: UnderlineInputBorder(
-                  //                   borderSide: BorderSide(color: Colors.white),
-                  //                   // borderRadius: BorderRadius.circular(3),
-                  //                 ),
-                  //               ),
-                  //             ),
-                  //           ),
-                  //           ListTile(
-                  //             horizontalTitleGap: 5,
-                  //             leading: SvgPicture.asset(
-                  //               'assets/icons/password.svg',
-                  //               height: 24,
-                  //               width: 24,
-                  //             ),
-                  //             trailing: GestureDetector(
-                  //               onTap: () {
-                  //                 setState(() {
-                  //                   _passwordVisible = !_passwordVisible;
-                  //                 });
-                  //               },
-                  //               child: __visibleIconView == true
-                  //                   ? Icon(
-                  //                       _passwordVisible
-                  //                           ? Icons.visibility_off
-                  //                           : Icons.visibility,
-                  //                       color:
-                  //                           const Color.fromRGBO(177, 179, 181, 1),
-                  //                     )
-                  //                   : const SizedBox(width: 5),
-                  //             ),
-                  //             title: TextField(
-                  //               keyboardType: TextInputType.text,
-                  //               // inputFormatters: [maskFormatter],
-                  //               controller: passwordControllerAuth,
-                  //               obscureText: !_passwordVisible,
-                  //               onChanged: (value) {
-                  //                 passwordControllerAuth.text.isEmpty
-                  //                     ? __visibleIconView = false
-                  //                     : __visibleIconView = true;
-                  //                 if (passwordControllerAuth.text.isNotEmpty) {
-                  //                   setIsButtonEnabled(true);
-                  //                 } else {
-                  //                   setIsButtonEnabled(false);
-                  //                 }
-                  //               },
-                  //               decoration: const InputDecoration(
-                  //                 border: InputBorder.none,
-                  //                 hintText: 'Введите пароль',
-                  //                 enabledBorder: UnderlineInputBorder(
-                  //                   borderSide: BorderSide(color: Colors.white),
-                  //                   // borderRadius: BorderRadius.circular(3),
-                  //                 ),
-                  //               ),
-                  //             ),
-                  //           ),
-                  //         ],
-                  //       ),
-                  //     ),
-                  //     const SizedBox(
-                  //       height: 16,
-                  //     ),
-                  //   ],
-                  // ),
-                  const Spacer(),
-
-                  // Padding(
-                  //   padding: EdgeInsets.only(
-                  //     bottom: MediaQuery.of(context).viewInsets.bottom,
-                  //   ),
-                  //   child: DefaultButton(
-                  //       backgroundColor: isButtonEnabled
-                  //           ? AppColors.kPrimaryColor
-                  //           : const Color(0xFFD6D8DB),
-                  //       text: 'Войти',
-                  //       press: () {
-                  //         if (phoneControllerAuth.text.length >= 17 ||
-                  //             passwordControllerAuth.text.isEmpty) {
-                  //           final login = BlocProvider.of<LoginCubit>(context);
-                  //           login.login(phoneControllerAuth.text,
-                  //               passwordControllerAuth.text);
-                  //         } else {
-                  //           Get.snackbar('Ошибка запроса', 'Заполните все данныые',
-                  //               backgroundColor: Colors.blueAccent);
-                  //         }
-                  //       },
-                  //       color: Colors.white,
-                  //       width: 343),
-                  // ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -469,7 +315,6 @@ class _AuthPageState extends State<AuthPage> {
                       ),
                       InkWell(
                         onTap: () {
-                          // Get.to(RegisterPage());
                           context.router.push(RegisterRoute());
                         },
                         child: Text(
@@ -481,22 +326,6 @@ class _AuthPageState extends State<AuthPage> {
                       ),
                     ],
                   ),
-                  // GestureDetector(
-                  //     onTap: () {
-                  //       final login = BlocProvider.of<LoginCubit>(context);
-                  //       login.lateAuth();
-                  //     },
-                  //     child: Container(
-                  //       padding: const EdgeInsets.only(top: 12),
-                  //       alignment: Alignment.center,
-                  //       child: const Text(
-                  //         'Авторизоваться позже',
-                  //         style: TextStyle(
-                  //             fontSize: 16,
-                  //             color: AppColors.mainPurpleColor,
-                  //             fontWeight: FontWeight.w400),
-                  //       ),
-                  //     )),
                 ],
               ),
             ),

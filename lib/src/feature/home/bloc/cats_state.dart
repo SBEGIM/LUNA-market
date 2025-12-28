@@ -1,19 +1,44 @@
+import 'package:equatable/equatable.dart';
+
 import '../data/model/cat_model.dart';
 
-abstract class CatsState {}
-
-class InitState extends CatsState {}
-
-class LoadingState extends CatsState {}
-
-class NoDataState extends CatsState {}
-
-class LoadedState extends CatsState {
-  List<CatsModel> cats;
-  LoadedState(this.cats);
+sealed class CatsState extends Equatable {
+  const CatsState();
 }
 
-class ErrorState extends CatsState {
-  String message;
-  ErrorState({required this.message});
+class CatsStateInitial extends CatsState {
+  const CatsStateInitial();
+
+  @override
+  List<Object?> get props => [];
+}
+
+class CatsStateLoading extends CatsState {
+  const CatsStateLoading();
+
+  @override
+  List<Object?> get props => [];
+}
+
+class CatsStateNoData extends CatsState {
+  const CatsStateNoData();
+
+  @override
+  List<Object?> get props => [];
+}
+
+class CatsStateLoaded extends CatsState {
+  final List<CatsModel> cats;
+  const CatsStateLoaded(this.cats);
+
+  @override
+  List<Object?> get props => [cats];
+}
+
+class CatsStateError extends CatsState {
+  final String message;
+  const CatsStateError({required this.message});
+
+  @override
+  List<Object?> get props => [message];
 }

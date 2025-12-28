@@ -20,14 +20,15 @@ class DetailTapeBloggerCardPage extends StatefulWidget implements AutoRouteWrapp
   final String? shopName;
   final TapeBloggerCubit tapeBloc;
   final TapeBloggerModel tape;
+
   const DetailTapeBloggerCardPage({
     required this.index,
     required this.shopName,
-    Key? key,
+    super.key,
     required this.tape,
     required this.tapeBloc,
     this.tapeId,
-  }) : super(key: key);
+  });
 
   @override
   State<DetailTapeBloggerCardPage> createState() => _DetailBloggerTapeCardPageState();
@@ -47,15 +48,9 @@ class _DetailBloggerTapeCardPageState extends State<DetailTapeBloggerCardPage> {
   final TextEditingController searchController = TextEditingController();
   bool visible = true;
 
-  // bool? inSub;
   int currentIndex = 0;
 
   bool stop = false;
-
-  procentPrice(price, compound) {
-    var pp = (((price!.toInt() - compound!.toInt()) / price!.toInt()) * 100) as double;
-    return pp.toInt();
-  }
 
   String formatPrice(int price) {
     final format = NumberFormat('#,###', 'ru_RU');
@@ -66,8 +61,6 @@ class _DetailBloggerTapeCardPageState extends State<DetailTapeBloggerCardPage> {
 
   @override
   void initState() {
-    print(widget.tapeId);
-
     if (widget.index != null) {
       currentIndex = widget.index!;
       controller = PageController(initialPage: widget.index!);
@@ -78,11 +71,7 @@ class _DetailBloggerTapeCardPageState extends State<DetailTapeBloggerCardPage> {
       if (loadedState.tapeModel[currentIndex].tapeId != null) {}
     }
 
-    // if (BlocProvider.of<MetaCubit>(context).state is! LoadedState) {
-    //   BlocProvider.of<MetaCubit>(context).partners();
-    // }
     title = 'Лента';
-    // GetStorage().write('title_tape', 'Отписаться');
     super.initState();
   }
 
@@ -199,9 +188,9 @@ class _DetailBloggerTapeCardPageState extends State<DetailTapeBloggerCardPage> {
                         margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.327),
                         child: Column(
                           children: [
-                            isLike(tape: widget.tape, index: currentIndex),
+                            IsLikeWidget(tape: widget.tape, index: currentIndex),
                             const SizedBox(height: 10),
-                            inFavorites(tape: widget.tape, index: currentIndex),
+                            InFavoritesWidget(tape: widget.tape, index: currentIndex),
                             const SizedBox(height: 10),
                             GestureDetector(
                               onTap: () async {},
@@ -295,7 +284,10 @@ class _DetailBloggerTapeCardPageState extends State<DetailTapeBloggerCardPage> {
                                 ),
                               ),
                               SizedBox(width: 10),
-                              inBaskets(index: currentIndex, count: widget.tape.basketCount ?? 0),
+                              InBasketsWidget(
+                                index: currentIndex,
+                                count: widget.tape.basketCount ?? 0,
+                              ),
                             ],
                           ),
                         ),
@@ -418,16 +410,16 @@ class _VideosState extends State<Videos> {
   }
 }
 
-class inBaskets extends StatefulWidget {
+class InBasketsWidget extends StatefulWidget {
   final int index;
   final int count;
-  const inBaskets({required this.index, required this.count, super.key});
+  const InBasketsWidget({required this.index, required this.count, super.key});
 
   @override
-  State<inBaskets> createState() => _inBasketsState();
+  State<InBasketsWidget> createState() => _InBasketsWidgetState();
 }
 
-class _inBasketsState extends State<inBaskets> {
+class _InBasketsWidgetState extends State<InBasketsWidget> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -464,16 +456,16 @@ class _inBasketsState extends State<inBaskets> {
   }
 }
 
-class isLike extends StatefulWidget {
+class IsLikeWidget extends StatefulWidget {
   final TapeBloggerModel tape;
   final int index;
-  const isLike({required this.tape, required this.index, super.key});
+  const IsLikeWidget({required this.tape, required this.index, super.key});
 
   @override
-  State<isLike> createState() => _isLikeState();
+  State<IsLikeWidget> createState() => _IsLikeWidgetState();
 }
 
-class _isLikeState extends State<isLike> {
+class _IsLikeWidgetState extends State<IsLikeWidget> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -495,16 +487,16 @@ class _isLikeState extends State<isLike> {
   }
 }
 
-class inFavorites extends StatefulWidget {
+class InFavoritesWidget extends StatefulWidget {
   final TapeBloggerModel tape;
   final int index;
-  const inFavorites({required this.tape, required this.index, super.key});
+  const InFavoritesWidget({required this.tape, required this.index, super.key});
 
   @override
-  State<inFavorites> createState() => _inFavoritesState();
+  State<InFavoritesWidget> createState() => _InFavoritesWidgetState();
 }
 
-class _inFavoritesState extends State<inFavorites> {
+class _InFavoritesWidgetState extends State<InFavoritesWidget> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(

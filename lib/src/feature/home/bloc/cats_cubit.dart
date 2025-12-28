@@ -7,7 +7,7 @@ import 'cats_state.dart';
 class CatsCubit extends Cubit<CatsState> {
   final ICatsRepository catsRepository;
 
-  CatsCubit({required this.catsRepository}) : super(InitState());
+  CatsCubit({required this.catsRepository}) : super(CatsStateInitial());
 
   List<CatsModel> _cats = [];
 
@@ -15,31 +15,31 @@ class CatsCubit extends Cubit<CatsState> {
 
   Future<void> cats() async {
     try {
-      emit(LoadingState());
+      emit(CatsStateLoading());
       final List<CatsModel> data = await catsRepository.getCats();
       _cats = data;
 
-      emit(LoadedState(data));
+      emit(CatsStateLoaded(data));
     } catch (e) {
       log(e.toString());
-      emit(ErrorState(message: 'Ошибка сервера'));
+      emit(CatsStateError(message: 'Ошибка сервера'));
     }
   }
 
   Future<void> catsByBrand(int brandId) async {
     try {
-      emit(LoadingState());
+      emit(CatsStateLoading());
       final List<CatsModel> data = await catsRepository.getBrandCats(brandId);
 
-      if (data.length != 0) {
+      if (data.isNotEmpty) {
         _catsBrand = data;
-        emit(LoadedState(_catsBrand));
+        emit(CatsStateLoaded(_catsBrand));
       } else {
-        emit(NoDataState());
+        emit(CatsStateNoData());
       }
     } catch (e) {
       log(e.toString());
-      emit(ErrorState(message: 'Ошибка сервера'));
+      emit(CatsStateError(message: 'Ошибка сервера'));
     }
   }
 
@@ -48,7 +48,7 @@ class CatsCubit extends Cubit<CatsState> {
   }
 
   void saveCats() {
-    emit(LoadedState(_cats));
+    emit(CatsStateLoaded(_cats));
   }
 
   Future<void> searchCats(String name) async {
@@ -64,11 +64,10 @@ class CatsCubit extends Cubit<CatsState> {
         temp.add(_cats[i]);
       }
     }
-    emit(LoadedState(temp));
+    emit(CatsStateLoaded(temp));
   }
 
-  catById(String id) async {
-    if (id.isEmpty) return;
+  Future<CatsModel> catById(String id) async {
     if (_cats.isEmpty) {
       await cats();
       // final List<City> data = await listRepository.cities();

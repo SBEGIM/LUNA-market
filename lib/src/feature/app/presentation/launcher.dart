@@ -3,27 +3,23 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:app_links/app_links.dart';
-import 'package:haji_market/src/feature/seller/chat/presentation/message_seller_page.dart';
-import 'package:haji_market/src/feature/chat/presentation/message.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/src/feature/seller/app/presentation/base_shop.dart';
 import 'package:haji_market/src/feature/seller/order/data/models/basket_order_seller_model.dart';
-import 'package:haji_market/src/feature/seller/order/presentation/widgets/detail_order_seller_page.dart';
 import 'package:haji_market/src/feature/bloger/app/presentation/base_blogger.dart';
 import 'package:haji_market/src/feature/app/bloc/app_bloc.dart';
 import 'package:haji_market/src/feature/app/router/app_router.dart';
 import 'package:haji_market/src/feature/product/data/model/product_model.dart';
 import 'package:haji_market/src/feature/tape/bloc/tape_cubit.dart';
+import 'package:haji_market/src/feature/app/presentation/location_page.dart';
 import 'package:http/http.dart' as http;
 import 'package:haji_market/src/feature/app/presentation/base.dart';
 import 'package:haji_market/src/feature/app/widgets/custom_loading_widget.dart';
 import 'package:haji_market/src/feature/auth/presentation/ui/view_auth_register_page.dart';
-// import 'package:app_links/app_links.dart';
 
 @RoutePage(name: 'LauncherRoute')
 class LauncherApp extends StatefulWidget {
@@ -129,41 +125,55 @@ class _LauncherAppState extends State<LauncherApp> {
 
     if (data == 'shop') {
       final basket = BasketOrderSellerModel.fromJson(jsonDecode(message.data['basket']));
-      Get.snackbar(
-        notification?.title ?? '',
-        notification?.body ?? '',
-        onTap: (_) => Get.to(DetailOrderSellerPage(basketOrder: basket)),
-        backgroundColor: Colors.blueAccent,
-        duration: const Duration(seconds: 10),
+      // TODO: replace snackbar with in-app notification solution
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(notification?.body ?? ''),
+          duration: const Duration(seconds: 10),
+          action: SnackBarAction(
+            label: notification?.title ?? '',
+            onPressed: () {
+              if (!mounted) return;
+              context.router.push(DetailOrderSellerRoute(basketOrder: basket));
+            },
+          ),
+        ),
       );
     } else if (data == 'chat') {
       final chat = jsonDecode(message.data['chat']);
       final appBloc = BlocProvider.of<AppBloc>(context);
 
-      Get.snackbar(
-        notification?.title ?? '',
-        notification?.body ?? '',
-        onTap: (_) => appBloc.state.maybeWhen(
-          inAppUserState: (i) => Get.to(
-            MessagePage(
-              userId: chat['user_id'],
-              name: chat['name'],
-              avatar: chat['avatar'],
-              chatId: chat['chat_id'],
-              role: chat['role'],
-            ),
-          ),
-          orElse: () => Get.to(
-            MessageSeller(
-              userId: chat['user_id'],
-              userName: chat['name'],
-              chatId: chat['chat_id'],
-              role: chat['role'],
-            ),
+      // TODO: replace snackbar with in-app notification solution
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(notification?.body ?? ''),
+          duration: const Duration(seconds: 10),
+          action: SnackBarAction(
+            label: notification?.title ?? '',
+            onPressed: () {
+              if (!mounted) return;
+              appBloc.state.maybeWhen(
+                inAppUserState: (i) => context.router.push(
+                  MessageRoute(
+                    userId: chat['user_id'],
+                    name: chat['name'],
+                    avatar: chat['avatar'],
+                    chatId: chat['chat_id'],
+                    role: chat['role'],
+                  ),
+                ),
+                orElse: () => context.router.push(
+                  MessageSellerRoute(
+                    userId: chat['user_id'],
+                    userName: chat['name'],
+                    chatId: chat['chat_id'],
+                    role: chat['role'],
+                  ),
+                ),
+              );
+            },
           ),
         ),
-        backgroundColor: Colors.blueAccent,
-        duration: const Duration(seconds: 10),
       );
     }
   }
@@ -178,6 +188,7 @@ class _LauncherAppState extends State<LauncherApp> {
       listener: (context, state) {},
       builder: (context, state) {
         return state.maybeWhen(
+          locationRequiredState: () => const LocationPage(),
           notAuthorizedState: (button) => ViewAuthRegisterPage(backButton: button),
           loadingState: () => const _Scaffold(child: CustomLoadingWidget()),
           inAppBlogerState: (index) => const BaseBlogger(),

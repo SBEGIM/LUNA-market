@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:get/route_manager.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 import 'package:image_picker/image_picker.dart';
@@ -21,7 +20,6 @@ class BankPage extends StatefulWidget {
 class _BankPageState extends State<BankPage> {
   final _box = GetStorage();
   XFile? _image;
-  bool change = false;
   bool typeOrganization = false;
 
   // Controllers
@@ -434,9 +432,13 @@ class _BankPageState extends State<BankPage> {
               controller: countryController,
               hintText: 'Страна',
               onTap: () async {
-                final data = await Get.to(() => const CountryWidget());
-                countryController.text = data;
-                setState(() {});
+                final data = await Navigator.of(context).push<String>(
+                  MaterialPageRoute(builder: (_) => const CountryWidget()),
+                );
+                if (data != null) {
+                  countryController.text = data;
+                  setState(() {});
+                }
               },
             ),
             _buildSelectableField(
@@ -444,9 +446,13 @@ class _BankPageState extends State<BankPage> {
               controller: cityController,
               hintText: 'Город',
               onTap: () async {
-                final data = await Get.to(() => const CityPage());
-                cityController.text = data;
-                setState(() {});
+                final data = await Navigator.of(context).push<String>(
+                  MaterialPageRoute(builder: (_) => const CityPage()),
+                );
+                if (data != null) {
+                  cityController.text = data;
+                  setState(() {});
+                }
               },
             ),
             _buildFormField(icon: Icons.route, controller: streetController, hintText: 'Улица'),
@@ -588,5 +594,36 @@ class _BankPageState extends State<BankPage> {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    nameController.dispose();
+    phoneController.dispose();
+    passwordController.dispose();
+    passwordRepeatController.dispose();
+    countryController.dispose();
+    cityController.dispose();
+    streetController.dispose();
+    homeController.dispose();
+    addressController.dispose();
+    emailController.dispose();
+    companyNameController.dispose();
+    shopNameController.dispose();
+    iinController.dispose();
+    kppController.dispose();
+    ogrnController.dispose();
+    checkController.dispose();
+    okved.dispose();
+    taxAuthority.dispose();
+    dateRegister.dispose();
+    dateBirthday.dispose();
+    legalAddress.dispose();
+    founderController.dispose();
+    frOrganizations.dispose();
+    bankController.dispose();
+    citizenshipController.dispose();
+    generalDirectorController.dispose();
+    super.dispose();
   }
 }

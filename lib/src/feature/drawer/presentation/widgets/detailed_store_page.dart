@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:get/route_manager.dart';
 import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/feature/app/router/app_router.dart';
 import 'package:haji_market/src/feature/app/widgets/error_image_widget.dart';
@@ -22,7 +21,7 @@ import '../../../product/data/model/product_model.dart';
 @RoutePage()
 class DetailStorePage extends StatefulWidget {
   final ProductModel product;
-  const DetailStorePage({required this.product, Key? key}) : super(key: key);
+  const DetailStorePage({required this.product, super.key});
 
   @override
   State<DetailStorePage> createState() => _DetailStorePageState();
@@ -113,13 +112,16 @@ class _DetailStorePageState extends State<DetailStorePage> {
                 SizedBox(height: 9),
                 InkWell(
                   onTap: () {
-                    Get.to(
-                      MessagePage(
-                        userId: widget.product.shop?.id,
-                        name: widget.product.shop?.name,
-                        avatar: widget.product.shop?.image,
-                        chatId: widget.product.shop?.chat_id ?? 0,
-                        role: 'shop',
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => MessagePage(
+                          userId: widget.product.shop?.id,
+                          name: widget.product.shop?.name,
+                          avatar: widget.product.shop?.image,
+                          chatId: widget.product.shop?.chat_id ?? 0,
+                          role: 'shop',
+                        ),
                       ),
                     );
                   },
@@ -305,7 +307,7 @@ class _DetailStorePageState extends State<DetailStorePage> {
 
 class ReviewsWidget extends StatefulWidget {
   final ProductModel product;
-  ReviewsWidget({required this.product, Key? key}) : super(key: key);
+  const ReviewsWidget({required this.product, super.key});
 
   @override
   State<ReviewsWidget> createState() => _ReviewsWidgetState();
@@ -313,12 +315,9 @@ class ReviewsWidget extends StatefulWidget {
 
 class _ReviewsWidgetState extends State<ReviewsWidget> {
   int rating = 0;
-  TextEditingController _commentController = TextEditingController();
 
   @override
   void initState() {
-    // TODO: implement initState
-
     BlocProvider.of<ReviewCubit>(context).reviews(widget.product.id.toString());
     super.initState();
   }
@@ -413,7 +412,7 @@ class _ReviewsWidgetState extends State<ReviewsWidget> {
                             ),
                             Spacer(),
                             Text(
-                              '${value}',
+                              '$value',
                               style: AppTextStyles.size11Weight500.copyWith(
                                 color: Color(0xff8E8E93),
                               ),
@@ -540,7 +539,7 @@ class _ReviewsWidgetState extends State<ReviewsWidget> {
                                       child: ClipRRect(
                                         borderRadius: BorderRadius.circular(12),
                                         child: Image.network(
-                                          "https://lunamarket.ru/storage/${image}",
+                                          "https://lunamarket.ru/storage/$image",
                                           fit: BoxFit.cover,
                                           height: 64,
                                           width: 64,

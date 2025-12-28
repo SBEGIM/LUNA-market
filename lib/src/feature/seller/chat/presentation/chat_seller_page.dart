@@ -1,7 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
 import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/feature/seller/chat/presentation/message_seller_page.dart';
 import 'package:intl/intl.dart';
@@ -144,12 +143,15 @@ class _ChatSellerPageState extends State<ChatSellerPage> {
                       },
                       itemBuilder: ((context, index) {
                         return GestureDetector(
-                          onTap: () => Get.to(
-                            MessageSeller(
-                              chatId: state.chat[index].chatId,
-                              userId: state.chat[index].userId,
-                              userName: state.chat[index].name,
-                              role: state.chat[index].role,
+                          onTap: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => MessageSellerPage(
+                                chatId: state.chat[index].chatId,
+                                userId: state.chat[index].userId,
+                                userName: state.chat[index].name,
+                                role: state.chat[index].role,
+                              ),
                             ),
                           ),
                           child: Row(

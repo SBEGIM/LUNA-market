@@ -2,14 +2,11 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:get/route_manager.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/feature/app/router/app_router.dart';
-import 'package:haji_market/src/feature/bloger/chat/presentation/message_blogger_page.dart';
 import 'package:haji_market/src/feature/bloger/profile/bloc/profile_statics_blogger_cubit.dart';
 import 'package:haji_market/src/feature/bloger/profile/bloc/profile_statics_blogger_state.dart';
-import 'package:haji_market/src/feature/chat/presentation/message.dart';
 import 'package:haji_market/src/feature/home/data/model/cat_model.dart';
 import 'package:haji_market/src/feature/tape/bloc/subs_cubit.dart';
 import 'package:haji_market/src/feature/tape/bloc/tape_cubit.dart' as tapeAdmin;
@@ -30,16 +27,17 @@ class ProfileSellerTapeBloggerPage extends StatefulWidget implements AutoRouteWr
   final String sellerAvatar;
   final bool inSubscribe;
   final Function(bool)? onSubChanged;
-  ProfileSellerTapeBloggerPage({
+
+  const ProfileSellerTapeBloggerPage({
     required this.sellerId,
     required this.chatId,
     required this.sellerCreatedAt,
     required this.sellerName,
     required this.sellerAvatar,
-    Key? key,
+    super.key,
     required this.inSubscribe,
     this.onSubChanged,
-  }) : super(key: key);
+  });
 
   @override
   State<ProfileSellerTapeBloggerPage> createState() => _ProfileSellerTapeBloggerPageState();
@@ -54,7 +52,6 @@ class ProfileSellerTapeBloggerPage extends StatefulWidget implements AutoRouteWr
 }
 
 class _ProfileSellerTapeBloggerPageState extends State<ProfileSellerTapeBloggerPage> {
-  final _box = GetStorage();
 
   bool inSub = false;
   RefreshController refreshController = RefreshController();
@@ -128,7 +125,7 @@ class _ProfileSellerTapeBloggerPageState extends State<ProfileSellerTapeBloggerP
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(60),
                           image: DecorationImage(
-                            image: widget.sellerAvatar != null
+                            image: widget.sellerAvatar.isNotEmpty
                                 ? NetworkImage(
                                     "https://lunamarket.ru/storage/${widget.sellerAvatar}",
                                   )
@@ -234,12 +231,12 @@ class _ProfileSellerTapeBloggerPageState extends State<ProfileSellerTapeBloggerP
                             GetStorage().remove('subCatFilterId');
                             GetStorage().remove('shopFilterId');
                             GetStorage().remove('search');
-                            GetStorage().write('shopFilter', widget.sellerName ?? '');
+                            GetStorage().write('shopFilter', widget.sellerName);
                             // GetStorage().write('shopFilterId', state.popularShops[index].id);
 
                             List<int> selectedListSort = [];
 
-                            selectedListSort.add(widget.sellerId as int);
+                            selectedListSort.add(widget.sellerId);
 
                             GetStorage().write('shopFilterId', selectedListSort.toString());
 
