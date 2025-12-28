@@ -20,7 +20,6 @@ import 'package:http/http.dart' as http;
 import 'package:haji_market/src/feature/app/presentation/base.dart';
 import 'package:haji_market/src/feature/app/widgets/custom_loading_widget.dart';
 import 'package:haji_market/src/feature/auth/presentation/ui/view_auth_register_page.dart';
-// import 'package:app_links/app_links.dart';
 
 @RoutePage(name: 'LauncherRoute')
 class LauncherApp extends StatefulWidget {
@@ -135,7 +134,7 @@ class _LauncherAppState extends State<LauncherApp> {
             label: notification?.title ?? '',
             onPressed: () {
               if (!mounted) return;
-              context.router.push(DetailOrderSellerRoute(basket: basket));
+              context.router.push(DetailOrderSellerRoute(basketOrder: basket));
             },
           ),
         ),
@@ -160,6 +159,7 @@ class _LauncherAppState extends State<LauncherApp> {
                     name: chat['name'],
                     avatar: chat['avatar'],
                     chatId: chat['chat_id'],
+                    role: chat['role'],
                   ),
                 ),
                 orElse: () => context.router.push(
@@ -167,6 +167,7 @@ class _LauncherAppState extends State<LauncherApp> {
                     userId: chat['user_id'],
                     userName: chat['name'],
                     chatId: chat['chat_id'],
+                    role: chat['role'],
                   ),
                 ),
               );

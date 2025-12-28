@@ -54,6 +54,7 @@ class MessageCubit extends Cubit<MessageState> {
       //  print(_page++);
       // emit(LoadingState());
       // if (message != null) {
+      print(message.toString());
       _message.insert(0, message);
       //   print('oklkkkweqweqwewq');
       // }

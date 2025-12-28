@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'package:bloc/bloc.dart';
+import 'package:haji_market/src/feature/basket/data/models/basket_order_model.dart';
 import 'package:haji_market/src/feature/basket/data/repository/basket_repo.dart';
 import '../data/repository/basket_seller_repository.dart';
 
@@ -37,5 +38,23 @@ class OrderStatusSellerCubit extends Cubit<OrderStatusSellerState> {
       log(e.toString());
       emit(ErrorState(message: 'Ошибка сервера'));
     }
+  }
+
+  Future<void> returnOrder(String id, String status, String? text) async {
+    try {
+      final data = await basketRepository.status(id, status, text);
+
+      emit(ReturnState());
+    } catch (e) {
+      log(e.toString());
+      emit(ErrorState(message: 'Ошибка сервера'));
+    }
+  }
+
+  void updateProductByIndex({required int index, required BasketOrderModel updatedOrder}) {
+    // if (index < _products.length) {
+    //   _products[index] = updatedProduct;
+    //   emit(LoadedState(_products));
+    // }
   }
 }

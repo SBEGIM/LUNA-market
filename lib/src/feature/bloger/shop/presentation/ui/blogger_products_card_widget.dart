@@ -170,6 +170,8 @@ class _BloggerProductCardWidget extends State<BloggerProductCardWidget> {
                             widget.onSelectionChanged(!widget.isSelected, widget.product.id!);
                           },
                           child: Container(
+                            height: 20,
+                            width: 20,
                             margin: const EdgeInsets.only(top: 8.0, right: 10.0),
                             child: Image.asset(
                               widget.index == widget.product.id

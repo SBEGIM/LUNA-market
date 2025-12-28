@@ -36,6 +36,10 @@ class BasketRepository {
   Future<List<BasketShowModel>> basketShow() => _basket.basketShow();
   Future<List<BasketOrderModel>> basketOrderShow({required String status, required int page}) =>
       _basket.basketOrderShow(status: status, page: page);
+
+  Future<List<BasketOrderModel>> basketOrderShowById({required int id}) =>
+      _basket.basketOrderShowById(id: id);
+
   Future<int> basketOrder(List id) => _basket.basketOrder(id);
   Future<String> payment({
     required BuildContext context,
@@ -152,6 +156,19 @@ class Basket {
 
     final response = await http.get(
       Uri.parse("$baseUrl/basket/order/status?status=$status&page=$page"),
+      headers: {"Authorization": "Bearer $token"},
+    );
+
+    final data = jsonDecode(response.body);
+
+    return (data['data'] as List).map((e) => BasketOrderModel.fromJson(e)).toList();
+  }
+
+  Future<List<BasketOrderModel>> basketOrderShowById({required int id}) async {
+    final String? token = _box.read('token');
+
+    final response = await http.get(
+      Uri.parse("$baseUrl/basket/order/status/$id"),
       headers: {"Authorization": "Bearer $token"},
     );
 

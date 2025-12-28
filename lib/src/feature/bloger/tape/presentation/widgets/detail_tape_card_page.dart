@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
+import 'package:haji_market/src/feature/app/router/app_router.dart';
 import 'package:haji_market/src/feature/bloger/tape/bloc/tape_blogger_cubit.dart';
 import 'package:haji_market/src/feature/bloger/tape/bloc/tape_blogger_state.dart';
 import 'package:haji_market/src/feature/bloger/tape/data/model/tape_blogger_model.dart';
@@ -95,25 +96,49 @@ class _DetailBloggerTapeCardPageState extends State<DetailTapeBloggerCardPage> {
         ),
         toolbarHeight: 32,
         centerTitle: true,
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            CircleAvatar(
-              radius: 16, // половина от 32
-              backgroundImage: NetworkImage(
-                widget.tape.shop?.image != null
-                    ? "https://lunamarket.ru/storage/${widget.tape.shop?.image}"
-                    : "https://lunamarket.ru/storage/banners/2.png",
+        title: InkWell(
+          onTap: () {
+            context.router.push(
+              ProfileSellerTapeBloggerRoute(
+                chatId: widget.tape.chatId ?? 0,
+                sellerAvatar: widget.tape.shop?.image ?? '',
+                sellerId: widget.tape.shop!.id!,
+                sellerCreatedAt: widget.tape.shop!.createdAt!,
+                sellerName: widget.tape.shop!.name ?? '',
+                inSubscribe: false,
+                onSubChanged: (value) {
+                  // BlocProvider.of<TapeBloggerCubit>(context).updateTapeByIndex(
+                  //   index: currentIndex,
+                  //   updatedTape: state.tapeModel[currentIndex].copyWith(
+                  //     tapeId: state.tapeModel[currentIndex].tapeId,
+                  //     inSellerSubscribe: value,
+                  //   ),
+                  // );
+                },
               ),
-              backgroundColor: Colors.grey[200], // запасной фон
-            ),
-            const SizedBox(width: 12),
-            Text(
-              '${widget.shopName}',
-              style: AppTextStyles.size18Weight600.copyWith(color: AppColors.kWhite),
-            ),
-          ],
+            );
+            stop = true;
+          },
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              CircleAvatar(
+                radius: 16, // половина от 32
+                backgroundImage: NetworkImage(
+                  widget.tape.shop?.image != null
+                      ? "https://lunamarket.ru/storage/${widget.tape.shop?.image}"
+                      : "https://lunamarket.ru/storage/banners/2.png",
+                ),
+                backgroundColor: Colors.grey[200], // запасной фон
+              ),
+              const SizedBox(width: 12),
+              Text(
+                '${widget.shopName}',
+                style: AppTextStyles.size18Weight600.copyWith(color: AppColors.kWhite),
+              ),
+            ],
+          ),
         ),
         actions: [
           InkWell(

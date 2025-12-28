@@ -13,6 +13,8 @@ class LoadedState extends OrderStatusSellerState {
 
 class CancelState extends OrderStatusSellerState {}
 
+class ReturnState extends OrderStatusSellerState {}
+
 class ErrorState extends OrderStatusSellerState {
   String message;
   ErrorState({required this.message});

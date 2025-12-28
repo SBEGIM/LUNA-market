@@ -330,7 +330,6 @@ class MultiBlocWrapper extends StatelessWidget {
         BlocProvider(create: (_) => CityCubit(cityRepository: CityRepository())),
         BlocProvider(create: (_) => CountryCubit(countryRepository: CountryRepository())),
         BlocProvider(create: (_) => ProductAdCubit(productAdRepository: ProductAdRepository())),
-
         BlocProvider(
           create: (_) =>
               RecentlyWatchedProductCubit(productRepository: RecentlyWatchedRepository()),

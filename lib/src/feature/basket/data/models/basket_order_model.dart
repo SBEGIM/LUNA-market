@@ -95,6 +95,43 @@ class BasketOrderModel {
   int? get currentStep => _currentStep;
   List<BasketStatusStep>? get basketStatusTimeline => _basketStatusTimeline;
 
+  /// copyWith
+  BasketOrderModel copyWith({
+    int? id,
+    int? shopId,
+    List<Product>? product,
+    int? summa,
+    int? chatId,
+    String? status,
+    int? deliveryDay,
+    int? deliveryPrice,
+    String? date,
+    String? updatedAt,
+    String? comment,
+    String? returnDate,
+    String? expectedDeliveryDate,
+    int? currentStep,
+    List<BasketStatusStep>? basketStatusTimeline,
+  }) {
+    return BasketOrderModel(
+      id: id ?? _id,
+      shopId: shopId ?? _shopId,
+      product: product ?? _product,
+      summa: summa ?? _summa,
+      chatId: chatId ?? _chatId,
+      status: status ?? _status,
+      deliveryDay: deliveryDay ?? _deliveryDay,
+      deliveryPrice: deliveryPrice ?? _deliveryPrice,
+      date: date ?? _date,
+      updatedAt: updatedAt ?? _updatedAt,
+      comment: comment ?? _comment,
+      returnDate: returnDate ?? _returnDate,
+      expectedDeliveryDate: expectedDeliveryDate ?? _expectedDeliveryDate,
+      currentStep: currentStep ?? _currentStep,
+      basketStatusTimeline: basketStatusTimeline ?? _basketStatusTimeline,
+    );
+  }
+
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['id'] = _id;
@@ -152,6 +189,16 @@ class BasketStatusStep {
   String? get title => _title;
   String? get date => _date;
   bool? get isDone => _isDone;
+
+  BasketStatusStep copyWith({String? key, int? step, String? title, String? date, bool? isDone}) {
+    return BasketStatusStep(
+      key: key ?? _key,
+      step: step ?? _step,
+      title: title ?? _title,
+      date: date ?? _date,
+      isDone: isDone ?? _isDone,
+    );
+  }
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -216,6 +263,7 @@ class Product {
     _address = json['address'];
     _shopSchedule = json['shop_schedule'];
   }
+
   int? _id;
   int? _shopId;
   String? _shopName;
@@ -247,6 +295,42 @@ class Product {
   String? get status => _status;
   String? get address => _address;
   String? get shopSchedule => _shopSchedule;
+
+  Product copyWith({
+    int? id,
+    int? shopId,
+    String? shopName,
+    String? shopImage,
+    int? shopCourier,
+    String? shopCityName,
+    String? shopPhone,
+    int? productId,
+    String? productName,
+    List<String>? path,
+    int? count,
+    int? price,
+    String? status,
+    String? address,
+    String? shopSchedule,
+  }) {
+    return Product(
+      id: id ?? _id,
+      shopId: shopId ?? _shopId,
+      shopName: shopName ?? _shopName,
+      shopImage: shopImage ?? _shopImage,
+      shopCourier: shopCourier ?? _shopCourier,
+      shopCityName: shopCityName ?? _shopCityName,
+      shopPhone: shopPhone ?? _shopPhone,
+      productId: productId ?? _productId,
+      productName: productName ?? _productName,
+      path: path ?? _path,
+      count: count ?? _count,
+      price: price ?? _price,
+      status: status ?? _status,
+      address: address ?? _address,
+      shopSchedule: shopSchedule ?? _shopSchedule,
+    );
+  }
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};

@@ -75,11 +75,9 @@ void showClientSettingOptions(BuildContext context, bool isAuth, String title, F
                       buildSettingItem(
                         onTap: () {
                           final List<String> options = ['Русский', 'Казахский', 'Английский'];
-                          showModuleProfile(context, 'Язык', options, (value) {
+                          showModuleProfile(context, 'Язык', lang, options, (value) {
                             GetStorage().write('language', value);
-
                             lang = value;
-
                             setState(() {});
                           });
                         },

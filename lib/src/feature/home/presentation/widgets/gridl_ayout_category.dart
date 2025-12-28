@@ -63,38 +63,34 @@ class GridOptionsCategory extends StatelessWidget {
                   child: SizedBox(
                     height: imageSize,
                     width: imageSize,
-                    child: CachedNetworkImage(
-                      imageUrl: imageUrl,
-                      fit: BoxFit.cover,
-                      progressIndicatorBuilder: (context, url, downloadProgress) {
-                        return Center(
-                          child: CircularProgressIndicator(
-                            value: downloadProgress.progress, // 0..1 или null
-                            strokeWidth: 2,
-                          ),
-                        );
-                      },
-                      errorWidget: (context, url, error) {
-                        return Container(
-                          color: Colors.grey[100],
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(12),
+                      child: CachedNetworkImage(
+                        imageUrl: imageUrl,
+                        fit: BoxFit.cover,
+
+                        progressIndicatorBuilder: (context, url, downloadProgress) {
+                          return Container(
+                            color: Colors.grey.shade100,
+                            alignment: Alignment.center,
+                            child: SizedBox(
+                              width: 18,
+                              height: 18,
+                              child: CircularProgressIndicator(
+                                value: downloadProgress.progress, // может быть null
+                                strokeWidth: 2,
+                              ),
+                            ),
+                          );
+                        },
+
+                        errorWidget: (context, url, error) => Container(
+                          color: Colors.grey.shade100,
+                          alignment: Alignment.center,
                           child: const Icon(Icons.broken_image, color: Colors.grey),
-                        );
-                      },
+                        ),
+                      ),
                     ),
-                    // Image.network(
-                    //   imageUrl,
-                    //   fit: BoxFit.contain,
-                    //   // Можно оставить свой локальный спиннер ИЛИ ничего — у нас есть фулл-оверлей сверху
-                    //   loadingBuilder: (context, child, loadingProgress) {
-                    //     if (loadingProgress == null) return child;
-                    //     return child;
-                    //   },
-                    //   errorBuilder: (context, error, stackTrace) => Container(
-                    //     color: Colors.grey[100],
-                    //     child:
-                    //         const Icon(Icons.broken_image, color: Colors.grey),
-                    //   ),
-                    // ),
                   ),
                 ),
 

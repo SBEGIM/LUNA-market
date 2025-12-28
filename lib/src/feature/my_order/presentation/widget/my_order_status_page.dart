@@ -1,18 +1,24 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/route_manager.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/feature/app/router/app_router.dart';
 import 'package:haji_market/src/feature/app/widgets/app_snack_bar.dart';
 import 'package:haji_market/src/feature/app/widgets/error_image_widget.dart';
 import 'package:haji_market/src/feature/basket/data/models/basket_order_model.dart';
+import 'package:haji_market/src/feature/drawer/presentation/widgets/pre_order_dialog.dart';
+import 'package:haji_market/src/feature/drawer/presentation/widgets/show_basket_bottom_sheet_widget.dart';
 import 'package:haji_market/src/feature/home/presentation/widgets/product_watching_card.dart';
-import 'package:haji_market/src/feature/my_order/presentation/widget/cancel_order_widget.dart';
+import 'package:haji_market/src/feature/my_order/presentation/widget/show_module_order_seller_widget.dart';
+import 'package:haji_market/src/feature/my_order/presentation/widget/show_order_cancel_widget.dart';
+import 'package:haji_market/src/feature/my_order/presentation/widget/show_order_uncancel_widget.dart';
 import 'package:haji_market/src/feature/product/cubit/product_cubit.dart' as product_cubit;
 import 'package:haji_market/src/feature/product/cubit/product_state.dart' as product_state;
+import 'package:haji_market/src/feature/product/data/model/product_model.dart';
 import 'package:haji_market/src/feature/product/provider/filter_provider.dart';
+import 'package:haji_market/src/feature/seller/order/presentation/widgets/show_module_order_seller_widget.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:timeline_tile/timeline_tile.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -20,15 +26,18 @@ import '../../../seller/order/bloc/order_status_seller_cubit.dart';
 import '../../../basket/bloc/basket_cubit.dart';
 
 class MyOrderStatusPage extends StatefulWidget {
-  final BasketOrderModel basketOrder;
+  int index;
+  BasketOrderModel basketOrder;
 
-  const MyOrderStatusPage({required this.basketOrder, super.key});
+  MyOrderStatusPage({required this.index, required this.basketOrder, super.key});
 
   @override
   State<MyOrderStatusPage> createState() => _MyOrderStatusPageState();
 }
 
 class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
+  late BasketOrderModel _basketOrder;
+
   bool inbasket = false;
   bool hidden = false;
   String productId = '';
@@ -37,12 +46,16 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
 
   int rating = 0;
 
+  // BlocProvider.of<BasketCubit>(context).basketOrderShowPaginate(status: '');
+
   @override
   void initState() {
     if (State is! product_state.LoadedState) {
       final filters = context.read<FilterProvider>();
       BlocProvider.of<product_cubit.ProductCubit>(context).productsMbInteresting(filters);
     }
+
+    _basketOrder = widget.basketOrder;
     // статус прогресса теперь приходит с бэка в basketStatusTimeline,
     // поэтому orderTimeline больше не нужен
     super.initState();
@@ -51,15 +64,21 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
   final RefreshController _refreshController = RefreshController(initialRefresh: false);
 
   Future<void> onRefresh() async {
-    await BlocProvider.of<BasketCubit>(context).basketOrderShow(status: 'active');
-    if (mounted) {
-      setState(() {});
-    }
+    BasketOrderModel data = await BlocProvider.of<BasketCubit>(
+      context,
+    ).basketOrderShowById(id: widget.basketOrder.id!);
+
+    print(data.toJson().toString());
+    // if (mounted) {
+    setState(() {
+      _basketOrder = data;
+    });
+    // }
     _refreshController.refreshCompleted();
   }
 
   Future<void> onLoading() async {
-    await BlocProvider.of<BasketCubit>(context).basketOrderShow(status: 'active');
+    await BlocProvider.of<BasketCubit>(context).basketOrderShowById(id: widget.basketOrder.id!);
     await Future.delayed(const Duration(milliseconds: 2000));
 
     _refreshController.loadComplete();
@@ -81,15 +100,17 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
   @override
   Widget build(BuildContext context) {
     /// новый список шагов таймлайна из модели
-    final timelineSteps = widget.basketOrder.basketStatusTimeline ?? [];
+    final timelineSteps = _basketOrder.basketStatusTimeline ?? [];
 
     return Scaffold(
       backgroundColor: AppColors.kBackgroundColor,
+
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: AppColors.kWhite,
+        surfaceTintColor: AppColors.kWhite,
         elevation: 0,
         centerTitle: true,
-        title: Text('№ ${widget.basketOrder.id}', style: AppTextStyles.size18Weight600),
+        title: Text('№ ${_basketOrder.id}', style: AppTextStyles.size18Weight600),
         leading: InkWell(
           onTap: () {
             context.router.pop();
@@ -97,134 +118,102 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
           child: Image.asset(Assets.icons.defaultBackIcon.path, height: 22, width: 22, scale: 2.1),
         ),
       ),
-      body: Container(
-        color: AppColors.kBackgroundColor,
-        child: IndexedStack(
-          index: segmentValue,
+      body: SmartRefresher(
+        controller: _refreshController,
+        enablePullDown: true,
+        enablePullUp: false,
+        onLoading: () {
+          onLoading();
+        },
+        onRefresh: () {
+          onRefresh();
+        },
+        child: ListView(
+          shrinkWrap: true,
+
           children: [
-            if (widget.basketOrder.product?.isNotEmpty ?? false)
-              ListView(
-                children: [
-                  const SizedBox(height: 12),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(left: 16.0, right: 16),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                          padding: const EdgeInsets.all(16),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              // ********* НОВАЯ ШАПКА ОЖИДАЕМОЙ ДОСТАВКИ *********
-                              Text(
-                                'Ожидаемая доставка: ${widget.basketOrder.expectedDeliveryDate ?? ''}',
-                                style: AppTextStyles.size18Weight700,
-                              ),
-                              const SizedBox(height: 20),
-                              // ********* ДИНАМИЧЕСКИЙ ТАЙМЛАЙН ИЗ basketStatusTimeline *********
-                              if (timelineSteps.isNotEmpty)
-                                Column(
-                                  children: [
-                                    for (int i = 0; i < timelineSteps.length; i++)
-                                      TimelineTile(
-                                        alignment: TimelineAlign.start,
-                                        isFirst: i == 0,
-                                        isLast: i == timelineSteps.length - 1,
-                                        indicatorStyle: (timelineSteps[i].isDone ?? false)
-                                            ? IndicatorStyle(
-                                                color: AppColors.mainGreenColor,
-                                                iconStyle: IconStyle(
-                                                  color: Colors.white,
-                                                  iconData: Icons.check,
-                                                ),
-                                              )
-                                            : IndicatorStyle(
-                                                color: const Color(0xffDDDDDD),
-                                                iconStyle: i == 0
-                                                    ? IconStyle(
-                                                        color: Colors.white,
-                                                        iconData: Icons.history_toggle_off,
-                                                      )
-                                                    : null,
+            const SizedBox(height: 12),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                if (_basketOrder.status != 'cancel' &&
+                    _basketOrder.status != 'end' &&
+                    _basketOrder.status != 'return')
+                  Padding(
+                    padding: const EdgeInsets.only(left: 16.0, right: 16),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      padding: const EdgeInsets.all(16),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // ********* НОВАЯ ШАПКА ОЖИДАЕМОЙ ДОСТАВКИ *********
+                          if (_basketOrder.status != 'cancel')
+                            Text(
+                              'Ожидаемая доставка: ${_basketOrder.expectedDeliveryDate ?? ''}',
+                              style: AppTextStyles.size18Weight700,
+                            ),
+                          const SizedBox(height: 20),
+                          // ********* ДИНАМИЧЕСКИЙ ТАЙМЛАЙН ИЗ basketStatusTimeline *********
+                          if (timelineSteps.isNotEmpty && _basketOrder.status != 'cancel')
+                            Column(
+                              children: [
+                                for (int i = 0; i < timelineSteps.length; i++)
+                                  TimelineTile(
+                                    alignment: TimelineAlign.start,
+                                    isFirst: i == 0,
+                                    isLast: i == timelineSteps.length - 1,
+                                    indicatorStyle: (timelineSteps[i].isDone ?? false)
+                                        ? IndicatorStyle(
+                                            color: AppColors.mainGreenColor,
+                                            iconStyle: IconStyle(
+                                              color: Colors.white,
+                                              iconData: Icons.check,
+                                            ),
+                                          )
+                                        : IndicatorStyle(
+                                            color: const Color(0xffDDDDDD),
+                                            iconStyle: i == 0
+                                                ? IconStyle(
+                                                    color: Colors.white,
+                                                    iconData: Icons.history_toggle_off,
+                                                  )
+                                                : null,
+                                          ),
+                                    beforeLineStyle: const LineStyle(
+                                      thickness: 1.0,
+                                      color: Color(0xffDDDDDD),
+                                    ),
+                                    lineXY: 0.4,
+                                    endChild: Padding(
+                                      padding: const EdgeInsets.only(left: 8.0, top: 4, bottom: 4),
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            timelineSteps[i].title ?? '',
+                                            style: AppTextStyles.size16Weight500,
+                                          ),
+                                          if ((timelineSteps[i].date ?? '').isNotEmpty == true)
+                                            Text(
+                                              timelineSteps[i].date ?? '',
+                                              style: AppTextStyles.size14Weight400.copyWith(
+                                                color: Color(0xff979797),
                                               ),
-                                        beforeLineStyle: const LineStyle(
-                                          thickness: 1.0,
-                                          color: Color(0xffDDDDDD),
-                                        ),
-                                        lineXY: 0.4,
-                                        endChild: Padding(
-                                          padding: const EdgeInsets.only(
-                                            left: 8.0,
-                                            top: 4,
-                                            bottom: 4,
-                                          ),
-                                          child: Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                timelineSteps[i].title ?? '',
-                                                style: AppTextStyles.size16Weight500,
-                                              ),
-                                              if ((timelineSteps[i].date ?? '').isNotEmpty == true)
-                                                Text(
-                                                  timelineSteps[i].date ?? '',
-                                                  style: AppTextStyles.size14Weight400.copyWith(
-                                                    color: Color(0xff979797),
-                                                  ),
-                                                ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                  ],
-                                )
-                              else
-                                // на всякий случай — если таймлайна нет, покажем старый вариант
-                                const Text(
-                                  'Информация о статусе заказа временно недоступна',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: 14,
-                                    color: AppColors.kGray300,
-                                  ),
-                                ),
-                              const SizedBox(height: 12),
-                              // ********* ДАЛЬШЕ ВАШ СТАРЫЙ БЛОК КНОПОК / СТАТУСОВ *********
-                              if (widget.basketOrder.status == 'cancel')
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      child: Container(
-                                        height: 38,
-                                        width: 136,
-                                        alignment: Alignment.center,
-                                        decoration: BoxDecoration(
-                                          color: AppColors.kPrimaryColor,
-                                          borderRadius: BorderRadius.circular(12),
-                                        ),
-                                        child: const Text(
-                                          'Заказ отменен',
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w500,
-                                          ),
-                                        ),
+                                            ),
+                                        ],
                                       ),
                                     ),
-                                  ],
-                                )
-                              else
+                                  ),
+
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
                                     const SizedBox(width: 30),
-                                    if (widget.basketOrder.status == 'end')
+                                    if (_basketOrder.status == 'end')
                                       const SizedBox.shrink()
                                     else
                                       BlocConsumer<OrderStatusSellerCubit, OrderStatusSellerState>(
@@ -233,35 +222,107 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                             BlocProvider.of<BasketCubit>(
                                               context,
                                             ).basketOrderShow(status: 'end');
-                                            Navigator.pop(context);
-                                            Get.snackbar(
-                                              'Заказ',
-                                              'Вы совершили покупку',
-                                              backgroundColor: Colors.blueAccent,
+
+                                            AppSnackBar.show(
+                                              context,
+                                              'Заказ получен',
+                                              type: AppSnackType.success,
                                             );
                                           }
                                         },
                                         builder: (context, state) {
                                           return GestureDetector(
                                             onTap: () async {
-                                              if (widget
-                                                      .basketOrder
-                                                      .basketStatusTimeline!
-                                                      .last
-                                                      .isDone ==
-                                                  true) {
-                                                BlocProvider.of<OrderStatusSellerCubit>(
-                                                  context,
-                                                ).basketStatus(
-                                                  'end',
-                                                  widget.basketOrder.id.toString(),
-                                                  widget.basketOrder.product!.first.id.toString(),
-                                                  'fbs',
+                                              if (_basketOrder.status == 'ready_for_pickup' ||
+                                                  _basketOrder.status == 'taken') {
+                                                final timeline = List.of(
+                                                  _basketOrder.basketStatusTimeline!,
                                                 );
+                                                timeline[timeline.length - 1] = timeline.last
+                                                    .copyWith(isDone: true);
+
+                                                String sendStatus = '';
+                                                if (_basketOrder.status == 'ready_for_pickup') {
+                                                  sendStatus = 'taken';
+                                                }
+
+                                                if (_basketOrder.status == 'taken') {
+                                                  sendStatus = 'end';
+                                                }
+
+                                                if (sendStatus == 'taken') {
+                                                  BlocProvider.of<OrderStatusSellerCubit>(
+                                                    context,
+                                                  ).basketStatus(
+                                                    sendStatus,
+                                                    _basketOrder.id.toString(),
+                                                    _basketOrder.product!.first.id.toString(),
+                                                    'fbs',
+                                                  );
+
+                                                  BlocProvider.of<BasketCubit>(
+                                                    context,
+                                                  ).updateProductByIndex(
+                                                    index: widget.index,
+                                                    updatedOrder: _basketOrder.copyWith(
+                                                      status: sendStatus,
+                                                      basketStatusTimeline: timeline,
+                                                    ),
+                                                  );
+
+                                                  setState(() {
+                                                    _basketOrder = _basketOrder.copyWith(
+                                                      status: sendStatus,
+                                                      basketStatusTimeline: timeline,
+                                                    );
+                                                  });
+
+                                                  AppSnackBar.show(
+                                                    context,
+                                                    'Заказ выдан',
+                                                    type: AppSnackType.success,
+                                                  );
+                                                }
+
+                                                final value = await showModuleOrderUser(
+                                                  context,
+                                                  'Заказ №${_basketOrder.id}',
+                                                  'Подтвердить получение',
+                                                  'Нажимая «Подтвердить», вы подтверждаете\nполучение заказа и отсутствие претензий',
+                                                  'Подтвердить',
+                                                );
+
+                                                if (value == true) {
+                                                  BlocProvider.of<OrderStatusSellerCubit>(
+                                                    context,
+                                                  ).basketStatus(
+                                                    'end',
+                                                    _basketOrder.id.toString(),
+                                                    _basketOrder.product!.first.id.toString(),
+                                                    'fbs',
+                                                  );
+
+                                                  BlocProvider.of<BasketCubit>(
+                                                    context,
+                                                  ).updateProductByIndex(
+                                                    index: widget.index,
+                                                    updatedOrder: _basketOrder.copyWith(
+                                                      status: 'end',
+                                                      basketStatusTimeline: timeline,
+                                                    ),
+                                                  );
+
+                                                  setState(() {
+                                                    _basketOrder = _basketOrder.copyWith(
+                                                      status: 'end',
+                                                      basketStatusTimeline: timeline,
+                                                    );
+                                                  });
+                                                }
                                               } else {
                                                 AppSnackBar.show(
                                                   context,
-                                                  '${widget.basketOrder.basketStatusTimeline![widget.basketOrder.currentStep! + 1].title}',
+                                                  '${_basketOrder.basketStatusTimeline?[_basketOrder.currentStep ?? 0 + 1].title}',
                                                   type: AppSnackType.error,
                                                 );
                                               }
@@ -269,15 +330,18 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                             child: Container(
                                               height: 32,
                                               width: 103,
+                                              margin: EdgeInsets.only(top: 4),
                                               alignment: Alignment.center,
                                               decoration: BoxDecoration(
                                                 color:
                                                     widget
-                                                            .basketOrder
-                                                            .basketStatusTimeline!
-                                                            .last
-                                                            .isDone ==
-                                                        false
+                                                                .basketOrder
+                                                                .basketStatusTimeline!
+                                                                .last
+                                                                .isDone ==
+                                                            false &&
+                                                        _basketOrder.status != 'ready_for_pickup' &&
+                                                        _basketOrder.status != 'taken'
                                                     ? AppColors.mainPurpleColor.withValues(
                                                         alpha: 0.5,
                                                       )
@@ -289,7 +353,9 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                                       strokeWidth: 2,
                                                     )
                                                   : Text(
-                                                      'Подтвердить',
+                                                      _basketOrder.status == 'taken'
+                                                          ? 'Подтвердить'
+                                                          : 'Забрать заказ',
                                                       textAlign: TextAlign.center,
                                                       style: AppTextStyles.size13Weight500.copyWith(
                                                         color: AppColors.kWhite,
@@ -301,37 +367,263 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                       ),
                                   ],
                                 ),
-                            ],
+                              ],
+                            )
+                          else
+                            // на всякий случай — если таймлайна нет, покажем старый вариант
+                            const Text(
+                              'Информация о статусе заказа временно недоступна',
+                              style: TextStyle(
+                                fontWeight: FontWeight.w400,
+                                fontSize: 14,
+                                color: AppColors.kGray300,
+                              ),
+                            ),
+                          const SizedBox(height: 12),
+                        ],
+                      ),
+                    ),
+                  ),
+
+                if (_basketOrder.status == 'cancel')
+                  Container(
+                    height: 74,
+                    margin: EdgeInsets.symmetric(horizontal: 16),
+                    padding: EdgeInsets.only(left: 16),
+                    alignment: Alignment.centerLeft,
+                    decoration: BoxDecoration(
+                      color: AppColors.kWhite,
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Отменен',
+                          style: AppTextStyles.size18Weight700.copyWith(
+                            color: AppColors.mainRedColor,
                           ),
                         ),
+
+                        Text('2 июня', style: AppTextStyles.size16Weight500),
+                      ],
+                    ),
+                  ),
+
+                if (_basketOrder.status == 'end')
+                  Container(
+                    height: 74,
+                    margin: EdgeInsets.symmetric(horizontal: 16),
+                    padding: EdgeInsets.only(left: 16),
+                    alignment: Alignment.centerLeft,
+                    decoration: BoxDecoration(
+                      color: AppColors.kWhite,
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Выдан',
+                          style: AppTextStyles.size18Weight700.copyWith(
+                            color: AppColors.mainGreenColor,
+                          ),
+                        ),
+                        Text('2 июня', style: AppTextStyles.size16Weight500),
+                      ],
+                    ),
+                  ),
+
+                if (_basketOrder.status == 'return')
+                  Container(
+                    height: 48,
+                    margin: EdgeInsets.symmetric(horizontal: 16),
+                    padding: EdgeInsets.only(left: 16),
+                    alignment: Alignment.centerLeft,
+                    decoration: BoxDecoration(
+                      color: AppColors.kWhite,
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [Text('Возврат оформлен', style: AppTextStyles.size18Weight700)],
+                    ),
+                  ),
+
+                if (_basketOrder.status != 'end' &&
+                    _basketOrder.status != 'cancel' &&
+                    _basketOrder.status != 'return')
+                  GestureDetector(
+                    onTap: () {
+                      if (_basketOrder.status != 'courier' && _basketOrder.status != 'cancel') {
+                        final List<String> cancelReasons = [
+                          'Передумал покупать',
+                          'Сроки доставки изменились',
+                          'У продавца нет товара в наличии',
+                          'У продавца нет цвета/размера/модели',
+                          'Продавец предлагал другую модель/\nтовар',
+                          'Товар не соответствует описанию/\nфото',
+                          'Другое',
+                        ];
+
+                        showOrderCancel(context, 'Причина возврата', cancelReasons, (
+                          String reason,
+                        ) {
+                          context.read<OrderStatusSellerCubit>().cancelOrder(
+                            _basketOrder.id.toString(),
+                            'cancel',
+                            reason,
+                          );
+
+                          BlocProvider.of<BasketCubit>(context).updateProductByIndex(
+                            index: _basketOrder.id!,
+                            updatedOrder: _basketOrder.copyWith(status: 'cancel'),
+                          );
+
+                          setState(() {
+                            _basketOrder = _basketOrder.copyWith(status: 'cancel');
+                          });
+
+                          showModuleOrderUser(
+                            context,
+                            'Оформить возврат',
+                            'Возврат оформлен',
+                            'Ваш запрос на возврат принят. Менеджер скоро с вами свяжется.  Деньги будут возвращены в течение 3–5 рабочих дней после приема товара',
+                            'Понятно',
+                          );
+
+                          // context.router.push(SuccessCancelRoute());
+                        });
+                        // Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(
+                        //     builder: (context) =>
+                        //         CancelOrderWidget(id: widget.basketOrder.id.toString()),
+                        //   ),
+                        // );
+                      } else if (_basketOrder.status == 'courier' &&
+                          _basketOrder.status != 'cancel') {
+                        showOrderUncancel(context, 'Отменить заказ', [], (String reason) {});
+                      }
+                    },
+                    child: Container(
+                      height: 40,
+                      margin: const EdgeInsets.only(left: 16, right: 16, top: 12),
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      width: double.infinity,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        color: AppColors.kWhite,
+                        borderRadius: BorderRadius.circular(12),
                       ),
-                      GestureDetector(
-                        onTap: () {
-                          if (widget.basketOrder.status != 'courier') {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    CancelOrderWidget(id: widget.basketOrder.id.toString()),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Отменить заказ',
+                            style: AppTextStyles.size18Weight500.copyWith(
+                              color: AppColors.mainPurpleColor,
+                            ),
+                          ),
+                          Image.asset(
+                            Assets.icons.defaultArrowForwardIcon.path,
+                            color: AppColors.mainPurpleColor,
+                            height: 20,
+                            width: 20,
+                            scale: 2.1,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                if (_basketOrder.status == 'end' ||
+                    _basketOrder.status == 'cancel' ||
+                    _basketOrder.status == 'return')
+                  Container(
+                    height: _basketOrder.status == 'cancel' || _basketOrder.status == 'return'
+                        ? 40
+                        : 100,
+                    margin: const EdgeInsets.only(left: 16, right: 16, top: 12),
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    width: double.infinity,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      color: AppColors.kWhite,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        InkWell(
+                          onTap: () {
+                            ProductModel product = ProductModel(
+                              id: _basketOrder.product?.first.id,
+                              name: _basketOrder.product?.first.productName,
+                              price: _basketOrder.product?.first.price,
+                              count: _basketOrder.product?.first.count,
+                              compound: _basketOrder.product?.first.count,
+                              path: _basketOrder.product?.first.path,
+                              pre_order: 1,
+                              shop: Shop(
+                                id: _basketOrder.shopId,
+                                name: _basketOrder.product?.first.shopName,
                               ),
                             );
-                          }
-                        },
-                        child: Container(
-                          height: 40,
-                          margin: const EdgeInsets.only(left: 16, right: 16, top: 12),
-                          padding: const EdgeInsets.symmetric(horizontal: 16),
-                          width: double.infinity,
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                            color: AppColors.kWhite,
-                            borderRadius: BorderRadius.circular(12),
-                          ),
+                            showBasketBottomSheetOptions(
+                              context,
+                              '${product.shop?.name}',
+                              0,
+                              product,
+                              (int callBackCount, int callBackPrice, bool callBackOptom) {
+                                if (product.product_count == 0 && product.pre_order == 1) {
+                                  if (product.inBasket == false) {
+                                    showCupertinoModalPopup<void>(
+                                      context: context,
+                                      builder: (context) => PreOrderDialog(
+                                        onYesTap: () {
+                                          Navigator.pop(context);
+                                          if (product.inBasket == false) {
+                                            BlocProvider.of<BasketCubit>(context).basketAdd(
+                                              product.id.toString(),
+                                              callBackCount,
+                                              callBackPrice,
+                                              '',
+                                              '',
+                                              isOptom: callBackOptom,
+                                            );
+                                          }
+                                        },
+                                      ),
+                                    );
+                                  } else {
+                                    context.router.pushAndPopUntil(
+                                      const LauncherRoute(children: [BasketRoute()]),
+                                      predicate: (route) => false,
+                                    );
+                                  }
+
+                                  return;
+                                }
+                                BlocProvider.of<BasketCubit>(context).basketAdd(
+                                  product.id.toString(),
+                                  callBackCount,
+                                  callBackPrice,
+                                  '',
+                                  '',
+                                  isOptom: callBackOptom,
+                                );
+                              },
+                            );
+                          },
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                'Отменить заказ',
+                                'Повторить заказ',
                                 style: AppTextStyles.size18Weight500.copyWith(
                                   color: AppColors.mainPurpleColor,
                                 ),
@@ -346,410 +638,432 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                             ],
                           ),
                         ),
-                      ),
-                      InkWell(
-                        onTap: () {
-                          final phone = widget.basketOrder.product?.first.shopPhone;
+                        if (_basketOrder.status != 'cancel' && _basketOrder.status != 'return')
+                          SizedBox(height: 10),
 
-                          if (phone != null && phone.isNotEmpty) {
-                            _callSeller(phone);
-                          }
-                        },
-                        child: Container(
-                          height: 110,
-                          margin: const EdgeInsets.only(left: 16, right: 16, top: 12),
-                          padding: const EdgeInsets.symmetric(horizontal: 16),
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                            color: AppColors.kWhite,
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const SizedBox(height: 16),
-                              Text(
-                                'Продавец',
-                                style: AppTextStyles.size14Weight500.copyWith(
-                                  color: const Color(0xffAEAEB2),
+                        if (_basketOrder.status != 'cancel' && _basketOrder.status != 'return')
+                          InkWell(
+                            onTap: () {
+                              if (_basketOrder.status != 'courier' &&
+                                  _basketOrder.status != 'cancel') {
+                                final List<String> cancelReasons = [
+                                  'Товар или упаковка повреждены',
+                                  'Товар с браком / Не работает',
+                                  'Заказал не тот товар',
+                                  'В комплекте не хватает деталей или/\nчасти товара',
+                                  'Подделка',
+                                ];
+
+                                showOrderCancel(context, 'Причина возврата', cancelReasons, (
+                                  String reason,
+                                ) {
+                                  context.read<OrderStatusSellerCubit>().returnOrder(
+                                    _basketOrder.id.toString(),
+                                    'return',
+                                    reason,
+                                  );
+
+                                  BlocProvider.of<BasketCubit>(context).updateProductByIndex(
+                                    index: _basketOrder.id!,
+                                    updatedOrder: _basketOrder.copyWith(status: 'return'),
+                                  );
+
+                                  setState(() {
+                                    _basketOrder = _basketOrder.copyWith(status: 'return');
+                                  });
+
+                                  context.router.push(SuccessCancelRoute());
+                                });
+                              }
+                            },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text('Оформить возврат', style: AppTextStyles.size18Weight500),
+                                    Text(
+                                      'Можно вернуть в течение 14 дней',
+                                      style: AppTextStyles.size13Weight400.copyWith(
+                                        color: Color(0xff8E8E93),
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                              ),
-                              const SizedBox(height: 8),
-                              Text(
-                                '${widget.basketOrder.product!.first.shopName}',
-                                style: AppTextStyles.size18Weight600,
-                              ),
-                              const SizedBox(height: 4),
-                              Text(
-                                widget.basketOrder.product?.first.shopPhone != null ||
-                                        widget.basketOrder.product?.first.shopPhone != ''
-                                    ? '${widget.basketOrder.product?.first.shopPhone}'
-                                    : 'Неизвестен',
-                                style: AppTextStyles.size16Weight500.copyWith(
-                                  color: AppColors.mainPurpleColor,
+                                Image.asset(
+                                  Assets.icons.defaultArrowForwardIcon.path,
+                                  color: AppColors.kNeutralBlackColor,
+                                  height: 20,
+                                  width: 20,
+                                  scale: 2.1,
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
+                      ],
+                    ),
+                  ),
+
+                InkWell(
+                  onTap: () {
+                    final phone = _basketOrder.product?.first.shopPhone;
+
+                    if (phone != null && phone.isNotEmpty) {
+                      _callSeller(phone);
+                    }
+                  },
+                  child: Container(
+                    height: 110,
+                    margin: const EdgeInsets.only(left: 16, right: 16, top: 12),
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: AppColors.kWhite,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const SizedBox(height: 16),
+                        Text(
+                          'Продавец',
+                          style: AppTextStyles.size14Weight500.copyWith(
+                            color: const Color(0xffAEAEB2),
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          '${_basketOrder.product!.first.shopName}',
+                          style: AppTextStyles.size18Weight600,
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          _basketOrder.product?.first.shopPhone != null ||
+                                  _basketOrder.product?.first.shopPhone != ''
+                              ? '${_basketOrder.product?.first.shopPhone}'
+                              : 'Неизвестен',
+                          style: AppTextStyles.size16Weight500.copyWith(
+                            color: AppColors.mainPurpleColor,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Container(
+                  height: 130,
+                  margin: const EdgeInsets.only(left: 16, right: 16, top: 12),
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    color: AppColors.kWhite,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(height: 16),
+                      Text(
+                        'Доставка',
+                        style: AppTextStyles.size14Weight500.copyWith(
+                          color: const Color(0xffAEAEB2),
                         ),
                       ),
-                      Container(
-                        height: 130,
-                        margin: const EdgeInsets.only(left: 16, right: 16, top: 12),
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          color: AppColors.kWhite,
-                          borderRadius: BorderRadius.circular(12),
+                      const SizedBox(height: 8),
+                      Text('Пункт выдачи  СДЭК', style: AppTextStyles.size18Weight600),
+                      Text(
+                        _basketOrder.product?.first.address ?? 'Неизвестен',
+                        style: AppTextStyles.size16Weight400,
+                      ),
+                      Text(
+                        'пн-вс: 10:00-22:00',
+                        style: AppTextStyles.size14Weight400.copyWith(
+                          color: const Color(0xff8E8E93),
                         ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  margin: const EdgeInsets.only(left: 16, right: 16, bottom: 12, top: 12),
+                  height:
+                      (_basketOrder.product?.length ?? 1) *
+                      (_basketOrder.status == 'end' ? 124 : 112),
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: _basketOrder.product?.length,
+                    scrollDirection: Axis.vertical,
+                    itemBuilder: (context, index) {
+                      return Container(
+                        height: _basketOrder.status == 'end' ? 124 : 112,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        padding: const EdgeInsets.only(left: 20, right: 20),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            const SizedBox(height: 16),
-                            Text(
-                              'Доставка',
-                              style: AppTextStyles.size14Weight500.copyWith(
-                                color: const Color(0xffAEAEB2),
-                              ),
-                            ),
-                            const SizedBox(height: 8),
-                            Text('Пункт выдачи  СДЭК', style: AppTextStyles.size18Weight600),
-                            Text(
-                              widget.basketOrder.product?.first.address ?? 'Неизвестен',
-                              style: AppTextStyles.size16Weight400,
-                            ),
-                            Text(
-                              'пн-вс: 10:00-22:00',
-                              style: AppTextStyles.size14Weight400.copyWith(
-                                color: const Color(0xff8E8E93),
+                            if (_basketOrder.product != null &&
+                                _basketOrder.product?[index].path != null &&
+                                (_basketOrder.product?[index].path?.isNotEmpty ?? false))
+                              buildProductImage(index)
+                            else
+                              const ErrorImageWidget(width: 88, height: 88),
+                            const SizedBox(width: 16),
+                            Expanded(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    '${_basketOrder.product?[index].productName}',
+                                    style: AppTextStyles.size14Weight500,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        'Сумма:',
+                                        style: AppTextStyles.size14Weight400.copyWith(
+                                          color: const Color(0xff8E8E93),
+                                        ),
+                                      ),
+                                      Text(
+                                        '${_basketOrder.product?[index].price} ₽',
+                                        style: AppTextStyles.size14Weight500,
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        'Количество:',
+                                        style: AppTextStyles.size14Weight400.copyWith(
+                                          color: const Color(0xff8E8E93),
+                                        ),
+                                      ),
+                                      Text(
+                                        '${_basketOrder.product?[index].count} шт',
+                                        style: AppTextStyles.size14Weight500,
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 4),
+                                  if (_basketOrder.status == 'end')
+                                    GestureDetector(
+                                      onTap: () {
+                                        productId =
+                                            (_basketOrder.product?[index].id.toString() ?? '0');
+                                        context.router.push(
+                                          ReviewOrderWidgetRoute(
+                                            basketOrder: _basketOrder,
+                                            index: index,
+                                          ),
+                                        );
+
+                                        productName =
+                                            _basketOrder.product?[index].productName.toString() ??
+                                            '0';
+                                        hidden = !hidden;
+
+                                        setState(() {});
+                                      },
+                                      child: Container(
+                                        height: 32,
+                                        width: 136,
+                                        alignment: Alignment.center,
+                                        decoration: BoxDecoration(
+                                          color: AppColors.mainPurpleColor,
+                                          borderRadius: BorderRadius.circular(12),
+                                        ),
+                                        child: Text(
+                                          'Оставить отзыв',
+                                          style: AppTextStyles.size13Weight500.copyWith(
+                                            color: AppColors.kWhite,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                ],
                               ),
                             ),
                           ],
                         ),
+                      );
+                    },
+                  ),
+                ),
+                Container(
+                  height: 208,
+                  padding: const EdgeInsets.all(16),
+                  margin: const EdgeInsets.symmetric(horizontal: 16),
+                  decoration: BoxDecoration(
+                    color: AppColors.kWhite,
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('Сумма заказа', style: AppTextStyles.size18Weight700),
+                      const SizedBox(height: 12),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text('Сумма', style: AppTextStyles.size16Weight400),
+                          Text(
+                            '${_basketOrder.summa?.toInt()} ₽',
+                            style: AppTextStyles.size16Weight600,
+                          ),
+                        ],
                       ),
-                      Container(
-                        margin: const EdgeInsets.symmetric(horizontal: 16),
-                        height: (widget.basketOrder.product?.length ?? 1) * 130,
-                        child: ListView.builder(
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemCount: widget.basketOrder.product?.length,
-                          scrollDirection: Axis.vertical,
-                          itemBuilder: (context, index) {
-                            return Container(
-                              height: 112,
-                              width: 358,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(16),
+                      const SizedBox(height: 11),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text('Доставка', style: AppTextStyles.size16Weight400),
+                          Text(
+                            '${_basketOrder.deliveryPrice ?? 0} ₽ ',
+                            style: AppTextStyles.size16Weight600,
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 11),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text('Скидка', style: AppTextStyles.size16Weight400),
+                          ShaderMask(
+                            shaderCallback: (bounds) => const LinearGradient(
+                              colors: [Color(0xFF7D2DFF), Color(0xFF41DDFF)],
+                            ).createShader(bounds),
+                            child: Text(
+                              '-${0} ₽',
+                              style: AppTextStyles.size16Weight600.copyWith(
+                                color: AppColors.kWhite,
                               ),
-                              margin: const EdgeInsets.only(top: 12),
-                              padding: const EdgeInsets.all(20),
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  if (widget.basketOrder.product != null &&
-                                      widget.basketOrder.product?[index].path != null &&
-                                      (widget.basketOrder.product?[index].path?.isNotEmpty ??
-                                          false))
-                                    buildProductImage(index)
-                                  else
-                                    const ErrorImageWidget(width: 88, height: 88),
-                                  const SizedBox(width: 16),
-                                  SizedBox(
-                                    width: 238,
-                                    child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                      children: [
-                                        SizedBox(
-                                          width: 238,
-                                          child: Text(
-                                            '${widget.basketOrder.product?[index].productName}',
-                                            style: AppTextStyles.size14Weight500,
-                                            maxLines: 1,
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          width: 238,
-                                          child: Row(
-                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Text(
-                                                'Сумма:',
-                                                style: AppTextStyles.size14Weight400.copyWith(
-                                                  color: const Color(0xff8E8E93),
-                                                ),
-                                              ),
-                                              Text(
-                                                '${widget.basketOrder.product?[index].price} ₽',
-                                                style: AppTextStyles.size14Weight500,
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          width: 238,
-                                          child: Row(
-                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Text(
-                                                'Количество:',
-                                                style: AppTextStyles.size14Weight400.copyWith(
-                                                  color: const Color(0xff8E8E93),
-                                                ),
-                                              ),
-                                              Text(
-                                                '${widget.basketOrder.product?[index].count} шт',
-                                                style: AppTextStyles.size14Weight500,
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        const SizedBox(height: 4),
-                                        if (widget.basketOrder.status == 'end')
-                                          GestureDetector(
-                                            onTap: () {
-                                              productId =
-                                                  (widget.basketOrder.product?[index].id
-                                                      .toString() ??
-                                                  '0');
-                                              context.router.push(
-                                                ReviewOrderWidgetRoute(
-                                                  basketOrder: widget.basketOrder,
-                                                  index: index,
-                                                ),
-                                              );
-
-                                              productName =
-                                                  widget.basketOrder.product?[index].productName
-                                                      .toString() ??
-                                                  '0';
-                                              hidden = !hidden;
-
-                                              setState(() {});
-                                            },
-                                            child: Container(
-                                              height: 38,
-                                              width: 136,
-                                              alignment: Alignment.center,
-                                              decoration: BoxDecoration(
-                                                color: AppColors.mainPurpleColor,
-                                                borderRadius: BorderRadius.circular(12),
-                                              ),
-                                              child: Text(
-                                                'Оставить отзыв',
-                                                style: AppTextStyles.size13Weight500.copyWith(
-                                                  color: AppColors.kWhite,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                      ],
-                                    ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 10),
+                      SizedBox(
+                        height: 1,
+                        child: LayoutBuilder(
+                          builder: (BuildContext context, BoxConstraints constraints) {
+                            const dashWidth = 5.0;
+                            final dashHeight = 0.99;
+                            const dashCount = 30;
+                            return Flex(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              direction: Axis.horizontal,
+                              children: List.generate(dashCount, (_) {
+                                return SizedBox(
+                                  width: dashWidth,
+                                  height: dashHeight,
+                                  child: const DecoratedBox(
+                                    decoration: BoxDecoration(color: AppColors.kGray300),
                                   ),
-                                ],
-                              ),
+                                );
+                              }),
                             );
                           },
                         ),
                       ),
-                      Container(
-                        height: 208,
-                        padding: const EdgeInsets.all(16),
-                        margin: const EdgeInsets.symmetric(horizontal: 16),
-                        decoration: BoxDecoration(
-                          color: AppColors.kWhite,
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text('Сумма заказа', style: AppTextStyles.size18Weight700),
-                            const SizedBox(height: 12),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text('Сумма', style: AppTextStyles.size16Weight400),
-                                Text(
-                                  '${widget.basketOrder.summa?.toInt()} ₽',
-                                  style: AppTextStyles.size16Weight600,
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 11),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text('Доставка', style: AppTextStyles.size16Weight400),
-                                Text(
-                                  '${widget.basketOrder.deliveryPrice ?? 0} ₽ ',
-                                  style: AppTextStyles.size16Weight600,
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 11),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text('Скидка', style: AppTextStyles.size16Weight400),
-                                ShaderMask(
-                                  shaderCallback: (bounds) => const LinearGradient(
-                                    colors: [Color(0xFF7D2DFF), Color(0xFF41DDFF)],
-                                  ).createShader(bounds),
-                                  child: Text(
-                                    '-${0} ₽',
-                                    style: AppTextStyles.size16Weight600.copyWith(
-                                      color: AppColors.kWhite,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 10),
-                            SizedBox(
-                              height: 1,
-                              child: LayoutBuilder(
-                                builder: (BuildContext context, BoxConstraints constraints) {
-                                  const dashWidth = 5.0;
-                                  final dashHeight = 0.99;
-                                  const dashCount = 30;
-                                  return Flex(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    direction: Axis.horizontal,
-                                    children: List.generate(dashCount, (_) {
-                                      return SizedBox(
-                                        width: dashWidth,
-                                        height: dashHeight,
-                                        child: const DecoratedBox(
-                                          decoration: BoxDecoration(color: AppColors.kGray300),
-                                        ),
-                                      );
-                                    }),
-                                  );
-                                },
-                              ),
-                            ),
-                            const SizedBox(height: 10),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text('Итого', style: AppTextStyles.size18Weight600),
-                                Text(
-                                  ' ${(widget.basketOrder.summa?.toInt() ?? 0) + (widget.basketOrder.deliveryPrice ?? 0)}₽',
-                                  style: AppTextStyles.size18Weight700,
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
+                      const SizedBox(height: 10),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text('Итого', style: AppTextStyles.size18Weight600),
+                          Text(
+                            ' ${(_basketOrder.summa?.toInt() ?? 0) + (_basketOrder.deliveryPrice ?? 0)}₽',
+                            style: AppTextStyles.size18Weight700,
+                          ),
+                        ],
                       ),
-                      const SizedBox(height: 16),
-                      Container(
-                        padding: const EdgeInsets.only(left: 16, right: 16, top: 0),
-                        color: AppColors.kBackgroundColor,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text('Похожие товары', style: AppTextStyles.size18Weight700),
-                            const SizedBox(height: 8),
-                            BlocBuilder<product_cubit.ProductCubit, product_state.ProductState>(
-                              builder: (context, state) {
-                                if (state is product_state.ErrorState) {
-                                  return Center(
-                                    child: Text(
-                                      state.message,
-                                      style: const TextStyle(fontSize: 20.0, color: Colors.grey),
-                                    ),
-                                  );
-                                }
-                                if (state is product_state.LoadingState) {
-                                  return const Center(
-                                    child: CircularProgressIndicator(color: Colors.indigoAccent),
-                                  );
-                                }
-
-                                if (state is product_state.LoadedState) {
-                                  return state.productModel.isEmpty
-                                      ? const Center(child: Text('Товары не найдены'))
-                                      : SizedBox(
-                                          width: 358,
-                                          // height: 558,
-                                          height: state.productModel.length >= 4 ? 558 : 291,
-                                          child: GridView.builder(
-                                            scrollDirection: Axis.horizontal,
-                                            shrinkWrap: true,
-                                            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                                              crossAxisCount: state.productModel.length >= 4
-                                                  ? 2
-                                                  : 1,
-                                              childAspectRatio: 1.50,
-                                              crossAxisSpacing: 8,
-                                              mainAxisSpacing: 2,
-                                            ),
-                                            itemCount: state.productModel.length <= 10
-                                                ? state.productModel.length
-                                                : 10,
-                                            itemBuilder: (BuildContext ctx, index) {
-                                              return GestureDetector(
-                                                onTap: () => context.router.push(
-                                                  DetailCardProductRoute(
-                                                    product: state.productModel[index],
-                                                  ),
-                                                ),
-                                                child: ProductWatchingCard(
-                                                  product: state.productModel[index],
-                                                ),
-                                              );
-                                            },
-                                          ),
-                                        );
-                                } else {
-                                  return const Center(
-                                    child: CircularProgressIndicator(color: Colors.indigoAccent),
-                                  );
-                                }
-                              },
-                            ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(height: 120),
                     ],
                   ),
-                ],
-              )
-            else
-              Container(
-                margin: const EdgeInsets.only(bottom: 60),
-                alignment: Alignment.center,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Image.asset('assets/icons/no_data.png'),
-                    const Text(
-                      'Нет заказов',
-                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
-                      textAlign: TextAlign.center,
-                    ),
-                    const Text(
-                      // убрал упоминание fbs
-                      'Отсутствуют заказы',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w400,
-                        color: Color(0xff717171),
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
                 ),
-              ),
+                const SizedBox(height: 16),
+                Container(
+                  padding: const EdgeInsets.only(left: 16, right: 16, top: 0),
+                  color: AppColors.kBackgroundColor,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text('Похожие товары', style: AppTextStyles.size18Weight700),
+                      const SizedBox(height: 8),
+                      BlocBuilder<product_cubit.ProductCubit, product_state.ProductState>(
+                        builder: (context, state) {
+                          if (state is product_state.ErrorState) {
+                            return Center(
+                              child: Text(
+                                state.message,
+                                style: const TextStyle(fontSize: 20.0, color: Colors.grey),
+                              ),
+                            );
+                          }
+                          if (state is product_state.LoadingState) {
+                            return const Center(
+                              child: CircularProgressIndicator(color: Colors.indigoAccent),
+                            );
+                          }
+
+                          if (state is product_state.LoadedState) {
+                            return state.productModel.isEmpty
+                                ? const Center(child: Text('Товары не найдены'))
+                                : SizedBox(
+                                    width: 358,
+                                    // height: 558,
+                                    height: state.productModel.length >= 4 ? 558 : 291,
+                                    child: GridView.builder(
+                                      scrollDirection: Axis.horizontal,
+                                      shrinkWrap: true,
+                                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisCount: state.productModel.length >= 4 ? 2 : 1,
+                                        childAspectRatio: 1.50,
+                                        crossAxisSpacing: 8,
+                                        mainAxisSpacing: 2,
+                                      ),
+                                      itemCount: state.productModel.length <= 10
+                                          ? state.productModel.length
+                                          : 10,
+                                      itemBuilder: (BuildContext ctx, index) {
+                                        return GestureDetector(
+                                          onTap: () => context.router.push(
+                                            DetailCardProductRoute(
+                                              product: state.productModel[index],
+                                            ),
+                                          ),
+                                          child: ProductWatchingCard(
+                                            product: state.productModel[index],
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  );
+                          } else {
+                            return const Center(
+                              child: CircularProgressIndicator(color: Colors.indigoAccent),
+                            );
+                          }
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 120),
+              ],
+            ),
           ],
         ),
       ),
@@ -757,7 +1071,7 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
   }
 
   String? _imageUrlFor(int index) {
-    final fbs = widget.basketOrder.product;
+    final fbs = _basketOrder.product;
     if (fbs == null || index < 0 || index >= fbs.length) return null;
 
     final paths = fbs[index].path; // предположительно List<String>?

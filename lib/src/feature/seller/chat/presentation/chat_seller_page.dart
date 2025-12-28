@@ -26,7 +26,8 @@ class _ChatSellerPageState extends State<ChatSellerPage> {
     final dateTimeString = date;
     final dateTime = DateTime.parse(dateTimeString);
 
-    final clockString = DateFormat('H:mm / yy-M-dd').format(dateTime);
+    // final clockString = DateFormat('H:mm / yy-M-dd').format(dateTime);
+    final clockString = DateFormat('H:mm').format(dateTime);
     return clockString;
   }
 
@@ -88,15 +89,16 @@ class _ChatSellerPageState extends State<ChatSellerPage> {
                 onRefresh();
               },
               child: ListView(
+                padding: EdgeInsets.symmetric(horizontal: 16),
                 children: [
                   Container(
                     height: 44,
-                    margin: const EdgeInsets.only(top: 24, left: 16, right: 16),
+                    margin: const EdgeInsets.only(top: 24),
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
                       color: const Color(0xffEAECED),
-                      borderRadius: BorderRadius.circular(10),
+                      borderRadius: BorderRadius.circular(12),
                     ),
                     child: TextField(
                       controller: searchController,
@@ -130,101 +132,75 @@ class _ChatSellerPageState extends State<ChatSellerPage> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 16),
                   SizedBox(
                     height: 600,
-                    child: ListView.builder(
+                    child: ListView.separated(
+                      padding: EdgeInsets.only(top: 16),
                       physics: const NeverScrollableScrollPhysics(),
                       itemCount: state.chat.length,
+                      separatorBuilder: (context, index) {
+                        return SizedBox(height: 12);
+                      },
                       itemBuilder: ((context, index) {
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            GestureDetector(
-                              onTap: () => Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => MessageSellerPage(
-                                    chatId: state.chat[index].chatId,
-                                    userId: state.chat[index].userId,
-                                    userName: state.chat[index].name,
-                                  ),
-                                ),
+                        return GestureDetector(
+                          onTap: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => MessageSellerPage(
+                                chatId: state.chat[index].chatId,
+                                userId: state.chat[index].userId,
+                                userName: state.chat[index].name,
+                                role: state.chat[index].role,
                               ),
-                              child: Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 16),
-                                height: 100,
-                                //  width: 400,
-                                child: Row(
+                            ),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              CircleAvatar(
+                                backgroundImage: state.chat[index].avatar != null
+                                    ? NetworkImage(
+                                        'https://lunamarket.ru/storage/${state.chat[index].avatar}',
+                                      )
+                                    : const AssetImage('assets/icons/profile2.png')
+                                          as ImageProvider,
+                                backgroundColor: Colors.grey[100],
+                                radius: 30,
+                              ),
+                              const SizedBox(width: 12),
+                              Expanded(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
-                                    CircleAvatar(
-                                      backgroundImage: state.chat[index].avatar != null
-                                          ? NetworkImage(
-                                              'https://lunamarket.ru/storage/${state.chat[index].avatar}',
-                                            )
-                                          : const AssetImage('assets/icons/profile2.png')
-                                                as ImageProvider,
-                                      backgroundColor: Colors.grey[100],
-                                      radius: 30,
-                                    ),
-                                    const SizedBox(width: 12),
-                                    Column(
-                                      mainAxisAlignment: MainAxisAlignment.start,
+                                    Row(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Container(
-                                          padding: const EdgeInsets.only(top: 20.5),
-                                          width: 260,
-                                          child: Row(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Text(
-                                                '${state.chat[index].name}',
-                                                style: const TextStyle(
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.w500,
-                                                ),
-                                              ),
-                                              Column(
-                                                mainAxisAlignment: MainAxisAlignment.end,
-                                                crossAxisAlignment: CrossAxisAlignment.end,
-                                                children: [
-                                                  Text(
-                                                    ' ${parseDate(state.chat[index].createdAt)}',
-                                                    style: const TextStyle(
-                                                      color: Colors.grey,
-                                                      fontSize: 12,
-                                                      fontWeight: FontWeight.w400,
-                                                    ),
-                                                  ),
-                                                  state.chat[index].countNewMessages != 0
-                                                      ? Container(
-                                                          width: 22,
-                                                          height: 22,
-                                                          margin: const EdgeInsets.only(top: 6),
-                                                          alignment: Alignment.center,
-                                                          decoration: BoxDecoration(
-                                                            borderRadius: BorderRadius.circular(12),
-                                                            color: AppColors.kPrimaryColor,
-                                                          ),
-                                                          child: Text(
-                                                            '${state.chat[index].countNewMessages}',
-                                                            style: const TextStyle(
-                                                              color: Colors.white,
-                                                              fontSize: 12,
-                                                              fontWeight: FontWeight.w500,
-                                                            ),
-                                                          ),
-                                                        )
-                                                      : SizedBox(),
-                                                ],
-                                              ),
-                                            ],
+                                        Expanded(
+                                          child: Text(
+                                            '${state.chat[index].name}',
+                                            style: const TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w500,
+                                            ),
                                           ),
                                         ),
-                                        Container(
-                                          padding: const EdgeInsets.only(top: 0, left: 0),
-                                          width: 260,
+                                        Text(
+                                          ' ${parseDate(state.chat[index].createdAt)}',
+                                          style: const TextStyle(
+                                            color: Colors.grey,
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w400,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Expanded(
                                           child: Text(
                                             '${state.chat[index].lastMessage != null ? state.chat[index].lastMessage!.text : ''}',
                                             style: const TextStyle(
@@ -235,13 +211,33 @@ class _ChatSellerPageState extends State<ChatSellerPage> {
                                             overflow: TextOverflow.ellipsis,
                                           ),
                                         ),
+                                        state.chat[index].countNewMessages != 0
+                                            ? Container(
+                                                width: 22,
+                                                height: 22,
+                                                margin: const EdgeInsets.only(top: 6),
+                                                alignment: Alignment.center,
+                                                decoration: BoxDecoration(
+                                                  borderRadius: BorderRadius.circular(12),
+                                                  color: AppColors.mainRedColor,
+                                                ),
+                                                child: Text(
+                                                  '${state.chat[index].countNewMessages}',
+                                                  style: const TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 12,
+                                                    fontWeight: FontWeight.w500,
+                                                  ),
+                                                ),
+                                              )
+                                            : SizedBox.shrink(),
                                       ],
                                     ),
                                   ],
                                 ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         );
                       }),
                     ),

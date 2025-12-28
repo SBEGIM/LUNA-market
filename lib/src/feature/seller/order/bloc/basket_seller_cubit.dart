@@ -13,11 +13,32 @@ class BasketSellerCubit extends Cubit<BasketAdminState> {
   List<BasketOrderSellerModel> activeOrdersRealFBS = [];
   List<BasketOrderSellerModel> endOrders = [];
 
+  int page = 1;
+
   Future<void> basketOrderShow(status) async {
     try {
+      page = 1;
       emit(LoadingState());
-      final List<BasketOrderSellerModel> data = await basketRepository.basketOrderShow(status);
+      final List<BasketOrderSellerModel> data = await basketRepository.basketOrderShow(
+        status,
+        page,
+      );
       activeOrders.clear();
+      activeOrders.addAll(data);
+      emit(LoadedState(activeOrders, activeOrdersRealFBS, endOrders));
+    } catch (e) {
+      log(e.toString());
+      emit(ErrorState(message: 'Ошибка сервера'));
+    }
+  }
+
+  Future<void> basketOrderShowPaginate(status) async {
+    try {
+      page++;
+      final List<BasketOrderSellerModel> data = await basketRepository.basketOrderShow(
+        status,
+        page,
+      );
       activeOrders.addAll(data);
       emit(LoadedState(activeOrders, activeOrdersRealFBS, endOrders));
     } catch (e) {
@@ -83,6 +104,17 @@ class BasketSellerCubit extends Cubit<BasketAdminState> {
     } catch (e) {
       log(e.toString());
       emit(ErrorState(message: 'Ошибка сервера'));
+    }
+  }
+
+  Future<BasketOrderSellerModel> basketOrderShowById({required int id}) async {
+    try {
+      final List<BasketOrderSellerModel> data = await basketRepository.basketOrderShowById(id);
+
+      return data[0];
+    } catch (e) {
+      log(e.toString());
+      return endOrders[0];
     }
   }
 }

@@ -10,7 +10,8 @@ const baseUrl = 'https://lunamarket.ru/api';
 class BasketSellerRepository {
   final Basket _basket = Basket();
 
-  Future<List<BasketOrderSellerModel>> basketOrderShow(status) => _basket.basketOrderShow(status);
+  Future<List<BasketOrderSellerModel>> basketOrderShow(status, page) =>
+      _basket.basketOrderShow(status, page);
 
   Future<List<BasketOrderSellerModel>> basketOrderRealFbsShow(fulfillment) =>
       _basket.basketOrderRealFbsShow(fulfillment);
@@ -19,16 +20,19 @@ class BasketSellerRepository {
 
   Future<void> basketStatus(String status, id, productId, fulfillment) =>
       _basket.basketStatus(status, id, productId, fulfillment);
+
+  Future<List<BasketOrderSellerModel>> basketOrderShowById(int id) =>
+      _basket.basketOrderShowById(id);
 }
 
 class Basket {
   final _box = GetStorage();
 
-  Future<List<BasketOrderSellerModel>> basketOrderShow(String? status) async {
+  Future<List<BasketOrderSellerModel>> basketOrderShow(String? status, int? page) async {
     final String? token = _box.read('seller_token');
 
     final response = await http.get(
-      Uri.parse("$baseUrl/basket/order/seller/status?status=$status"),
+      Uri.parse("$baseUrl/basket/order/seller/status?status=$status&page=$page"),
       headers: {"Authorization": "Bearer $token"},
     );
 
@@ -73,5 +77,18 @@ class Basket {
     );
 
     return;
+  }
+
+  Future<List<BasketOrderSellerModel>> basketOrderShowById(int id) async {
+    final String? token = _box.read('seller_token');
+
+    final response = await http.get(
+      Uri.parse("$baseUrl/basket/order/seller/status/by/id?id=$id"),
+      headers: {"Authorization": "Bearer $token"},
+    );
+
+    final data = jsonDecode(response.body);
+
+    return (data['data'] as List).map((e) => BasketOrderSellerModel.fromJson(e)).toList();
   }
 }

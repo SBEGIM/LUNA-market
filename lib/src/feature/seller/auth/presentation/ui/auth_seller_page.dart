@@ -5,7 +5,7 @@ import 'package:haji_market/src/feature/seller/auth/presentation/ui/login_seller
 
 @RoutePage()
 class AuthSellerPage extends StatelessWidget {
-  const AuthSellerPage({super.key});
+  const AuthSellerPage({super.key, bool? BackButton});
 
   @override
   Widget build(BuildContext context) {

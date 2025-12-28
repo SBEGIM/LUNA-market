@@ -194,6 +194,17 @@ class BasketCubit extends Cubit<BasketState> {
     }
   }
 
+  Future<BasketOrderModel> basketOrderShowById({required int id}) async {
+    try {
+      final List<BasketOrderModel> data = await basketRepository.basketOrderShowById(id: id);
+
+      return data[0];
+    } catch (e) {
+      log(e.toString());
+      return _orders[0];
+    }
+  }
+
   Future<void> basketOrderShowPaginate({required String status}) async {
     try {
       basketOrderShowPage++;
@@ -257,6 +268,13 @@ class BasketCubit extends Cubit<BasketState> {
     } catch (e) {
       log(e.toString());
       emit(ErrorState(message: 'Ошибка сервера'));
+    }
+  }
+
+  void updateProductByIndex({required int index, required BasketOrderModel updatedOrder}) {
+    if (index < _orders.length) {
+      _orders[index] = updatedOrder;
+      emit(LoadedOrderState(_orders));
     }
   }
 }

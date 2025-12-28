@@ -7,6 +7,7 @@ import 'package:haji_market/src/core/presentation/widgets/other/custom_switch_bu
 import 'package:haji_market/src/feature/app/router/app_router.dart';
 import 'package:haji_market/src/feature/app/widgets/app_snack_bar.dart';
 import 'package:haji_market/src/feature/basket/data/models/basket_show_model.dart';
+import 'package:haji_market/src/feature/basket/presentation/widgets/show_alert_basket_widget.dart';
 import 'package:haji_market/src/feature/basket/presentation/widgets/show_alert_country_widget.dart';
 import 'package:haji_market/src/feature/drawer/bloc/country_cubit.dart' as countryCubit;
 import 'package:haji_market/src/feature/drawer/bloc/order_cubit.dart' as orderCubit;
@@ -35,7 +36,7 @@ class BasketOrderAddressPage extends StatefulWidget {
 
 class _BasketOrderAddressPageState extends State<BasketOrderAddressPage> {
   bool courier = false;
-  bool point = false;
+  bool point = true;
   bool shop = false;
   bool fbs = false;
   AddressModel? address;
@@ -979,20 +980,28 @@ class _BasketOrderAddressPageState extends State<BasketOrderAddressPage> {
                   InkWell(
                     onTap: () async {
                       if (point == false && courier == false && shop == false) {
-                        AppSnackBar.show(
+                        await showBasketAlert(
                           context,
-                          'Выберите способ доставки',
-                          type: AppSnackType.error,
+                          title: null,
+                          message: 'Выберите способ доставки',
+                          // mode: BrandedAlertMode.acknowledge,
+                          primaryText: 'Понятно',
+                          // если нужен свой градиент:
+                          // primaryGradient: const LinearGradient(colors: [Color(0xFF7B61FF), Color(0xFF8C52FF)]),
                         );
                         return;
                       }
 
                       if (point == true) {
                         if (office == null) {
-                          AppSnackBar.show(
+                          await showBasketAlert(
                             context,
-                            'Выберите адрес самовывоза',
-                            type: AppSnackType.error,
+                            title: null,
+                            message: 'Выберите адрес самовывоза',
+                            // mode: BrandedAlertMode.acknowledge,
+                            primaryText: 'Понятно',
+                            // если нужен свой градиент:
+                            // primaryGradient: const LinearGradient(colors: [Color(0xFF7B61FF), Color(0xFF8C52FF)]),
                           );
                           return;
                         }
@@ -1000,10 +1009,14 @@ class _BasketOrderAddressPageState extends State<BasketOrderAddressPage> {
 
                       if (courier == true) {
                         if (address == null) {
-                          AppSnackBar.show(
+                          await showBasketAlert(
                             context,
-                            'Напишите адрес для курьера',
-                            type: AppSnackType.error,
+                            title: null,
+                            message: 'Напишите адрес для курьера',
+                            // mode: BrandedAlertMode.acknowledge,
+                            primaryText: 'Понятно',
+                            // если нужен свой градиент:
+                            // primaryGradient: const LinearGradient(colors: [Color(0xFF7B61FF), Color(0xFF8C52FF)]),
                           );
                           return;
                         }
@@ -1011,10 +1024,14 @@ class _BasketOrderAddressPageState extends State<BasketOrderAddressPage> {
 
                       if (shop == true) {
                         if (address == null) {
-                          AppSnackBar.show(
+                          await showBasketAlert(
                             context,
-                            'Напишите адрес для курьера',
-                            type: AppSnackType.error,
+                            title: null,
+                            message: 'Напишите адрес для курьера',
+                            // mode: BrandedAlertMode.acknowledge,
+                            primaryText: 'Понятно',
+                            // если нужен свой градиент:
+                            // primaryGradient: const LinearGradient(colors: [Color(0xFF7B61FF), Color(0xFF8C52FF)]),
                           );
                           return;
                         }

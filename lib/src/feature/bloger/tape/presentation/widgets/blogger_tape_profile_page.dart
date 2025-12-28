@@ -2,9 +2,11 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/route_manager.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/feature/app/router/app_router.dart';
+import 'package:haji_market/src/feature/bloger/chat/presentation/message_blogger_page.dart';
 import 'package:haji_market/src/feature/bloger/profile/bloc/profile_statics_blogger_cubit.dart';
 import 'package:haji_market/src/feature/bloger/profile/bloc/profile_statics_blogger_state.dart';
 import 'package:haji_market/src/feature/chat/presentation/message.dart';
@@ -20,7 +22,7 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:shimmer_animation/shimmer_animation.dart';
 
 @RoutePage()
-class ProfileSellerTapePage extends StatefulWidget implements AutoRouteWrapper {
+class ProfileSellerTapeBloggerPage extends StatefulWidget implements AutoRouteWrapper {
   final int sellerId;
   final int chatId;
   final String sellerCreatedAt;
@@ -28,20 +30,19 @@ class ProfileSellerTapePage extends StatefulWidget implements AutoRouteWrapper {
   final String sellerAvatar;
   final bool inSubscribe;
   final Function(bool)? onSubChanged;
-
-  const ProfileSellerTapePage({
+  ProfileSellerTapeBloggerPage({
     required this.sellerId,
     required this.chatId,
     required this.sellerCreatedAt,
     required this.sellerName,
     required this.sellerAvatar,
-    super.key,
+    Key? key,
     required this.inSubscribe,
     this.onSubChanged,
-  });
+  }) : super(key: key);
 
   @override
-  State<ProfileSellerTapePage> createState() => _ProfileBloggerTapePageState();
+  State<ProfileSellerTapeBloggerPage> createState() => _ProfileSellerTapeBloggerPageState();
 
   @override
   Widget wrappedRoute(BuildContext context) {
@@ -52,7 +53,9 @@ class ProfileSellerTapePage extends StatefulWidget implements AutoRouteWrapper {
   }
 }
 
-class _ProfileBloggerTapePageState extends State<ProfileSellerTapePage> {
+class _ProfileSellerTapeBloggerPageState extends State<ProfileSellerTapeBloggerPage> {
+  final _box = GetStorage();
+
   bool inSub = false;
   RefreshController refreshController = RefreshController();
 
@@ -88,7 +91,7 @@ class _ProfileBloggerTapePageState extends State<ProfileSellerTapePage> {
         ),
         centerTitle: true,
         title: Text(
-          widget.sellerName,
+          '${widget.sellerName}',
           style: const TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.w600),
         ),
         // actions: [
@@ -125,7 +128,7 @@ class _ProfileBloggerTapePageState extends State<ProfileSellerTapePage> {
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(60),
                           image: DecorationImage(
-                            image: widget.sellerAvatar.isNotEmpty
+                            image: widget.sellerAvatar != null
                                 ? NetworkImage(
                                     "https://lunamarket.ru/storage/${widget.sellerAvatar}",
                                   )
@@ -176,7 +179,7 @@ class _ProfileBloggerTapePageState extends State<ProfileSellerTapePage> {
                             decoration: BoxDecoration(
                               color: inSub != true
                                   ? AppColors.mainPurpleColor
-                                  : AppColors.mainPurpleColor.withValues(alpha: 0.5),
+                                  : AppColors.mainPurpleColor.withOpacity(0.5),
                               borderRadius: BorderRadius.circular(12),
                             ),
                             alignment: Alignment.center,
@@ -194,16 +197,16 @@ class _ProfileBloggerTapePageState extends State<ProfileSellerTapePage> {
                           onTap: () {
                             GetStorage().write('video_stop', true);
 
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => MessagePage(
-                                  userId: widget.sellerId,
-                                  name: widget.sellerName,
-                                  avatar: widget.sellerAvatar,
-                                  chatId: widget.chatId,
-                                  role: 'shop',
-                                ),
+                            // if (state.tapeModel[index].chatId ==
+                            //     null) {
+
+                            context.router.push(
+                              MessageBloggerRoute(
+                                userId: widget.sellerId,
+                                userName: widget.sellerName,
+                                // avatar: widget.sellerAvatar,
+                                chatId: widget.chatId,
+                                role: 'seller',
                               ),
                             );
                           },
@@ -231,12 +234,12 @@ class _ProfileBloggerTapePageState extends State<ProfileSellerTapePage> {
                             GetStorage().remove('subCatFilterId');
                             GetStorage().remove('shopFilterId');
                             GetStorage().remove('search');
-                            GetStorage().write('shopFilter', widget.sellerName);
+                            GetStorage().write('shopFilter', widget.sellerName ?? '');
                             // GetStorage().write('shopFilterId', state.popularShops[index].id);
 
                             List<int> selectedListSort = [];
 
-                            selectedListSort.add(widget.sellerId);
+                            selectedListSort.add(widget.sellerId as int);
 
                             GetStorage().write('shopFilterId', selectedListSort.toString());
 
@@ -263,7 +266,7 @@ class _ProfileBloggerTapePageState extends State<ProfileSellerTapePage> {
                             ),
                             alignment: Alignment.center,
                             child: Text(
-                              'Товары',
+                              'В магазин',
                               style: AppTextStyles.size14Weight600.copyWith(
                                 color: Color(0xFF636366),
                               ),
@@ -428,7 +431,7 @@ class _ProfileBloggerTapePageState extends State<ProfileSellerTapePage> {
                               child: Container(
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(12),
-                                  color: Colors.grey.withValues(alpha: .6),
+                                  color: Colors.grey.withOpacity(0.6),
                                 ),
                                 child: TapeCardWidget(tape: state.tapeModel[index], index: index),
                               ),

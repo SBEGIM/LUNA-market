@@ -377,7 +377,7 @@ class _ProfileAdminPageState extends State<ProfileAdminPage> {
                     buildProfileItem(
                       onTap: () {
                         final List<String> options = ['Whats App', 'Telegram', 'Email'];
-                        showModuleProfile(context, 'Техподдержка', options, (value) {
+                        showModuleProfile(context, 'Техподдержка', '', options, (value) {
                           switch (value) {
                             case 'Whats App':
                               launch("https://t.me/LUNAmarketAdmin", forceSafariVC: false);

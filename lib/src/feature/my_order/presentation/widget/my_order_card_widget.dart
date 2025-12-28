@@ -5,9 +5,10 @@ import 'package:haji_market/src/feature/basket/data/models/basket_order_model.da
 import 'package:haji_market/src/feature/my_order/presentation/widget/my_order_status_page.dart';
 
 class MyOrderCardWidget extends StatefulWidget {
+  int index;
   final BasketOrderModel basketOrder;
 
-  const MyOrderCardWidget({super.key, required this.basketOrder});
+  MyOrderCardWidget({Key? key, required this.index, required this.basketOrder}) : super(key: key);
 
   @override
   State<MyOrderCardWidget> createState() => _MyOrderCardWidgetState();
@@ -35,11 +36,15 @@ class _MyOrderCardWidgetState extends State<MyOrderCardWidget> {
         return 'Ошибка';
       case 'success':
         return 'Принят';
+      case 'ready_for_pickup':
+        return 'Готов к выдачи';
+      case 'delivered':
+        return 'Доставка в пункт выдачи';
       // если есть статусы типа спорный / возврат — добавь тут:
       // case 'dispute':
       //   return 'Спорный';
-      // case 'refund':
-      //   return 'Возврат';
+      case 'return':
+        return 'Возврат';
       default:
         return 'Неизвестно';
     }
@@ -66,6 +71,10 @@ class _MyOrderCardWidgetState extends State<MyOrderCardWidget> {
         return 'Отменён магазином';
       case 'error':
         return 'Ошибка';
+      case 'ready_for_pickup':
+        return 'Готов к выдачи';
+      case 'delivered':
+        return 'Доставка в пункт выдачи';
       default:
         return 'Неизвестно';
     }
@@ -104,7 +113,8 @@ class _MyOrderCardWidgetState extends State<MyOrderCardWidget> {
             ? Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => MyOrderStatusPage(basketOrder: widget.basketOrder),
+                  builder: (context) =>
+                      MyOrderStatusPage(index: widget.index, basketOrder: widget.basketOrder),
                 ),
               )
             : printError();

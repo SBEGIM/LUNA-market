@@ -40,6 +40,8 @@ class _SellerMyOrderCardWidgetState extends State<SellerMyOrderCardWidget> {
       //   return 'Спорный';
       // case 'refund':
       //   return 'Возврат';
+      case 'return':
+        return 'Возврат';
       default:
         return 'Неизвестно';
     }
@@ -64,6 +66,8 @@ class _SellerMyOrderCardWidgetState extends State<SellerMyOrderCardWidget> {
         return 'Отменён клиентом';
       case 'rejected':
         return 'Отменён магазином';
+      case 'return':
+        return 'Ошибка';
       case 'error':
         return 'Ошибка';
       default:
@@ -104,7 +108,7 @@ class _SellerMyOrderCardWidgetState extends State<SellerMyOrderCardWidget> {
             ? Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => DetailOrderSellerPage(basket: widget.basketOrder),
+                  builder: (context) => DetailOrderSellerPage(basketOrder: widget.basketOrder),
                 ),
               )
             : printError();

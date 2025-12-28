@@ -59,7 +59,7 @@ class _DetailStorePageState extends State<DetailStorePage> {
         leadingWidth: 18,
         leading: IconButton(
           onPressed: () {
-            Navigator.pop(context);
+            context.router.pop();
           },
           icon: Icon(Icons.arrow_back, color: Colors.black),
         ),
@@ -120,6 +120,7 @@ class _DetailStorePageState extends State<DetailStorePage> {
                           name: widget.product.shop?.name,
                           avatar: widget.product.shop?.image,
                           chatId: widget.product.shop?.chat_id ?? 0,
+                          role: 'shop',
                         ),
                       ),
                     );
@@ -411,7 +412,7 @@ class _ReviewsWidgetState extends State<ReviewsWidget> {
                             ),
                             Spacer(),
                             Text(
-                              '${value}',
+                              '$value',
                               style: AppTextStyles.size11Weight500.copyWith(
                                 color: Color(0xff8E8E93),
                               ),
@@ -538,7 +539,7 @@ class _ReviewsWidgetState extends State<ReviewsWidget> {
                                       child: ClipRRect(
                                         borderRadius: BorderRadius.circular(12),
                                         child: Image.network(
-                                          "https://lunamarket.ru/storage/${image}",
+                                          "https://lunamarket.ru/storage/$image",
                                           fit: BoxFit.cover,
                                           height: 64,
                                           width: 64,

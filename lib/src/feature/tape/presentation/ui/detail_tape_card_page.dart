@@ -1,10 +1,12 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:flutter/services.dart';
 import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/feature/app/router/app_router.dart';
 import 'package:haji_market/src/feature/drawer/presentation/widgets/count_zero_dialog.dart';
 import 'package:haji_market/src/feature/home/bloc/meta_cubit.dart';
 import 'package:haji_market/src/feature/tape/bloc/tape_check_cubit.dart';
 import 'package:haji_market/src/feature/tape/data/repository/tape_repository.dart';
+import 'package:haji_market/src/feature/tape/presentation/widgets/show_alert_report_widget.dart';
 import 'package:haji_market/src/feature/tape/presentation/widgets/show_report_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:video_player/video_player.dart';
@@ -76,6 +78,8 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
 
   @override
   void initState() {
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
+
     if (widget.index != null) {
       currentIndex = widget.index!;
       controller = PageController(initialPage: widget.index!);
@@ -103,249 +107,181 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
   }
 
   @override
+  void dispose() {
+    // Возвращаем панели, когда выходим со страницы
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      //extendBody: true,
-      extendBodyBehindAppBar: false,
-      backgroundColor: Colors.black,
-      body: BlocConsumer<tapeCubit.TapeCubit, tapeState.TapeState>(
-        listener: (context, state) {},
-        builder: (context, state) {
-          if (state is tapeState.ErrorState) {
-            return Center(
-              child: Text(
-                state.message,
-                style: const TextStyle(fontSize: 20.0, color: Colors.grey),
-              ),
-            );
-          }
-          if (state is tapeState.LoadingState) {
-            return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
-          }
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: SystemUiOverlayStyle.dark, // белые иконки в статус-баре (если он появится)
+      child: Scaffold(
+        //extendBody: true,
+        extendBodyBehindAppBar: true,
+        backgroundColor: Colors.black,
+        body: BlocConsumer<tapeCubit.TapeCubit, tapeState.TapeState>(
+          listener: (context, state) {},
+          builder: (context, state) {
+            if (state is tapeState.ErrorState) {
+              return Center(
+                child: Text(
+                  state.message,
+                  style: const TextStyle(fontSize: 20.0, color: Colors.grey),
+                ),
+              );
+            }
+            if (state is tapeState.LoadingState) {
+              return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
+            }
 
-          if (state is tapeState.LoadedState) {
-            return PageView.builder(
-              scrollDirection: Axis.vertical,
-              controller: controller,
-              itemCount: state.tapeModel.length,
-              onPageChanged: (value) {
-                currentIndex = value;
-                if (state.tapeModel[value].tapeId != null) {
-                  BlocProvider.of<TapeCheckCubit>(
-                    context,
-                  ).tapeCheck(tapeId: state.tapeModel[value].tapeId!);
-                }
-                setState(() {});
-              },
-              itemBuilder: (context, index) {
-                return Stack(
-                  children: [
-                    Videos(tape: state.tapeModel[index]),
-                    Positioned(
-                      top: 85,
-                      left: 16,
-                      right: 16,
-                      child: BlocBuilder<tapeCubit.TapeCubit, tapeState.TapeState>(
-                        builder: (context, state) {
-                          if (state is tapeState.LoadedState) {
-                            compoundPrice =
-                                (state.tapeModel[currentIndex].price!.toInt() *
-                                        (((100 - state.tapeModel[currentIndex].compound!.toInt())) /
-                                            100))
-                                    .toInt();
+            if (state is tapeState.LoadedState) {
+              return PageView.builder(
+                scrollDirection: Axis.vertical,
+                controller: controller,
+                itemCount: state.tapeModel.length,
+                onPageChanged: (value) {
+                  currentIndex = value;
+                  if (state.tapeModel[value].tapeId != null) {
+                    BlocProvider.of<TapeCheckCubit>(
+                      context,
+                    ).tapeCheck(tapeId: state.tapeModel[value].tapeId!);
+                  }
+                  setState(() {});
+                },
+                itemBuilder: (context, index) {
+                  return Stack(
+                    children: [
+                      Videos(tape: state.tapeModel[index]),
+                      Positioned(
+                        top: 55,
+                        left: 16,
+                        right: 16,
+                        child: BlocBuilder<tapeCubit.TapeCubit, tapeState.TapeState>(
+                          builder: (context, state) {
+                            if (state is tapeState.LoadedState) {
+                              compoundPrice =
+                                  (state.tapeModel[currentIndex].price!.toInt() *
+                                          (((100 -
+                                                  state.tapeModel[currentIndex].compound!
+                                                      .toInt())) /
+                                              100))
+                                      .toInt();
 
-                            return visible == true &&
-                                    (state.tapeModel[currentIndex].blogger != null)
-                                ? GestureDetector(
-                                    onTap: () {
-                                      context.router
-                                          .push(
-                                            ProfileBloggerTapeRoute(
-                                              bloggerAvatar:
-                                                  state.tapeModel[currentIndex].blogger?.image ??
-                                                  '',
-                                              bloggerId: state.tapeModel[currentIndex].blogger!.id!,
-                                              bloggerCreatedAt:
-                                                  state.tapeModel[currentIndex].blogger!.createdAt!,
-                                              bloggerName:
-                                                  state.tapeModel[currentIndex].blogger?.nickName ??
-                                                  '',
-                                              inSubscribe:
-                                                  state.tapeModel[currentIndex].inSubscribe ??
-                                                  false,
-                                              onSubChanged: (value) {
-                                                BlocProvider.of<tapeCubit.TapeCubit>(
-                                                  context,
-                                                ).updateTapeByIndex(
-                                                  index: currentIndex,
-                                                  updatedTape: state.tapeModel[currentIndex]
-                                                      .copyWith(
-                                                        tapeId:
-                                                            state.tapeModel[currentIndex].tapeId,
-                                                        inSubscribe: value,
+                              return visible == true &&
+                                      (state.tapeModel[currentIndex].blogger != null)
+                                  ? GestureDetector(
+                                      onTap: () {
+                                        context.router
+                                            .push(
+                                              ProfileBloggerTapeRoute(
+                                                bloggerAvatar:
+                                                    state.tapeModel[currentIndex].blogger?.image ??
+                                                    '',
+                                                bloggerId:
+                                                    state.tapeModel[currentIndex].blogger!.id!,
+                                                bloggerCreatedAt: state
+                                                    .tapeModel[currentIndex]
+                                                    .blogger!
+                                                    .createdAt!,
+                                                bloggerName:
+                                                    state
+                                                        .tapeModel[currentIndex]
+                                                        .blogger
+                                                        ?.nickName ??
+                                                    '',
+                                                inSubscribe:
+                                                    state.tapeModel[currentIndex].inSubscribe ??
+                                                    false,
+                                                onSubChanged: (value) {
+                                                  BlocProvider.of<tapeCubit.TapeCubit>(
+                                                    context,
+                                                  ).updateTapeByIndex(
+                                                    index: currentIndex,
+                                                    updatedTape: state.tapeModel[currentIndex]
+                                                        .copyWith(
+                                                          tapeId:
+                                                              state.tapeModel[currentIndex].tapeId,
+                                                          inSubscribe: value,
+                                                        ),
+                                                  );
+                                                },
+                                              ),
+                                            )
+                                            .whenComplete(() {
+                                              stop = false;
+                                              BlocProvider.of<tapeCubit.TapeCubit>(
+                                                context,
+                                              ).toLoadedState();
+                                              setState(() {});
+                                            });
+                                        stop = true;
+                                      },
+                                      child: SizedBox(
+                                        width: MediaQuery.of(context).size.width,
+                                        child: Row(
+                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          children: [
+                                            ClipRRect(
+                                              borderRadius: BorderRadius.circular(30),
+                                              child: Image.network(
+                                                state.tapeModel[currentIndex].blogger?.image != null
+                                                    ? "https://lunamarket.ru/storage/${state.tapeModel[currentIndex].blogger?.image}"
+                                                    : "https://lunamarket.ru/storage/banners/2.png",
+                                                height: 40,
+                                                width: 40,
+                                                fit: BoxFit.cover,
+                                                // loadingBuilder / errorBuilder — как у тебя
+                                              ),
+                                            ),
+
+                                            const SizedBox(width: 8),
+
+                                            // Имя блогера — занимает всё оставшееся пространство
+                                            Expanded(
+                                              child: Row(
+                                                children: [
+                                                  SizedBox(
+                                                    width: 65,
+                                                    child: Text(
+                                                      '${state.tapeModel[currentIndex].blogger?.nickName}',
+                                                      maxLines: 1,
+                                                      overflow: TextOverflow.ellipsis,
+                                                      style: const TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 18,
+                                                        fontWeight: FontWeight.w600,
                                                       ),
-                                                );
-                                              },
-                                            ),
-                                          )
-                                          .whenComplete(() {
-                                            stop = false;
-                                            BlocProvider.of<tapeCubit.TapeCubit>(
-                                              context,
-                                            ).toLoadedState();
-                                            setState(() {});
-                                          });
-                                      stop = true;
-                                    },
-                                    child: SizedBox(
-                                      width: MediaQuery.of(context).size.width,
-                                      child: Row(
-                                        crossAxisAlignment: CrossAxisAlignment.center,
-                                        children: [
-                                          ClipRRect(
-                                            borderRadius: BorderRadius.circular(30),
-                                            child: Image.network(
-                                              state.tapeModel[currentIndex].blogger?.image != null
-                                                  ? "https://lunamarket.ru/storage/${state.tapeModel[currentIndex].blogger?.image}"
-                                                  : "https://lunamarket.ru/storage/banners/2.png",
-                                              height: 40,
-                                              width: 40,
-                                              fit: BoxFit.cover,
-                                              // loadingBuilder / errorBuilder — как у тебя
-                                            ),
-                                          ),
-
-                                          const SizedBox(width: 8),
-
-                                          // Имя блогера — занимает всё оставшееся пространство
-                                          Expanded(
-                                            child: Row(
-                                              children: [
-                                                SizedBox(
-                                                  width: 65,
-                                                  child: Text(
-                                                    '${state.tapeModel[currentIndex].blogger?.nickName}',
-                                                    maxLines: 1,
-                                                    overflow: TextOverflow.ellipsis,
-                                                    style: const TextStyle(
-                                                      color: Colors.white,
-                                                      fontSize: 18,
-                                                      fontWeight: FontWeight.w600,
                                                     ),
                                                   ),
-                                                ),
-                                                const SizedBox(width: 8),
-                                                BlocBuilder<
-                                                  tapeCubit.TapeCubit,
-                                                  tapeState.TapeState
-                                                >(
-                                                  builder: (context, state) {
-                                                    if (state is tapeState.LoadedState) {
-                                                      return BlocConsumer<
-                                                        TapeCheckCubit,
-                                                        TapeCheckState
-                                                      >(
-                                                        listener: (context, stateCheck) {
-                                                          if (stateCheck is LoadedState) {
-                                                            BlocProvider.of<tapeCubit.TapeCubit>(
-                                                              context,
-                                                            ).update(
-                                                              state.tapeModel[currentIndex],
-                                                              currentIndex,
-                                                              stateCheck.tapeCheckModel.inSubs,
-                                                              stateCheck.tapeCheckModel.inBasket,
-                                                              stateCheck.tapeCheckModel.inFavorite,
-                                                              state
-                                                                  .tapeModel[currentIndex]
-                                                                  .inReport,
-                                                              stateCheck.tapeCheckModel.isLiked,
-                                                              state
-                                                                      .tapeModel[index]
-                                                                      .statistics
-                                                                      ?.like ??
-                                                                  0,
-                                                              state
-                                                                      .tapeModel[index]
-                                                                      .statistics
-                                                                      ?.favorite ??
-                                                                  0,
-                                                              state
-                                                                      .tapeModel[currentIndex]
-                                                                      .statistics
-                                                                      ?.send ??
-                                                                  0,
-                                                            );
-
-                                                            BlocProvider.of<tapeCubit.TapeCubit>(
-                                                              context,
-                                                            ).updateTapeByIndex(
-                                                              index: currentIndex,
-                                                              updatedTape: state
-                                                                  .tapeModel[currentIndex]
-                                                                  .copyWith(
-                                                                    tapeId: state
-                                                                        .tapeModel[currentIndex]
-                                                                        .tapeId,
-                                                                    inBasket: stateCheck
-                                                                        .tapeCheckModel
-                                                                        .inBasket,
-                                                                    inSubscribe: stateCheck
-                                                                        .tapeCheckModel
-                                                                        .inSubs,
-                                                                    inFavorite: stateCheck
-                                                                        .tapeCheckModel
-                                                                        .inFavorite,
-                                                                    isLiked: stateCheck
-                                                                        .tapeCheckModel
-                                                                        .isLiked,
-                                                                  ),
-                                                            );
-                                                          }
-                                                        },
-                                                        builder: (context, stateCheck) {
-                                                          final title = stateCheck is LoadingState
-                                                              ? ''
-                                                              : (state
-                                                                            .tapeModel[currentIndex]
-                                                                            .inSubscribe ==
-                                                                        true
-                                                                    ? 'Вы подписаны'
-                                                                    : 'Подписаться');
-
-                                                          return GestureDetector(
-                                                            onTap: () {
-                                                              BlocProvider.of<SubsCubit>(
-                                                                context,
-                                                              ).sub(
-                                                                state
-                                                                    .tapeModel[currentIndex]
-                                                                    .blogger
-                                                                    ?.id
-                                                                    .toString(),
-                                                              );
+                                                  const SizedBox(width: 8),
+                                                  BlocBuilder<
+                                                    tapeCubit.TapeCubit,
+                                                    tapeState.TapeState
+                                                  >(
+                                                    builder: (context, state) {
+                                                      if (state is tapeState.LoadedState) {
+                                                        return BlocConsumer<
+                                                          TapeCheckCubit,
+                                                          TapeCheckState
+                                                        >(
+                                                          listener: (context, stateCheck) {
+                                                            if (stateCheck is LoadedState) {
                                                               BlocProvider.of<tapeCubit.TapeCubit>(
                                                                 context,
                                                               ).update(
                                                                 state.tapeModel[currentIndex],
                                                                 currentIndex,
-                                                                !(state
-                                                                        .tapeModel[currentIndex]
-                                                                        .inSubscribe ??
-                                                                    true),
-                                                                state
-                                                                    .tapeModel[currentIndex]
-                                                                    .inBasket,
-                                                                state
-                                                                    .tapeModel[currentIndex]
+                                                                stateCheck.tapeCheckModel.inSubs,
+                                                                stateCheck.tapeCheckModel.inBasket,
+                                                                stateCheck
+                                                                    .tapeCheckModel
                                                                     .inFavorite,
                                                                 state
-                                                                        .tapeModel[currentIndex]
-                                                                        .inReport ??
-                                                                    false,
-                                                                state
-                                                                        .tapeModel[currentIndex]
-                                                                        .isLiked ??
-                                                                    false,
+                                                                    .tapeModel[currentIndex]
+                                                                    .inReport,
+                                                                stateCheck.tapeCheckModel.isLiked,
                                                                 state
                                                                         .tapeModel[index]
                                                                         .statistics
@@ -362,55 +298,249 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                                                                         ?.send ??
                                                                     0,
                                                               );
-                                                              setState(() {});
-                                                            },
-                                                            child: Container(
-                                                              height: 26,
-                                                              padding: const EdgeInsets.symmetric(
-                                                                horizontal: 8,
-                                                              ),
-                                                              alignment: Alignment.center,
-                                                              decoration: BoxDecoration(
-                                                                color: AppColors.tapeColorGray,
-                                                                borderRadius: BorderRadius.circular(
-                                                                  8,
+
+                                                              BlocProvider.of<tapeCubit.TapeCubit>(
+                                                                context,
+                                                              ).updateTapeByIndex(
+                                                                index: currentIndex,
+                                                                updatedTape: state
+                                                                    .tapeModel[currentIndex]
+                                                                    .copyWith(
+                                                                      tapeId: state
+                                                                          .tapeModel[currentIndex]
+                                                                          .tapeId,
+                                                                      inBasket: stateCheck
+                                                                          .tapeCheckModel
+                                                                          .inBasket,
+                                                                      inSubscribe: stateCheck
+                                                                          .tapeCheckModel
+                                                                          .inSubs,
+                                                                      inFavorite: stateCheck
+                                                                          .tapeCheckModel
+                                                                          .inFavorite,
+                                                                      isLiked: stateCheck
+                                                                          .tapeCheckModel
+                                                                          .isLiked,
+                                                                    ),
+                                                              );
+                                                            }
+                                                          },
+                                                          builder: (context, stateCheck) {
+                                                            final title = stateCheck is LoadingState
+                                                                ? ''
+                                                                : (state
+                                                                              .tapeModel[currentIndex]
+                                                                              .inSubscribe ==
+                                                                          true
+                                                                      ? 'Вы подписаны'
+                                                                      : 'Подписаться');
+
+                                                            return GestureDetector(
+                                                              onTap: () {
+                                                                BlocProvider.of<SubsCubit>(
+                                                                  context,
+                                                                ).sub(
+                                                                  state
+                                                                      .tapeModel[currentIndex]
+                                                                      .blogger
+                                                                      ?.id
+                                                                      .toString(),
+                                                                );
+                                                                BlocProvider.of<tapeCubit.TapeCubit>(
+                                                                  context,
+                                                                ).update(
+                                                                  state.tapeModel[currentIndex],
+                                                                  currentIndex,
+                                                                  !(state
+                                                                          .tapeModel[currentIndex]
+                                                                          .inSubscribe ??
+                                                                      true),
+                                                                  state
+                                                                      .tapeModel[currentIndex]
+                                                                      .inBasket,
+                                                                  state
+                                                                      .tapeModel[currentIndex]
+                                                                      .inFavorite,
+                                                                  state
+                                                                          .tapeModel[currentIndex]
+                                                                          .inReport ??
+                                                                      false,
+                                                                  state
+                                                                          .tapeModel[currentIndex]
+                                                                          .isLiked ??
+                                                                      false,
+                                                                  state
+                                                                          .tapeModel[index]
+                                                                          .statistics
+                                                                          ?.like ??
+                                                                      0,
+                                                                  state
+                                                                          .tapeModel[index]
+                                                                          .statistics
+                                                                          ?.favorite ??
+                                                                      0,
+                                                                  state
+                                                                          .tapeModel[currentIndex]
+                                                                          .statistics
+                                                                          ?.send ??
+                                                                      0,
+                                                                );
+                                                                setState(() {});
+                                                              },
+                                                              child: Container(
+                                                                height: 26,
+                                                                padding: const EdgeInsets.symmetric(
+                                                                  horizontal: 8,
+                                                                ),
+                                                                alignment: Alignment.center,
+                                                                decoration: BoxDecoration(
+                                                                  color: AppColors.tapeColorGray,
+                                                                  borderRadius:
+                                                                      BorderRadius.circular(8),
+                                                                ),
+                                                                child: Text(
+                                                                  title,
+                                                                  style: const TextStyle(
+                                                                    color: AppColors.kWhite,
+                                                                    fontSize: 12,
+                                                                  ),
                                                                 ),
                                                               ),
-                                                              child: Text(
-                                                                title,
-                                                                style: const TextStyle(
-                                                                  color: AppColors.kWhite,
-                                                                  fontSize: 12,
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          );
-                                                        },
-                                                      );
-                                                    }
-                                                    return const SizedBox.shrink();
-                                                  },
+                                                            );
+                                                          },
+                                                        );
+                                                      }
+                                                      return const SizedBox.shrink();
+                                                    },
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+
+                                            inReport(tape: state.tapeModel[index], index: index),
+
+                                            const SizedBox(width: 8),
+
+                                            InkWell(
+                                              onTap: () => Navigator.pop(context),
+                                              child: ClipRRect(
+                                                borderRadius: BorderRadius.circular(15),
+                                                child: Container(
+                                                  height: 28,
+                                                  width: 28,
+                                                  color: AppColors.tapeColorGray,
+                                                  child: const Icon(
+                                                    Icons.close,
+                                                    size: 22,
+                                                    color: AppColors.kWhite,
+                                                  ),
                                                 ),
-                                              ],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    )
+                                  : const SizedBox();
+                            }
+                            return const SizedBox();
+                          },
+                        ),
+                      ),
+                      Positioned(
+                        bottom: 20,
+                        right: 16,
+                        left: 16,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Container(
+                              margin: EdgeInsets.only(
+                                top: MediaQuery.of(context).size.height * 0.327,
+                              ),
+                              child: Column(
+                                children: [
+                                  InkWell(
+                                    onTap: () {
+                                      context.router
+                                          .push(
+                                            ProfileSellerTapeRoute(
+                                              chatId: state.tapeModel[index].chatId ?? 0,
+                                              sellerAvatar:
+                                                  state.tapeModel[currentIndex].shop?.image ?? '',
+                                              sellerId: state.tapeModel[currentIndex].shop!.id!,
+                                              sellerCreatedAt:
+                                                  state.tapeModel[currentIndex].shop!.createdAt!,
+                                              sellerName:
+                                                  state.tapeModel[currentIndex].shop?.name ?? '',
+                                              inSubscribe:
+                                                  state.tapeModel[currentIndex].inSellerSubscribe ??
+                                                  false,
+                                              onSubChanged: (value) {
+                                                BlocProvider.of<tapeCubit.TapeCubit>(
+                                                  context,
+                                                ).updateTapeByIndex(
+                                                  index: currentIndex,
+                                                  updatedTape: state.tapeModel[currentIndex]
+                                                      .copyWith(
+                                                        tapeId:
+                                                            state.tapeModel[currentIndex].tapeId,
+                                                        inSellerSubscribe: value,
+                                                      ),
+                                                );
+                                              },
+                                            ),
+                                          )
+                                          .whenComplete(() {
+                                            stop = false;
+                                            BlocProvider.of<tapeCubit.TapeCubit>(
+                                              context,
+                                            ).toLoadedState();
+                                            setState(() {});
+                                          });
+                                      stop = true;
+                                    },
+                                    child: SizedBox(
+                                      height: 52,
+                                      child: Stack(
+                                        children: [
+                                          ClipRRect(
+                                            borderRadius: BorderRadius.circular(
+                                              30,
+                                            ), // Slightly smaller than container
+                                            child: Image.network(
+                                              height: 40,
+                                              width: 40,
+                                              state.tapeModel[currentIndex].shop?.image != null
+                                                  ? "https://lunamarket.ru/storage/${state.tapeModel[currentIndex].shop?.image}"
+                                                  : "https://lunamarket.ru/storage/banners/2.png",
+                                              fit: BoxFit.cover,
                                             ),
                                           ),
-
-                                          inReport(tape: state.tapeModel[index], index: index),
-
-                                          const SizedBox(width: 8),
-
-                                          InkWell(
-                                            onTap: () => Navigator.pop(context),
-                                            child: ClipRRect(
-                                              borderRadius: BorderRadius.circular(15),
-                                              child: Container(
-                                                height: 28,
-                                                width: 28,
-                                                color: AppColors.tapeColorGray,
-                                                child: const Icon(
-                                                  Icons.close,
-                                                  size: 22,
-                                                  color: AppColors.kWhite,
+                                          Positioned(
+                                            bottom: 3,
+                                            right: 0,
+                                            left: 0,
+                                            child: Container(
+                                              height: 20,
+                                              width: 38,
+                                              decoration: BoxDecoration(
+                                                gradient: LinearGradient(
+                                                  begin: Alignment.topRight,
+                                                  end: Alignment.bottomLeft,
+                                                  transform: GradientRotation(4.2373),
+                                                  colors: [Color(0xFFAD32F8), Color(0xFF3275F8)],
+                                                ),
+                                                borderRadius: BorderRadius.circular(12),
+                                              ),
+                                              child: Center(
+                                                child: Padding(
+                                                  padding: EdgeInsets.only(top: 4.5, bottom: 4.5),
+                                                  child: Image.asset(
+                                                    Assets.icons.sellerNavigationUnfullIcon.path,
+                                                    color: AppColors.kWhite,
+                                                  ),
                                                 ),
                                               ),
                                             ),
@@ -418,485 +548,302 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                                         ],
                                       ),
                                     ),
-                                  )
-                                : const SizedBox();
-                          }
-                          return const SizedBox();
-                        },
-                      ),
-                    ),
-                    Positioned(
-                      bottom: 90,
-                      right: 16,
-                      left: 16,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Container(
-                            margin: EdgeInsets.only(
-                              top: MediaQuery.of(context).size.height * 0.327,
-                            ),
-                            child: Column(
-                              children: [
-                                InkWell(
-                                  onTap: () {
-                                    context.router
-                                        .push(
-                                          ProfileSellerTapeRoute(
-                                            chatId: state.tapeModel[index].chatId ?? 0,
-                                            sellerAvatar:
-                                                state.tapeModel[currentIndex].shop?.image ?? '',
-                                            sellerId: state.tapeModel[currentIndex].shop!.id!,
-                                            sellerCreatedAt:
-                                                state.tapeModel[currentIndex].shop!.createdAt!,
-                                            sellerName:
-                                                state.tapeModel[currentIndex].shop?.name ?? '',
-                                            inSubscribe:
-                                                state.tapeModel[currentIndex].inSellerSubscribe ??
-                                                false,
-                                            onSubChanged: (value) {
-                                              BlocProvider.of<tapeCubit.TapeCubit>(
-                                                context,
-                                              ).updateTapeByIndex(
-                                                index: currentIndex,
-                                                updatedTape: state.tapeModel[currentIndex].copyWith(
-                                                  tapeId: state.tapeModel[currentIndex].tapeId,
-                                                  inSellerSubscribe: value,
-                                                ),
-                                              );
-                                            },
-                                          ),
-                                        )
-                                        .whenComplete(() {
-                                          stop = false;
-                                          BlocProvider.of<tapeCubit.TapeCubit>(
-                                            context,
-                                          ).toLoadedState();
-                                          setState(() {});
-                                        });
-                                    stop = true;
-                                  },
-                                  child: SizedBox(
-                                    height: 52,
-                                    child: Stack(
+                                  ),
+                                  SizedBox(height: 17.5),
+                                  IsLikeWidget(
+                                    tape: state.tapeModel[index],
+                                    index: index,
+                                    isBlogger: false,
+                                  ),
+                                  const SizedBox(height: 10),
+                                  InFavoritesWidget(
+                                    tape: state.tapeModel[index],
+                                    index: index,
+                                    isBlogger: false,
+                                  ),
+                                  const SizedBox(height: 10),
+                                  GestureDetector(
+                                    onTap: () async {
+                                      await Share.share(
+                                        "$kDeepLinkUrl/?index\u003d${widget.index}&shop_name\u003d${widget.shopName}",
+                                      );
+
+                                      BlocProvider.of<tapeCubit.TapeCubit>(context).update(
+                                        state.tapeModel[index],
+                                        index,
+                                        state.tapeModel[index].inSubscribe,
+                                        state.tapeModel[index].inBasket,
+                                        state.tapeModel[index].inFavorite,
+                                        state.tapeModel[index].inFavorite,
+                                        state.tapeModel[index].isLiked,
+                                        state.tapeModel[index].statistics?.like ?? 0,
+                                        state.tapeModel[index].statistics?.favorite ?? 0,
+                                        (state.tapeModel[index].statistics?.send ?? 0) + 1,
+                                        isBlogger: false,
+                                      );
+
+                                      BlocProvider.of<tapeCubit.TapeCubit>(
+                                        context,
+                                      ).share(state.tapeModel[index].tapeId!);
+
+                                      setState(() {});
+                                    },
+                                    child: Column(
                                       children: [
-                                        ClipRRect(
-                                          borderRadius: BorderRadius.circular(
-                                            30,
-                                          ), // Slightly smaller than container
-                                          child: Image.network(
-                                            height: 40,
-                                            width: 40,
-                                            state.tapeModel[currentIndex].shop?.image != null
-                                                ? "https://lunamarket.ru/storage/${state.tapeModel[currentIndex].shop?.image}"
-                                                : "https://lunamarket.ru/storage/banners/2.png",
-                                            fit: BoxFit.cover,
-                                          ),
+                                        Image.asset(
+                                          Assets.icons.sendIcon.path,
+                                          color: Colors.white,
+                                          scale: 1.9,
                                         ),
-                                        Positioned(
-                                          bottom: 3,
-                                          right: 0,
-                                          left: 0,
-                                          child: Container(
-                                            height: 20,
-                                            width: 38,
-                                            decoration: BoxDecoration(
-                                              gradient: LinearGradient(
-                                                begin: Alignment.topRight,
-                                                end: Alignment.bottomLeft,
-                                                transform: GradientRotation(4.2373),
-                                                colors: [Color(0xFFAD32F8), Color(0xFF3275F8)],
-                                              ),
-                                              borderRadius: BorderRadius.circular(12),
-                                            ),
-                                            child: Center(
-                                              child: Padding(
-                                                padding: EdgeInsets.only(top: 4.5, bottom: 4.5),
-                                                child: Image.asset(
-                                                  Assets.icons.sellerNavigationUnfullIcon.path,
-                                                  color: AppColors.kWhite,
-                                                ),
-                                              ),
-                                            ),
+                                        Text(
+                                          ' ${state.tapeModel[index].statistics?.send}',
+                                          style: AppTextStyles.size16Weight400.copyWith(
+                                            color: AppColors.kWhite,
                                           ),
                                         ),
                                       ],
                                     ),
                                   ),
-                                ),
-                                SizedBox(height: 17.5),
-                                IsLikeWidget(
-                                  tape: state.tapeModel[index],
-                                  index: index,
-                                  isBlogger: false,
-                                ),
-                                const SizedBox(height: 10),
-                                InFavoritesWidget(
-                                  tape: state.tapeModel[index],
-                                  index: index,
-                                  isBlogger: false,
-                                ),
-                                const SizedBox(height: 10),
-                                GestureDetector(
-                                  onTap: () async {
-                                    await Share.share(
-                                      "$kDeepLinkUrl/?index\u003d${widget.index}&shop_name\u003d${widget.shopName}",
-                                    );
-
-                                    BlocProvider.of<tapeCubit.TapeCubit>(context).update(
-                                      state.tapeModel[index],
-                                      index,
-                                      state.tapeModel[index].inSubscribe,
-                                      state.tapeModel[index].inBasket,
-                                      state.tapeModel[index].inFavorite,
-                                      state.tapeModel[index].inFavorite,
-                                      state.tapeModel[index].isLiked,
-                                      state.tapeModel[index].statistics?.like ?? 0,
-                                      state.tapeModel[index].statistics?.favorite ?? 0,
-                                      (state.tapeModel[index].statistics?.send ?? 0) + 1,
-                                      isBlogger: false,
-                                    );
-
-                                    BlocProvider.of<tapeCubit.TapeCubit>(
-                                      context,
-                                    ).share(state.tapeModel[index].tapeId!);
-
-                                    setState(() {});
-                                  },
-                                  child: Column(
-                                    children: [
-                                      Image.asset(
-                                        Assets.icons.sendIcon.path,
-                                        color: Colors.white,
-                                        scale: 1.9,
-                                      ),
-                                      Text(
-                                        ' ${state.tapeModel[index].statistics?.send}',
-                                        style: AppTextStyles.size16Weight400.copyWith(
-                                          color: AppColors.kWhite,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
-                          ),
-                          const SizedBox(height: 14),
-                          Container(
-                            padding: EdgeInsets.symmetric(horizontal: 12),
-                            height: 70,
-                            decoration: BoxDecoration(
-                              color: AppColors.kWhite,
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: SizedBox(
-                              width: 358,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Container(
-                                    height: 54,
-                                    width: 56,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(8),
-                                      border: Border.all(width: 0.7, color: Color(0xffEAECED)),
-                                    ),
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(0.7),
-                                      child: ClipRRect(
+                            const SizedBox(height: 14),
+                            Container(
+                              padding: EdgeInsets.symmetric(horizontal: 12),
+                              height: 70,
+                              decoration: BoxDecoration(
+                                color: AppColors.kWhite,
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: SizedBox(
+                                width: 358,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                      height: 54,
+                                      width: 56,
+                                      decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(8),
-                                        child: Image.network(
-                                          'https://lunamarket.ru/storage/${state.tapeModel[index].image}',
-                                          fit: BoxFit.cover,
+                                        border: Border.all(width: 0.7, color: Color(0xffEAECED)),
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(0.7),
+                                        child: ClipRRect(
+                                          borderRadius: BorderRadius.circular(8),
+                                          child: Image.network(
+                                            'https://lunamarket.ru/storage/${state.tapeModel[index].image}',
+                                            fit: BoxFit.cover,
+                                          ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                  SizedBox(width: 10),
-                                  Expanded(
-                                    child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          '${state.tapeModel[index].name}',
-                                          overflow: TextOverflow.ellipsis,
-                                          maxLines: 1,
-                                          style: AppTextStyles.size14Weight600,
-                                        ),
-                                        state.tapeModel[index].compound != 0
-                                            ? Row(
-                                                mainAxisAlignment: MainAxisAlignment.start,
-                                                children: [
-                                                  SizedBox(
-                                                    // width: 75,
-                                                    child: Text(
-                                                      '${formatPrice(compoundPrice)} ₽ ',
-                                                      style: AppTextStyles.size16Weight600,
+                                    SizedBox(width: 10),
+                                    Expanded(
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            '${state.tapeModel[index].name}',
+                                            overflow: TextOverflow.ellipsis,
+                                            maxLines: 1,
+                                            style: AppTextStyles.size14Weight600,
+                                          ),
+                                          state.tapeModel[index].compound != 0
+                                              ? Row(
+                                                  mainAxisAlignment: MainAxisAlignment.start,
+                                                  children: [
+                                                    SizedBox(
+                                                      // width: 75,
+                                                      child: Text(
+                                                        '${formatPrice(compoundPrice)} ₽ ',
+                                                        style: AppTextStyles.size16Weight600,
+                                                      ),
                                                     ),
-                                                  ),
-                                                  Text(
-                                                    '${formatPrice(state.tapeModel[index].price!)} ₽ ',
-                                                    style: AppTextStyles.size14Weight500.copyWith(
-                                                      decoration: TextDecoration.lineThrough,
-                                                      color: Color(0xff8E8E93),
-                                                      decorationColor: Color(0xff8E8E93),
+                                                    Text(
+                                                      '${formatPrice(state.tapeModel[index].price!)} ₽ ',
+                                                      style: AppTextStyles.size14Weight500.copyWith(
+                                                        decoration: TextDecoration.lineThrough,
+                                                        color: Color(0xff8E8E93),
+                                                        decorationColor: Color(0xff8E8E93),
+                                                      ),
                                                     ),
-                                                  ),
-                                                ],
-                                              )
-                                            : Text(
-                                                '${formatPrice(state.tapeModel[index].price!)} ₽ ',
-                                                style: AppTextStyles.size16Weight600,
-                                              ),
-                                      ],
+                                                  ],
+                                                )
+                                              : Text(
+                                                  '${formatPrice(state.tapeModel[index].price!)} ₽ ',
+                                                  style: AppTextStyles.size16Weight600,
+                                                ),
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                  SizedBox(width: 10),
-                                  inBaskets(
-                                    tape: state.tapeModel[index],
-                                    index: index,
-                                    isBlogger: true,
-                                  ),
-                                ],
+                                    SizedBox(width: 10),
+                                    inBaskets(
+                                      tape: state.tapeModel[index],
+                                      index: index,
+                                      isBlogger: true,
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
-                          ),
-                          const SizedBox(height: 8),
-                        ],
+                            const SizedBox(height: 8),
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
-                );
-              },
-            );
-          }
-          if (state is tapeState.BloggerLoadedState) {
-            return PageView.builder(
-              scrollDirection: Axis.vertical,
-              controller: controller,
-              itemCount: state.tapeModel.length,
-              onPageChanged: (value) {
-                currentIndex = value;
-                if (state.tapeModel[value].tapeId != null) {
-                  BlocProvider.of<TapeCheckCubit>(
-                    context,
-                  ).tapeCheck(tapeId: state.tapeModel[value].tapeId!);
-                }
-                setState(() {});
-              },
-              itemBuilder: (context, index) {
-                return Stack(
-                  children: [
-                    Videos(tape: state.tapeModel[index]),
-                    Positioned(
-                      top: 85,
-                      left: 16,
-                      right: 16,
-                      child: BlocBuilder<tapeCubit.TapeCubit, tapeState.TapeState>(
-                        builder: (context, state) {
-                          if (state is tapeState.LoadedState) {
-                            compoundPrice =
-                                (state.tapeModel[currentIndex].price!.toInt() *
-                                        (((100 - state.tapeModel[currentIndex].compound!.toInt())) /
-                                            100))
-                                    .toInt();
+                    ],
+                  );
+                },
+              );
+            }
+            if (state is tapeState.BloggerLoadedState) {
+              return PageView.builder(
+                scrollDirection: Axis.vertical,
+                controller: controller,
+                itemCount: state.tapeModel.length,
+                onPageChanged: (value) {
+                  currentIndex = value;
+                  if (state.tapeModel[value].tapeId != null) {
+                    BlocProvider.of<TapeCheckCubit>(
+                      context,
+                    ).tapeCheck(tapeId: state.tapeModel[value].tapeId!);
+                  }
+                  setState(() {});
+                },
+                itemBuilder: (context, index) {
+                  return Stack(
+                    children: [
+                      Videos(tape: state.tapeModel[index]),
+                      Positioned(
+                        top: 85,
+                        left: 16,
+                        right: 16,
+                        child: BlocBuilder<tapeCubit.TapeCubit, tapeState.TapeState>(
+                          builder: (context, state) {
+                            if (state is tapeState.LoadedState) {
+                              compoundPrice =
+                                  (state.tapeModel[currentIndex].price!.toInt() *
+                                          (((100 -
+                                                  state.tapeModel[currentIndex].compound!
+                                                      .toInt())) /
+                                              100))
+                                      .toInt();
 
-                            return visible == true &&
-                                    (state.tapeModel[currentIndex].blogger != null)
-                                ? GestureDetector(
-                                    onTap: () {
-                                      context.router
-                                          .push(
-                                            ProfileBloggerTapeRoute(
-                                              bloggerAvatar:
-                                                  state.tapeModel[currentIndex].blogger?.image ??
-                                                  '',
-                                              bloggerId: state.tapeModel[currentIndex].blogger!.id!,
-                                              bloggerCreatedAt:
-                                                  state.tapeModel[currentIndex].blogger!.createdAt!,
-                                              bloggerName:
-                                                  state.tapeModel[currentIndex].blogger?.nickName ??
-                                                  '',
-                                              inSubscribe:
-                                                  state.tapeModel[currentIndex].inSubscribe ??
-                                                  false,
-                                              onSubChanged: (value) {
-                                                BlocProvider.of<tapeCubit.TapeCubit>(
-                                                  context,
-                                                ).updateTapeByIndex(
-                                                  index: currentIndex,
-                                                  updatedTape: state.tapeModel[currentIndex]
-                                                      .copyWith(
-                                                        tapeId:
-                                                            state.tapeModel[currentIndex].tapeId,
-                                                        inSubscribe: value,
+                              return visible == true &&
+                                      (state.tapeModel[currentIndex].blogger != null)
+                                  ? GestureDetector(
+                                      onTap: () {
+                                        context.router
+                                            .push(
+                                              ProfileBloggerTapeRoute(
+                                                bloggerAvatar:
+                                                    state.tapeModel[currentIndex].blogger?.image ??
+                                                    '',
+                                                bloggerId:
+                                                    state.tapeModel[currentIndex].blogger!.id!,
+                                                bloggerCreatedAt: state
+                                                    .tapeModel[currentIndex]
+                                                    .blogger!
+                                                    .createdAt!,
+                                                bloggerName:
+                                                    state
+                                                        .tapeModel[currentIndex]
+                                                        .blogger
+                                                        ?.nickName ??
+                                                    '',
+                                                inSubscribe:
+                                                    state.tapeModel[currentIndex].inSubscribe ??
+                                                    false,
+                                                onSubChanged: (value) {
+                                                  BlocProvider.of<tapeCubit.TapeCubit>(
+                                                    context,
+                                                  ).updateTapeByIndex(
+                                                    index: currentIndex,
+                                                    updatedTape: state.tapeModel[currentIndex]
+                                                        .copyWith(
+                                                          tapeId:
+                                                              state.tapeModel[currentIndex].tapeId,
+                                                          inSubscribe: value,
+                                                        ),
+                                                  );
+                                                },
+                                              ),
+                                            )
+                                            .whenComplete(() {
+                                              stop = false;
+                                              BlocProvider.of<tapeCubit.TapeCubit>(
+                                                context,
+                                              ).toLoadedState();
+                                              setState(() {});
+                                            });
+                                        stop = true;
+                                      },
+                                      child: SizedBox(
+                                        width: MediaQuery.of(context).size.width,
+                                        child: Row(
+                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          children: [
+                                            ClipRRect(
+                                              borderRadius: BorderRadius.circular(30),
+                                              child: Image.network(
+                                                state.tapeModel[currentIndex].blogger?.image != null
+                                                    ? "https://lunamarket.ru/storage/${state.tapeModel[currentIndex].blogger?.image}"
+                                                    : "https://lunamarket.ru/storage/banners/2.png",
+                                                height: 40,
+                                                width: 40,
+                                                fit: BoxFit.cover,
+                                                // loadingBuilder / errorBuilder — как у тебя
+                                              ),
+                                            ),
+
+                                            const SizedBox(width: 8),
+
+                                            // Имя блогера — занимает всё оставшееся пространство
+                                            Expanded(
+                                              child: Row(
+                                                children: [
+                                                  SizedBox(
+                                                    width: 65,
+                                                    child: Text(
+                                                      '${state.tapeModel[currentIndex].blogger?.nickName}',
+                                                      maxLines: 1,
+                                                      overflow: TextOverflow.ellipsis,
+                                                      style: const TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 18,
+                                                        fontWeight: FontWeight.w600,
                                                       ),
-                                                );
-                                              },
-                                            ),
-                                          )
-                                          .whenComplete(() {
-                                            stop = false;
-                                            BlocProvider.of<tapeCubit.TapeCubit>(
-                                              context,
-                                            ).toLoadedState();
-                                            setState(() {});
-                                          });
-                                      stop = true;
-                                    },
-                                    child: SizedBox(
-                                      width: MediaQuery.of(context).size.width,
-                                      child: Row(
-                                        crossAxisAlignment: CrossAxisAlignment.center,
-                                        children: [
-                                          ClipRRect(
-                                            borderRadius: BorderRadius.circular(30),
-                                            child: Image.network(
-                                              state.tapeModel[currentIndex].blogger?.image != null
-                                                  ? "https://lunamarket.ru/storage/${state.tapeModel[currentIndex].blogger?.image}"
-                                                  : "https://lunamarket.ru/storage/banners/2.png",
-                                              height: 40,
-                                              width: 40,
-                                              fit: BoxFit.cover,
-                                              // loadingBuilder / errorBuilder — как у тебя
-                                            ),
-                                          ),
-
-                                          const SizedBox(width: 8),
-
-                                          // Имя блогера — занимает всё оставшееся пространство
-                                          Expanded(
-                                            child: Row(
-                                              children: [
-                                                SizedBox(
-                                                  width: 65,
-                                                  child: Text(
-                                                    '${state.tapeModel[currentIndex].blogger?.nickName}',
-                                                    maxLines: 1,
-                                                    overflow: TextOverflow.ellipsis,
-                                                    style: const TextStyle(
-                                                      color: Colors.white,
-                                                      fontSize: 18,
-                                                      fontWeight: FontWeight.w600,
                                                     ),
                                                   ),
-                                                ),
-                                                const SizedBox(width: 8),
-                                                BlocBuilder<
-                                                  tapeCubit.TapeCubit,
-                                                  tapeState.TapeState
-                                                >(
-                                                  builder: (context, state) {
-                                                    if (state is tapeState.LoadedState) {
-                                                      return BlocConsumer<
-                                                        TapeCheckCubit,
-                                                        TapeCheckState
-                                                      >(
-                                                        listener: (context, stateCheck) {
-                                                          if (stateCheck is LoadedState) {
-                                                            BlocProvider.of<tapeCubit.TapeCubit>(
-                                                              context,
-                                                            ).update(
-                                                              state.tapeModel[currentIndex],
-                                                              currentIndex,
-                                                              stateCheck.tapeCheckModel.inSubs,
-                                                              stateCheck.tapeCheckModel.inBasket,
-                                                              stateCheck.tapeCheckModel.inFavorite,
-                                                              state
-                                                                  .tapeModel[currentIndex]
-                                                                  .inReport,
-                                                              stateCheck.tapeCheckModel.isLiked,
-                                                              state
-                                                                      .tapeModel[index]
-                                                                      .statistics
-                                                                      ?.like ??
-                                                                  0,
-                                                              state
-                                                                      .tapeModel[index]
-                                                                      .statistics
-                                                                      ?.favorite ??
-                                                                  0,
-                                                              state
-                                                                      .tapeModel[currentIndex]
-                                                                      .statistics
-                                                                      ?.send ??
-                                                                  0,
-                                                            );
-
-                                                            BlocProvider.of<tapeCubit.TapeCubit>(
-                                                              context,
-                                                            ).updateTapeByIndex(
-                                                              index: currentIndex,
-                                                              updatedTape: state
-                                                                  .tapeModel[currentIndex]
-                                                                  .copyWith(
-                                                                    tapeId: state
-                                                                        .tapeModel[currentIndex]
-                                                                        .tapeId,
-                                                                    inBasket: stateCheck
-                                                                        .tapeCheckModel
-                                                                        .inBasket,
-                                                                    inSubscribe: stateCheck
-                                                                        .tapeCheckModel
-                                                                        .inSubs,
-                                                                    inFavorite: stateCheck
-                                                                        .tapeCheckModel
-                                                                        .inFavorite,
-                                                                    isLiked: stateCheck
-                                                                        .tapeCheckModel
-                                                                        .isLiked,
-                                                                  ),
-                                                            );
-                                                          }
-                                                        },
-                                                        builder: (context, stateCheck) {
-                                                          final title = stateCheck is LoadingState
-                                                              ? ''
-                                                              : (state
-                                                                            .tapeModel[currentIndex]
-                                                                            .inSubscribe ==
-                                                                        true
-                                                                    ? 'Вы подписаны'
-                                                                    : 'Подписаться');
-
-                                                          return GestureDetector(
-                                                            onTap: () {
-                                                              BlocProvider.of<SubsCubit>(
-                                                                context,
-                                                              ).sub(
-                                                                state
-                                                                    .tapeModel[currentIndex]
-                                                                    .blogger
-                                                                    ?.id
-                                                                    .toString(),
-                                                              );
+                                                  const SizedBox(width: 8),
+                                                  BlocBuilder<
+                                                    tapeCubit.TapeCubit,
+                                                    tapeState.TapeState
+                                                  >(
+                                                    builder: (context, state) {
+                                                      if (state is tapeState.LoadedState) {
+                                                        return BlocConsumer<
+                                                          TapeCheckCubit,
+                                                          TapeCheckState
+                                                        >(
+                                                          listener: (context, stateCheck) {
+                                                            if (stateCheck is LoadedState) {
                                                               BlocProvider.of<tapeCubit.TapeCubit>(
                                                                 context,
                                                               ).update(
                                                                 state.tapeModel[currentIndex],
                                                                 currentIndex,
-                                                                !(state
-                                                                        .tapeModel[currentIndex]
-                                                                        .inSubscribe ??
-                                                                    true),
-                                                                state
-                                                                    .tapeModel[currentIndex]
-                                                                    .inBasket,
-                                                                state
-                                                                    .tapeModel[currentIndex]
+                                                                stateCheck.tapeCheckModel.inSubs,
+                                                                stateCheck.tapeCheckModel.inBasket,
+                                                                stateCheck
+                                                                    .tapeCheckModel
                                                                     .inFavorite,
                                                                 state
-                                                                        .tapeModel[currentIndex]
-                                                                        .inReport ??
-                                                                    false,
-                                                                state
-                                                                        .tapeModel[currentIndex]
-                                                                        .isLiked ??
-                                                                    false,
+                                                                    .tapeModel[currentIndex]
+                                                                    .inReport,
+                                                                stateCheck.tapeCheckModel.isLiked,
                                                                 state
                                                                         .tapeModel[index]
                                                                         .statistics
@@ -913,55 +860,249 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                                                                         ?.send ??
                                                                     0,
                                                               );
-                                                              setState(() {});
-                                                            },
-                                                            child: Container(
-                                                              height: 26,
-                                                              padding: const EdgeInsets.symmetric(
-                                                                horizontal: 8,
-                                                              ),
-                                                              alignment: Alignment.center,
-                                                              decoration: BoxDecoration(
-                                                                color: AppColors.tapeColorGray,
-                                                                borderRadius: BorderRadius.circular(
-                                                                  8,
+
+                                                              BlocProvider.of<tapeCubit.TapeCubit>(
+                                                                context,
+                                                              ).updateTapeByIndex(
+                                                                index: currentIndex,
+                                                                updatedTape: state
+                                                                    .tapeModel[currentIndex]
+                                                                    .copyWith(
+                                                                      tapeId: state
+                                                                          .tapeModel[currentIndex]
+                                                                          .tapeId,
+                                                                      inBasket: stateCheck
+                                                                          .tapeCheckModel
+                                                                          .inBasket,
+                                                                      inSubscribe: stateCheck
+                                                                          .tapeCheckModel
+                                                                          .inSubs,
+                                                                      inFavorite: stateCheck
+                                                                          .tapeCheckModel
+                                                                          .inFavorite,
+                                                                      isLiked: stateCheck
+                                                                          .tapeCheckModel
+                                                                          .isLiked,
+                                                                    ),
+                                                              );
+                                                            }
+                                                          },
+                                                          builder: (context, stateCheck) {
+                                                            final title = stateCheck is LoadingState
+                                                                ? ''
+                                                                : (state
+                                                                              .tapeModel[currentIndex]
+                                                                              .inSubscribe ==
+                                                                          true
+                                                                      ? 'Вы подписаны'
+                                                                      : 'Подписаться');
+
+                                                            return GestureDetector(
+                                                              onTap: () {
+                                                                BlocProvider.of<SubsCubit>(
+                                                                  context,
+                                                                ).sub(
+                                                                  state
+                                                                      .tapeModel[currentIndex]
+                                                                      .blogger
+                                                                      ?.id
+                                                                      .toString(),
+                                                                );
+                                                                BlocProvider.of<tapeCubit.TapeCubit>(
+                                                                  context,
+                                                                ).update(
+                                                                  state.tapeModel[currentIndex],
+                                                                  currentIndex,
+                                                                  !(state
+                                                                          .tapeModel[currentIndex]
+                                                                          .inSubscribe ??
+                                                                      true),
+                                                                  state
+                                                                      .tapeModel[currentIndex]
+                                                                      .inBasket,
+                                                                  state
+                                                                      .tapeModel[currentIndex]
+                                                                      .inFavorite,
+                                                                  state
+                                                                          .tapeModel[currentIndex]
+                                                                          .inReport ??
+                                                                      false,
+                                                                  state
+                                                                          .tapeModel[currentIndex]
+                                                                          .isLiked ??
+                                                                      false,
+                                                                  state
+                                                                          .tapeModel[index]
+                                                                          .statistics
+                                                                          ?.like ??
+                                                                      0,
+                                                                  state
+                                                                          .tapeModel[index]
+                                                                          .statistics
+                                                                          ?.favorite ??
+                                                                      0,
+                                                                  state
+                                                                          .tapeModel[currentIndex]
+                                                                          .statistics
+                                                                          ?.send ??
+                                                                      0,
+                                                                );
+                                                                setState(() {});
+                                                              },
+                                                              child: Container(
+                                                                height: 26,
+                                                                padding: const EdgeInsets.symmetric(
+                                                                  horizontal: 8,
+                                                                ),
+                                                                alignment: Alignment.center,
+                                                                decoration: BoxDecoration(
+                                                                  color: AppColors.tapeColorGray,
+                                                                  borderRadius:
+                                                                      BorderRadius.circular(8),
+                                                                ),
+                                                                child: Text(
+                                                                  title,
+                                                                  style: const TextStyle(
+                                                                    color: AppColors.kWhite,
+                                                                    fontSize: 12,
+                                                                  ),
                                                                 ),
                                                               ),
-                                                              child: Text(
-                                                                title,
-                                                                style: const TextStyle(
-                                                                  color: AppColors.kWhite,
-                                                                  fontSize: 12,
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          );
-                                                        },
-                                                      );
-                                                    }
-                                                    return const SizedBox.shrink();
-                                                  },
+                                                            );
+                                                          },
+                                                        );
+                                                      }
+                                                      return const SizedBox.shrink();
+                                                    },
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+
+                                            inReport(tape: state.tapeModel[index], index: index),
+
+                                            const SizedBox(width: 4),
+
+                                            InkWell(
+                                              onTap: () => Navigator.pop(context),
+                                              child: ClipRRect(
+                                                borderRadius: BorderRadius.circular(15),
+                                                child: Container(
+                                                  height: 28,
+                                                  width: 28,
+                                                  color: AppColors.tapeColorGray,
+                                                  child: const Icon(
+                                                    Icons.close,
+                                                    size: 22,
+                                                    color: AppColors.kWhite,
+                                                  ),
                                                 ),
-                                              ],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    )
+                                  : const SizedBox.shrink();
+                            }
+                            return const SizedBox.shrink();
+                          },
+                        ),
+                      ),
+                      Positioned(
+                        bottom: 90,
+                        right: 16,
+                        left: 16,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Container(
+                              margin: EdgeInsets.only(
+                                top: MediaQuery.of(context).size.height * 0.327,
+                              ),
+                              child: Column(
+                                children: [
+                                  InkWell(
+                                    onTap: () {
+                                      context.router
+                                          .push(
+                                            ProfileSellerTapeRoute(
+                                              chatId: state.tapeModel[index].chatId ?? 0,
+                                              sellerAvatar:
+                                                  state.tapeModel[currentIndex].shop?.image ?? '',
+                                              sellerId: state.tapeModel[currentIndex].shop!.id!,
+                                              sellerCreatedAt:
+                                                  state.tapeModel[currentIndex].shop!.createdAt!,
+                                              sellerName:
+                                                  state.tapeModel[currentIndex].shop?.name ?? '',
+                                              inSubscribe:
+                                                  state.tapeModel[currentIndex].inSellerSubscribe ??
+                                                  false,
+                                              onSubChanged: (value) {
+                                                BlocProvider.of<tapeCubit.TapeCubit>(
+                                                  context,
+                                                ).updateTapeByIndex(
+                                                  index: currentIndex,
+                                                  updatedTape: state.tapeModel[currentIndex]
+                                                      .copyWith(
+                                                        tapeId:
+                                                            state.tapeModel[currentIndex].tapeId,
+                                                        inSellerSubscribe: value,
+                                                      ),
+                                                );
+                                              },
+                                            ),
+                                          )
+                                          .whenComplete(() {
+                                            stop = false;
+                                            BlocProvider.of<tapeCubit.TapeCubit>(
+                                              context,
+                                            ).toLoadedState();
+                                            setState(() {});
+                                          });
+                                      stop = true;
+                                    },
+                                    child: SizedBox(
+                                      height: 50,
+                                      child: Stack(
+                                        children: [
+                                          ClipRRect(
+                                            borderRadius: BorderRadius.circular(
+                                              30,
+                                            ), // Slightly smaller than container
+                                            child: Image.network(
+                                              height: 40,
+                                              width: 40,
+                                              state.tapeModel[currentIndex].shop?.image != null
+                                                  ? "https://lunamarket.ru/storage/${state.tapeModel[currentIndex].shop?.image}"
+                                                  : "https://lunamarket.ru/storage/banners/2.png",
+                                              fit: BoxFit.cover,
                                             ),
                                           ),
-
-                                          inReport(tape: state.tapeModel[index], index: index),
-
-                                          const SizedBox(width: 4),
-
-                                          InkWell(
-                                            onTap: () => Navigator.pop(context),
-                                            child: ClipRRect(
-                                              borderRadius: BorderRadius.circular(15),
-                                              child: Container(
-                                                height: 28,
-                                                width: 28,
-                                                color: AppColors.tapeColorGray,
-                                                child: const Icon(
-                                                  Icons.close,
-                                                  size: 22,
-                                                  color: AppColors.kWhite,
+                                          Positioned(
+                                            bottom: 0,
+                                            right: 0,
+                                            left: 0,
+                                            child: Container(
+                                              height: 20,
+                                              width: 38,
+                                              decoration: BoxDecoration(
+                                                gradient: LinearGradient(
+                                                  begin: Alignment.topRight,
+                                                  end: Alignment.bottomLeft,
+                                                  transform: GradientRotation(4.2373),
+                                                  colors: [Color(0xFFAD32F8), Color(0xFF3275F8)],
+                                                ),
+                                                borderRadius: BorderRadius.circular(12),
+                                              ),
+                                              child: Center(
+                                                child: Padding(
+                                                  padding: EdgeInsets.only(top: 4.5, bottom: 4.5),
+                                                  child: Image.asset(
+                                                    Assets.icons.sellerNavigationUnfullIcon.path,
+                                                    color: AppColors.kWhite,
+                                                  ),
                                                 ),
                                               ),
                                             ),
@@ -969,263 +1110,158 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                                         ],
                                       ),
                                     ),
-                                  )
-                                : const SizedBox.shrink();
-                          }
-                          return const SizedBox.shrink();
-                        },
-                      ),
-                    ),
-                    Positioned(
-                      bottom: 90,
-                      right: 16,
-                      left: 16,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Container(
-                            margin: EdgeInsets.only(
-                              top: MediaQuery.of(context).size.height * 0.327,
-                            ),
-                            child: Column(
-                              children: [
-                                InkWell(
-                                  onTap: () {
-                                    context.router
-                                        .push(
-                                          ProfileSellerTapeRoute(
-                                            chatId: state.tapeModel[index].chatId ?? 0,
-                                            sellerAvatar:
-                                                state.tapeModel[currentIndex].shop?.image ?? '',
-                                            sellerId: state.tapeModel[currentIndex].shop!.id!,
-                                            sellerCreatedAt:
-                                                state.tapeModel[currentIndex].shop!.createdAt!,
-                                            sellerName:
-                                                state.tapeModel[currentIndex].shop?.name ?? '',
-                                            inSubscribe:
-                                                state.tapeModel[currentIndex].inSellerSubscribe ??
-                                                false,
-                                            onSubChanged: (value) {
-                                              BlocProvider.of<tapeCubit.TapeCubit>(
-                                                context,
-                                              ).updateTapeByIndex(
-                                                index: currentIndex,
-                                                updatedTape: state.tapeModel[currentIndex].copyWith(
-                                                  tapeId: state.tapeModel[currentIndex].tapeId,
-                                                  inSellerSubscribe: value,
-                                                ),
-                                              );
-                                            },
-                                          ),
-                                        )
-                                        .whenComplete(() {
-                                          stop = false;
-                                          BlocProvider.of<tapeCubit.TapeCubit>(
-                                            context,
-                                          ).toLoadedState();
-                                          setState(() {});
-                                        });
-                                    stop = true;
-                                  },
-                                  child: SizedBox(
-                                    height: 50,
-                                    child: Stack(
-                                      children: [
-                                        ClipRRect(
-                                          borderRadius: BorderRadius.circular(
-                                            30,
-                                          ), // Slightly smaller than container
-                                          child: Image.network(
-                                            height: 40,
-                                            width: 40,
-                                            state.tapeModel[currentIndex].shop?.image != null
-                                                ? "https://lunamarket.ru/storage/${state.tapeModel[currentIndex].shop?.image}"
-                                                : "https://lunamarket.ru/storage/banners/2.png",
-                                            fit: BoxFit.cover,
-                                          ),
-                                        ),
-                                        Positioned(
-                                          bottom: 0,
-                                          right: 0,
-                                          left: 0,
-                                          child: Container(
-                                            height: 20,
-                                            width: 38,
-                                            decoration: BoxDecoration(
-                                              gradient: LinearGradient(
-                                                begin: Alignment.topRight,
-                                                end: Alignment.bottomLeft,
-                                                transform: GradientRotation(4.2373),
-                                                colors: [Color(0xFFAD32F8), Color(0xFF3275F8)],
-                                              ),
-                                              borderRadius: BorderRadius.circular(12),
-                                            ),
-                                            child: Center(
-                                              child: Padding(
-                                                padding: EdgeInsets.only(top: 4.5, bottom: 4.5),
-                                                child: Image.asset(
-                                                  Assets.icons.sellerNavigationUnfullIcon.path,
-                                                  color: AppColors.kWhite,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
                                   ),
-                                ),
-                                SizedBox(height: 16),
-                                IsLikeWidget(
-                                  tape: state.tapeModel[index],
-                                  index: index,
-                                  isBlogger: false,
-                                ),
-                                const SizedBox(height: 10),
-                                InFavoritesWidget(
-                                  tape: state.tapeModel[index],
-                                  index: index,
-                                  isBlogger: false,
-                                ),
-                                const SizedBox(height: 10),
-                                GestureDetector(
-                                  onTap: () async {
-                                    await Share.share(
-                                      "$kDeepLinkUrl/?index\u003d${widget.index}&shop_name\u003d${widget.shopName}",
-                                    );
-
-                                    BlocProvider.of<tapeCubit.TapeCubit>(context).update(
-                                      state.tapeModel[index],
-                                      index,
-                                      state.tapeModel[index].inSubscribe,
-                                      state.tapeModel[index].inBasket,
-                                      state.tapeModel[index].inFavorite,
-                                      state.tapeModel[index].inFavorite,
-                                      state.tapeModel[index].isLiked,
-                                      state.tapeModel[index].statistics?.like ?? 0,
-                                      state.tapeModel[index].statistics?.favorite ?? 0,
-                                      (state.tapeModel[index].statistics?.send ?? 0) + 1,
-                                      isBlogger: false,
-                                    );
-
-                                    BlocProvider.of<tapeCubit.TapeCubit>(
-                                      context,
-                                    ).share(state.tapeModel[index].tapeId!);
-
-                                    setState(() {});
-                                  },
-                                  child: Column(
-                                    children: [
-                                      Image.asset(
-                                        Assets.icons.sendIcon.path,
-                                        color: Colors.white,
-                                        scale: 1.9,
-                                      ),
-                                      Text(
-                                        ' ${state.tapeModel[index].statistics?.send}',
-                                        style: AppTextStyles.size16Weight400.copyWith(
-                                          color: AppColors.kWhite,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(height: 14),
-                          Container(
-                            padding: EdgeInsets.symmetric(horizontal: 12),
-                            height: 70,
-                            decoration: BoxDecoration(
-                              color: AppColors.kWhite,
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: SizedBox(
-                              width: 358,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Container(
-                                    height: 54,
-                                    width: 56,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(16),
-                                      border: Border.all(width: 0.33, color: AppColors.kGray300),
-                                    ),
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(0.3),
-                                      child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(16),
-                                        child: Image.network(
-                                          'https://lunamarket.ru/storage/${state.tapeModel[index].image}',
-                                          fit: BoxFit.cover,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  SizedBox(width: 10),
-                                  Expanded(
-                                    child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          '${state.tapeModel[index].name}',
-                                          overflow: TextOverflow.ellipsis,
-                                          maxLines: 1,
-                                          style: AppTextStyles.size14Weight600,
-                                        ),
-                                        state.tapeModel[index].compound != 0
-                                            ? Row(
-                                                mainAxisAlignment: MainAxisAlignment.start,
-                                                children: [
-                                                  SizedBox(
-                                                    // width: 75,
-                                                    child: Text(
-                                                      '${formatPrice(compoundPrice)} ₽ ',
-                                                      style: AppTextStyles.size16Weight600,
-                                                    ),
-                                                  ),
-                                                  Text(
-                                                    '${formatPrice(state.tapeModel[index].price!)} ₽ ',
-                                                    style: AppTextStyles.size14Weight500.copyWith(
-                                                      color: AppColors.kGray300,
-                                                    ),
-                                                  ),
-                                                ],
-                                              )
-                                            : Text(
-                                                '${formatPrice(state.tapeModel[index].price!)} ₽ ',
-                                                style: AppTextStyles.size16Weight600,
-                                              ),
-                                      ],
-                                    ),
-                                  ),
-                                  SizedBox(width: 10),
-                                  inBaskets(
+                                  SizedBox(height: 16),
+                                  IsLikeWidget(
                                     tape: state.tapeModel[index],
                                     index: index,
-                                    isBlogger: true,
+                                    isBlogger: false,
+                                  ),
+                                  const SizedBox(height: 10),
+                                  InFavoritesWidget(
+                                    tape: state.tapeModel[index],
+                                    index: index,
+                                    isBlogger: false,
+                                  ),
+                                  const SizedBox(height: 10),
+                                  GestureDetector(
+                                    onTap: () async {
+                                      await Share.share(
+                                        "$kDeepLinkUrl/?index\u003d${widget.index}&shop_name\u003d${widget.shopName}",
+                                      );
+
+                                      BlocProvider.of<tapeCubit.TapeCubit>(context).update(
+                                        state.tapeModel[index],
+                                        index,
+                                        state.tapeModel[index].inSubscribe,
+                                        state.tapeModel[index].inBasket,
+                                        state.tapeModel[index].inFavorite,
+                                        state.tapeModel[index].inFavorite,
+                                        state.tapeModel[index].isLiked,
+                                        state.tapeModel[index].statistics?.like ?? 0,
+                                        state.tapeModel[index].statistics?.favorite ?? 0,
+                                        (state.tapeModel[index].statistics?.send ?? 0) + 1,
+                                        isBlogger: false,
+                                      );
+
+                                      BlocProvider.of<tapeCubit.TapeCubit>(
+                                        context,
+                                      ).share(state.tapeModel[index].tapeId!);
+
+                                      setState(() {});
+                                    },
+                                    child: Column(
+                                      children: [
+                                        Image.asset(
+                                          Assets.icons.sendIcon.path,
+                                          color: Colors.white,
+                                          scale: 1.9,
+                                        ),
+                                        Text(
+                                          ' ${state.tapeModel[index].statistics?.send}',
+                                          style: AppTextStyles.size16Weight400.copyWith(
+                                            color: AppColors.kWhite,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ],
                               ),
                             ),
-                          ),
-                          const SizedBox(height: 8),
-                        ],
+                            const SizedBox(height: 14),
+                            Container(
+                              padding: EdgeInsets.symmetric(horizontal: 12),
+                              height: 70,
+                              decoration: BoxDecoration(
+                                color: AppColors.kWhite,
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: SizedBox(
+                                width: 358,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                      height: 54,
+                                      width: 56,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(16),
+                                        border: Border.all(width: 0.33, color: AppColors.kGray300),
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(0.3),
+                                        child: ClipRRect(
+                                          borderRadius: BorderRadius.circular(16),
+                                          child: Image.network(
+                                            'https://lunamarket.ru/storage/${state.tapeModel[index].image}',
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(width: 10),
+                                    Expanded(
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            '${state.tapeModel[index].name}',
+                                            overflow: TextOverflow.ellipsis,
+                                            maxLines: 1,
+                                            style: AppTextStyles.size14Weight600,
+                                          ),
+                                          state.tapeModel[index].compound != 0
+                                              ? Row(
+                                                  mainAxisAlignment: MainAxisAlignment.start,
+                                                  children: [
+                                                    SizedBox(
+                                                      // width: 75,
+                                                      child: Text(
+                                                        '${formatPrice(compoundPrice)} ₽ ',
+                                                        style: AppTextStyles.size16Weight600,
+                                                      ),
+                                                    ),
+                                                    Text(
+                                                      '${formatPrice(state.tapeModel[index].price!)} ₽ ',
+                                                      style: AppTextStyles.size14Weight500.copyWith(
+                                                        color: AppColors.kGray300,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                )
+                                              : Text(
+                                                  '${formatPrice(state.tapeModel[index].price!)} ₽ ',
+                                                  style: AppTextStyles.size16Weight600,
+                                                ),
+                                        ],
+                                      ),
+                                    ),
+                                    SizedBox(width: 10),
+                                    inBaskets(
+                                      tape: state.tapeModel[index],
+                                      index: index,
+                                      isBlogger: true,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 8),
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
-                );
-              },
-            );
-          } else {
-            return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
-          }
-        },
+                    ],
+                  );
+                },
+              );
+            } else {
+              return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
+            }
+          },
+        ),
       ),
     );
   }
@@ -1291,7 +1327,7 @@ class _VideosState extends State<Videos> {
               SizedBox.expand(
                 child: FittedBox(
                   alignment: Alignment.center,
-                  fit: BoxFit.fitWidth,
+                  fit: BoxFit.fitHeight,
                   child: GestureDetector(
                     onTap: () {
                       _controller!.value.isPlaying ? _controller!.pause() : _controller!.play();
@@ -1478,7 +1514,12 @@ class InFavoritesWidget extends StatefulWidget {
   final TapeModel tape;
   final int index;
   final bool isBlogger;
-  const InFavoritesWidget({required this.tape, required this.index, super.key, required this.isBlogger});
+  const InFavoritesWidget({
+    required this.tape,
+    required this.index,
+    super.key,
+    required this.isBlogger,
+  });
 
   @override
   State<InFavoritesWidget> createState() => _InFavoritesWidgetState();
@@ -1779,6 +1820,18 @@ class _inReportState extends State<inReport> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () async {
+        if (inReport == true) {
+          await showBrandedAlert(
+            context,
+            title: 'Жалоба уже отправлена',
+            message:
+                'Мы уже получили вашу жалобу на это видео. Повторная отправка не требуется — мы проверим видео и при необходимости примем меры.',
+            mode: BrandedAlertMode.acknowledge,
+            primaryText: 'Закрыть',
+          );
+          return;
+        }
+
         List<String> _reports = [
           'Жестокое обращение с детьми',
           'Спам',
@@ -1787,24 +1840,25 @@ class _inReportState extends State<inReport> {
           'Дискриминация или оскорбления',
         ];
 
-        showReportOptions(context, 'Пожаловаться на видео:', _reports, (value) {});
-        // showAlertTapeWidget(context);
-
-        BlocProvider.of<tapeCubit.TapeCubit>(context).update(
-          widget.tape,
-          widget.index,
-          widget.tape.inSubscribe,
-          widget.tape.inBasket,
-          widget.tape.inFavorite,
-          !inReport!,
-          widget.tape.isLiked,
-          widget.tape.statistics?.like ?? 0,
-          widget.tape.statistics?.favorite ?? 0,
-          widget.tape.statistics?.send ?? 0,
-          isBlogger: widget.isBlogger,
-        );
-        setState(() {
-          inReport = !inReport!;
+        showReportOptions(context, widget.tape.tapeId!, 'Пожаловаться на видео:', _reports, (
+          value,
+        ) {
+          BlocProvider.of<tapeCubit.TapeCubit>(context).update(
+            widget.tape,
+            widget.index,
+            widget.tape.inSubscribe,
+            widget.tape.inBasket,
+            widget.tape.inFavorite,
+            !inReport!,
+            widget.tape.isLiked,
+            widget.tape.statistics?.like ?? 0,
+            widget.tape.statistics?.favorite ?? 0,
+            widget.tape.statistics?.send ?? 0,
+            isBlogger: widget.isBlogger,
+          );
+          setState(() {
+            inReport = !inReport!;
+          });
         });
       },
       child: ClipRRect(

@@ -2,6 +2,7 @@ class ChatSellerModel {
   ChatSellerModel({
     int? chatId,
     int? userId,
+    String? role,
     String? name,
     dynamic avatar,
     String? createdAt,
@@ -11,6 +12,7 @@ class ChatSellerModel {
   }) {
     _chatId = chatId;
     _userId = userId;
+    _role = role;
     _name = name;
     _avatar = avatar;
     _createdAt = createdAt;
@@ -22,6 +24,7 @@ class ChatSellerModel {
   ChatSellerModel.fromJson(dynamic json) {
     _chatId = json['chat_id'];
     _userId = json['user_id'];
+    _role = json['role'];
     _name = json['name'];
     _avatar = json['avatar'];
     _createdAt = json['created_at'];
@@ -34,6 +37,7 @@ class ChatSellerModel {
   int? _chatId;
   int? _userId;
   String? _name;
+  String? _role;
   dynamic _avatar;
   String? _createdAt;
   String? _updatedAt;
@@ -42,6 +46,7 @@ class ChatSellerModel {
 
   int? get chatId => _chatId;
   int? get userId => _userId;
+  String? get role => _role;
   String? get name => _name;
   dynamic get avatar => _avatar;
   String? get createdAt => _createdAt;
@@ -53,6 +58,7 @@ class ChatSellerModel {
     final map = <String, dynamic>{};
     map['chat_id'] = _chatId;
     map['user_id'] = _userId;
+    map['role'] = _role;
     map['name'] = _name;
     map['avatar'] = _avatar;
     map['created_at'] = _createdAt;

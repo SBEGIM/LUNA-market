@@ -2,7 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 
 class MonthSelector extends StatefulWidget {
-  const MonthSelector({super.key});
+  final int value;
+  final ValueChanged<int> onChanged;
+
+  const MonthSelector({
+    super.key,
+    required this.value, // 3 / 6 / 12 / 24
+    required this.onChanged,
+  });
 
   @override
   State<MonthSelector> createState() => _MonthSelectorState();
@@ -86,6 +93,7 @@ class _MonthSelectorState extends State<MonthSelector> {
                                 : Radius.zero,
                           ),
                           onTap: () {
+                            widget.onChanged([3, 6, 12, 24][i]);
                             setState(() {
                               selectedIndex = i;
                               selectedIndexMonth = const [3, 6, 12, 24][i];
